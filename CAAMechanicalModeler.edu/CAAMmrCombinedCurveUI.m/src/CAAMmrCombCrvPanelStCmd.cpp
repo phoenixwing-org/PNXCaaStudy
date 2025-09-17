@@ -656,7 +656,7 @@ void CAAMmrCombCrvPanelStCmd::ElementSelected(CATFeatureImportAgent *pAgent)
        // o otherwise, the user wants to replace the old selected element by the new one.
        switch ( _ActiveField )
        {
-       case 1 :
+       case PNXCopyStudyFieldGuideCurve :
            { 
                if ( _piSpecOnCurve1 == piSpecOnSelection) // same one
                {
@@ -672,7 +672,7 @@ void CAAMmrCombCrvPanelStCmd::ElementSelected(CATFeatureImportAgent *pAgent)
                
                break;
            }
-       case 2 :
+       case  PNXCopyStudyFieldMainDir  :
            { 
                if ( _piSpecOnDir1 == piSpecOnSelection) 
                {

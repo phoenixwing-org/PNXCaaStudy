@@ -4,11 +4,9 @@
 //Message catalog for the CAAMmrCombinedCurveDlg dialog box
 
 
-Title=" Combine Curve Definition" ;
+Title="PNX Copy Study";
 
-labelc1.Title="First Curve :" ;
-labelc2.Title="Second Curve :" ;
-labeld1.Title="First Direction :" ;
-labeld2.Title="Second Direction :  " ;
-
-
+labelMainDir.Title="Main Dir";
+labelGuideCurve.Title="Guide Curve";
+labelBaseSurface.Title="Base Surface";
+labelStartPoint.Title="Start Point";

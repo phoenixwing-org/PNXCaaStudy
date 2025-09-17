@@ -1,4 +1,2 @@
 // COPYRIGHT DASSAULT SYSTEMES 2000
-CAAEMmrCombinedCurveAdnHeader.CAAMmrCombinedCurveHdr.Icon.Normal    = "CAAMmr_I_CombinedCurve" ;
-
-CAAEMmrCombinedCurveAdnHeader.CAAMmrCCDataExtensionHdr.Icon.Normal  = "CAAMmr_I_CCDataExtension" ;
+CAAEMmrCombinedCurveAdnHeader.PNXCopyStudyHdr.Icon.Normal    = "I_CombinedCurve" ;

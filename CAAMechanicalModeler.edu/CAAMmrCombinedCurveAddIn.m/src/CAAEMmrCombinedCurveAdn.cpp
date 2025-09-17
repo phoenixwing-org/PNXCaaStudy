@@ -61,15 +61,9 @@ void CAAEMmrCombinedCurveAdn::CreateCommands()
     // Instantiation of the header class created by the macro MacDeclareHeader -
     // commands are always available and are represented by a push button
     
-    new CAAEMmrCombinedCurveAdnHeader( "CAAMmrCombinedCurveHdr"  ,
+    new CAAEMmrCombinedCurveAdnHeader( "PNXCopyStudyHdr"  ,
                                       "CAAMmrCombinedCurveUI"    ,
                                       "CAAMmrCombCrvPanelStCmd" ,
-                                      (void *)NULL              );
-     // Instantiation of the header class created by the macro MacDeclareHeader -
-    // commands are always available and are represented by a push button
-    new CAAEMmrCombinedCurveAdnHeader("CAAMmrCCDataExtensionHdr"   ,
-                                      "CAAMmrCCDataExtensionUI"    ,
-                                      "CAAMmrCCDataExtensionStCmd" ,
                                       (void *)NULL              );
 }
 
@@ -82,17 +76,12 @@ CATCmdContainer* CAAEMmrCombinedCurveAdn::CreateToolbars()
 {
     
     // CombinedCurve Toolbar 
-    NewAccess        ( CATCmdContainer  , pCombinedCurveWkb , CAAMmrCombinedCurveTlb );
+    NewAccess        ( CATCmdContainer  , pCombinedCurveWkb , PNXCopyStudyTlb );
     
-    NewAccess        ( CATCmdStarter    , pCombinedCurve    , CAAMmrCombinedCurveStr );
-    SetAccessCommand ( pCombinedCurve    , "CAAMmrCombinedCurveHdr" );
+    NewAccess        ( CATCmdStarter    , pCombinedCurve    , PNXCopyStudyStr );
+    SetAccessCommand ( pCombinedCurve    , "PNXCopyStudyHdr" );
     SetAccessChild   ( pCombinedCurveWkb , pCombinedCurve  );
-      
-    // MmrCCataExtension Toolbar 
-    NewAccess        ( CATCmdStarter    , pDataExtension     , CAAMmrCCDataExtensionStr );
-    SetAccessCommand ( pDataExtension    , "CAAMmrCCDataExtensionHdr" );
-    SetAccessNext    ( pCombinedCurve  , pDataExtension  );
-    
+
     AddToolbarView   ( pCombinedCurveWkb  , -1 , Right ); // Unvisible toolbar 
 
     return pCombinedCurveWkb;

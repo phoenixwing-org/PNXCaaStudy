@@ -8,6 +8,17 @@
 #include "CATDlgInclude.h" // needed to use Dialog framework objects
 
 /**
+ * Field enum for input field
+ */
+enum PNXCopyStudyField{
+    PNXCopyStudyFieldUnkown = 0,
+    PNXCopyStudyFieldGuideCurve  = 1,
+    PNXCopyStudyFieldMainDir  = 2,
+    PNXCopyStudyFieldBaseSurface = 3,
+    PNXCopyStudyFieldStartPoint  = 4
+}
+
+/**
 * Class managing the dialog panel used for a Combined Curve creation / edition.
 * 
 * refer to programming resources of Dialog framework.
@@ -42,14 +53,13 @@ public:
     * Returns the field_number-th field of the panel.
     */
     CATDlgSelectorList* GetField(int iFieldNumber );
-    
-    
+
 private:
     
-    CATDlgSelectorList *_sel_curve1 ,
-                       *_sel_curve2 ,
-                       *_sel_dir1 ,
-                       *_sel_dir2;
+    CATDlgSelectorList *_selectorListGuideCurve ,
+                       *_selectorListBaseSurface ,
+                       *_selectorListMainDir ,
+                       *_selectorListStartPoint;
 
 };
 
