@@ -16,7 +16,7 @@ enum PNXCopyStudyField{
     PNXCopyStudyFieldMainDir  = 2,
     PNXCopyStudyFieldBaseSurface = 3,
     PNXCopyStudyFieldStartPoint  = 4
-}
+};
 
 /**
 * Class managing the dialog panel used for a Combined Curve creation / edition.
