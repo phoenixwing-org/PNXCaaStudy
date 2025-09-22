@@ -90,11 +90,6 @@ public:
     CATBoolean Direction1FieldSelected(void *);
     
     /**
-    * Method called when the field correponding to Curve.2 is selected.
-    */
-    CATBoolean Curve2FieldSelected(void *);
-    
-    /**
     * Method called when the field correponding to Direction.2 is selected.
     */
     CATBoolean Direction2FieldSelected(void *);
@@ -151,12 +146,10 @@ private :
     
     CATDialogAgent        *_pCurve1FieldAgent     ,
                           *_pDirection1FieldAgent ,
-                          *_pCurve2FieldAgent     ,
                           *_pDirection2FieldAgent ;
     
     CATISpecObject        *_piSpecOnCurve1 , 
-                          *_piSpecOnDir1   ,  
-                          *_piSpecOnCurve2 , 
+                          *_piSpecOnDir1   ,
                           *_piSpecOnDir2   ;
     
     CAAMmrCombinedCurveDlg *_panel;

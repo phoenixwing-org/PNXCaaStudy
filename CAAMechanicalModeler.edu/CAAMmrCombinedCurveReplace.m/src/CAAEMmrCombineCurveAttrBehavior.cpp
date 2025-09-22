@@ -54,11 +54,11 @@ HRESULT CAAEMmrCombineCurveAttrBehavior::GetRequestedBehavior(const CATUnicodeSt
 
       if ( NULL != *oppBehavior )
       {
-         // If the input String is equal to "Curve1" or "Curve2" which are the name 
+         // If the input String is equal to "Curve1" which are the name 
          // of two attributes then the Filter will be IID_CATIMfMonoDimResult
          // That is to say, we can Replace in those two attributes a Feature 
          // implementing the interface CATIMfMonoDimResult by another one 
-         if (2 == ipAttrId->Compare("Curve1") || 2 == ipAttrId->Compare("Curve2"))
+         if (2 == ipAttrId->Compare("Curve1") )
          {
             CATListPV* aMyFirstList = new CATListPV;
             aMyFirstList->Append((void*)&IID_CATIMfMonoDimResult);

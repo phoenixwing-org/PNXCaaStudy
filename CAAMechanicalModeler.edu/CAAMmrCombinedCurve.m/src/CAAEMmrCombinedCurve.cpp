@@ -60,6 +60,8 @@ TIE_CAAIMmrCombinedCurve( CAAEMmrCombinedCurve);
 
 HRESULT CAAEMmrCombinedCurve::SetCurve ( int iNum , CATISpecObject *ipiSpecOnCurve ) 
 {    
+   if (iNum != 1)return E_FAIL ;
+   
     // Gets a pointer on CATISpecAttrAccess 
     CATISpecAttrAccess * piSpecAttrAccessOnCC = NULL; 
     HRESULT rc = QueryInterface(IID_CATISpecAttrAccess, (void**) & piSpecAttrAccessOnCC);
@@ -70,10 +72,6 @@ HRESULT CAAEMmrCombinedCurve::SetCurve ( int iNum , CATISpecObject *ipiSpecOnCur
        if ( 1 == iNum )
        {
           piSpecAttrKeyOnInputCurve = piSpecAttrAccessOnCC->GetAttrKey("Curve1");
-       }
-       else
-       {
-          piSpecAttrKeyOnInputCurve = piSpecAttrAccessOnCC->GetAttrKey("Curve2");
        }
     
        if ( NULL == piSpecAttrKeyOnInputCurve )
@@ -159,10 +157,6 @@ HRESULT CAAEMmrCombinedCurve::GetCurve ( int iNum , CATISpecObject **opiSpecOnCu
        if ( 1 == iNum )
        {
           piSpecAttrKeyOnInputCurve = piSpecAttrAccessOnCC->GetAttrKey("Curve1");
-       }
-       else
-       {
-          piSpecAttrKeyOnInputCurve = piSpecAttrAccessOnCC->GetAttrKey("Curve2");
        }
 
        rc = E_FAIL;

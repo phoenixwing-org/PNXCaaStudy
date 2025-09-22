@@ -14,8 +14,7 @@ enum PNXCopyStudyField{
     PNXCopyStudyFieldUnkown = 0,
     PNXCopyStudyFieldGuideCurve  = 1,
     PNXCopyStudyFieldMainDir  = 2,
-    PNXCopyStudyFieldBaseSurface = 3,
-    PNXCopyStudyFieldStartPoint  = 4
+    PNXCopyStudyFieldStartPoint  = 3
 };
 
 /**
@@ -57,7 +56,6 @@ public:
 private:
     
     CATDlgSelectorList *_selectorListGuideCurve ,
-                       *_selectorListBaseSurface ,
                        *_selectorListMainDir ,
                        *_selectorListStartPoint;
 

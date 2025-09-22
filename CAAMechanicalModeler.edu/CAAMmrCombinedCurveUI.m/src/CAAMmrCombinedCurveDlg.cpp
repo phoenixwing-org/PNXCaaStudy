@@ -21,7 +21,6 @@ CATDlgDialog ( ( CATApplicationFrame::GetApplicationFrame() ) -> GetMainWindow (
                "CombinedCurve", 
                CATDlgGridLayout | CATDlgWndOK | CATDlgWndCANCEL | CATDlgWndNoResize ),
 _selectorListGuideCurve   ( NULL ),
-_selectorListBaseSurface   ( NULL ),
 _selectorListMainDir     ( NULL ),
 _selectorListStartPoint     ( NULL )
 {
@@ -40,7 +39,6 @@ CAAMmrCombinedCurveDlg::~CAAMmrCombinedCurveDlg()
     //  --------------------------------------------------
     
     _selectorListGuideCurve   = NULL ;
-    _selectorListBaseSurface   = NULL ;
     _selectorListMainDir     = NULL ;
     _selectorListStartPoint     = NULL ;
 
@@ -58,9 +56,7 @@ void CAAMmrCombinedCurveDlg::Build()
     CATDlgLabel * labelGuideCurve = new CATDlgLabel( this , CATString("labelGuideCurve") );
     
     CATDlgLabel * labelMainDir = new CATDlgLabel( this , CATString("labelMainDir") );
-    
-    CATDlgLabel * labelBaseSurface = new CATDlgLabel( this , CATString("labelBaseSurface") );
-    
+        
     CATDlgLabel * labelStartPoint = new CATDlgLabel( this , CATString("labelStartPoint") );
     
     // Creates the four input fields .
@@ -74,10 +70,6 @@ void CAAMmrCombinedCurveDlg::Build()
     _selectorListMainDir->SetVisibleTextHeight(1);
     _selectorListMainDir->SetLine(Prompt_nosel,0,CATDlgDataModify);
 
-    _selectorListBaseSurface = new CATDlgSelectorList( this , CATString("selc2"),CATDlgDataModify);
-    _selectorListBaseSurface->SetVisibleTextHeight(1);
-    _selectorListBaseSurface->SetLine(Prompt_nosel,0,CATDlgDataModify);
-    
     _selectorListStartPoint   = new CATDlgSelectorList( this , CATString("seld2"),CATDlgDataModify);
     _selectorListStartPoint->SetVisibleTextHeight(1);
     _selectorListStartPoint->SetLine(Prompt_nosel,0,CATDlgDataModify);
@@ -93,16 +85,14 @@ void CAAMmrCombinedCurveDlg::Build()
     
     cst.Row=0; labelMainDir   -> SetGridConstraints(cst);
     cst.Row=1; labelGuideCurve -> SetGridConstraints(cst);
-    cst.Row=2; labelBaseSurface -> SetGridConstraints(cst);
-    cst.Row=3; labelStartPoint   -> SetGridConstraints(cst);
+    cst.Row=2; labelStartPoint   -> SetGridConstraints(cst);
         
     // second column : input fields.
     cst.Column=1;     
     
     cst.Row=0; _selectorListGuideCurve -> SetGridConstraints(cst);
     cst.Row=1; _selectorListMainDir   -> SetGridConstraints(cst);
-    cst.Row=2; _selectorListBaseSurface -> SetGridConstraints(cst);
-    cst.Row=3; _selectorListStartPoint   -> SetGridConstraints(cst);
+    cst.Row=2; _selectorListStartPoint   -> SetGridConstraints(cst);
     
     // Finally, makes the panel appear.
     SetVisibility(CATDlgShow);
@@ -117,7 +107,6 @@ void CAAMmrCombinedCurveDlg::SetActiveField(int iFieldNumber)
     //  Deselects all others field when changing of active field ( by clicking in another one ).
     if ( PNXCopyStudyFieldGuideCurve != iFieldNumber ) _selectorListGuideCurve -> ClearSelect();
     if ( PNXCopyStudyFieldMainDir  != iFieldNumber ) _selectorListMainDir   -> ClearSelect();
-    if ( PNXCopyStudyFieldBaseSurface != iFieldNumber ) _selectorListBaseSurface -> ClearSelect();
     if ( PNXCopyStudyFieldStartPoint  != iFieldNumber ) _selectorListStartPoint   -> ClearSelect();
     return ;
 }
@@ -135,7 +124,6 @@ void CAAMmrCombinedCurveDlg::SetName(int iFieldNumber , CATUnicodeString iName )
     {
     case PNXCopyStudyFieldGuideCurve  : { _selectorListGuideCurve -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
     case PNXCopyStudyFieldMainDir  : { _selectorListMainDir   -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
-    case PNXCopyStudyFieldBaseSurface : { _selectorListBaseSurface -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
     case PNXCopyStudyFieldStartPoint  : { _selectorListStartPoint   -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
     }
     return ;
@@ -152,7 +140,6 @@ CATDlgSelectorList* CAAMmrCombinedCurveDlg::GetField(int iFieldNumber)
     {   
     case PNXCopyStudyFieldGuideCurve  : return _selectorListGuideCurve;
     case PNXCopyStudyFieldMainDir  : return _selectorListMainDir ;
-    case PNXCopyStudyFieldBaseSurface : return _selectorListBaseSurface;
     case PNXCopyStudyFieldStartPoint  : return _selectorListStartPoint;
     }
     return NULL ;

@@ -82,7 +82,7 @@ CATCmdContainer* CAAEMmrCombinedCurveAdn::CreateToolbars()
     SetAccessCommand ( pCombinedCurve    , "PNXCopyStudyHdr" );
     SetAccessChild   ( pCombinedCurveWkb , pCombinedCurve  );
 
-    AddToolbarView   ( pCombinedCurveWkb  , -1 , Right ); // Unvisible toolbar 
+    AddToolbarView   ( pCombinedCurveWkb  , -1 , Top ); // Unvisible toolbar 
 
     return pCombinedCurveWkb;
     

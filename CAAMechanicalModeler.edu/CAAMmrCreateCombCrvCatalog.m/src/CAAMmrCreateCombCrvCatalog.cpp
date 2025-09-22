@@ -197,7 +197,6 @@ int main (int argc, char * argv[] )
     //      ------------   --------------    --------------    ------------
     //      CombinedCurve   Curve1            tk_specobject     IN attribute
     //                      Direction1        tk_specobject     IN attribute
-    //                      Curve2            tk_specobject     IN attribute
     //                      Direction2        tk_specobject     IN attribute
     //
     //
@@ -242,26 +241,6 @@ int main (int argc, char * argv[] )
     }
     piDirection1SpecAttribute->Release();
     piDirection1SpecAttribute = NULL ;
-    
-    
-    // Adding third attribute : Curve2
-    //---------------------------------------
-
-    CATUnicodeString Curve2Name = "Curve2";
-    
-	CATISpecAttribute *piCurve2SpecAttribute = piSpecOnCombinedCurveStartUp->AddAttribute(Curve2Name, tk_specobject, sp_IN);
- 
-    if ( piCurve2SpecAttribute != NULL ) 
-        cout << "    Curve2 attribute added OK." << endl << flush;
-    else 
-    {
-        cout << "    ERROR in adding Curve2 attribute." << endl << flush;
-        return 1 ;
-    }
-    
-    piCurve2SpecAttribute->Release();
-    piCurve2SpecAttribute = NULL ;
-    
     
     // Adding fourth attribute : Direction2
     //---------------------------------------

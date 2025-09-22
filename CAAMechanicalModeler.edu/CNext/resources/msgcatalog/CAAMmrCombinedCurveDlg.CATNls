@@ -8,5 +8,4 @@ Title="PNX Copy Study";
 
 labelMainDir.Title="Main Dir";
 labelGuideCurve.Title="Guide Curve";
-labelBaseSurface.Title="Base Surface";
 labelStartPoint.Title="Start Point";
