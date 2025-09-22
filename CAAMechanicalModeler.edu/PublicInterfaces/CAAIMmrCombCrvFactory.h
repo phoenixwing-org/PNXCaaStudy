@@ -32,7 +32,6 @@ class ExportedByCAAMmrCombinedCurve CAAIMmrCombCrvFactory: public CATBaseUnknown
    * Creates a Combined Curve.
    * param ipCurve1       : the first input curve.
    * param ipDirection1   : the first input direction.
-   * param ipDirection2   : the second input direction.
    * param opCombinedCurve : the resulting Combined Curve.
    *
    * returns the result of the creation.
@@ -41,7 +40,6 @@ class ExportedByCAAMmrCombinedCurve CAAIMmrCombCrvFactory: public CATBaseUnknown
    */
       virtual HRESULT CreateCombinedCurve (  CATISpecObject *ipCurve1 ,
                                             CATISpecObject *ipDirection1 ,
-                                            CATISpecObject *ipDirection2 ,
                                             CATISpecObject **opCombinedCurve ) = 0 ;
 
 };

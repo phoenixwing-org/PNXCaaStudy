@@ -299,7 +299,7 @@ int main(int    iArgc,   // Number of arguments (0)
     CATISpecObject *pSpecOnCombinedCurve = NULL;
     
     cout<< "   Creates the combined curve" << endl ;
-    rc = pCombinedCurveFactory->CreateCombinedCurve( Spline1 , Line1 , Line2 , &pSpecOnCombinedCurve );
+    rc = pCombinedCurveFactory->CreateCombinedCurve( Spline1 , Line1 , &pSpecOnCombinedCurve );
 
     pDescendantsOnGSMTool->Append(pSpecOnCombinedCurve);
 

@@ -20,9 +20,8 @@ CAAMmrCombinedCurveDlg::CAAMmrCombinedCurveDlg( ) :
 CATDlgDialog ( ( CATApplicationFrame::GetApplicationFrame() ) -> GetMainWindow ( ) ,
                "CombinedCurve", 
                CATDlgGridLayout | CATDlgWndOK | CATDlgWndCANCEL | CATDlgWndNoResize ),
-_selectorListGuideCurve   ( NULL ),
-_selectorListMainDir     ( NULL ),
-_selectorListStartPoint     ( NULL )
+_selectorListFirstPoint   ( NULL ),
+_selectorListMainDir     ( NULL )
 {
     // never call the Build method of the panel from the constructor
     // it is much better to call it from the same method that created (new) the panel
@@ -38,9 +37,8 @@ CAAMmrCombinedCurveDlg::~CAAMmrCombinedCurveDlg()
     //     this is done automatically
     //  --------------------------------------------------
     
-    _selectorListGuideCurve   = NULL ;
+    _selectorListFirstPoint   = NULL ;
     _selectorListMainDir     = NULL ;
-    _selectorListStartPoint     = NULL ;
 
 
 }
@@ -53,27 +51,21 @@ void CAAMmrCombinedCurveDlg::Build()
 {
     // Creates the CATDlgLabel for the input field's names.
 
-    CATDlgLabel * labelGuideCurve = new CATDlgLabel( this , CATString("labelGuideCurve") );
+    CATDlgLabel * labelFirstPoint = new CATDlgLabel( this , CATString("labelFirstPoint") );
     
     CATDlgLabel * labelMainDir = new CATDlgLabel( this , CATString("labelMainDir") );
-        
-    CATDlgLabel * labelStartPoint = new CATDlgLabel( this , CATString("labelStartPoint") );
     
     // Creates the four input fields .
     CATUnicodeString Prompt_nosel = "no selection";
 
-    _selectorListGuideCurve = new CATDlgSelectorList( this , CATString("selc1"),CATDlgDataModify);
-    _selectorListGuideCurve->SetVisibleTextHeight(1);
-    _selectorListGuideCurve->SetLine(Prompt_nosel,0,CATDlgDataModify);
+    _selectorListFirstPoint = new CATDlgSelectorList( this , CATString("selc1"),CATDlgDataModify);
+    _selectorListFirstPoint->SetVisibleTextHeight(1);
+    _selectorListFirstPoint->SetLine(Prompt_nosel,0,CATDlgDataModify);
 
     _selectorListMainDir   = new CATDlgSelectorList( this , CATString("seld1"),CATDlgDataModify);
     _selectorListMainDir->SetVisibleTextHeight(1);
     _selectorListMainDir->SetLine(Prompt_nosel,0,CATDlgDataModify);
 
-    _selectorListStartPoint   = new CATDlgSelectorList( this , CATString("seld2"),CATDlgDataModify);
-    _selectorListStartPoint->SetVisibleTextHeight(1);
-    _selectorListStartPoint->SetLine(Prompt_nosel,0,CATDlgDataModify);
-        
     
     // Uses the grid of the panel to position the label and the input fields.
     CATDlgGridConstraints cst;  
@@ -84,15 +76,13 @@ void CAAMmrCombinedCurveDlg::Build()
     cst.Column=0;     
     
     cst.Row=0; labelMainDir   -> SetGridConstraints(cst);
-    cst.Row=1; labelGuideCurve -> SetGridConstraints(cst);
-    cst.Row=2; labelStartPoint   -> SetGridConstraints(cst);
+    cst.Row=1; labelFirstPoint -> SetGridConstraints(cst);
         
     // second column : input fields.
     cst.Column=1;     
     
-    cst.Row=0; _selectorListGuideCurve -> SetGridConstraints(cst);
+    cst.Row=0; _selectorListFirstPoint -> SetGridConstraints(cst);
     cst.Row=1; _selectorListMainDir   -> SetGridConstraints(cst);
-    cst.Row=2; _selectorListStartPoint   -> SetGridConstraints(cst);
     
     // Finally, makes the panel appear.
     SetVisibility(CATDlgShow);
@@ -105,9 +95,8 @@ void CAAMmrCombinedCurveDlg::Build()
 void CAAMmrCombinedCurveDlg::SetActiveField(int iFieldNumber)
 {
     //  Deselects all others field when changing of active field ( by clicking in another one ).
-    if ( PNXCopyStudyFieldGuideCurve != iFieldNumber ) _selectorListGuideCurve -> ClearSelect();
+    if ( PNXCopyStudyFieldFirstPoint != iFieldNumber ) _selectorListFirstPoint -> ClearSelect();
     if ( PNXCopyStudyFieldMainDir  != iFieldNumber ) _selectorListMainDir   -> ClearSelect();
-    if ( PNXCopyStudyFieldStartPoint  != iFieldNumber ) _selectorListStartPoint   -> ClearSelect();
     return ;
 }
 
@@ -122,9 +111,8 @@ void CAAMmrCombinedCurveDlg::SetName(int iFieldNumber , CATUnicodeString iName )
     
     switch (iFieldNumber )
     {
-    case PNXCopyStudyFieldGuideCurve  : { _selectorListGuideCurve -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
+    case PNXCopyStudyFieldFirstPoint  : { _selectorListFirstPoint -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
     case PNXCopyStudyFieldMainDir  : { _selectorListMainDir   -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
-    case PNXCopyStudyFieldStartPoint  : { _selectorListStartPoint   -> SetLine ( iName , 0 , CATDlgDataModify ); return; }
     }
     return ;
 }
@@ -138,9 +126,8 @@ CATDlgSelectorList* CAAMmrCombinedCurveDlg::GetField(int iFieldNumber)
     // returns the active field ( used by the state command ).
     switch (iFieldNumber )
     {   
-    case PNXCopyStudyFieldGuideCurve  : return _selectorListGuideCurve;
+    case PNXCopyStudyFieldFirstPoint  : return _selectorListFirstPoint;
     case PNXCopyStudyFieldMainDir  : return _selectorListMainDir ;
-    case PNXCopyStudyFieldStartPoint  : return _selectorListStartPoint;
     }
     return NULL ;
 }

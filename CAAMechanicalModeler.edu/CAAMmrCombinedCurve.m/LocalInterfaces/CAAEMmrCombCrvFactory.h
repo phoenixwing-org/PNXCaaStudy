@@ -32,7 +32,6 @@ public:
     */
     HRESULT CreateCombinedCurve ( CATISpecObject *ipiSpecOnCurve1,
                                  CATISpecObject *ipiSpecOnDirection1,
-                                 CATISpecObject *ipiSpecOnDirection2,
                                  CATISpecObject **opiSpecOnCombinedCurve );
     
 private:

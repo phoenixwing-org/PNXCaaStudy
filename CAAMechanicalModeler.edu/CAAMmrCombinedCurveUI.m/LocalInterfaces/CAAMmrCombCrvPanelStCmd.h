@@ -145,12 +145,10 @@ private :
     CATFeatureImportAgent *_pDirectionAgent ;
     
     CATDialogAgent        *_pCurve1FieldAgent     ,
-                          *_pDirection1FieldAgent ,
-                          *_pDirection2FieldAgent ;
+                          *_pDirection1FieldAgent ;
     
     CATISpecObject        *_piSpecOnCurve1 , 
-                          *_piSpecOnDir1   ,
-                          *_piSpecOnDir2   ;
+                          *_piSpecOnDir1 ;
     
     CAAMmrCombinedCurveDlg *_panel;
     
