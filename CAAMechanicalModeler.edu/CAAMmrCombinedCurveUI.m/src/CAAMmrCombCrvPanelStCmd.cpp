@@ -212,10 +212,9 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
     //-----------------------------------------------------------------------------
     
     // _pCurveAgent to select a curve
-    _pCurveAgent -> SetOrderedElementType ( "CATIMfMonoDimResult" );
-    _pCurveAgent -> AddOrderedElementType ( "CATCurve"            );
-    _pCurveAgent -> AddOrderedElementType ( "CATEdge"             );
-    _pCurveAgent -> AddOrderedElementType ( "CATWire"             );
+    _pCurveAgent -> SetOrderedElementType ( "CATIMfZeroDimResult" );
+    _pCurveAgent -> AddOrderedElementType ( "CATPoint");
+    _pCurveAgent -> AddOrderedElementType ( "CATIGSMPoint");
     _pCurveAgent -> SetBehavior      ( CATDlgEngWithPrevaluation | CATDlgEngWithCSO     | CATDlgEngOneShot         );
     _pCurveAgent -> SetAgentBehavior ( MfPermanentBody           | MfLastFeatureSupport | MfRelimitedFeaturization );
         
@@ -249,7 +248,7 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
     // They make it possible for you not to worry about transition to OK and Cancel States.
 
     // Curve selection state
-    CATDialogState *WaitForCurveState= GetInitialPanelState("Select a curve or another input field");
+    CATDialogState *WaitForCurveState= GetInitialPanelState("Select a Point or another input field");
     WaitForCurveState -> AddDialogAgent ( _pCurveAgent           ); 
     WaitForCurveState -> AddDialogAgent ( _pDirection1FieldAgent ); 
     WaitForCurveState -> AddDialogAgent ( _pDirection2FieldAgent ); 
