@@ -265,7 +265,8 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
 
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pPushButtonSaveJsonAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent, (void *)(1));
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent, (void *)(1)));
+        
     // From Curve to Direction
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pDirection1FieldAgent),
