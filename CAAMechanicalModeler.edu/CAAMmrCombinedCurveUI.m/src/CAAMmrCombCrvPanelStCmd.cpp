@@ -232,8 +232,8 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
     // AddAnalyseNotificationCB Mode: Action for ButtonDirectCallback
     AddAnalyseNotificationCB(_panel->_pushButtonDirectCallback,
                              _panel->_pushButtonDirectCallback->GetPushBActivateNotification(),
-                             (CATCommandMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonAgent,
-                             (void *)(2));
+                             (CATCommandMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonCB,
+                             CATLONG32ToPtr(1)); // data 64位指针
 
     //-----------------------------------------------------------------------------
     // Command States
@@ -476,29 +476,38 @@ CATBoolean CAAMmrCombCrvPanelStCmd::Direction1FieldSelected(void *)
 CATBoolean CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(void *data)
 {
     // 把data转为整数
-    int mode = CATPtrToINT32(data);
+    CATLong mode = CATPtrToLONG32(data);
+    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(data)" << endl;
+    cout<< " data = " << data << " to long :" << mode << endl;
 
-    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(" << mode << ")" << endl;
-    cout << "TODO 写你的代码" << endl;
+    // TODO save the a file
+    cout << "Action from Command Agent" << endl;
 
-    switch (mode)
+    // gets ready for next acquisition
+    _pPushButtonSaveJsonAgent->InitializeAcquisition();
+    return TRUE;
+}
+//-----------------------------------------------------------------------------
+void CAAMmrCombCrvPanelStCmd::OnPushButtonCB(CATCommand* iCmd, CATNotification* iNotif, CATCommandClientData iData)
+{
+    // 把data转为整数
+    CATLong data = CATPtrToINT32(iData);
+    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonCB(data)" << endl;
+    cout<< " iData = " << iData << " to long :" << data << endl;
+
+    switch (data)
     {
-    case 1:
-        // TODO save the a file
-        cout << "Action from Command Agent" << endl;
+    case 0: 
+        cout << "Action from data 0" << endl;
         break;
-    case 2:
-        cout << "Action from Command Callback" << endl;
+    case 1:
+        cout << "Action from data 1" << endl;
         // TODO acton callback
         break;
     default:
+        cout << "data error" << endl;
         break;
     }
-
-    // gets ready for next acquisition
-    // 这句放外面，好像也可以，确保被重置
-    _pPushButtonSaveJsonAgent->InitializeAcquisition();
-    return TRUE;
 }
 //-----------------------------------------------------------------------------
 void CAAMmrCombCrvPanelStCmd::SetActiveField(int ActiveField)

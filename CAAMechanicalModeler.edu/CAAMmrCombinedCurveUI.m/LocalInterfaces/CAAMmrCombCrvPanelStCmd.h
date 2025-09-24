@@ -96,6 +96,11 @@ public:
      * Method called when the field correponding to Curve.1 is selected.
      */
     CATBoolean OnPushButtonAgent(void *);
+    
+    /**
+     * Method called for call back
+     */
+    void OnPushButtonCB(CATCommand* iCmd, CATNotification* iNotif, CATCommandClientData iData);
 
     /**
      * Asks the panel to focus on an Active Field
