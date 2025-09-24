@@ -1,0 +1,27 @@
+{
+    "files.associations": {
+        "*.qml": "qml",
+        "*.qrc": "xml",
+        "*.pro": "makefile",
+        "*.pri": "makefile",
+        "qtranslator": "cpp",
+        "qapplication": "cpp",
+        "qmessagebox": "cpp",
+        "new": "cpp",
+        "qmainwindow": "cpp",
+        "atomic": "cpp",
+        "qstring": "cpp",
+        "qdebug": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "iterator": "cpp",
+        "string_view": "cpp"
+    },
+    "editor.formatOnSave": true,
+    "cSpell.words": [
+        "INFORS"
+    ]
+}

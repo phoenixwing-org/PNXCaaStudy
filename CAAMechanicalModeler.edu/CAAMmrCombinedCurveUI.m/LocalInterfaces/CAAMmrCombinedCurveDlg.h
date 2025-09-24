@@ -10,53 +10,53 @@
 /**
  * Field enum for input field
  */
-enum PNXCopyStudyField{
+enum PNXCopyStudyField
+{
     PNXCopyStudyFieldUnkown = 0,
-    PNXCopyStudyFieldFirstPoint  = 1,
-    PNXCopyStudyFieldMainDir  = 2
+    PNXCopyStudyFieldFirstPoint = 1,
+    PNXCopyStudyFieldMainDir = 2
 };
 
 /**
-* Class managing the dialog panel used for a Combined Curve creation / edition.
-* 
-* refer to programming resources of Dialog framework.
-* (consult base class description).
-*/
-class CAAMmrCombinedCurveDlg: public CATDlgDialog
+ * Class managing the dialog panel used for a Combined Curve creation / edition.
+ *
+ * refer to programming resources of Dialog framework.
+ * (consult base class description).
+ */
+class CAAMmrCombinedCurveDlg : public CATDlgDialog
 {
-    
-    DeclareResource(CAAMmrCombinedCurveDlg,CATDlgDialog);
+
+    DeclareResource(CAAMmrCombinedCurveDlg, CATDlgDialog);
 
 public:
-    
     CAAMmrCombinedCurveDlg();
     virtual ~CAAMmrCombinedCurveDlg();
-    
-    /**
-    * Builds the panel with its control.
-    */
-    void Build ();
-    
-    /**
-    * Sets the focus on the active entry field ( one of the four fields for Curve.1 to Direction.2 )
-    */
-    void SetActiveField( int iFieldNumber );
 
     /**
-    * Writes name in the field_number-th field.
-    */
-    void SetName( int iFieldNumber , CATUnicodeString iName );
-    
+     * Builds the panel with its control.
+     */
+    void Build();
+
     /**
-    * Returns the field_number-th field of the panel.
-    */
-    CATDlgSelectorList* GetField(int iFieldNumber );
+     * Sets the focus on the active entry field ( one of the four fields for Curve.1 to Direction.2 )
+     */
+    void SetActiveField(int iFieldNumber);
 
-private:
-    
-    CATDlgSelectorList *_selectorListFirstPoint ,
-                       *_selectorListMainDir;
+    /**
+     * Writes name in the field_number-th field.
+     */
+    void SetName(int iFieldNumber, CATUnicodeString iName);
 
+    /**
+     * Returns the field_number-th field of the panel.
+     */
+    CATDlgSelectorList *GetField(int iFieldNumber);
+
+public:
+    CATDlgSelectorList *_selectorListFirstPoint,
+        *_selectorListMainDir;
+
+    CATDlgPushButton *_pushButtonSaveJson; ///< save json button
 };
 
 #endif
