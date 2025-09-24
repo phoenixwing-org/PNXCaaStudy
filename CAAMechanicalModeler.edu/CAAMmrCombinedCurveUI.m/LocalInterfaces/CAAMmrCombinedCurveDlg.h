@@ -53,10 +53,13 @@ public:
     CATDlgSelectorList *GetField(int iFieldNumber);
 
 public:
-    CATDlgSelectorList *_selectorListFirstPoint,
+    CATDlgSelectorList
+        *_selectorListFirstPoint,
         *_selectorListMainDir;
 
-    CATDlgPushButton *_pushButtonSaveJson; ///< save json button
+    CATDlgPushButton
+        *_pushButtonSaveJson,       ///< save json button
+        *_pushButtonDirectCallback; ///< Direct callback button
 };
 
 #endif

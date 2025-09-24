@@ -21,7 +21,8 @@ CAAMmrCombinedCurveDlg::CAAMmrCombinedCurveDlg() : CATDlgDialog((CATApplicationF
                                                                 CATDlgGridLayout | CATDlgWndOK | CATDlgWndCANCEL | CATDlgWndNoResize),
                                                    _selectorListFirstPoint(NULL),
                                                    _selectorListMainDir(NULL),
-                                                   _pushButtonSaveJson(NULL)
+                                                   _pushButtonSaveJson(NULL),
+                                                   _pushButtonDirectCallback(NULL)
 {
     // never call the Build method of the panel from the constructor
     // it is much better to call it from the same method that created (new) the panel
@@ -36,6 +37,7 @@ CAAMmrCombinedCurveDlg::~CAAMmrCombinedCurveDlg()
     _selectorListFirstPoint = NULL;
     _selectorListMainDir = NULL;
     _pushButtonSaveJson = NULL;
+    _pushButtonDirectCallback = NULL;
 }
 //-------------------------------------------------------------------------
 void CAAMmrCombinedCurveDlg::Build()
@@ -59,8 +61,11 @@ void CAAMmrCombinedCurveDlg::Build()
 
     // Creates the save json button.
     _pushButtonSaveJson = new CATDlgPushButton(this, CATString("pushButtonSaveJson"));
-    _pushButtonSaveJson->SetName(CATString("Save Json"));
-    _pushButtonSaveJson->SetIconName("I_CombinedCurve");
+    _pushButtonSaveJson->SetName(CATString("Save Json With Agent"));
+    // _pushButtonSaveJson->SetIconName("I_CombinedCurve");
+
+    _pushButtonDirectCallback = new CATDlgPushButton(this, CATString("pushButtonDirectCallback"));
+    _pushButtonDirectCallback->SetName(CATString("Direct Callback"));
 
     // Uses the grid of the panel to position the label and the input fields.
     CATDlgGridConstraints cst;
@@ -83,9 +88,10 @@ void CAAMmrCombinedCurveDlg::Build()
     _selectorListFirstPoint->SetGridConstraints(cst);
     cst.Row = 1;
     _selectorListMainDir->SetGridConstraints(cst);
-
     cst.Row = 2;
     _pushButtonSaveJson->SetGridConstraints(cst);
+    cst.Row = 3;
+    _pushButtonDirectCallback->SetGridConstraints(cst);
 
     // Finally, makes the panel appear.
     SetVisibility(CATDlgShow);

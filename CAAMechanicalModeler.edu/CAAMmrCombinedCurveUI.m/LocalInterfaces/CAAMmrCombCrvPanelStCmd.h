@@ -95,7 +95,7 @@ public:
     /**
      * Method called when the field correponding to Curve.1 is selected.
      */
-    CATBoolean OnPushButtonSaveJsonAgent(void *);
+    CATBoolean OnPushButtonAgent(void *);
 
     /**
      * Asks the panel to focus on an Active Field

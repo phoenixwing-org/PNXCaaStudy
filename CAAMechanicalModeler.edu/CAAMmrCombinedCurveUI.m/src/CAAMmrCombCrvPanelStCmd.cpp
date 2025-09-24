@@ -226,9 +226,14 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
     _pCurve1FieldAgent->AcceptOnNotify(_panel->GetField(PNXCopyStudyFieldFirstPoint), _panel->GetField(PNXCopyStudyFieldFirstPoint)->GetListSelectNotification());
     _pDirection1FieldAgent->AcceptOnNotify(_panel->GetField(PNXCopyStudyFieldMainDir), _panel->GetField(PNXCopyStudyFieldMainDir)->GetListSelectNotification());
 
-    // _pPushButtonSaveJsonAgent to save the a file
-    // TODO 换控件
+    // Use Agent Mode: _pPushButtonSaveJsonAgent to save the a file:
     _pPushButtonSaveJsonAgent->AcceptOnNotify(_panel->_pushButtonSaveJson, _panel->_pushButtonSaveJson->GetPushBActivateNotification());
+
+    // AddAnalyseNotificationCB Mode: Action for ButtonDirectCallback
+    AddAnalyseNotificationCB(_panel->_pushButtonDirectCallback,
+                             _panel->_pushButtonDirectCallback->GetPushBActivateNotification(),
+                             (CATCommandMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonAgent,
+                             (void *)(2));
 
     //-----------------------------------------------------------------------------
     // Command States
@@ -265,8 +270,8 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
 
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pPushButtonSaveJsonAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent, (void *)(1)));
-        
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonAgent));
+
     // From Curve to Direction
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pDirection1FieldAgent),
@@ -468,18 +473,31 @@ CATBoolean CAAMmrCombCrvPanelStCmd::Direction1FieldSelected(void *)
     return TRUE;
 }
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent(void *data)
+CATBoolean CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(void *data)
 {
     // 把data转为整数
-    int iRet = CATPtrToINT32(data); 
+    int mode = CATPtrToINT32(data);
 
-    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent(" << iRet << ")" << endl;
-    cout << "TODO 换控件" << endl;
-    // TODO save the a file
+    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(" << mode << ")" << endl;
+    cout << "TODO 写你的代码" << endl;
+
+    switch (mode)
+    {
+    case 1:
+        // TODO save the a file
+        cout << "Action from Command Agent" << endl;
+        break;
+    case 2:
+        cout << "Action from Command Callback" << endl;
+        // TODO acton callback
+        break;
+    default:
+        break;
+    }
 
     // gets ready for next acquisition
+    // 这句放外面，好像也可以，确保被重置
     _pPushButtonSaveJsonAgent->InitializeAcquisition();
-
     return TRUE;
 }
 //-----------------------------------------------------------------------------
