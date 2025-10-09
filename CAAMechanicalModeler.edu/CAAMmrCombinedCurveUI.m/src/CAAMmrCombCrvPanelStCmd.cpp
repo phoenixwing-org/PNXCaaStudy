@@ -60,6 +60,14 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass(CAAMmrCombCrvPanelStCmd);
 
+
+// CAA的延时析构的宏函数，传入指针pCAA
+#define MyRequestDelayedDestruction(pCAA) \
+if (pCAA)  { \
+    pCAA->RequestDelayedDestruction(); \
+    pCAA = NULL; \
+}
+
 //-----------------------------------------------------------------------------
 // CAAMmrCombCrvPanelStCmd : constructor
 // Deriving from CATMMUIPanelStateCmd provides an association between
@@ -144,42 +152,12 @@ CAAMmrCombCrvPanelStCmd::~CAAMmrCombCrvPanelStCmd()
         _piSpecOnDir1->Release();
     _piSpecOnDir1 = NULL;
 
-    if (NULL != _pCurveAgent)
-    {
-        _pCurveAgent->RequestDelayedDestruction();
-        _pCurveAgent = NULL;
-    }
-
-    if (NULL != _pDirectionAgent)
-    {
-        _pDirectionAgent->RequestDelayedDestruction();
-        _pDirectionAgent = NULL;
-    }
-
-    if (NULL != _pCurve1FieldAgent)
-    {
-        _pCurve1FieldAgent->RequestDelayedDestruction();
-        _pCurve1FieldAgent = NULL;
-    }
-
-    if (NULL != _pPushButtonSaveJsonAgent)
-    {
-        _pPushButtonSaveJsonAgent->RequestDelayedDestruction();
-        _pPushButtonSaveJsonAgent = NULL;
-    }
-
-    if (NULL != _pDirection1FieldAgent)
-    {
-        _pDirection1FieldAgent->RequestDelayedDestruction();
-        _pDirection1FieldAgent = NULL;
-    }
-
-    if (NULL != _panel)
-    {
-        _panel->RequestDelayedDestruction();
-        _panel = NULL;
-    }
-
+    MyRequestDelayedDestruction(_pCurveAgent);
+    MyRequestDelayedDestruction(_pDirectionAgent);
+    MyRequestDelayedDestruction(_pCurve1FieldAgent);
+    MyRequestDelayedDestruction(_pPushButtonSaveJsonAgent);
+    MyRequestDelayedDestruction(_pDirection1FieldAgent);
+    MyRequestDelayedDestruction(_panel);
     _editor = NULL;
     _HSO = NULL;
 }
@@ -223,17 +201,28 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
     _pDirectionAgent->SetImportApplicativeId(guid);
 
     // _pCurveFieldAgent and _pDirectionFieldAgent to change current acquisition type
-    _pCurve1FieldAgent->AcceptOnNotify(_panel->GetField(PNXCopyStudyFieldFirstPoint), _panel->GetField(PNXCopyStudyFieldFirstPoint)->GetListSelectNotification());
-    _pDirection1FieldAgent->AcceptOnNotify(_panel->GetField(PNXCopyStudyFieldMainDir), _panel->GetField(PNXCopyStudyFieldMainDir)->GetListSelectNotification());
+    CATDlgSelectorList * pList = _panel->GetField(PNXCopyStudyFieldFirstPoint);
+    if(pList)
+        _pCurve1FieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
+
+    pList = _panel->GetField(PNXCopyStudyFieldMainDir);
+    if(pList)
+       _pDirection1FieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
 
     // Use Agent Mode: _pPushButtonSaveJsonAgent to save the a file:
     _pPushButtonSaveJsonAgent->AcceptOnNotify(_panel->_pushButtonSaveJson, _panel->_pushButtonSaveJson->GetPushBActivateNotification());
 
     // AddAnalyseNotificationCB Mode: Action for ButtonDirectCallback
+    // 第4个参数为 data： 64位指针，CATLONG32ToPtr 是把整数转为指针进行传递
     AddAnalyseNotificationCB(_panel->_pushButtonDirectCallback,
                              _panel->_pushButtonDirectCallback->GetPushBActivateNotification(),
                              (CATCommandMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonCB,
-                             CATLONG32ToPtr(1)); // data 64位指针
+                             CATLONG32ToPtr(PNXCopyStudyActionDirectCallback)); 
+
+    AddAnalyseNotificationCB(_panel->_pushButtonSample,
+                             _panel->_pushButtonSample->GetPushBActivateNotification(),
+                             (CATCommandMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonCB,
+                             CATLONG32ToPtr(PNXCopyStudyActionSample)); 
 
     //-----------------------------------------------------------------------------
     // Command States
@@ -448,6 +437,8 @@ CATBoolean CAAMmrCombCrvPanelStCmd::DirectionSelected(void *)
 //-----------------------------------------------------------------------------
 CATBoolean CAAMmrCombCrvPanelStCmd::Curve1FieldSelected(void *)
 {
+    static int a = 0;
+    cout << "I am in Curve1FieldSelected(void *)" << a++ << endl;
     // put the focus on the first field of the Combined Curve edition dialog box
     // ( first curve ) and highlight the corresponding geometrical element
     SetActiveField(PNXCopyStudyFieldFirstPoint);

@@ -18,6 +18,15 @@ enum PNXCopyStudyField
 };
 
 /**
+ * Action enum
+ */
+enum PNXCopyStudyAction
+{
+    PNXCopyStudyActionDirectCallback = 0,
+    PNXCopyStudyActionSample = 1
+};
+
+/**
  * Class managing the dialog panel used for a Combined Curve creation / edition.
  *
  * refer to programming resources of Dialog framework.
@@ -57,9 +66,9 @@ public:
         *_selectorListFirstPoint,
         *_selectorListMainDir;
 
-    CATDlgPushButton
-        *_pushButtonSaveJson,       ///< save json button
-        *_pushButtonDirectCallback; ///< Direct callback button
+    CATDlgPushButton *_pushButtonSaveJson;   ///< save json button
+    CATDlgPushButton *_pushButtonDirectCallback; ///< Direct callback button
+    CATDlgPushButton *_pushButtonSample;   ///< sample
 };
 
 #endif

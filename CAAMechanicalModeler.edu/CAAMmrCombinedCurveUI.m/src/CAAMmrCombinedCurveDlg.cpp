@@ -22,7 +22,8 @@ CAAMmrCombinedCurveDlg::CAAMmrCombinedCurveDlg() : CATDlgDialog((CATApplicationF
                                                    _selectorListFirstPoint(NULL),
                                                    _selectorListMainDir(NULL),
                                                    _pushButtonSaveJson(NULL),
-                                                   _pushButtonDirectCallback(NULL)
+                                                   _pushButtonDirectCallback(NULL),
+                                                   _pushButtonSample(NULL)
 {
     // never call the Build method of the panel from the constructor
     // it is much better to call it from the same method that created (new) the panel
@@ -38,6 +39,7 @@ CAAMmrCombinedCurveDlg::~CAAMmrCombinedCurveDlg()
     _selectorListMainDir = NULL;
     _pushButtonSaveJson = NULL;
     _pushButtonDirectCallback = NULL;
+    _pushButtonSample = NULL;
 }
 //-------------------------------------------------------------------------
 void CAAMmrCombinedCurveDlg::Build()
@@ -67,6 +69,9 @@ void CAAMmrCombinedCurveDlg::Build()
     _pushButtonDirectCallback = new CATDlgPushButton(this, CATString("pushButtonDirectCallback"));
     _pushButtonDirectCallback->SetName(CATString("Direct Callback"));
 
+    _pushButtonSample = new CATDlgPushButton(this, CATString("pushButtonSample"));
+    _pushButtonSample->SetName(CATString("pushButtonSample"));
+
     // Uses the grid of the panel to position the label and the input fields.
     CATDlgGridConstraints cst;
     cst.Justification = CATGRID_4SIDES;
@@ -92,6 +97,8 @@ void CAAMmrCombinedCurveDlg::Build()
     _pushButtonSaveJson->SetGridConstraints(cst);
     cst.Row = 3;
     _pushButtonDirectCallback->SetGridConstraints(cst);
+    cst.Row = 4;
+    _pushButtonSample->SetGridConstraints(cst);
 
     // Finally, makes the panel appear.
     SetVisibility(CATDlgShow);
