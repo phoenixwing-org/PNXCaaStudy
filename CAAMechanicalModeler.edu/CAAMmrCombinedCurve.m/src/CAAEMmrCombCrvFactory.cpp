@@ -72,8 +72,8 @@ TIE_CAAIMmrCombCrvFactory( CAAEMmrCombCrvFactory);
 // Implements CAAIMmrCombCrvFactory::CreateCombinedCurve
 //---------------------------------------------------------------------------------------------------
 
-HRESULT CAAEMmrCombCrvFactory::CreateCombinedCurve ( CATISpecObject *ipiSpecOnCurve1     ,
-                                                    CATISpecObject *ipiSpecOnDirection1 ,
+HRESULT CAAEMmrCombCrvFactory::CreateCombinedCurve ( CATISpecObject *ipiSpecOnFirstPoint     ,
+                                                    CATISpecObject *ipiSpecOnMainDir ,
                                                     CATISpecObject **opiSpecOnCombinedCurve )  
 {
     
@@ -206,8 +206,8 @@ HRESULT CAAEMmrCombCrvFactory::CreateCombinedCurve ( CATISpecObject *ipiSpecOnCu
     if( FAILED(rc) ) 
         return E_FAIL;
     
-    piCombinedCurve->SetCurve    ( 1 , ipiSpecOnCurve1     );
-    piCombinedCurve->SetDirection( 1 , ipiSpecOnDirection1 );
+    piCombinedCurve->SetFirstPoint( ipiSpecOnFirstPoint);
+    piCombinedCurve->SetMainDir( ipiSpecOnMainDir );
     
     piCombinedCurve->Release();
     piCombinedCurve = NULL ;

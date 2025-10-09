@@ -134,13 +134,9 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //  //
    //  CATIUpdateError          * piUpdateErrorOnThis        = NULL;
    //  CATIGeometricalElement   * pIGeometricalElementOnThis = NULL ;
-
-   //  CATTopPrism              * pCurve1Extrude             = NULL;
-   //  CATTopPrism              * pCurve2Extrude             = NULL;
    //  CATHybOperator           * pIntersect                 = NULL;
 
-   //  CATBody                  * pCurve1ExtrudeBody         = NULL ;
-   //  CATBody                  * pCurve2ExtrudeBody         = NULL ;
+   //  CATBody                  * pFirstPointExtrudeBody         = NULL ;
 
    //  CATIMfProcReport         * piProcReport               = NULL;
    //  CATGeoFactory            * piGeomFactory              = NULL;
@@ -225,23 +221,17 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //        //
    //        //=====================================================================================
        
-   //        CATISpecObject    *piSpecOnCurve1     = NULL;
-   //        CATISpecObject    *piSpecOnCurve2     = NULL;
-   //        CATISpecObject    *piSpecOnDirection1 = NULL; 
-   //        CATISpecObject    *piSpecOnDirection2 = NULL; 
+   //        CATISpecObject    *piSpecOnFirstPoint     = NULL;
+   //        CATISpecObject    *piSpecOnMainDir = NULL; 
 
    //        CAAIMmrCombinedCurve *piCombinedCurve = NULL;
    //        rc = QueryInterface( IID_CAAIMmrCombinedCurve , (void**) &piCombinedCurve );
    //        if ( SUCCEEDED(rc) )
    //        {
    //           // Retrieves curves and directions
-   //           rc = piCombinedCurve->GetCurve    ( 1 , &piSpecOnCurve1     );
+   //           rc = piCombinedCurve->GetFirstPoint    (&piSpecOnFirstPoint     );
    //           if ( SUCCEEDED(rc) )
-   //              rc = piCombinedCurve->GetDirection( 1 , &piSpecOnDirection1 );
-   //           if ( SUCCEEDED(rc) )
-   //              rc = piCombinedCurve->GetCurve    ( 2 , &piSpecOnCurve2     );
-   //           if ( SUCCEEDED(rc) )
-   //              rc = piCombinedCurve->GetDirection( 2 , &piSpecOnDirection2 );
+   //              rc = piCombinedCurve->GetMainDir( &piSpecOnMainDir );
 
    //           piCombinedCurve->Release();
    //           piCombinedCurve = NULL ;
@@ -249,25 +239,16 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //           if ( FAILED(rc) )
    //           {
    //              // One of the inputs is NULL 
-   //              if ( NULL != piSpecOnCurve1 )
+   //              if ( NULL != piSpecOnFirstPoint )
    //              {
-   //                 piSpecOnCurve1->Release();
-   //                 piSpecOnCurve1 = NULL;
+   //                 piSpecOnFirstPoint->Release();
+   //                 piSpecOnFirstPoint = NULL;
    //              }
-   //              if ( NULL != piSpecOnCurve2 )
+
+   //              if ( NULL != piSpecOnMainDir )
    //              {
-   //                 piSpecOnCurve2->Release();
-   //                 piSpecOnCurve2 = NULL;
-   //              }
-   //              if ( NULL != piSpecOnDirection1 )
-   //              {
-   //                 piSpecOnDirection1->Release();
-   //                 piSpecOnDirection1 = NULL; 
-   //              }
-   //              if ( NULL != piSpecOnDirection2 )
-   //              {
-   //                 piSpecOnDirection2->Release();
-   //                 piSpecOnDirection2 = NULL; 
+   //                 piSpecOnMainDir->Release();
+   //                 piSpecOnMainDir = NULL; 
    //              }
 
    //              // An error is created 
@@ -285,19 +266,19 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //        //
    //        //=====================================================================================
 
-   //        CATMathDirection MathDirection1,MathDirection2 ;
+   //        CATMathDirection MathMainDir;
 
-   //        if ( SUCCEEDED(rc) && (NULL !=piSpecOnDirection1) )
+   //        if ( SUCCEEDED(rc) && (NULL !=piSpecOnMainDir) )
    //        {
    //           // Gets a pointer on CATline for first direction
    //           CATLine *piLine1 = NULL;
     
-   //           rc = piSpecOnDirection1->QueryInterface( IID_CATLine , ( void**) &piLine1 );
+   //           rc = piSpecOnMainDir->QueryInterface( IID_CATLine , ( void**) &piLine1 );
     
    //           if ( SUCCEEDED(rc) )
    //           {
    //              // Gets first mathematical direction
-   //              piLine1->GetDirection(MathDirection1);
+   //              piLine1->GetMainDir(MathMainDir);
     
    //              // releases useless pointer
    //              piLine1->Release();
@@ -305,22 +286,6 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //           }
    //        }
 
-   //        if ( SUCCEEDED(rc) && (NULL !=piSpecOnDirection2) )
-   //        {
-   //           // Gets a pointer on CATline for second direction
-   //           CATLine *piLine2 = NULL;
-    
-   //           rc = piSpecOnDirection2->QueryInterface( IID_CATLine , ( void**) &piLine2 );
-    
-   //           if ( SUCCEEDED(rc) )
-   //           {
-   //              piLine2->GetDirection(MathDirection2);
-   
-   //              // releases useless pointer
-   //              piLine2->Release();
-   //              piLine2 = NULL ;
-   //           }
-   //        }
 
    //        //=====================================================================================
    //        //
@@ -328,41 +293,23 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //        //
    //        //=====================================================================================
 
-   //        CATBody_var spiBodyOfCurve1,spiBodyOfCurve2 ;
+   //        CATBody_var spiBodyOfFirstPoint;
 
-   //        if ( SUCCEEDED(rc) && (NULL !=piSpecOnCurve1) )
+   //        if ( SUCCEEDED(rc) && (NULL !=piSpecOnFirstPoint) )
    //        {
    //           // gets a pointer on CATIGeometricalElement on the first input curve
-   //           CATIGeometricalElement *piGeometricalElementOnCurve1 = NULL;
-   //           rc = piSpecOnCurve1->QueryInterface ( IID_CATIGeometricalElement , 
-   //                                              (void**) &piGeometricalElementOnCurve1 );
+   //           CATIGeometricalElement *piGeometricalElementOnFirstPoint = NULL;
+   //           rc = piSpecOnFirstPoint->QueryInterface ( IID_CATIGeometricalElement , 
+   //                                              (void**) &piGeometricalElementOnFirstPoint );
     
    //           if ( SUCCEEDED(rc) )
    //           {
    //              // uses GetBodyResult to retrieve the first body
-   //              spiBodyOfCurve1 = piGeometricalElementOnCurve1->GetBodyResult();
+   //              spiBodyOfFirstPoint = piGeometricalElementOnFirstPoint->GetBodyResult();
     
    //              // releases useless pointer on CATIGeometricalElement
-   //              piGeometricalElementOnCurve1->Release();
-   //              piGeometricalElementOnCurve1 = NULL ;
-   //           }
-   //        }
-
-   //        if ( SUCCEEDED(rc) && (NULL !=piSpecOnCurve2) )
-   //        {
-   //           // gets a pointer on CATIGeometricalElement on the second input curve
-   //           CATIGeometricalElement *piGeometricalElementOnCurve2 = NULL;
-   //           rc = piSpecOnCurve2->QueryInterface ( IID_CATIGeometricalElement , 
-   //                                                 (void**) &piGeometricalElementOnCurve2 );
-    
-   //           if ( SUCCEEDED(rc) )
-   //           {
-   //              // uses GetBodyResult to retrieve the second body
-   //              spiBodyOfCurve2 = piGeometricalElementOnCurve2->GetBodyResult();
-    
-   //              // releases useless pointer on CATIGeometricalElement
-   //              piGeometricalElementOnCurve2->Release();
-   //              piGeometricalElementOnCurve2 = NULL ;
+   //              piGeometricalElementOnFirstPoint->Release();
+   //              piGeometricalElementOnFirstPoint = NULL ;
    //           }
    //        }
 
@@ -381,47 +328,33 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //        CATListOfCATUnicodeString    ListKeys;
    //        if ( SUCCEEDED(rc) )
    //        {
-   //              ListSpec.Append( piSpecOnCurve1     ); 
+   //              ListSpec.Append( piSpecOnFirstPoint     ); 
    //              ListKeys.Append( MfKeyNone          );
     
-   //              ListSpec.Append( piSpecOnDirection1 ); 
+   //              ListSpec.Append( piSpecOnMainDir ); 
    //              ListKeys.Append( MfKeyNone          );
-    
-   //              ListSpec.Append( piSpecOnCurve2     ); 
-   //              ListKeys.Append( MfKeyNone          );
-    
-   //              ListSpec.Append( piSpecOnDirection2 ); 
-   //              ListKeys.Append( MfKeyNone          );
+   
    //        }
  
    //        // No more need of those pointers 
-   //        if ( NULL != piSpecOnCurve1 )
+   //        if ( NULL != piSpecOnFirstPoint )
    //        {
-   //           piSpecOnCurve1->Release();
-   //           piSpecOnCurve1 = NULL;
+   //           piSpecOnFirstPoint->Release();
+   //           piSpecOnFirstPoint = NULL;
    //        }
-   //        if ( NULL != piSpecOnCurve2 )
+   //        if ( NULL != piSpecOnMainDir )
    //        {
-   //           piSpecOnCurve2->Release();
-   //           piSpecOnCurve2 = NULL;
+   //           piSpecOnMainDir->Release();
+   //           piSpecOnMainDir = NULL; 
    //        }
-   //        if ( NULL != piSpecOnDirection1 )
-   //        {
-   //           piSpecOnDirection1->Release();
-   //           piSpecOnDirection1 = NULL; 
-   //        }
-   //        if ( NULL != piSpecOnDirection2 )
-   //        {
-   //           piSpecOnDirection2->Release();
-   //           piSpecOnDirection2 = NULL; 
-   //        }
+
 
    //       // Once the pointers are released, Checking that the bodies of the      
    //       // curve exist
    //       //
    //       if ( SUCCEEDED(rc) )
    //       {
-   //          if ( (NULL_var == spiBodyOfCurve1 ) || ( NULL_var == spiBodyOfCurve2) )
+   //          if ( (NULL_var == spiBodyOfFirstPoint ) )
    //          {
    //              // An error is created 
    //              CATMfErrUpdate *pErrorNoValidInput = new CATMfErrUpdate();
@@ -551,27 +484,27 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
 
    //           // First topological operator : extrudes the first curve
    //           // This method can throw an error
-   //           pCurve1Extrude = ::CATCreateTopPrism ( piGeomFactory   ,
+   //           pFirstPointExtrude = ::CATCreateTopPrism ( piGeomFactory   ,
 	// 				       &TopData ,
-	// 				       spiBodyOfCurve1  ,
-	// 				       &MathDirection1 ,
+	// 				       spiBodyOfFirstPoint  ,
+	// 				       &MathMainDir ,
 	// 				       StartOffset     ,
 	// 				       EndOffset);
  
           
           
-   //           if ( NULL != pCurve1Extrude)
+   //           if ( NULL != pFirstPointExtrude)
    //           {
    //              CATLONG32 nbError = 0 ;
    //              CATError ** pListError = NULL ;
-   //              CATBoolean Check = pCurve1Extrude->CheckOperands(nbError,pListError);
+   //              CATBoolean Check = pFirstPointExtrude->CheckOperands(nbError,pListError);
    //              if ( TRUE == Check )
    //              {
    //                 // Runs the first topological operator
-   //                 pCurve1Extrude->Run();
+   //                 pFirstPointExtrude->Run();
 	   
    //                 // Gets the first resulting extrusion
-   //                 pCurve1ExtrudeBody = pCurve1Extrude->GetResult();
+   //                 pFirstPointExtrudeBody = pFirstPointExtrude->GetResult();
    //              }
    //              else
    //              {               
@@ -579,17 +512,6 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //              }
    //           }        
        
-   //           if ( NULL != pCurve1ExtrudeBody )
-   //           {
-   //              //  Second topological operator : extrudes the second curve
-   //              // This method can throw an error
-   //              pCurve2Extrude = ::CATCreateTopPrism ( piGeomFactory   ,
-   //                                             &TopData,
-	// 				                            spiBodyOfCurve2  ,
-	// 				                            &MathDirection2 ,
-	// 				                            StartOffset     ,
-	// 				                             EndOffset);
-   //           }
    //        }
  
    //        //=====================================================================================
@@ -601,24 +523,6 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
 
    //        CATBody   *pResultBody = NULL ;
 
-   //        if ( SUCCEEDED(rc) &&  (NULL!=pCurve2ExtrudeBody) && (NULL!=pCurve1ExtrudeBody) )
-   //        {
-   //           // third topological operator : computes the intersection between two surfaces
-   //           // This method can throw an error
-   //            pIntersect = ::CATCreateTopIntersect ( piGeomFactory      ,
-	// 				         &TopData ,
-	// 				         pCurve1ExtrudeBody ,
-	// 				         pCurve2ExtrudeBody );
-   
-   //           if ( NULL != pIntersect )
-   //           {
-   //               // Runs the topological operator
-   //               pIntersect->Run();
-            
-   //               // Gets the result of the intersection
-   //               pResultBody= pIntersect->GetResult ();             
-   //           }
-   //        }
 
    //     //========================================================================================
    //     //
@@ -663,30 +567,20 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //     //========================================================================================
        
    //        // Removes the intermediates bodies from the geometric container
-   //        if ( (NULL !=piGeomFactory) && (NULL != pCurve1ExtrudeBody) )
+   //        if ( (NULL !=piGeomFactory) && (NULL != pFirstPointExtrudeBody) )
    //        {
-   //           piGeomFactory->Remove(pCurve1ExtrudeBody);
-   //           pCurve1ExtrudeBody = NULL ;
+   //           piGeomFactory->Remove(pFirstPointExtrudeBody);
+   //           pFirstPointExtrudeBody = NULL ;
    //        }
 
-   //        if ( (NULL !=piGeomFactory) && (NULL != pCurve2ExtrudeBody) )
-   //        {
-   //           piGeomFactory->Remove(pCurve2ExtrudeBody);
-   //           pCurve2ExtrudeBody = NULL ;
-   //        }
        
    //        // Deletes the first topological operator
-   //        if ( NULL != pCurve1Extrude )
+   //        if ( NULL != pFirstPointExtrude )
    //        {
-   //            delete pCurve1Extrude;
-   //            pCurve1Extrude = NULL ;
+   //            delete pFirstPointExtrude;
+   //            pFirstPointExtrude = NULL ;
    //        }
-   //        // Deletes the second topological operator
-   //        if ( NULL != pCurve2Extrude )
-   //        {
-   //           delete pCurve2Extrude;
-   //           pCurve2Extrude = NULL ;
-   //        }
+
    //        // Deletes the third topological operator
    //        if ( NULL != pIntersect )
    //        {
@@ -772,17 +666,12 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //      }
 
    //      // Deletes the first topological operator
-   //      if ( NULL != pCurve1Extrude )
+   //      if ( NULL != pFirstPointExtrude )
    //      {
-   //         delete pCurve1Extrude;
-   //         pCurve1Extrude = NULL ;
+   //         delete pFirstPointExtrude;
+   //         pFirstPointExtrude = NULL ;
    //      }
-   //      // Deletes the second topological operator
-   //      if ( NULL != pCurve2Extrude )
-   //      {
-   //         delete pCurve2Extrude;
-   //         pCurve2Extrude = NULL ;
-   //      }
+
    //      // Deletes the third topological operator
    //      if ( NULL != pIntersect )
    //      {
@@ -791,16 +680,10 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //      }
 
    //      // Removes the intermediate CATBody
-   //      if ( (NULL !=piGeomFactory) && (NULL != pCurve1ExtrudeBody) )
+   //      if ( (NULL !=piGeomFactory) && (NULL != pFirstPointExtrudeBody) )
    //      {
-   //         piGeomFactory->Remove(pCurve1ExtrudeBody);
-   //         pCurve1ExtrudeBody = NULL ;
-   //      }
-
-   //      if ( (NULL !=piGeomFactory) && (NULL != pCurve2ExtrudeBody) )
-   //      {
-   //         piGeomFactory->Remove(pCurve2ExtrudeBody);
-   //         pCurve2ExtrudeBody = NULL ;
+   //         piGeomFactory->Remove(pFirstPointExtrudeBody);
+   //         pFirstPointExtrudeBody = NULL ;
    //      }
 
    //      // Deletes the pointer on the geometric container
@@ -869,17 +752,12 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //      }
         
    //      // Deletes the first topological operator
-   //      if ( NULL != pCurve1Extrude )
+   //      if ( NULL != pFirstPointExtrude )
    //      {
-   //         delete pCurve1Extrude;
-   //         pCurve1Extrude = NULL ;
+   //         delete pFirstPointExtrude;
+   //         pFirstPointExtrude = NULL ;
    //      }
-   //      // Deletes the second topological operator
-   //      if ( NULL != pCurve2Extrude )
-   //      {
-   //         delete pCurve2Extrude;
-   //         pCurve2Extrude = NULL ;
-   //      }
+
    //      // Deletes the third topological operator
    //      if ( NULL != pIntersect )
    //      {
@@ -888,17 +766,12 @@ HRESULT CAAEMmrCombinedCurveBuild::Build ()
    //      }
         
    //      // Removes the intermediate CATBody
-   //      if ( (NULL !=piGeomFactory) && (NULL != pCurve1ExtrudeBody) )
+   //      if ( (NULL !=piGeomFactory) && (NULL != pFirstPointExtrudeBody) )
    //      {
-   //         piGeomFactory->Remove(pCurve1ExtrudeBody);
-   //         pCurve1ExtrudeBody = NULL ;
+   //         piGeomFactory->Remove(pFirstPointExtrudeBody);
+   //         pFirstPointExtrudeBody = NULL ;
    //      }
 
-   //      if ( (NULL !=piGeomFactory) && (NULL != pCurve2ExtrudeBody) )
-   //      {
-   //         piGeomFactory->Remove(pCurve2ExtrudeBody);
-   //         pCurve2ExtrudeBody = NULL ;
-   //      }
 
    //      // Deletes the pointer on the geometric container
    //      if (NULL != piGeomFactory) 

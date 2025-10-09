@@ -26,28 +26,28 @@ public:
     virtual ~CAAEMmrCombinedCurve ();
     
     /**
-    * Implements the method SetCurve of the interface CAAMmrCombinedCurve.
-    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.SetCurve
+    * Implements the method SetFirstPoint of the interface CAAMmrCombinedCurve.
+    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.SetFirstPoint
     */
-    HRESULT SetCurve ( int iNum , CATISpecObject *ipiSpecOnCurve ) ;
+    HRESULT SetFirstPoint ( CATISpecObject *ipiValue ) ;
     
     /**
-    * Implements the method GetCurve of the interface CAAMmrCombinedCurve.
-    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.GetCurve
+    * Implements the method GetFirstPoint of the interface CAAMmrCombinedCurve.
+    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.GetFirstPoint
     */
-    HRESULT GetCurve ( int iNum , CATISpecObject **opiSpecOnCurve )  ;
+    HRESULT GetFirstPoint ( CATISpecObject **opiValue )  ;
     
     /**
-    * Implements the method SetDirection of the interface CAAMmrCombinedCurve.
-    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.SetDirection
+    * Implements the method SetMainDir of the interface CAAMmrCombinedCurve.
+    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.SetMainDir
     */
-    HRESULT SetDirection ( int iNum , CATISpecObject *ipiSpecOnDirection )  ;
+    HRESULT SetMainDir ( CATISpecObject *ipiValue )  ;
     
     /**
-    * Implements the method GetDirection of the interface CAAMmrCombinedCurve.
-    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.GetDirection
+    * Implements the method GetMainDir of the interface CAAMmrCombinedCurve.
+    * see CAAMechanicalModeler.edu.CAAIMmrCombinedCurve.GetMainDir
     */
-    HRESULT GetDirection ( int iNum , CATISpecObject **opiSpecOnDirection ) ;
+    HRESULT GetMainDir ( CATISpecObject **opiValue ) ;
     
 
     

@@ -55,31 +55,19 @@ TIE_CAAIMmrCombinedCurve( CAAEMmrCombinedCurve);
 
 
 //-------------------------------------------------------------------------------------
-// Implements CAAIMmrCombinedCurve::SetCurve
-//-------------------------------------------------------------------------------------
-
-HRESULT CAAEMmrCombinedCurve::SetCurve ( int iNum , CATISpecObject *ipiSpecOnCurve ) 
+HRESULT CAAEMmrCombinedCurve::SetFirstPoint ( CATISpecObject *ipiSpecOnCurve ) 
 {    
-   if (iNum != 1)return E_FAIL ;
-   
     // Gets a pointer on CATISpecAttrAccess 
     CATISpecAttrAccess * piSpecAttrAccessOnCC = NULL; 
     HRESULT rc = QueryInterface(IID_CATISpecAttrAccess, (void**) & piSpecAttrAccessOnCC);
     if ( SUCCEEDED(rc) ) 
     { 
        // Gets a pointer on the curve attribute
-       CATISpecAttrKey * piSpecAttrKeyOnInputCurve = NULL;
-       if ( 1 == iNum )
-       {
-          piSpecAttrKeyOnInputCurve = piSpecAttrAccessOnCC->GetAttrKey("Curve1");
-       }
-    
-       if ( NULL == piSpecAttrKeyOnInputCurve )
-       {
+       CATISpecAttrKey * piSpecAttrKey  = piSpecAttrAccessOnCC->GetAttrKey("FirstPoint");
+       if ( NULL == piSpecAttrKey ) {
            rc = E_FAIL ;
        }else
        {
-      
           CATISpecObject_var spiSpecOnCurve(ipiSpecOnCurve);
              
           if ( NULL_var != spiSpecOnCurve )
@@ -117,17 +105,17 @@ HRESULT CAAEMmrCombinedCurve::SetCurve ( int iNum , CATISpecObject *ipiSpecOnCur
             // Sets the curve as input of the CC
             if ( SUCCEEDED(rc) )
             {
-               piSpecAttrAccessOnCC->SetSpecObject(piSpecAttrKeyOnInputCurve,spiSpecOnCurve);
+               piSpecAttrAccessOnCC->SetSpecObject(piSpecAttrKey,spiSpecOnCurve);
             }
 
           }else
           {
               // The input curve pointer is null 
-              piSpecAttrAccessOnCC->UnsetAttributeValue (piSpecAttrKeyOnInputCurve);
+              piSpecAttrAccessOnCC->UnsetAttributeValue (piSpecAttrKey);
           }
 
-          piSpecAttrKeyOnInputCurve->Release();
-          piSpecAttrKeyOnInputCurve = NULL ;
+          piSpecAttrKey->Release();
+          piSpecAttrKey = NULL ;
        }
 
        piSpecAttrAccessOnCC->Release();
@@ -136,12 +124,8 @@ HRESULT CAAEMmrCombinedCurve::SetCurve ( int iNum , CATISpecObject *ipiSpecOnCur
 
     return rc ;
 }
-
 //-------------------------------------------------------------------------------------
-// Implements CAAIMmrCombinedCurve::GetCurve
-//-------------------------------------------------------------------------------------
-
-HRESULT CAAEMmrCombinedCurve::GetCurve ( int iNum , CATISpecObject **opiSpecOnCurve ) 
+HRESULT CAAEMmrCombinedCurve::GetFirstPoint ( CATISpecObject **opiSpecOnCurve ) 
 {
     HRESULT rc = E_FAIL;
 
@@ -153,26 +137,23 @@ HRESULT CAAEMmrCombinedCurve::GetCurve ( int iNum , CATISpecObject **opiSpecOnCu
     rc = QueryInterface( IID_CATISpecAttrAccess , (void**) &piSpecAttrAccessOnCC );
     if ( SUCCEEDED(rc) )
     {
-       CATISpecAttrKey * piSpecAttrKeyOnInputCurve = NULL;
-       if ( 1 == iNum )
-       {
-          piSpecAttrKeyOnInputCurve = piSpecAttrAccessOnCC->GetAttrKey("Curve1");
-       }
+       CATISpecAttrKey * piSpecAttrKey = NULL;
+       piSpecAttrKey = piSpecAttrAccessOnCC->GetAttrKey("FirstPoint");
 
        rc = E_FAIL;
        
-       if ( NULL != piSpecAttrKeyOnInputCurve )
+       if ( NULL != piSpecAttrKey )
        {
           // Gets the curve
-          *opiSpecOnCurve = piSpecAttrAccessOnCC->GetSpecObject(piSpecAttrKeyOnInputCurve);
+          *opiSpecOnCurve = piSpecAttrAccessOnCC->GetSpecObject(piSpecAttrKey);
 
           if ( NULL != *opiSpecOnCurve )
           {
               rc = S_OK ;
           } 
 
-          piSpecAttrKeyOnInputCurve->Release();
-          piSpecAttrKeyOnInputCurve = NULL ; 
+          piSpecAttrKey->Release();
+          piSpecAttrKey = NULL ; 
        }
        
        piSpecAttrAccessOnCC->Release();
@@ -182,12 +163,8 @@ HRESULT CAAEMmrCombinedCurve::GetCurve ( int iNum , CATISpecObject **opiSpecOnCu
 
     return rc ;
 }
-
 //-------------------------------------------------------------------------------------
-// Implements CAAIMmrCombinedCurve::SetDirection
-//-------------------------------------------------------------------------------------
-
-HRESULT CAAEMmrCombinedCurve::SetDirection ( int iNum , CATISpecObject *ipiSpecOnDirection ) 
+HRESULT CAAEMmrCombinedCurve::SetMainDir ( CATISpecObject *ipValue ) 
 {
     // Gets a pointer on CATISpecAttrAccess 
     CATISpecAttrAccess * piSpecAttrAccessOnCC = NULL; 
@@ -195,32 +172,21 @@ HRESULT CAAEMmrCombinedCurve::SetDirection ( int iNum , CATISpecObject *ipiSpecO
     if ( SUCCEEDED(rc) ) 
     { 
        // Gets a pointer on the curve attribute
-       CATISpecAttrKey * piSpecAttrKeyOnInputDirection = NULL;
-       if ( 1 == iNum )
-       {
-          piSpecAttrKeyOnInputDirection = piSpecAttrAccessOnCC->GetAttrKey("Direction1");
-       }
-       else
-       {
-          piSpecAttrKeyOnInputDirection = piSpecAttrAccessOnCC->GetAttrKey("Direction2");
-       }
+       CATISpecAttrKey * piSpecAttrKey = piSpecAttrAccessOnCC->GetAttrKey("MainDir");
     
-       if ( NULL == piSpecAttrKeyOnInputDirection )
-       {
+       if ( NULL == piSpecAttrKey ) {
            rc = E_FAIL ;
-       }else
-       {
+       } else {
       
-          CATISpecObject_var spiSpecOnDirection(ipiSpecOnDirection);
+          CATISpecObject_var spiSpecOnMainDir(ipValue);
              
-          if ( NULL_var != spiSpecOnDirection )
-          {
+          if ( NULL_var != spiSpecOnMainDir ) {
             // If the feature is a Feature BRep it must be aggregated by the CC
             CATIMfBRep *pIMfBRep = NULL ;
-            rc = spiSpecOnDirection->QueryInterface(IID_CATIMfBRep, (void**) & pIMfBRep);
+            rc = spiSpecOnMainDir->QueryInterface(IID_CATIMfBRep, (void**) & pIMfBRep);
             if ( SUCCEEDED(rc) )
             {
-               CATISpecObject * pFather = spiSpecOnDirection->GetFather() ;
+               CATISpecObject * pFather = spiSpecOnMainDir->GetFather() ;
                if ( NULL == pFather )
                {
                   CATIDescendants * pIDescendantsOnCC = NULL ;
@@ -228,7 +194,7 @@ HRESULT CAAEMmrCombinedCurve::SetDirection ( int iNum , CATISpecObject *ipiSpecO
                                                 
                   if ( SUCCEEDED(rc) )
                   {
-                     pIDescendantsOnCC->Append(spiSpecOnDirection) ;
+                     pIDescendantsOnCC->Append(spiSpecOnMainDir) ;
 
                      pIDescendantsOnCC->Release();
                      pIDescendantsOnCC = NULL ;
@@ -248,17 +214,17 @@ HRESULT CAAEMmrCombinedCurve::SetDirection ( int iNum , CATISpecObject *ipiSpecO
             // Sets the curve as input of the CC
             if ( SUCCEEDED(rc) )
             {
-               piSpecAttrAccessOnCC->SetSpecObject(piSpecAttrKeyOnInputDirection,spiSpecOnDirection);
+               piSpecAttrAccessOnCC->SetSpecObject(piSpecAttrKey,spiSpecOnMainDir);
             }
 
           }else
           {
               // The input curve pointer is null 
-              piSpecAttrAccessOnCC->UnsetAttributeValue (piSpecAttrKeyOnInputDirection);
+              piSpecAttrAccessOnCC->UnsetAttributeValue (piSpecAttrKey);
           }
 
-          piSpecAttrKeyOnInputDirection->Release();
-          piSpecAttrKeyOnInputDirection = NULL ;
+          piSpecAttrKey->Release();
+          piSpecAttrKey = NULL ;
        }
 
        piSpecAttrAccessOnCC->Release();
@@ -267,17 +233,13 @@ HRESULT CAAEMmrCombinedCurve::SetDirection ( int iNum , CATISpecObject *ipiSpecO
 
     return rc ;
 }
-
 //-------------------------------------------------------------------------------------
-// Implements CAAIMmrCombinedCurve::GetDirection
-//-------------------------------------------------------------------------------------
-
-HRESULT CAAEMmrCombinedCurve::GetDirection ( int iNum , CATISpecObject **opiSpecOnDirection )
+HRESULT CAAEMmrCombinedCurve::GetMainDir ( CATISpecObject **opiValue )
 {
     
     HRESULT rc = E_FAIL;
 
-    if ( NULL == opiSpecOnDirection )
+    if ( NULL == opiValue )
        return E_FAIL ;
 
     // Gets a pointer on CATISpecObject
@@ -285,30 +247,22 @@ HRESULT CAAEMmrCombinedCurve::GetDirection ( int iNum , CATISpecObject **opiSpec
     rc = QueryInterface( IID_CATISpecAttrAccess , (void**) &piSpecAttrAccessOnCC );
     if ( SUCCEEDED(rc) )
     {
-       CATISpecAttrKey * piSpecAttrKeyOnInputDirection = NULL;
-       if ( 1 == iNum )
-       {
-          piSpecAttrKeyOnInputDirection = piSpecAttrAccessOnCC->GetAttrKey("Direction1");
-       }
-       else
-       {
-          piSpecAttrKeyOnInputDirection = piSpecAttrAccessOnCC->GetAttrKey("Direction2");
-       }
-
+       CATISpecAttrKey * piSpecAttrKey = NULL;
+       piSpecAttrKey = piSpecAttrAccessOnCC->GetAttrKey("MainDir");
        rc = E_FAIL;
        
-       if ( NULL != piSpecAttrKeyOnInputDirection )
+       if ( NULL != piSpecAttrKey )
        {
           // Gets the curve
-          *opiSpecOnDirection = piSpecAttrAccessOnCC->GetSpecObject(piSpecAttrKeyOnInputDirection);
+          *opiValue = piSpecAttrAccessOnCC->GetSpecObject(piSpecAttrKey);
 
-          if ( NULL != *opiSpecOnDirection )
+          if ( NULL != *opiValue )
           {
               rc = S_OK ;
           } 
 
-          piSpecAttrKeyOnInputDirection->Release();
-          piSpecAttrKeyOnInputDirection = NULL ; 
+          piSpecAttrKey->Release();
+          piSpecAttrKey = NULL ; 
        }
        
        piSpecAttrAccessOnCC->Release();

@@ -100,11 +100,11 @@ CAAMmrCombCrvPanelStCmd::CAAMmrCombCrvPanelStCmd(CAAIMmrCombinedCurve *ipiCombin
         // Reads the inputs of the Combined Curve.
         HRESULT rc = E_FAIL;
 
-        rc = _piCombinedCurve->GetCurve(1, &_piSpecOnFirstPoint);
+        rc = _piCombinedCurve->GetFirstPoint( &_piSpecOnFirstPoint);
         if (FAILED(rc))
             return;
 
-        rc = _piCombinedCurve->GetDirection(1, &_piSpecOnMainDir);
+        rc = _piCombinedCurve->GetMainDir( &_piSpecOnMainDir);
         if (FAILED(rc))
             return;
     }
@@ -168,10 +168,10 @@ CAAMmrCombCrvPanelStCmd::~CAAMmrCombCrvPanelStCmd()
 void CAAMmrCombCrvPanelStCmd::BuildGraph()
 {
     // Agent Creation
-    _pFirstPointAgent = new CATFeatureImportAgent("PointAgent", NULL, NULL, MfNoDuplicateFeature);
-    _pMainDirAgent = new CATFeatureImportAgent("DirectionAgent", NULL, NULL, MfNoDuplicateFeature);
-    _pFirstPointFieldAgent = new CATDialogAgent("Curve1ActiveFieldAgent");
-    _pMainDirFieldAgent = new CATDialogAgent("Direction1ActiveFieldAgent");
+    _pFirstPointAgent = new CATFeatureImportAgent("FirstPointAgent", NULL, NULL, MfNoDuplicateFeature);
+    _pMainDirAgent = new CATFeatureImportAgent("MainDirAgent", NULL, NULL, MfNoDuplicateFeature);
+    _pFirstPointFieldAgent = new CATDialogAgent("FirstPointActiveFieldAgent");
+    _pMainDirFieldAgent = new CATDialogAgent("MainDirActiveFieldAgent");
     _pPushButtonSaveJsonAgent = new CATDialogAgent("ButtonSaveJsonAgent");
 
     //-----------------------------------------------------------------------------
@@ -255,16 +255,16 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
 
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pFirstPointFieldAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::PointFieldSelected));
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::FirstPointFieldSelected));
 
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pPushButtonSaveJsonAgent),
                   Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent));
 
-    // From Curve to Direction
+    // to MainDir
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pMainDirFieldAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::DirectionFieldSelected));
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::MainDirFieldSelected));
 }
 
 //-----------------------------------------------------------------------------
@@ -304,11 +304,11 @@ CATBoolean CAAMmrCombCrvPanelStCmd::OkAction(void *)
     if (0 == GetMode() && (NULL != _piCombinedCurve))
     {
         // Updates the combine with its new curves inputs.
-        rc = _piCombinedCurve->SetCurve(1, _piSpecOnFirstPoint);
+        rc = _piCombinedCurve->SetFirstPoint(_piSpecOnFirstPoint);
         if (FAILED(rc))
             return FALSE;
 
-        rc = _piCombinedCurve->SetDirection(1, _piSpecOnMainDir);
+        rc = _piCombinedCurve->SetMainDir( _piSpecOnMainDir);
         if (FAILED(rc))
             return FALSE;
     }
@@ -433,12 +433,12 @@ CATBoolean CAAMmrCombCrvPanelStCmd::DirectionSelected(void *)
 }
 
 //-----------------------------------------------------------------------------
-// CAAMmrCombCrvPanelStCmd : PointFieldSelected()
+// CAAMmrCombCrvPanelStCmd : FirstPointFieldSelected()
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::PointFieldSelected(void *)
+CATBoolean CAAMmrCombCrvPanelStCmd::FirstPointFieldSelected(void *)
 {
     static int a = 0;
-    cout << "I am in PointFieldSelected(void *)" << a++ << endl;
+    cout << "I am in FirstPointFieldSelected(void *)" << a++ << endl;
     // put the focus on the first field of the Combined Curve edition dialog box
     // ( first curve ) and highlight the corresponding geometrical element
     SetActiveField(PNXCopyStudyFieldFirstPoint);
@@ -450,9 +450,9 @@ CATBoolean CAAMmrCombCrvPanelStCmd::PointFieldSelected(void *)
 }
 
 //-----------------------------------------------------------------------------
-// CAAMmrCombCrvPanelStCmd : DirectionFieldSelected()
+// CAAMmrCombCrvPanelStCmd : MainDirFieldSelected()
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::DirectionFieldSelected(void *)
+CATBoolean CAAMmrCombCrvPanelStCmd::MainDirFieldSelected(void *)
 {
     // put the focus on the second field of the Combined Curve edition dialog box
     // ( first direction ) and highlight the corresponding geometrical element

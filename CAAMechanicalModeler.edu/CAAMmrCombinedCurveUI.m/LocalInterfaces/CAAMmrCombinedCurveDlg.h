@@ -47,7 +47,7 @@ public:
     void Build();
 
     /**
-     * Sets the focus on the active entry field ( one of the four fields for Curve.1 to Direction.2 )
+     * Sets the focus on the active entry field
      */
     void SetActiveField(int iFieldNumber);
 

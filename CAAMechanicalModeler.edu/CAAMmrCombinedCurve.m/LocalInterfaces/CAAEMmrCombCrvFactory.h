@@ -30,8 +30,8 @@ public:
     * Implements the method CreateCombinedCurve of the interface CAAIMmrCombCrvFactory
     * see CAAMechanicalModeler.edu.CAAIMmrCombCrvFactory.CreateCombinedCurve
     */
-    HRESULT CreateCombinedCurve ( CATISpecObject *ipiSpecOnCurve1,
-                                 CATISpecObject *ipiSpecOnDirection1,
+    HRESULT CreateCombinedCurve ( CATISpecObject *ipiSpecOnFirstPoint,
+                                 CATISpecObject *ipiSpecOnMainDir,
                                  CATISpecObject **opiSpecOnCombinedCurve );
     
 private:

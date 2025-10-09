@@ -80,17 +80,12 @@ public:
     /**
      * Method called when the field correponding to Curve.1 is selected.
      */
-    CATBoolean PointFieldSelected(void *);
+    CATBoolean FirstPointFieldSelected(void *);
 
     /**
-     * Method called when the field correponding to Direction.1 is selected.
+     * Method called when the field correponding to MainDir is selected.
      */
-    CATBoolean DirectionFieldSelected(void *);
-
-    /**
-     * Method called when the field correponding to Direction.2 is selected.
-     */
-    CATBoolean Direction2FieldSelected(void *);
+    CATBoolean MainDirFieldSelected(void *);
 
     /**
      * Method called when the field correponding to Curve.1 is selected.

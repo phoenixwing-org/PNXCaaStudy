@@ -195,10 +195,9 @@ int main (int argc, char * argv[] )
     //
     //      StartUp        Attribute Name    Attribute type    Update
     //      ------------   --------------    --------------    ------------
-    //      CombinedCurve   Curve1            tk_specobject     IN attribute
-    //                      Direction1        tk_specobject     IN attribute
-    //                      Direction2        tk_specobject     IN attribute
-    //
+    //      CombinedCurve   FirstPoint       tk_specobject     IN attribute
+    //                      MainDir          tk_specobject     IN attribute
+  //
     //
     //      If you wish to get more details about startup and attributes, please
     //      refer to CAAObjectSpecsModeler.edu use cases.
@@ -207,59 +206,40 @@ int main (int argc, char * argv[] )
     
     cout << "-5- Adding attributes to this startup." << endl << flush;
     
-    // Adding first attribute : Curve1
+    // Adding first attribute : FirstPoint
     //---------------------------------------
     
-    CATUnicodeString Curve1Name = "Curve1";
+    CATUnicodeString FirstPointName = "FirstPoint";
     
-    CATISpecAttribute *piCurve1SpecAttribute = piSpecOnCombinedCurveStartUp->AddAttribute(Curve1Name, tk_specobject, sp_IN);
+    CATISpecAttribute *piFirstPointSpecAttribute = piSpecOnCombinedCurveStartUp->AddAttribute(FirstPointName, tk_specobject, sp_IN);
 	    
-    if ( piCurve1SpecAttribute != NULL ) 
-        cout << "    Curve1 attribute added OK." << endl << flush;
+    if ( piFirstPointSpecAttribute != NULL ) 
+        cout << "    FirstPoint attribute added OK." << endl << flush;
     else 
     {
-       cout << "    ERROR in adding Curve1 attribute." << endl << flush;
+       cout << "    ERROR in adding FirstPoint attribute." << endl << flush;
        return 1 ;
     }
-    piCurve1SpecAttribute->Release();
-    piCurve1SpecAttribute = NULL ;
+    piFirstPointSpecAttribute->Release();
+    piFirstPointSpecAttribute = NULL ;
     
     
-    // Adding second attribute : Direction1
+    // Adding second attribute : MainDir
     //---------------------------------------
 
-    CATUnicodeString Direction1Name = "Direction1";
+    CATUnicodeString MainDirName = "MainDir";
     
-    CATISpecAttribute *piDirection1SpecAttribute = piSpecOnCombinedCurveStartUp->AddAttribute(Direction1Name, tk_specobject, sp_IN);
+    CATISpecAttribute *piMainDirSpecAttribute = piSpecOnCombinedCurveStartUp->AddAttribute(MainDirName, tk_specobject, sp_IN);
     
-    if ( piDirection1SpecAttribute != NULL ) 
-        cout << "    Direction1 attribute added OK." << endl << flush;
+    if ( piMainDirSpecAttribute != NULL ) 
+        cout << "    MainDir attribute added OK." << endl << flush;
     else 
     {
-        cout << "    ERROR in adding Direction1 attribute." << endl << flush;
+        cout << "    ERROR in adding MainDir attribute." << endl << flush;
         return 1 ;
     }
-    piDirection1SpecAttribute->Release();
-    piDirection1SpecAttribute = NULL ;
-    
-    // Adding fourth attribute : Direction2
-    //---------------------------------------
-    
-    CATUnicodeString Direction2Name = "Direction2";
-
-    CATISpecAttribute *piDirection2SpecAttribute = piSpecOnCombinedCurveStartUp->AddAttribute(Direction2Name, tk_specobject, sp_IN);
-    
-    if ( piDirection2SpecAttribute != NULL ) 
-        cout << "    Direction2 attribute added OK." << endl << flush;
-    else 
-    {
-        cout << "    ERROR in adding Direction2 attribute." << endl << flush;
-        return 1 ;
-    }
-    
-    piDirection2SpecAttribute->Release();
-    piDirection2SpecAttribute = NULL ;
-    
+    piMainDirSpecAttribute->Release();
+    piMainDirSpecAttribute = NULL ;
     
     // Releasing no longer used pointer on CATISpecObject.
     //----------------------------------------------------

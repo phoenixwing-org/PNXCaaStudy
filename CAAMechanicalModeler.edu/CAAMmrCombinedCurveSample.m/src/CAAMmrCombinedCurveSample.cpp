@@ -331,8 +331,8 @@ int main(int    iArgc,   // Number of arguments (0)
     pSpecOnCombinedCurve = NULL ;
     
     // Retrieves first input curve
-    CATISpecObject* pSpecOnInputCurve1 = NULL ;
-    rc = pCombinedCurve->GetCurve( 1 , &pSpecOnInputCurve1 );
+    CATISpecObject* pSpecOnInputFirstPoint = NULL ;
+    rc = pCombinedCurve->GetFirstPoint( &pSpecOnInputFirstPoint );
     if ( FAILED (rc ) )
     {
         cout << "ERROR in retrieving input curve #1" << endl;
@@ -340,27 +340,14 @@ int main(int    iArgc,   // Number of arguments (0)
     }
     
     // Retrieves first input direction
-    CATISpecObject* pSpecOnInputDirection1 = NULL ;
-    rc = pCombinedCurve->GetDirection( 1 , &pSpecOnInputDirection1 );
+    CATISpecObject* pSpecOnInputMainDir = NULL ;
+    rc = pCombinedCurve->GetMainDir( &pSpecOnInputMainDir );
     if ( FAILED (rc ) )
     {
         cout << "ERROR in retrieving input direction #1" << endl;
         return 16;
     }
     
-    // Retrieves second input curve
-    CATISpecObject* pSpecOnInputCurve2 = NULL ;
-    rc = pCombinedCurve->GetCurve( 2 , &pSpecOnInputCurve2 );
-    if ( FAILED (rc ) )
-    {
-        cout << "ERROR in retrieving input curve #2" << endl;
-        return 17;
-    }
-    
-    // Retrieves second input direction
-    CATISpecObject* pSpecOnInputDirection2 = NULL ;
-    rc = pCombinedCurve->GetDirection( 2 , &pSpecOnInputDirection2 );
-
     pCombinedCurve->Release();
     pCombinedCurve = NULL ;
 
@@ -373,23 +360,15 @@ int main(int    iArgc,   // Number of arguments (0)
     // displays names of Combined Curve's input curves and directions 
 	cout << endl;
     cout << "   CombinedCurve instance's inputs : " << endl;
-    cout << "     Curve1     : " << pSpecOnInputCurve1    ->GetDisplayName().ConvertToChar() << endl;
-    cout << "     Direction1 : " << pSpecOnInputDirection1->GetDisplayName().ConvertToChar() << endl;
-    cout << "     Curve2     : " << pSpecOnInputCurve2    ->GetDisplayName().ConvertToChar() << endl;
-    cout << "     Direction2 : " << pSpecOnInputDirection2->GetDisplayName().ConvertToChar() << endl;
+    cout << "     FirstPoint     : " << pSpecOnInputFirstPoint    ->GetDisplayName().ConvertToChar() << endl;
+    cout << "     MainDir : " << pSpecOnInputMainDir->GetDisplayName().ConvertToChar() << endl;
     cout << endl;    
 
-    pSpecOnInputCurve1->Release() ;
-    pSpecOnInputCurve1 = NULL ;
+    pSpecOnInputFirstPoint->Release() ;
+    pSpecOnInputFirstPoint = NULL ;
 
-    pSpecOnInputCurve2->Release() ;
-    pSpecOnInputCurve2 = NULL ;
-
-    pSpecOnInputDirection1->Release() ;
-    pSpecOnInputDirection1 = NULL ;
-
-    pSpecOnInputDirection2->Release() ;
-    pSpecOnInputDirection2 = NULL ;
+    pSpecOnInputMainDir->Release() ;
+    pSpecOnInputMainDir = NULL ;
 
     pDescendantsOnGSMTool->Release();
     pDescendantsOnGSMTool = NULL ;

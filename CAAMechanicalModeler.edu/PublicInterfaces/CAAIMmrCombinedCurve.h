@@ -17,8 +17,6 @@ extern ExportedByCAAMmrCombinedCurve IID IID_CAAIMmrCombinedCurve ;
  *  
  *  Role : use this interface to get / set the input of a Combined Curve. 
  *         A Combined Curve is the intersection of two extruded surfaces.
- *         Each of the two surfaces is buildt using a curve (profile) and a direction (of extrusion).
- *         Consequently, a Combined Curve has two input curves and two input directions.
  */
 
 class ExportedByCAAMmrCombinedCurve CAAIMmrCombinedCurve: public CATBaseUnknown
@@ -28,62 +26,46 @@ class ExportedByCAAMmrCombinedCurve CAAIMmrCombinedCurve: public CATBaseUnknown
   public:
 
    /**
-   * Sets one of the input curve of the Combined Curve.
+   * Sets one of the input FirstPoint of the Combined Curve.
    *
-   * param iNum    : the index of the input curve.
-   *                 Legal values : 1 for the first curve.
-   *                                2 for the second curve.
-   * param ipCurve : the input curve
+   * param ipValue : the FirstPoint
    *
    * returns       : S_OK  the call succeeded.
    *               : E_FAIL  the call failed.
    */
-   virtual HRESULT SetCurve ( int iNum ,
-                              CATISpecObject *ipCurve ) = 0 ;
+   virtual HRESULT SetFirstPoint ( CATISpecObject *ipValue ) = 0 ;
 
 
   /**
-   * Gets one of the input curve of the Combined Curve.
+   * Gets one of the FirstPoint of the Combined Curve.
    *
-   * param iNum    : the index of the input curve.
-   *                 Legal values : 1 for the first curve.
-   *                                2 for the second curve.
-   * param ipCurve : the input curve
+   * param opValue : the FirstPoint
    *
    * returns       : S_OK  the call succeeded.
    *               : E_FAIL  the call failed.
    */
-   virtual HRESULT GetCurve ( int iNum ,
-                              CATISpecObject **opCurve ) = 0 ;
+   virtual HRESULT GetFirstPoint ( CATISpecObject **opValue ) = 0 ;
 
   /**
-   * Sets one of the input direction of the Combined Curve.
+   * Sets MainDir of the Combined Curve.
    *
-   * param iNum        : the index of the input curve.
-   *                     Legal values : 1 for the first curve.
-   *                                2 for the second curve.
-   * param ipDirection : the input direction
+   * param ipValue : the MainDir
    *
    * returns           : S_OK  the call succeeded.
    *                   : E_FAIL  the call failed.
    */
-  virtual HRESULT SetDirection ( int iNum , 
-                                 CATISpecObject *ipDirection ) = 0 ;
+  virtual HRESULT SetMainDir (CATISpecObject *ipValue ) = 0 ;
   
 
    /**
-   * Gets one of the input direction of the Combined Curve.
+   * Gets one of the MainDir of the Combined Curve.
    *
-   * param iNum        : the index of the input curve.
-   *                     Legal values : 1 for the first curve.
-   *                                2 for the second curve.
-   * param opDirection : the input direction
+   * param oppValue : the MainDir
    *
    * returns           : S_OK  the call succeeded.
    *                   : E_FAIL  the call failed.
    */
-  virtual HRESULT GetDirection ( int iNum ,
-                                 CATISpecObject **opDirection ) = 0 ;
+  virtual HRESULT GetMainDir (CATISpecObject **opValue) = 0 ;
 
 
 };
