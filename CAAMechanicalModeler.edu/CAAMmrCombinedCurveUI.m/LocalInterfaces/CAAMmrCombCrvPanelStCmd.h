@@ -64,7 +64,7 @@ public:
     /**
      * Method called when a curve is selected.
      */
-    CATBoolean CurveSelected(void *);
+    CATBoolean PointSelected(void *);
 
     /**
      * Method called when a direction is selected.
@@ -80,12 +80,12 @@ public:
     /**
      * Method called when the field correponding to Curve.1 is selected.
      */
-    CATBoolean Curve1FieldSelected(void *);
+    CATBoolean PointFieldSelected(void *);
 
     /**
      * Method called when the field correponding to Direction.1 is selected.
      */
-    CATBoolean Direction1FieldSelected(void *);
+    CATBoolean DirectionFieldSelected(void *);
 
     /**
      * Method called when the field correponding to Direction.2 is selected.
@@ -95,7 +95,7 @@ public:
     /**
      * Method called when the field correponding to Curve.1 is selected.
      */
-    CATBoolean OnPushButtonAgent(void *);
+    CATBoolean OnPushButtonSaveJsonAgent(void *);
     
     /**
      * Method called for call back
@@ -146,15 +146,15 @@ private:
 
     CATISpecObject_var _spSpecObjOnPreviousCurrentFeat;
 
-    CATFeatureImportAgent *_pCurveAgent;
-    CATFeatureImportAgent *_pDirectionAgent;
+    CATFeatureImportAgent *_pFirstPointAgent;
+    CATFeatureImportAgent *_pMainDirAgent;
 
-    CATDialogAgent *_pCurve1FieldAgent,
-        *_pDirection1FieldAgent,
+    CATDialogAgent *_pFirstPointFieldAgent,
+        *_pMainDirFieldAgent,
         *_pPushButtonSaveJsonAgent; ///< save button agent
 
-    CATISpecObject *_piSpecOnCurve1,
-        *_piSpecOnDir1;
+    CATISpecObject *_piSpecOnFirstPoint,
+        *_piSpecOnMainDir;
 
     CAAMmrCombinedCurveDlg *_panel;
 

@@ -74,13 +74,13 @@ if (pCAA)  { \
 // the states of the command and the Ok/Cancel button.
 //-----------------------------------------------------------------------------
 CAAMmrCombCrvPanelStCmd::CAAMmrCombCrvPanelStCmd(CAAIMmrCombinedCurve *ipiCombinedCurve) : CATMMUIPanelStateCmd("CombinedCurveCommand"),
-                                                                                           _pCurveAgent(NULL),
-                                                                                           _pDirectionAgent(NULL),
-                                                                                           _pCurve1FieldAgent(NULL),
+                                                                                           _pFirstPointAgent(NULL),
+                                                                                           _pMainDirAgent(NULL),
+                                                                                           _pFirstPointFieldAgent(NULL),
                                                                                            _pPushButtonSaveJsonAgent(NULL),
-                                                                                           _pDirection1FieldAgent(NULL),
-                                                                                           _piSpecOnCurve1(NULL),
-                                                                                           _piSpecOnDir1(NULL),
+                                                                                           _pMainDirFieldAgent(NULL),
+                                                                                           _piSpecOnFirstPoint(NULL),
+                                                                                           _piSpecOnMainDir(NULL),
                                                                                            _piCombinedCurve(NULL),
                                                                                            _ActiveField(0)
 {
@@ -100,11 +100,11 @@ CAAMmrCombCrvPanelStCmd::CAAMmrCombCrvPanelStCmd(CAAIMmrCombinedCurve *ipiCombin
         // Reads the inputs of the Combined Curve.
         HRESULT rc = E_FAIL;
 
-        rc = _piCombinedCurve->GetCurve(1, &_piSpecOnCurve1);
+        rc = _piCombinedCurve->GetCurve(1, &_piSpecOnFirstPoint);
         if (FAILED(rc))
             return;
 
-        rc = _piCombinedCurve->GetDirection(1, &_piSpecOnDir1);
+        rc = _piCombinedCurve->GetDirection(1, &_piSpecOnMainDir);
         if (FAILED(rc))
             return;
     }
@@ -144,19 +144,19 @@ CAAMmrCombCrvPanelStCmd::~CAAMmrCombCrvPanelStCmd()
         _piCombinedCurve->Release();
     _piCombinedCurve = NULL;
 
-    if (_piSpecOnCurve1 != NULL)
-        _piSpecOnCurve1->Release();
-    _piSpecOnCurve1 = NULL;
+    if (_piSpecOnFirstPoint != NULL)
+        _piSpecOnFirstPoint->Release();
+    _piSpecOnFirstPoint = NULL;
 
-    if (_piSpecOnDir1 != NULL)
-        _piSpecOnDir1->Release();
-    _piSpecOnDir1 = NULL;
+    if (_piSpecOnMainDir != NULL)
+        _piSpecOnMainDir->Release();
+    _piSpecOnMainDir = NULL;
 
-    MyRequestDelayedDestruction(_pCurveAgent);
-    MyRequestDelayedDestruction(_pDirectionAgent);
-    MyRequestDelayedDestruction(_pCurve1FieldAgent);
+    MyRequestDelayedDestruction(_pFirstPointAgent);
+    MyRequestDelayedDestruction(_pMainDirAgent);
+    MyRequestDelayedDestruction(_pFirstPointFieldAgent);
     MyRequestDelayedDestruction(_pPushButtonSaveJsonAgent);
-    MyRequestDelayedDestruction(_pDirection1FieldAgent);
+    MyRequestDelayedDestruction(_pMainDirFieldAgent);
     MyRequestDelayedDestruction(_panel);
     _editor = NULL;
     _HSO = NULL;
@@ -168,28 +168,28 @@ CAAMmrCombCrvPanelStCmd::~CAAMmrCombCrvPanelStCmd()
 void CAAMmrCombCrvPanelStCmd::BuildGraph()
 {
     // Agent Creation
-    _pCurveAgent = new CATFeatureImportAgent("CurveAgent", NULL, NULL, MfNoDuplicateFeature);
-    _pDirectionAgent = new CATFeatureImportAgent("DirectionAgent", NULL, NULL, MfNoDuplicateFeature);
-    _pCurve1FieldAgent = new CATDialogAgent("Curve1ActiveFieldAgent");
-    _pDirection1FieldAgent = new CATDialogAgent("Direction1ActiveFieldAgent");
+    _pFirstPointAgent = new CATFeatureImportAgent("PointAgent", NULL, NULL, MfNoDuplicateFeature);
+    _pMainDirAgent = new CATFeatureImportAgent("DirectionAgent", NULL, NULL, MfNoDuplicateFeature);
+    _pFirstPointFieldAgent = new CATDialogAgent("Curve1ActiveFieldAgent");
+    _pMainDirFieldAgent = new CATDialogAgent("Direction1ActiveFieldAgent");
     _pPushButtonSaveJsonAgent = new CATDialogAgent("ButtonSaveJsonAgent");
 
     //-----------------------------------------------------------------------------
     // Selection Agents
     //-----------------------------------------------------------------------------
 
-    // _pCurveAgent to select a curve
-    _pCurveAgent->SetOrderedElementType("CATIMfZeroDimResult");
-    _pCurveAgent->AddOrderedElementType("CATPoint");
-    _pCurveAgent->AddOrderedElementType("CATIGSMPoint");
-    _pCurveAgent->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot);
-    _pCurveAgent->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+    // _pFirstPointAgent to select a point
+    _pFirstPointAgent->SetOrderedElementType("CATIMfZeroDimResult");
+    _pFirstPointAgent->AddOrderedElementType("CATPoint");
+    _pFirstPointAgent->AddOrderedElementType("CATIGSMPoint");
+    _pFirstPointAgent->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot);
+    _pFirstPointAgent->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 
-    // _pDirectionAgent to select a direction
-    _pDirectionAgent->SetOrderedElementType("CATIMfLine");
-    _pDirectionAgent->AddOrderedElementType("CATLine");
-    _pDirectionAgent->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO); //|CATDlgEngOneShot);
-    _pDirectionAgent->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+    // _pMainDirAgent to select a direction
+    _pMainDirAgent->SetOrderedElementType("CATIMfLine");
+    _pMainDirAgent->AddOrderedElementType("CATLine");
+    _pMainDirAgent->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO); //|CATDlgEngOneShot);
+    _pMainDirAgent->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 
     // Setting an ID to be able to read the created import
     GUID guid = {/* c17e43d3-2b56-4753-bfe5-bb5f289e2091 */
@@ -198,16 +198,16 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
                  0x4753,
                  {0xbf, 0xe5, 0xbb, 0x5f, 0x28, 0x9e, 0x20, 0x91}};
 
-    _pDirectionAgent->SetImportApplicativeId(guid);
+    _pMainDirAgent->SetImportApplicativeId(guid);
 
-    // _pCurveFieldAgent and _pDirectionFieldAgent to change current acquisition type
+    // _pCurveFieldAgent and _pMainDirFieldAgent to change current acquisition type
     CATDlgSelectorList * pList = _panel->GetField(PNXCopyStudyFieldFirstPoint);
     if(pList)
-        _pCurve1FieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
+        _pFirstPointFieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
 
     pList = _panel->GetField(PNXCopyStudyFieldMainDir);
     if(pList)
-       _pDirection1FieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
+       _pMainDirFieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
 
     // Use Agent Mode: _pPushButtonSaveJsonAgent to save the a file:
     _pPushButtonSaveJsonAgent->AcceptOnNotify(_panel->_pushButtonSaveJson, _panel->_pushButtonSaveJson->GetPushBActivateNotification());
@@ -234,10 +234,10 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
 
     // Curve selection state
     CATDialogState *WaitForCurveState = GetInitialPanelState("Select a Point, Dir or another input field");
-    WaitForCurveState->AddDialogAgent(_pCurveAgent);
-    WaitForCurveState->AddDialogAgent(_pDirectionAgent);
-    WaitForCurveState->AddDialogAgent(_pDirection1FieldAgent);
-    WaitForCurveState->AddDialogAgent(_pCurve1FieldAgent);
+    WaitForCurveState->AddDialogAgent(_pFirstPointAgent);
+    WaitForCurveState->AddDialogAgent(_pFirstPointFieldAgent);
+    WaitForCurveState->AddDialogAgent(_pMainDirAgent);
+    WaitForCurveState->AddDialogAgent(_pMainDirFieldAgent);
     WaitForCurveState->AddDialogAgent(_pPushButtonSaveJsonAgent);
 
     //-----------------------------------------------------------------------------
@@ -246,25 +246,25 @@ void CAAMmrCombCrvPanelStCmd::BuildGraph()
 
     // From Curve to Curve ( click on several curves to change of curve )
     AddTransition(WaitForCurveState, WaitForCurveState,
-                  IsOutputSetCondition(_pCurveAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::CurveSelected));
+                  IsOutputSetCondition(_pFirstPointAgent),
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::PointSelected));
 
     AddTransition(WaitForCurveState, WaitForCurveState,
-                  IsOutputSetCondition(_pDirectionAgent),
+                  IsOutputSetCondition(_pMainDirAgent),
                   Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::DirectionSelected));
 
     AddTransition(WaitForCurveState, WaitForCurveState,
-                  IsOutputSetCondition(_pCurve1FieldAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::Curve1FieldSelected));
+                  IsOutputSetCondition(_pFirstPointFieldAgent),
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::PointFieldSelected));
 
     AddTransition(WaitForCurveState, WaitForCurveState,
                   IsOutputSetCondition(_pPushButtonSaveJsonAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonAgent));
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent));
 
     // From Curve to Direction
     AddTransition(WaitForCurveState, WaitForCurveState,
-                  IsOutputSetCondition(_pDirection1FieldAgent),
-                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::Direction1FieldSelected));
+                  IsOutputSetCondition(_pMainDirFieldAgent),
+                  Action((ActionMethod)&CAAMmrCombCrvPanelStCmd::DirectionFieldSelected));
 }
 
 //-----------------------------------------------------------------------------
@@ -304,11 +304,11 @@ CATBoolean CAAMmrCombCrvPanelStCmd::OkAction(void *)
     if (0 == GetMode() && (NULL != _piCombinedCurve))
     {
         // Updates the combine with its new curves inputs.
-        rc = _piCombinedCurve->SetCurve(1, _piSpecOnCurve1);
+        rc = _piCombinedCurve->SetCurve(1, _piSpecOnFirstPoint);
         if (FAILED(rc))
             return FALSE;
 
-        rc = _piCombinedCurve->SetDirection(1, _piSpecOnDir1);
+        rc = _piCombinedCurve->SetDirection(1, _piSpecOnMainDir);
         if (FAILED(rc))
             return FALSE;
     }
@@ -404,16 +404,16 @@ CATISpecObject_var CAAMmrCombCrvPanelStCmd::GiveMyFeature()
 }
 
 //-----------------------------------------------------------------------------
-// CAAMmrCombCrvPanelStCmd : CurveSelected()
+// CAAMmrCombCrvPanelStCmd : PointSelected()
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::CurveSelected(void *)
+CATBoolean CAAMmrCombCrvPanelStCmd::PointSelected(void *)
 {
 
     // checks if the selected object must be added ( not  selected yet ) or removed ( already selected ) as input curve
-    ElementSelected(_pCurveAgent);
+    ElementSelected(_pFirstPointAgent);
 
     // gets ready for next acquisition
-    _pCurveAgent->InitializeAcquisition();
+    _pFirstPointAgent->InitializeAcquisition();
 
     return TRUE;
 }
@@ -424,51 +424,51 @@ CATBoolean CAAMmrCombCrvPanelStCmd::CurveSelected(void *)
 CATBoolean CAAMmrCombCrvPanelStCmd::DirectionSelected(void *)
 {
     // checks if the selected object must be added ( not  selected yet ) or removed ( already selected ) as input direction
-    ElementSelected(_pDirectionAgent);
+    ElementSelected(_pMainDirAgent);
 
     // gets ready for next acquisition
-    _pDirectionAgent->InitializeAcquisition();
+    _pMainDirAgent->InitializeAcquisition();
 
     return TRUE;
 }
 
 //-----------------------------------------------------------------------------
-// CAAMmrCombCrvPanelStCmd : Curve1FieldSelected()
+// CAAMmrCombCrvPanelStCmd : PointFieldSelected()
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::Curve1FieldSelected(void *)
+CATBoolean CAAMmrCombCrvPanelStCmd::PointFieldSelected(void *)
 {
     static int a = 0;
-    cout << "I am in Curve1FieldSelected(void *)" << a++ << endl;
+    cout << "I am in PointFieldSelected(void *)" << a++ << endl;
     // put the focus on the first field of the Combined Curve edition dialog box
     // ( first curve ) and highlight the corresponding geometrical element
     SetActiveField(PNXCopyStudyFieldFirstPoint);
 
     // gets ready for next acquisition
-    _pCurve1FieldAgent->InitializeAcquisition();
+    _pFirstPointFieldAgent->InitializeAcquisition();
 
     return TRUE;
 }
 
 //-----------------------------------------------------------------------------
-// CAAMmrCombCrvPanelStCmd : Direction1FieldSelected()
+// CAAMmrCombCrvPanelStCmd : DirectionFieldSelected()
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::Direction1FieldSelected(void *)
+CATBoolean CAAMmrCombCrvPanelStCmd::DirectionFieldSelected(void *)
 {
     // put the focus on the second field of the Combined Curve edition dialog box
     // ( first direction ) and highlight the corresponding geometrical element
     SetActiveField(PNXCopyStudyFieldMainDir);
 
     // gets ready for next acquisition
-    _pDirection1FieldAgent->InitializeAcquisition();
+    _pMainDirFieldAgent->InitializeAcquisition();
 
     return TRUE;
 }
 //-----------------------------------------------------------------------------
-CATBoolean CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(void *data)
+CATBoolean CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent(void *data)
 {
     // 把data转为整数
     CATLong mode = CATPtrToLONG32(data);
-    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonAgent(data)" << endl;
+    cout << " CAAMmrCombCrvPanelStCmd::OnPushButtonSaveJsonAgent(data)" << endl;
     cout<< " data = " << data << " to long :" << mode << endl;
 
     // TODO save the a file
@@ -517,9 +517,9 @@ void CAAMmrCombCrvPanelStCmd::SetActiveField(int ActiveField)
     // Gets a pointer on CATISpecObject on the geometrical element to highlight
     CATISpecObject *piSpecOnGeomElem = NULL;
     if (PNXCopyStudyFieldFirstPoint == ActiveField)
-        piSpecOnGeomElem = _piSpecOnCurve1;
+        piSpecOnGeomElem = _piSpecOnFirstPoint;
     if (PNXCopyStudyFieldMainDir == ActiveField)
-        piSpecOnGeomElem = _piSpecOnDir1;
+        piSpecOnGeomElem = _piSpecOnMainDir;
 
     if ((piSpecOnGeomElem != NULL) && (NULL != _HSO) && (NULL != _editor))
     {
@@ -579,34 +579,34 @@ void CAAMmrCombCrvPanelStCmd::ElementSelected(CATFeatureImportAgent *pAgent)
         {
         case PNXCopyStudyFieldFirstPoint:
         {
-            if (_piSpecOnCurve1 == piSpecOnSelection) // same one
+            if (_piSpecOnFirstPoint == piSpecOnSelection) // same one
             {
-                _piSpecOnCurve1->Release(); // this pointeur is not null
-                _piSpecOnCurve1 = NULL;     // erases the selection
+                _piSpecOnFirstPoint->Release(); // this pointeur is not null
+                _piSpecOnFirstPoint = NULL;     // erases the selection
             }
             else
             {
-                if (NULL != _piSpecOnCurve1)
-                    _piSpecOnCurve1->Release();
-                _piSpecOnCurve1 = piSpecOnSelection; // other one, replaces the selection
-                _piSpecOnCurve1->AddRef();
+                if (NULL != _piSpecOnFirstPoint)
+                    _piSpecOnFirstPoint->Release();
+                _piSpecOnFirstPoint = piSpecOnSelection; // other one, replaces the selection
+                _piSpecOnFirstPoint->AddRef();
             }
 
             break;
         }
         case PNXCopyStudyFieldMainDir:
         {
-            if (_piSpecOnDir1 == piSpecOnSelection)
+            if (_piSpecOnMainDir == piSpecOnSelection)
             {
-                _piSpecOnDir1->Release(); // this pointeur is not null
-                _piSpecOnDir1 = NULL;
+                _piSpecOnMainDir->Release(); // this pointeur is not null
+                _piSpecOnMainDir = NULL;
             }
             else
             {
-                if (NULL != _piSpecOnDir1)
-                    _piSpecOnDir1->Release();
-                _piSpecOnDir1 = piSpecOnSelection;
-                _piSpecOnDir1->AddRef();
+                if (NULL != _piSpecOnMainDir)
+                    _piSpecOnMainDir->Release();
+                _piSpecOnMainDir = piSpecOnSelection;
+                _piSpecOnMainDir->AddRef();
             }
             break;
         }
@@ -634,7 +634,7 @@ void CAAMmrCombCrvPanelStCmd::ElementSelected(CATFeatureImportAgent *pAgent)
 //-----------------------------------------------------------------------------
 void CAAMmrCombCrvPanelStCmd::CheckOKSensitivity()
 {
-    if (_piSpecOnCurve1 != NULL && _piSpecOnDir1 != NULL)
+    if (_piSpecOnFirstPoint != NULL && _piSpecOnMainDir != NULL)
         _panel->SetOKSensitivity(CATDlgEnable);
     else
         _panel->SetOKSensitivity(CATDlgDisable);
@@ -649,13 +649,13 @@ void CAAMmrCombCrvPanelStCmd::UpdatePanelFields()
 {
     // gets the name of the selected elements and put these names into the Combined Curve edition dialog box relevant text fields
 
-    if (_piSpecOnCurve1 != NULL)
-        _panel->SetName(PNXCopyStudyFieldFirstPoint, _piSpecOnCurve1->GetDisplayName());
+    if (_piSpecOnFirstPoint != NULL)
+        _panel->SetName(PNXCopyStudyFieldFirstPoint, _piSpecOnFirstPoint->GetDisplayName());
     else
         _panel->SetName(PNXCopyStudyFieldFirstPoint, CATUnicodeString("no selection"));
 
-    if (_piSpecOnDir1 != NULL)
-        _panel->SetName(PNXCopyStudyFieldMainDir, _piSpecOnDir1->GetDisplayName());
+    if (_piSpecOnMainDir != NULL)
+        _panel->SetName(PNXCopyStudyFieldMainDir, _piSpecOnMainDir->GetDisplayName());
     else
         _panel->SetName(PNXCopyStudyFieldMainDir, CATUnicodeString("no selection"));
 
@@ -756,8 +756,8 @@ HRESULT CAAMmrCombCrvPanelStCmd::CreateCombinedCurve()
                 {
                     // creates the Combined Curve
 
-                    rc = piCombinedCurveFactory->CreateCombinedCurve(_piSpecOnCurve1,
-                                                                     _piSpecOnDir1,
+                    rc = piCombinedCurveFactory->CreateCombinedCurve(_piSpecOnFirstPoint,
+                                                                     _piSpecOnMainDir,
                                                                      &piSpecOnCombinedCurve);
 
                     if (SUCCEEDED(rc))

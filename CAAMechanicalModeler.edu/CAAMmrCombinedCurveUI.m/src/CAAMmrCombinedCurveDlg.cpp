@@ -53,11 +53,11 @@ void CAAMmrCombinedCurveDlg::Build()
     // Creates the four input fields .
     CATUnicodeString Prompt_nosel = "no selection";
 
-    _selectorListFirstPoint = new CATDlgSelectorList(this, CATString("selc1"), CATDlgDataModify);
+    _selectorListFirstPoint = new CATDlgSelectorList(this, CATString("selFirstPoint"), CATDlgDataModify);
     _selectorListFirstPoint->SetVisibleTextHeight(1);
     _selectorListFirstPoint->SetLine(Prompt_nosel, 0, CATDlgDataModify);
 
-    _selectorListMainDir = new CATDlgSelectorList(this, CATString("seld1"), CATDlgDataModify);
+    _selectorListMainDir = new CATDlgSelectorList(this, CATString("selMainDir"), CATDlgDataModify);
     _selectorListMainDir->SetVisibleTextHeight(1);
     _selectorListMainDir->SetLine(Prompt_nosel, 0, CATDlgDataModify);
 
@@ -70,7 +70,7 @@ void CAAMmrCombinedCurveDlg::Build()
     _pushButtonDirectCallback->SetName(CATString("Direct Callback"));
 
     _pushButtonSample = new CATDlgPushButton(this, CATString("pushButtonSample"));
-    _pushButtonSample->SetName(CATString("pushButtonSample"));
+    _pushButtonSample->SetName(CATString("push Button Sample"));
 
     // Uses the grid of the panel to position the label and the input fields.
     CATDlgGridConstraints cst;
