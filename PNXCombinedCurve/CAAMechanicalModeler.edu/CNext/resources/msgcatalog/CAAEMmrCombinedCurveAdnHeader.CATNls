@@ -1,7 +1,0 @@
-// COPYRIGHT DASSAULT SYSTEMES 2000
-CAAEMmrCombinedCurveAdnHeader.PNXCopyStudyHdr.Title     = "PNX Copy Study Feature" ;
-CAAEMmrCombinedCurveAdnHeader.PNXCopyStudyHdr.ShortHelp = "PNX Copy Study" ;
-CAAEMmrCombinedCurveAdnHeader.PNXCopyStudyHdr.Help      = "Creates a PNX Copy Study Feature" ;
-CAAEMmrCombinedCurveAdnHeader.PNXCopyStudyHdr.LongHelp  = "PNX Copy from CAA Doc and to your project" ;
-CAAEMmrCombinedCurveAdnHeader.PNXCopyStudyHdr.Category  = "Insert" ;
-

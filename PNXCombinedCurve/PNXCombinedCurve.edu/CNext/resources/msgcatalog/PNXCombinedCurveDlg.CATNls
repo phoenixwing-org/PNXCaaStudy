@@ -1,0 +1,10 @@
+//COPYRIGHT DASSAULT SYSTEMES 2000
+
+//Message catalog for the PNXCombinedCurveDlg dialog box
+
+Title="PNX Copy Study";
+labelMainDir.Title="Main Dir";
+labelFirstPoint.Title="First Point";
+pushButtonSaveJson.Title="Save To Json File";
+pushButtonDirectCallback.Title="Direct Callback (data = 0)";
+pushButtonSample.Title="Callback Sample (data 1)";

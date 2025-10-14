@@ -1,0 +1,30 @@
+# COPYRIGHT DASSAULT SYSTEMES 2000
+#======================================================================
+# Dictionary CAAMechanicalModeler_1.edu.dic
+#  associated with framework CAAMechanicalModeler_1.edu
+#======================================================================
+
+CATPrtCont                  PNXICombinedCurveFactory           libPNXCombinedCurve
+
+CombinedCurve               CATIBuild                       libPNXCombinedCurve
+CombinedCurve               PNXICombinedCurve            libPNXCombinedCurve
+CombinedCurve               CATIInputDescription            libPNXCombinedCurve
+CombinedCurve               CATIMf3DBehavior                libPNXCombinedCurve
+CombinedCurve               CATIMechanicalProperties        libPNXCombinedCurve
+CombinedCurve	            CATICkeFeature  	            libPNXCombinedCurve
+
+
+CombinedCurve               CATIEdit                        libPNXCombinedCurveUI
+CombinedCurve               CATIContextualSubMenu           libPNXCombinedCurveUI
+
+CombinedCurve               CATICatalogEnable               libPNXCombinedCurveCatalog
+CombinedCurve               CATICatalogInstantiation        libPNXCombinedCurveCatalog
+CombinedCurve               CATICatalogSynchronize          libPNXCombinedCurveCatalog
+
+CombinedCurve	            CATIReplace	                    libPNXCombinedCurveReplace
+CombinedCurve	            CATIReplaceUI	                libPNXCombinedCurveReplace
+CombinedCurve	            CATIAttrBehavior	            libPNXCombinedCurveReplace
+
+PNXCombinedCurveAddin    CATIWorkbenchAddin              libPNXCombinedCurveAddIn
+PNXCombinedCurveAddin    CATIShapeDesignWorkshopAddin    libPNXCombinedCurveAddIn
+

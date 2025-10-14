@@ -1,0 +1,5 @@
+//COPYRIGHT DASSAULT SYSTEMES 2000
+//This source file insures the regeneration of the tie TIE_PNXICombinedCurveFactory.h
+
+//Local Framework
+#include "PNXICombinedCurveFactory.h"
