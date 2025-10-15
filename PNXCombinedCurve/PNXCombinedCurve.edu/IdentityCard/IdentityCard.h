@@ -2,6 +2,9 @@
 // COPYRIGHT DASSAULT SYSTEMES 1999
 //
 // -->Prereq Components Declaration
+
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+
 AddPrereqComponent("ApplicationFrame", Public);
 AddPrereqComponent("CATIAApplicationFrame", Public);
 AddPrereqComponent("Dialog", Public);
@@ -28,11 +31,12 @@ AddPrereqComponent("SketcherInterfaces", Public);
 // fda bypass link forte 6.1
 AddPrereqComponent("ProductStructure", Public);
 AddPrereqComponent("ProductStructureUI", Public);
-AddPrereqComponent(
-    "CATGraphicProperties",
-    Public); // Necessary for CAAMmrMultiMeasure & CAAMmrMesureSet Visu implémentation
+// Necessary for CAAMmrMultiMeasure
+AddPrereqComponent("CATGraphicProperties", Public);
 
 // pcc 15/11/02 - Split MechanicalModeler/ConstraintModeler/ConstraintModelerInterfaces
 AddPrereqComponent("ConstraintModelerInterfaces", Public);
 
 AddPrereqComponent("ObjectModelerSystem", Public);
+
+// END WIZARD EDITION ZONE

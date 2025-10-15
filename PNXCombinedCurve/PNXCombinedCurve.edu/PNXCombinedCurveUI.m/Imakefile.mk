@@ -4,8 +4,11 @@
 #======================================================================
 #
 BUILT_OBJECT_TYPE=SHARED LIBRARY 
- 
-LINK_WITH=PNXCombinedCurve         \
+     
+
+
+# DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+WIZARD_LINK_MODULES =   \
           CATApplicationFrame         \
           CATDialogEngine             \
           CATMechanicalCommands       \
@@ -20,4 +23,10 @@ LINK_WITH=PNXCombinedCurve         \
           CATConstraintModelerItf \
           DI0PANV2                    \
           JS0FM                       \
-          JS0GROUP
+          JS0GROUP \
+    
+# END WIZARD EDITION ZONE
+
+LINK_WITH = PNXCombinedCurve  \
+    ... $(WIZARD_LINK_MODULES) ...
+    
