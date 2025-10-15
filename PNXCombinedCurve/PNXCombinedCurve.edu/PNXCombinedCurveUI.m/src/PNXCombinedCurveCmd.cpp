@@ -464,10 +464,15 @@ void PNXCombinedCurveCmd::OnPushButtonCB(CATCommand* iCmd, CATNotification* iNot
     case PNXCopyStudyActionSubDialog:
         cout << "Action from data 1" << endl;
 
+        // 子对话框显示和隐藏切换
         if (_panel && _panel->_subPanel) {
-            _panel->_subPanel->SetVisibility(CATDlgShow);
+            PNXSubCurveDlg* subPanel = _panel->_subPanel;
+            if (subPanel->GetVisibility() != CATDlgShow)
+                _panel->_subPanel->SetVisibility(CATDlgShow);
+            else
+                _panel->_subPanel->SetVisibility(CATDlgHide);
         }
-        // TODO acton callback
+
         break;
     default:
         cout << "data error" << endl;

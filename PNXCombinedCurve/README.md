@@ -5,7 +5,7 @@
 
 ### catalog rebuild
 
-ÖØ½¨catalog·½·¨£¬ĞèÒªÏÈÉ¾³ıÒÑ¾­´æÔÚµÄCATFctÎÄ¼ş¡£
+é‡å»ºcatalogæ–¹æ³•ï¼Œéœ€è¦å…ˆåˆ é™¤å·²ç»å­˜åœ¨çš„CATFctæ–‡ä»¶ã€‚
 - `PNXCombinedCurveCatalogCreate <directory name>`
 
 ``` cmd

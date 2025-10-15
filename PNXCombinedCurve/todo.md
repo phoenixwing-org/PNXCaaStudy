@@ -1,13 +1,13 @@
-## ÇåÀíµÄ±äÁ¿
+## æ¸…ç†çš„å˜é‡
 <!-- _selectorListBaseSurface -->
 <!-- PNXCopyStudyFieldBaseSurface -->
 
-## ´ýÇåÀíµÄ
+## å¾…æ¸…ç†çš„
 <!-- labelBaseSurface -->
 
 <!-- CreateCombinedCurve -->
 
 
-## ÆäËû
+## å…¶ä»–
 
 _piCombinedCurve ->
