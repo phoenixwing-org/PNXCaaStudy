@@ -24,8 +24,6 @@
 #endif
 
 //-------------------------------------------------------------------------
-// Constructor
-//-------------------------------------------------------------------------
 PNXSubCurveDlg::PNXSubCurveDlg(CATDlgDialog* ipParent)
     : CATDlgDialog(ipParent,
                    // clang-format off
@@ -36,7 +34,7 @@ PNXSubCurveDlg::PNXSubCurveDlg(CATDlgDialog* ipParent)
       ) {
     // clang-format off
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
- _Frame001 = NULL;
+ _FrameTop = NULL;
  _Label002 = NULL;
  _CheckButton003 = NULL;
  _TabContainer004 = NULL;
@@ -51,9 +49,6 @@ PNXSubCurveDlg::PNXSubCurveDlg(CATDlgDialog* ipParent)
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
     // clang-format on
 }
-
-//-------------------------------------------------------------------------
-// Destructor
 //-------------------------------------------------------------------------
 PNXSubCurveDlg::~PNXSubCurveDlg() {
     //  Do not delete the control elements of your dialog:
@@ -61,7 +56,7 @@ PNXSubCurveDlg::~PNXSubCurveDlg() {
     //  --------------------------------------------------
     // clang-format off
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
- _Frame001 = NULL;
+ _FrameTop = NULL;
  _Label002 = NULL;
  _CheckButton003 = NULL;
  _TabContainer004 = NULL;
@@ -83,20 +78,22 @@ void PNXSubCurveDlg::Build() {
 
     // clang-format off
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
- _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
-_Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _Label002 = new CATDlgLabel(_Frame001, "Label002");
+ SetGridRowResizable(1,1);
+ SetGridColumnResizable(0,1);
+ _FrameTop = new CATDlgFrame(this, "FrameTop", CATDlgGridLayout);
+_FrameTop -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label002 = new CATDlgLabel(_FrameTop, "Label002");
 _Label002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _CheckButton003 = new CATDlgCheckButton(_Frame001, "CheckButton003");
+ _CheckButton003 = new CATDlgCheckButton(_FrameTop, "CheckButton003");
 _CheckButton003 -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
- _TabContainer004 = new CATDlgTabContainer(_Frame001, "TabContainer004");
+ _TabContainer004 = new CATDlgTabContainer(_FrameTop, "TabContainer004");
 _TabContainer004 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _TabPage005 = new CATDlgTabPage(_TabContainer004, "TabPage005", CATDlgGridLayout);
  _RadioButton006 = new CATDlgRadioButton(_TabPage005, "RadioButton006");
 _RadioButton006 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _RadioButton007 = new CATDlgRadioButton(_TabPage005, "RadioButton007");
 _RadioButton007 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _Frame008 = new CATDlgFrame(_Frame001, "Frame008", CATDlgGridLayout);
+ _Frame008 = new CATDlgFrame(_FrameTop, "Frame008", CATDlgGridLayout);
 _Frame008 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _RadioButton009 = new CATDlgRadioButton(_Frame008, "RadioButton009");
 _RadioButton009 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -109,12 +106,34 @@ _RadioButton010 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _MultiList011 -> SetVisibleColumnCount( 1 );
 _MultiList011 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _SelectorList012 = new CATDlgSelectorList(this, "SelectorList012");
+ _SelectorList012 -> SetVisibleTextHeight(1);
 _SelectorList012 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
     // clang-format on
 
     // clang-format off
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
+
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
     // clang-format on
+
+    AddAnalyseNotificationCB(
+        this, GetDiaCANCELNotification(),
+        (CATCommandMethod)&PNXSubCurveDlg::OnPNXSubCurveDlgDiaCANCELNotification, NULL);
+    AddAnalyseNotificationCB(
+        this, GetDiaOKNotification(),
+        (CATCommandMethod)&PNXSubCurveDlg::OnPNXSubCurveDlgDiaCANCELNotification, NULL);
+    AddAnalyseNotificationCB(
+        this, GetDiaCLOSENotification(),
+        (CATCommandMethod)&PNXSubCurveDlg::OnPNXSubCurveDlgDiaCANCELNotification, NULL);
+
+    // min :同时隐藏了和发信号
+    // AddAnalyseNotificationCB(
+    //     this, GetWindMinimizeNotification(),
+    //     (CATCommandMethod)&PNXSubCurveDlg::OnPNXSubCurveDlgDiaCANCELNotification, NULL);
+}
+//-------------------------------------------------------------------------
+void PNXSubCurveDlg::OnPNXSubCurveDlgDiaCANCELNotification(CATCommand*, CATNotification*,
+                                                           CATCommandClientData) {
+    this->SetVisibility(CATDlgHide);
 }

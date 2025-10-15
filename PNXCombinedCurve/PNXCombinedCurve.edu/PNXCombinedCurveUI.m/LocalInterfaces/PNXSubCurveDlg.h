@@ -41,10 +41,16 @@ public:
     void Build();
 
 protected:
+    /**
+     * @brief Callback on DiaCANCEL of _PNXSubCurveDlg
+     */
+    virtual void OnPNXSubCurveDlgDiaCANCELNotification(CATCommand*, CATNotification*,
+                                                       CATCommandClientData data);
+
 private:
     // clang-format off
 //CAA2 WIZARD WIDGET DECLARATION SECTION
- CATDlgFrame*      _Frame001;
+ CATDlgFrame*      _FrameTop;
  CATDlgLabel*      _Label002;
  CATDlgCheckButton*      _CheckButton003;
  CATDlgTabContainer*      _TabContainer004;
