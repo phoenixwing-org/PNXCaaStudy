@@ -2,6 +2,7 @@
 
 // Local Framework
 #include "PNXCombinedCurveDlg.h"
+#include "PNXSubCurveDlg.h"
 
 // ApplicationFrame Framework
 #include "CATApplicationFrame.h" // needed to get the window of the frame
@@ -23,7 +24,8 @@ PNXCombinedCurveDlg::PNXCombinedCurveDlg()
     , _selectorListMainDir(NULL)
     , _pushButtonSaveJson(NULL)
     , _pushButtonDirectCallback(NULL)
-    , _pushButtonSample(NULL) {
+    , _pushButtonSample(NULL)
+    , _subPanel(NULL) {
     // never call the Build method of the panel from the constructor
     // it is much better to call it from the same method that created (new) the panel
 }
@@ -38,6 +40,7 @@ PNXCombinedCurveDlg::~PNXCombinedCurveDlg() {
     _pushButtonSaveJson       = NULL;
     _pushButtonDirectCallback = NULL;
     _pushButtonSample         = NULL;
+    _subPanel                 = NULL;
 }
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::Build() {
@@ -100,6 +103,11 @@ void PNXCombinedCurveDlg::Build() {
 
     // Finally, makes the panel appear.
     SetVisibility(CATDlgShow);
+
+    _subPanel = new PNXSubCurveDlg(this);
+    // builds the dialog box
+    _subPanel->Build();
+    _subPanel->SetVisibility(CATDlgShow);
 }
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::SetActiveField(int iFieldNumber) {

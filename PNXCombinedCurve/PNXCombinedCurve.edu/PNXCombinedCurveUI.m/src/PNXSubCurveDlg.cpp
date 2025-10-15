@@ -17,52 +17,104 @@
 #include "CATDlgGridConstraints.h"
 #include "CATMsgCatalog.h"
 #ifdef PNXSubCurveDlg_ParameterEditorInclude
-#include "CATIParameterEditorFactory.h"
-#include "CATIParameterEditor.h"
 #include "CATICkeParm.h"
+#include "CATIParameterEditor.h"
+#include "CATIParameterEditorFactory.h"
+
 #endif
-
-
-
 
 //-------------------------------------------------------------------------
 // Constructor
 //-------------------------------------------------------------------------
-PNXSubCurveDlg::PNXSubCurveDlg() :
-  CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
+PNXSubCurveDlg::PNXSubCurveDlg(CATDlgDialog* ipParent)
+    : CATDlgDialog(ipParent,
+                   // clang-format off
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-          "PNXSubCurveDlg", CATDlgGridLayout
+"PNXSubCurveDlg",CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-                               )
-{
+                   // clang-format on
+      ) {
+    // clang-format off
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+ _Frame001 = NULL;
+ _Label002 = NULL;
+ _CheckButton003 = NULL;
+ _TabContainer004 = NULL;
+ _TabPage005 = NULL;
+ _RadioButton006 = NULL;
+ _RadioButton007 = NULL;
+ _Frame008 = NULL;
+ _RadioButton009 = NULL;
+ _RadioButton010 = NULL;
+ _MultiList011 = NULL;
+ _SelectorList012 = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+    // clang-format on
 }
 
 //-------------------------------------------------------------------------
 // Destructor
 //-------------------------------------------------------------------------
-PNXSubCurveDlg::~PNXSubCurveDlg()
-{
-//  Do not delete the control elements of your dialog: 
-//     this is done automatically
-//  --------------------------------------------------
+PNXSubCurveDlg::~PNXSubCurveDlg() {
+    //  Do not delete the control elements of your dialog:
+    //     this is done automatically
+    //  --------------------------------------------------
+    // clang-format off
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+ _Frame001 = NULL;
+ _Label002 = NULL;
+ _CheckButton003 = NULL;
+ _TabContainer004 = NULL;
+ _TabPage005 = NULL;
+ _RadioButton006 = NULL;
+ _RadioButton007 = NULL;
+ _Frame008 = NULL;
+ _RadioButton009 = NULL;
+ _RadioButton010 = NULL;
+ _MultiList011 = NULL;
+ _SelectorList012 = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+    // clang-format on
 }
 
+void PNXSubCurveDlg::Build() {
+    //  TODO: This call builds your dialog from the layout declaration file
+    //  -------------------------------------------------------------------
 
-
-void PNXSubCurveDlg::Build()
-{
-//  TODO: This call builds your dialog from the layout declaration file
-//  -------------------------------------------------------------------
-
+    // clang-format off
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+ _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
+_Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label002 = new CATDlgLabel(_Frame001, "Label002");
+_Label002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _CheckButton003 = new CATDlgCheckButton(_Frame001, "CheckButton003");
+_CheckButton003 -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _TabContainer004 = new CATDlgTabContainer(_Frame001, "TabContainer004");
+_TabContainer004 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _TabPage005 = new CATDlgTabPage(_TabContainer004, "TabPage005", CATDlgGridLayout);
+ _RadioButton006 = new CATDlgRadioButton(_TabPage005, "RadioButton006");
+_RadioButton006 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _RadioButton007 = new CATDlgRadioButton(_TabPage005, "RadioButton007");
+_RadioButton007 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame008 = new CATDlgFrame(_Frame001, "Frame008", CATDlgGridLayout);
+_Frame008 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _RadioButton009 = new CATDlgRadioButton(_Frame008, "RadioButton009");
+_RadioButton009 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _RadioButton010 = new CATDlgRadioButton(_Frame008, "RadioButton010");
+_RadioButton010 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _MultiList011 = new CATDlgMultiList(this, "MultiList011");
+ CATUnicodeString MultiList011Titles [ 1 ];
+ MultiList011Titles[0] = CATMsgCatalog::BuildMessage("PNXSubCurveDlg", "MultiList011.ColumnTitle1");
+ _MultiList011 -> SetColumnTitles(1, MultiList011Titles);
+ _MultiList011 -> SetVisibleColumnCount( 1 );
+_MultiList011 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _SelectorList012 = new CATDlgSelectorList(this, "SelectorList012");
+_SelectorList012 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+    // clang-format on
 
+    // clang-format off
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
-
+    // clang-format on
 }
-

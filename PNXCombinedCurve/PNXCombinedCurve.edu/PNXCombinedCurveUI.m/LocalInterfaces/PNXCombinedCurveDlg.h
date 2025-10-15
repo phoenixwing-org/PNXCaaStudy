@@ -24,6 +24,8 @@ enum PNXCopyStudyAction {
     PNXCopyStudyActionSample         = 1
 };
 
+class PNXSubCurveDlg;
+
 /**
  * Class managing the dialog panel used for a Combined Curve creation / edition.
  *
@@ -64,6 +66,7 @@ public:
     CATDlgPushButton* _pushButtonSaveJson;       ///< save json button
     CATDlgPushButton* _pushButtonDirectCallback; ///< Direct callback button
     CATDlgPushButton* _pushButtonSample;         ///< sample
+    PNXSubCurveDlg*   _subPanel;                 // sub pannel
 };
 
 #endif

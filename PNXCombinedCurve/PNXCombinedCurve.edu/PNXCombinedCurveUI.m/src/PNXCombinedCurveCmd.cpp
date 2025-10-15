@@ -82,6 +82,7 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
     , _piSpecOnFirstPoint(NULL)
     , _piSpecOnMainDir(NULL)
     , _piCombinedCurve(NULL)
+    , _panel(NULL)
     , _ActiveField(0) {
     cout << "PNXCombinedCurveCmd::PNXCombinedCurveCmd" << endl;
 
