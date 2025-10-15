@@ -1,5 +1,5 @@
 SET VERSION=19
-
+cls
 @REM setlocal enabledelayedexpansion
 SET BASE_DIR=C:\DS\RADE%VERSION%\intel_a
 call "%BASE_DIR%\code\command\tck_init.bat"

@@ -24,7 +24,7 @@ PNXCombinedCurveDlg::PNXCombinedCurveDlg()
     , _selectorListMainDir(NULL)
     , _pushButtonSaveJson(NULL)
     , _pushButtonDirectCallback(NULL)
-    , _pushButtonSample(NULL)
+    , _pushButtonSubDialog(NULL)
     , _subPanel(NULL) {
     // never call the Build method of the panel from the constructor
     // it is much better to call it from the same method that created (new) the panel
@@ -39,7 +39,7 @@ PNXCombinedCurveDlg::~PNXCombinedCurveDlg() {
     _selectorListMainDir      = NULL;
     _pushButtonSaveJson       = NULL;
     _pushButtonDirectCallback = NULL;
-    _pushButtonSample         = NULL;
+    _pushButtonSubDialog      = NULL;
     _subPanel                 = NULL;
 }
 //-------------------------------------------------------------------------
@@ -70,8 +70,8 @@ void PNXCombinedCurveDlg::Build() {
     _pushButtonDirectCallback = new CATDlgPushButton(this, CATString("pushButtonDirectCallback"));
     _pushButtonDirectCallback->SetName(CATString("Direct Callback"));
 
-    _pushButtonSample = new CATDlgPushButton(this, CATString("pushButtonSample"));
-    _pushButtonSample->SetName(CATString("push Button Sample"));
+    _pushButtonSubDialog = new CATDlgPushButton(this, CATString("pushButtonSubDialog"));
+    _pushButtonSubDialog->SetName(CATString("push Button Sub Dialog"));
 
     // Uses the grid of the panel to position the label and the input fields.
     CATDlgGridConstraints cst;
@@ -99,7 +99,7 @@ void PNXCombinedCurveDlg::Build() {
     cst.Row = 3;
     _pushButtonDirectCallback->SetGridConstraints(cst);
     cst.Row = 4;
-    _pushButtonSample->SetGridConstraints(cst);
+    _pushButtonSubDialog->SetGridConstraints(cst);
 
     // Finally, makes the panel appear.
     SetVisibility(CATDlgShow);
@@ -107,7 +107,6 @@ void PNXCombinedCurveDlg::Build() {
     _subPanel = new PNXSubCurveDlg(this);
     // builds the dialog box
     _subPanel->Build();
-    _subPanel->SetVisibility(CATDlgShow);
 }
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::SetActiveField(int iFieldNumber) {

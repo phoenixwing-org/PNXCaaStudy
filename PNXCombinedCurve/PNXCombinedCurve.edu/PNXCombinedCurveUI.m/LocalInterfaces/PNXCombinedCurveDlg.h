@@ -21,7 +21,7 @@ enum PNXCopyStudyField {
  */
 enum PNXCopyStudyAction {
     PNXCopyStudyActionDirectCallback = 0,
-    PNXCopyStudyActionSample         = 1
+    PNXCopyStudyActionSubDialog      = 1
 };
 
 class PNXSubCurveDlg;
@@ -65,7 +65,7 @@ public:
 
     CATDlgPushButton* _pushButtonSaveJson;       ///< save json button
     CATDlgPushButton* _pushButtonDirectCallback; ///< Direct callback button
-    CATDlgPushButton* _pushButtonSample;         ///< sample
+    CATDlgPushButton* _pushButtonSubDialog;      ///< sample
     PNXSubCurveDlg*   _subPanel;                 // sub pannel
 };
 

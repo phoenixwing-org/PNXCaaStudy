@@ -3,6 +3,7 @@
 // Local  Framework
 #include "PNXCombinedCurveCmd.h"
 #include "PNXCombinedCurveDlg.h" // needed to create an edition dialog box
+#include "PNXSubCurveDlg.h"
 
 // PNXCombinedCurve.edu framework
 #include "PNXICombinedCurve.h" // needed to query the Combined Curve about its inputs ( edition mode )
@@ -212,10 +213,10 @@ void PNXCombinedCurveCmd::BuildGraph() {
                              (CATCommandMethod)&PNXCombinedCurveCmd::OnPushButtonCB,
                              CATLONG32ToPtr(PNXCopyStudyActionDirectCallback));
 
-    AddAnalyseNotificationCB(_panel->_pushButtonSample,
-                             _panel->_pushButtonSample->GetPushBActivateNotification(),
+    AddAnalyseNotificationCB(_panel->_pushButtonSubDialog,
+                             _panel->_pushButtonSubDialog->GetPushBActivateNotification(),
                              (CATCommandMethod)&PNXCombinedCurveCmd::OnPushButtonCB,
-                             CATLONG32ToPtr(PNXCopyStudyActionSample));
+                             CATLONG32ToPtr(PNXCopyStudyActionSubDialog));
 
     //-----------------------------------------------------------------------------
     // Command States
@@ -457,11 +458,15 @@ void PNXCombinedCurveCmd::OnPushButtonCB(CATCommand* iCmd, CATNotification* iNot
     cout << " iData = " << iData << " to long :" << data << endl;
 
     switch (data) {
-    case 0:
+    case PNXCopyStudyActionDirectCallback:
         cout << "Action from data 0" << endl;
         break;
-    case 1:
+    case PNXCopyStudyActionSubDialog:
         cout << "Action from data 1" << endl;
+
+        if (_panel && _panel->_subPanel) {
+            _panel->_subPanel->SetVisibility(CATDlgShow);
+        }
         // TODO acton callback
         break;
     default:
