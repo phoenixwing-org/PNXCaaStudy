@@ -1,0 +1,13 @@
+{
+    "cSpell.words": [
+        "addin",
+        "Bres",
+        "CATIA",
+        "CATIAV",
+        "Trian"
+    ],
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**"
+    ],
+    "C_Cpp.configurationWarnings": "enabled"
+}

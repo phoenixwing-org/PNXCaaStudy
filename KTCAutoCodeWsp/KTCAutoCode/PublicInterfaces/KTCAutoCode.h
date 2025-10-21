@@ -1,0 +1,322 @@
+/**
+ * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2021
+ * @license     Shanghai Kuntai. (C) 2022SR0309887
+ * @website     https://www.kuntaisoft.cn/
+ * @file        KTCAutoCode.h
+ * @note        Kt CAA Auto Code
+ */
+#ifndef _KTCAutoCode_H_
+#define _KTCAutoCode_H_
+
+// Kt CAA Auto Code
+
+/**
+ * @brief FIELD SET LINE
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_FIELD_SET_LINE KTC::CATDlgSelectorListSetLine
+
+/**
+ * @brief Agent Initialize
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_INITIALIZE(NAME) _fia##NAME->InitializeAcquisition()
+
+/**
+ * @brief HSO Clear.
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_HSO_CLEAR() _catHSO->Empty()
+
+/**
+ * @brief HSO Add.
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_HSO_ADD(NAME) _ktcHSO.AddElement(parameter->NAME)
+
+/**
+ * @brief CMD ACTION PDA
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_ACTION_PDA(NAME)    \
+    _da##NAME->InitializeAcquisition(); \
+    if (fieldChange) _ktcHSO.AddElement(parameter->NAME)
+
+/**
+ * @brief CMD ACTION FIA
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_ACTION_FIA(NAME)                                         \
+    count = _ktcHSO.AfterElementSelected(_fia##NAME, parameter->NAME, mode); \
+    if (0 == count) cout << "Error to Select " << #NAME << "!" << endl;      \
+    _fia##NAME->InitializeAcquisition();
+
+/**
+ * @brief CMD AGENT FIA CLEAR
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_ACTION_FIA_CLEAR(NAME) _catDialogState->RemoveDialogAgent(_fia##NAME)
+
+/**
+ * @brief CMD AGENT BUILD GRAPH, Start Part
+ * @param[in] PREFIX a string like KTCGridAxis
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_START(PREFIX)      \
+    _ktcHSO.Initial(_catFrmEditor, _catHSO); \
+    dialog->_catHSO              = _catHSO;  \
+    CATDlgSelectorList* selector = NULL
+
+/**
+ * @brief CMD AGENT BUILD GRAPH, End Part
+ * @param[in] PREFIX a string like KTCGridAxis
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_END(PREFIX)                                                     \
+    _daValueChange = new CATDialogAgent("ValueChangeAgent");                              \
+    dialog->InitialMenuRightClick();                                                      \
+    dialog->SetAcceptOnNotifyOfValueChange(_daValueChange);                               \
+    _catDialogState->AddDialogAgent(_daValueChange);                                      \
+    AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_daValueChange), \
+                  Action((ActionMethod)&PREFIX##Cmd::ActionValueChange));                 \
+    _daValueChange->AcceptOnNotify(NULL, KTCNotificationValueChanged::ClassName())
+
+/**
+ * @brief CMD AGENT BUILD GRAPH, field part
+ * @param[in] PREFIX a string like KTCGridAxis
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIELD(PREFIX, NAME)                                                 \
+    selector   = dialog->_SelectorList##NAME;                                                 \
+    _ctx##NAME = dialog->RegisterField(Field_##PREFIX##_##NAME, selector, #NAME);             \
+    if (NULL == _ctx##NAME || NULL == _ctx##NAME->DlgSelector) {                              \
+        msg = " {NG}. for register field " #NAME;                                             \
+        cout << msg << endl;                                                                  \
+        KTC::ShowMessageBox(msg, dialog);                                                     \
+        RequestDelayedDestruction();                                                          \
+        return;                                                                               \
+    }                                                                                         \
+    _ctx##NAME->RegisterFeature(parameter->NAME);                                             \
+    _fia##NAME->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot); \
+    _fia##NAME->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport |                     \
+                                 MfRelimitedFeaturization);                                   \
+    _da##NAME = new CATDialogAgent("Pda" #NAME);                                              \
+    _da##NAME->AcceptOnNotify(selector, selector->GetListSelectNotification());               \
+    _catDialogState->AddDialogAgent(_da##NAME);                                               \
+    AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_fia##NAME),         \
+                  Action((ActionMethod)&PREFIX##Cmd::ActionSelectorListFia, NULL, NULL,       \
+                         (void*)Field_##PREFIX##_##NAME));                                    \
+    AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_da##NAME),          \
+                  Action((ActionMethod)&PREFIX##Cmd::ActionSelectorListPda, NULL, NULL,       \
+                         (void*)Field_##PREFIX##_##NAME));
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field axis line only
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ * TODO: set filter
+ */
+#define KT_AUTO_CMD_BUILD_FIA_AXIS(NAME) KT_AUTO_CMD_BUILD_FIA_LINE(NAME)
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field axis system
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_AXIS_SYSTEM(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);            \
+    _fia##NAME->SetOrderedElementType("CATIMf3DAxisSystem")
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field Curve
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_CURVE(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);      \
+    _fia##NAME->SetOrderedElementType("CATIMfMonoDimResult")
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field default
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_DEFAULT(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);        \
+    _fia##NAME->SetOrderedElementType("CATIMfZeroDimResult")
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field direction
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ * TODO: set filter
+ */
+#define KT_AUTO_CMD_BUILD_FIA_DIRECTION KT_AUTO_CMD_BUILD_FIA_LINE
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field face
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_FACE(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);     \
+    _fia##NAME->SetOrderedElementType("CATIMfBiDimResult")
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field support
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_SUPPORT(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);        \
+    _fia##NAME->SetOrderedElementType("CATIMfBiDimResult")
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field Grid Axis
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_GRID_AXIS(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);          \
+    _fia##NAME->SetOrderedElementType(KTCIGridAxis::ClassName())
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field Line
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_LINE(NAME)                      \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);                          \
+    _fia##NAME->SetOrderedElementType("CATIMfZeroDimResult"); \
+    _fia##NAME->AddOrderedElementType("CATIMfLine");          \
+    _fia##NAME->AddOrderedElementType("CATLine")
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field part
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_NEW(NAME) _fia##NAME = new CATFeatureImportAgent("Fia" #NAME)
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field plane
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ * TODO: set filter
+ */
+#define KT_AUTO_CMD_BUILD_FIA_PLANE(NAME) \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);      \
+    _fia##NAME->SetOrderedElementType(not finished)
+
+/**
+ * @brief CMD AGENT BUILD GRAPH FIA, field Point
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_BUILD_FIA_POINT(NAME)                     \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);                          \
+    _fia##NAME->SetOrderedElementType("CATIMfZeroDimResult"); \
+    _fia##NAME->AddOrderedElementType("CATPoint");            \
+    _fia##NAME->AddOrderedElementType("CATVertex")
+
+/**
+ * @brief CMD AGENT CONSTRUCTOR, common part
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_CONSTRUCTOR_COMMON()                                                 \
+    _catDialogState(NULL), _daValueChange(NULL), _catFrmEditor(NULL), _catHSO(NULL), _mode(1), \
+        _code(0), parameter(NULL), core(NULL), dialog(NULL), feature(NULL_var)
+
+/**
+ * @brief CMD AGENT CONSTRUCTOR, field part
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_CONSTRUCTOR_FIELD(NAME) \
+    _da##NAME(NULL), _fia##NAME(NULL), _ctx##NAME(NULL)
+
+/**
+ * @brief CMD AGENT DECLARE
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_DECLARE_COMMON() \
+    CATDialogState* _catDialogState;       \
+    CATDialogAgent* _daValueChange;        \
+    CATFrmEditor*   _catFrmEditor;         \
+    CATHSO*         _catHSO;               \
+    KTCHSOKit       _ktcHSO;               \
+    int             _mode;                 \
+    int             _code
+
+/**
+ * @brief CMD AGENT DECLARE, base parameter
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_DECLARE_BASE(NAMESPACE, KEYWORDS) \
+    NAMESPACE##KEYWORDS##Param*  parameter;                 \
+    NAMESPACE##KEYWORDS##Core*   core;                      \
+    NAMESPACE##KEYWORDS##Dlg*    dialog;                    \
+    NAMESPACE##I##KEYWORDS##_var feature
+
+/**
+ * @brief CMD AGENT DECLARE FIELD
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_DECLARE_FIELD(NAME) \
+    CATDialogAgent*        _da##NAME;         \
+    CATFeatureImportAgent* _fia##NAME;        \
+    KTC::DlgSelectorCtx*   _ctx##NAME
+
+/**
+ * @brief CMD AGENT DESTRUCTOR, common part
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_DESTRUCTOR_COMMON()     \
+    _catFrmEditor   = NULL;                       \
+    _catHSO         = NULL;                       \
+    _catDialogState = NULL;                       \
+    feature         = NULL_var;                   \
+    KTDelete(core);                               \
+    KTDelete(parameter);                          \
+    KTCRequestDelayedDestruction(_daValueChange); \
+    KTCRequestDelayedDestruction(dialog)
+
+/**
+ * @brief CMD AGENT DESTRUCTOR, field part
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_DESTRUCTOR_FIELD(NAME) \
+    KTCRequestDelayedDestruction(_da##NAME);     \
+    KTCRequestDelayedDestruction(_fia##NAME);    \
+    _ctx##NAME = NULL
+
+/**
+ * @brief CMD AGENT UPDATE STATE
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_UPDATE_STATE(NAME)     \
+    _catDialogState->AddDialogAgent(_fia##NAME); \
+    _catDialogState->SetMessage("Select the " #NAME)
+
+/**
+ * @brief CMD AGENT UPDATE STATE ERROR
+ * @param[in] NAME a name string
+ * @note Kt Auto Code Macro.
+ */
+#define KT_AUTO_CMD_AGENT_UPDATE_STATE_ERROR() \
+    _catDialogState->SetMessage("None Element can select. Please click a Field.")
+
+#endif //_KTCAutoCode_H_
