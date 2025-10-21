@@ -8,4 +8,5 @@
 #======================================================================
 PNXBomAnalysisAddin    CATIWorkbenchAddin              libPNXBomAnalysisAdn
 PNXBomAnalysisAddin    CATIPrtWksAddin                 libPNXBomAnalysisAdn
+PNXBomAnalysisAddin	   CATIPRDWorkshopAddin	           libPNXBomAnalysisAdn
 

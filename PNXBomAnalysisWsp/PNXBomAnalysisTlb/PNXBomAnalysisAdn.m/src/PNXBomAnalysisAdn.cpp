@@ -35,6 +35,10 @@ CATImplementClass(PNXBomAnalysisAdn, // ClassName
 #include "TIE_CATIPrtWksAddin.h" // needed to tie the implementation to its interface
 TIE_CATIPrtWksAddin(PNXBomAnalysisAdn);
 
+// TIE or TIEchain definitions
+#include "TIE_CATIPRDWorkshopAddin.h"
+TIE_CATIPRDWorkshopAddin(PNXBomAnalysisAdn);
+
 // PNXBomAnalysisAdn :
 // constructor-------------------------------------------------
 PNXBomAnalysisAdn::PNXBomAnalysisAdn() {
@@ -54,8 +58,8 @@ void PNXBomAnalysisAdn::CreateCommands() {
     // step 1. new PNXBomAnalysisAdnHeader for each icon
     //
 
-    new PNXBomAnalysisAdnHeader("PNXBomAnalysisHdr", "PNXBomAnalysisUI",
-                                   "PNXBomAnalysisCmd", (void*)NULL);
+    new PNXBomAnalysisAdnHeader("PNXBomAnalysisHdr", "PNXBomAnalysisUI", "PNXBomAnalysisCmd",
+                                (void*)NULL);
 }
 // Implements
 // CATIPrtWksAddin::CreateToolbars-------------------------------------------------
