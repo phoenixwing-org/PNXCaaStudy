@@ -21,21 +21,17 @@
 #include "CATIDescendants.h" // needed to aggregate the newly created Line Create By GSD
 #include "CATISpecObject.h"  // needed to manage feature
 
-
 // MechanicalModeler Framework
-#include "CATIBasicTool.h"                   // To retrieve the current tool
-#include "CATIGSMTool.h"                     // GSMTool and HybridBody features
-
-// MechanicalModelerUI Framework
-#include "CATPrtUpdateCom.h" // needed to update the feature according to the user's update settings
+#include "CATIBasicTool.h" // To retrieve the current tool
+#include "CATIGSMTool.h"   // GSMTool and HybridBody features
 
 // MecModInterfaces Framework
-#include "CATIPrtPart.h"   // needed to look for a GSM tool
+#include "CATIPrtPart.h" // needed to look for a GSM tool
 
 // Visualization Framework
-#include "CATHSO.h" // needed to highlight objects
+#include "CATHSO.h"            // needed to highlight objects
 #include "CATIVisProperties.h" // needed to change Line Create By GSD's graphical appearance
-#include "iostream.h" //need for CAA iostream.not c++
+#include "iostream.h"          //need for CAA iostream.not c++
 
 // System framework
 #include "CATBoolean.h"
@@ -65,7 +61,6 @@ HRESULT PNXBomAnalysisCore::Pretreat() {
     // cout << "PNXBomAnalysisCore::Pretreat" << endl;
     if (NULL == parameter) // param pointer check
         return E_INVALIDARG;
- 
 
     return S_OK;
 }

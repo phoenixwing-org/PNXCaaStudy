@@ -20,7 +20,6 @@
 #include "CATDlgInclude.h" // needed to use Dialog framework objects
 
 #include "CATDialogAgent.h"
-#include "CATMMUIPanelStateCmd.h"
 
 // Local Framework
 #include "PNXBomAnalysisParam.h"
