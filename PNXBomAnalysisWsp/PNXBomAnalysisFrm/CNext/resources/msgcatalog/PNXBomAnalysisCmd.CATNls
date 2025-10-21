@@ -1,0 +1,8 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXBomAnalysis.git 
+// command resource file
+//======================================================================
+PNXBomAnalysisCmd.initialState.Message="Click anywhere in the viewer to exit";

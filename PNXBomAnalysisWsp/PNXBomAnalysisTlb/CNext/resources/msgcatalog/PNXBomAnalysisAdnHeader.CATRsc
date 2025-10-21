@@ -1,0 +1,8 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXBomAnalysis.git 
+// Toolbar Addin header Images file
+//======================================================================
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Icon.Normal    = "I_PNXBomAnalysis" ;

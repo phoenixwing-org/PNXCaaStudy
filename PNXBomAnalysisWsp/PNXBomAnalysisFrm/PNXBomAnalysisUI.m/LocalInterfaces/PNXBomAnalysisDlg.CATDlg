@@ -1,0 +1,59 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PNXBomAnalysisDlg
+{
+  STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
+  ROWRES = { 1 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame FrameParams
+{
+  FATHER = PNXBomAnalysisDlg;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel LabelBaseCurve
+{
+  FATHER = FrameParams;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSelectorList SelectorListBaseCurve
+{
+  FATHER = FrameParams;
+  TH = 1;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor EditorFirstPartNumber
+{
+  FATHER = FrameParams;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel LabelFirstPartNumber
+{
+  FATHER = FrameParams;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame FrameBom
+{
+  FATHER = PNXBomAnalysisDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList MultiListPartBom
+{
+  FATHER = FrameBom;
+  CC = 1;
+  VCC = 1;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE

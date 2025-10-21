@@ -1,0 +1,13 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXBomAnalysis.git 
+// Toolbar Addin header resource file
+//======================================================================
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Title     = "PNX Bom Analysis" ;
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.ShortHelp = "PNX Bom Analysis" ;
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Help      = "Create PNX Bom Analysis Object" ;
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.LongHelp  = "Create a PNX Bom Analysis Object. use point, direction and axis." ;
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Category  = "Insert" ;
+
