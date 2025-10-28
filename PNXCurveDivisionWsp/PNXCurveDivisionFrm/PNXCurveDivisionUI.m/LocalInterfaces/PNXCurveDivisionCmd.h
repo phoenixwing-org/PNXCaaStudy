@@ -127,12 +127,31 @@ private:
     /** @brief Manage the Element creation */
     HRESULT CreateElement();
 
+    /**
+     * Method called when a curve is selected.
+     */
+    CATBoolean CurveSelected(void*);
+
+    /**
+     * Method called when a curve or a line is selected, to add or remove it of
+     * the definition of the Combined Curve.
+     */
+    void ElementSelected(CATFeatureImportAgent* pAgent);
+
+    /**
+     * Method called when the field correponding to Curve.1 is selected.
+     */
+    CATBoolean BaseCurveFieldSelected(void*);
+
 private:
-    CATISpecObject_var   _featurePrevious; // previous feature
-    CATISpecObject_var   feature;          // feature
+    CATISpecObject_var     _featurePrevious; // previous feature
+    CATISpecObject_var     feature;          // feature
     PNXCurveDivisionParam* parameter;        // create Default value Instance
     PNXCurveDivisionCore*  core;
     PNXCurveDivisionDlg*   dialog;
+
+    CATFeatureImportAgent* _pBaseCurveAgent;
+    CATDialogAgent*        _pBaseCurveFieldAgent; ///< save button agent
 
     KT_AUTO_CMD_AGENT_DECLARE_COMMON();
 };

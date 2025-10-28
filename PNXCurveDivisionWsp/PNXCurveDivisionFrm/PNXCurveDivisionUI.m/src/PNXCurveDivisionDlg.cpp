@@ -39,11 +39,11 @@ int round(double value) {
 }; // namespace Kt
 
 // set slector list display
-#define KT_AUTO_FIELD_SET_LINE(selector, specobject)   \
-  if (specobject != NULL_var) \
-    selector->SetLine(specobject->GetDisplayName()); \
-else \
-    selector->SetLine("(No Selection)"); 
+#define KT_AUTO_FIELD_SET_LINE(selector, specobject)     \
+    if (specobject != NULL_var)                          \
+        selector->SetLine(specobject->GetDisplayName()); \
+    else                                                 \
+        selector->SetLine("(No Selection)");
 
 //-------------------------------------------------------------------------
 PNXCurveDivisionDlg::PNXCurveDivisionDlg()
@@ -151,6 +151,7 @@ void PNXCurveDivisionDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialo
 void PNXCurveDivisionDlg::UpdateDialog() {
     if (!parameter) // check pointer
         return;
+    cout << " PNXCurveDivisionDlg::UpdateDialog" << endl;
 
     // KEVIN_SYSTEM_CODE START
     this->dialogMore->_EditorFeatureVersion->SetIntegerValue(0, 0); // set version
@@ -162,7 +163,7 @@ void PNXCurveDivisionDlg::UpdateDialog() {
     // clang-format off
 
     // 1,BaseCurve,
-    KT_AUTO_FIELD_SET_LINE(_SelectorListBaseCurve, parameter->BaseCurve);
+    // KT_AUTO_FIELD_SET_LINE(_SelectorListBaseCurve, parameter->BaseCurve);
 
     // 2,PointCount,
     _SpinnerPointCount->SetValue(parameter->PointCount, 0);
@@ -172,10 +173,14 @@ void PNXCurveDivisionDlg::UpdateDialog() {
 
     // Code add by user
 
-    // if (parameter->BaseCurve != NULL_var)
-    //     _SelectorListBaseCurve->SetLine(parameter->BaseCurve->GetDisplayName());
-    // else
-    //     _SelectorListBaseCurve->SetLine("(No Selection)");
+    if (parameter->BaseCurve != NULL_var) {
+        cout << parameter->BaseCurve->GetDisplayName() << endl;
+        cout << parameter->BaseCurve->GetName() << endl;
+        _SelectorListBaseCurve->SetLine(parameter->BaseCurve->GetDisplayName(), 0,
+                                        CATDlgDataModify);
+    }
+    else
+        _SelectorListBaseCurve->SetLine("(No Selection)", 0, CATDlgDataModify);
 
     this->UpdateSensitivity(); // update sensitivity
     // this->SetActiveFieldFocus(); // focus

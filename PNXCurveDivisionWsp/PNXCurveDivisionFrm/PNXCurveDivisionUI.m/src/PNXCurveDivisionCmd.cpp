@@ -76,6 +76,9 @@
 #include "PNXCurveDivisionCmd.h"
 #include "PNXCurveDivisionDlg.h"
 
+#include "KTCAutoCode.h"
+#include "KTCCoreDefine.h"
+
 // PNXCurveDivisionInterfaces Framework
 
 CATCreateClass(PNXCurveDivisionCmd);
@@ -91,6 +94,8 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
     // START KEVIN CAA WIZARD SECTION PNXCurveDivision CMD AGENT CONSTRUCTOR
 
     , KT_AUTO_CMD_AGENT_CONSTRUCTOR_COMMON()
+    , _pBaseCurveAgent(NULL)
+    , _pBaseCurveFieldAgent(NULL)
 
 // end
 {
@@ -109,8 +114,8 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
     _catFrmEditor = CATFrmEditor::GetCurrentEditor();
     // core set
     core                = new PNXCurveDivisionCore(); // Core
-    core->parameter     = parameter;                // pass value
-    core->_catFrmEditor = _catFrmEditor;            // pass value
+    core->parameter     = parameter;                  // pass value
+    core->_catFrmEditor = _catFrmEditor;              // pass value
 }
 //-----------------------------------------------------------------------------
 PNXCurveDivisionCmd::~PNXCurveDivisionCmd() {
@@ -121,8 +126,11 @@ PNXCurveDivisionCmd::~PNXCurveDivisionCmd() {
     //.............................................................................
     _featurePrevious = NULL_var;
 
-    // START KEVIN CAA WIZARD SECTION PNXCurveDivision CMD AGENT DESTRUCTOR
+    KTCRequestDelayedDestruction(_pBaseCurveAgent);
+    KTCRequestDelayedDestruction(_pBaseCurveFieldAgent);
     _catFrmEditor = NULL;
+    if (core) delete core;
+    if (parameter) delete parameter;
 }
 #pragma region VirtualFunction
 //-----------------------------------------------------------------------------
@@ -152,6 +160,18 @@ void PNXCurveDivisionCmd::BuildGraph() {
         return;
     }
 
+    // Agent Creation
+    _pBaseCurveFieldAgent = new CATDialogAgent("BaseCurveActiveFieldAgent");
+
+    //-----------------------------------------------------------------------------
+    // Selection Agents
+    //-----------------------------------------------------------------------------
+
+    // _pBaseCurveAgent to select a point
+    _pBaseCurveAgent = new CATFeatureImportAgent("BaseCurveAgent", NULL, NULL);
+    _pBaseCurveAgent->SetOrderedElementType("CATIMfMonoDimResult");
+    _pBaseCurveAgent->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot);
+
     //.............................................................................
     // KEVIN MANUAL CODE: Initial your PanelState use GetInitialPanelState()
     // Uses "PanelStates" instead of standard "DialogStates".
@@ -159,7 +179,12 @@ void PNXCurveDivisionCmd::BuildGraph() {
     // They make it possible for you not to worry about transition to OK and
     // Cancel States.
     //.............................................................................
-    CATCustomizableState* _catDialogState = GetInitialPanelState("InitialPanelState");
+
+    // Curve selection state
+    CATDialogState* WaitForCurveState =
+        GetInitialPanelState("Select a Point, Dir or another input field");
+    WaitForCurveState->AddDialogAgent(_pBaseCurveFieldAgent);
+    WaitForCurveState->AddDialogAgent(_pBaseCurveAgent);
 
     //.............................................................................
     // KEVIN MANUAL CODE: User CATFeatureImportAgent set your code here
@@ -177,6 +202,30 @@ void PNXCurveDivisionCmd::BuildGraph() {
     // Here to add update dialog code, maybe can avoid value change agent .
     // Show Dialog here, Maybe you should use SetVisibility to show the dialog.
     // Kevin. 2021-10
+
+    // _pCurveFieldAgent and _pMainDirFieldAgent to change current acquisition type
+    CATDlgSelectorList* pList = dialog->_SelectorListBaseCurve;
+    if (pList) _pBaseCurveFieldAgent->AcceptOnNotify(pList, pList->GetListSelectNotification());
+
+    //-----------------------------------------------------------------------------
+    // Command States
+    //-----------------------------------------------------------------------------
+
+    // Uses "PanelStates" instead of standard "DialogStates".
+    // Theses states are provided by father class CATMMUIPanelStateCommand.
+    // They make it possible for you not to worry about transition to OK and Cancel States.
+
+    //-----------------------------------------------------------------------------
+    // Transitions
+    //-----------------------------------------------------------------------------
+
+    // From Curve to Curve ( click on several curves to change of curve )
+    AddTransition(WaitForCurveState, WaitForCurveState, IsOutputSetCondition(_pBaseCurveAgent),
+                  Action((ActionMethod)&PNXCurveDivisionCmd::CurveSelected));
+
+    AddTransition(WaitForCurveState, WaitForCurveState, IsOutputSetCondition(_pBaseCurveFieldAgent),
+                  Action((ActionMethod)&PNXCurveDivisionCmd::BaseCurveFieldSelected));
+
     //.............................................................................
     parameter->CheckoutAxis(); // check out grid
     dialog->UpdateDialog();    // Fills in the dialog panel fields.
@@ -217,6 +266,37 @@ CATStatusChangeRC PNXCurveDivisionCmd::Deactivate(CATCommand* iCmd, CATNotificat
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
+void PNXCurveDivisionCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
+    cout << " PNXCurveDivisionCmd::ElementSelected" << endl;
+
+    if (NULL == pAgent || NULL == parameter) return;
+
+    // translates the selection into the good pointer on a CATBaseUnknwon model element
+    CATBaseUnknown* pSelection = pAgent->GetElementValue(pAgent->GetValue());
+
+    if (NULL != pSelection) {
+        // gets a pointer on CATISpecObject for this element
+        CATISpecObject_var specOnSelection = NULL_var;
+        HRESULT rc = pSelection->QueryInterface(IID_CATISpecObject, (void**)&specOnSelection);
+        if (FAILED(rc)) {
+            cout << " rc is failed" << endl;
+            return;
+        }
+
+        if (parameter->BaseCurve == specOnSelection) // same one
+            parameter->BaseCurve = NULL_var;         // erases the selection
+        else
+            parameter->BaseCurve = specOnSelection; // other one
+
+        // updates the text corresponding to the feature names in the panel fields
+        if (dialog) {
+            dialog->UpdateDialog();
+        }
+    }
+
+    return;
+}
+//-----------------------------------------------------------------------------
 int PNXCurveDivisionCmd::GetMode() {
     // This very simple methods checks if the user is creating or editing the
     // Sound Hole. This data is used by father command CATMMUIPanelStateCommand
@@ -252,6 +332,33 @@ CATBoolean PNXCurveDivisionCmd::OkAction(void*) {
 
     return TRUE;
 }
+//-----------------------------------------------------------------------------
+CATBoolean PNXCurveDivisionCmd::CurveSelected(void*) {
+    cout << "I am in CurveSelected(void *)" << endl;
+
+    // checks if the selected object must be added ( not  selected yet ) or removed ( already
+    // selected ) as input curve
+    ElementSelected(_pBaseCurveAgent);
+
+    // gets ready for next acquisition
+    _pBaseCurveAgent->InitializeAcquisition();
+
+    return TRUE;
+}
+//-----------------------------------------------------------------------------
+CATBoolean PNXCurveDivisionCmd::BaseCurveFieldSelected(void*) {
+    static int a = 0;
+    cout << "I am in BaseCurveFieldSelected(void *)" << a++ << endl;
+    // put the focus on the first field of the Combined Curve edition dialog box
+    // ( first curve ) and highlight the corresponding geometrical element
+    // SetActiveField(PNXCopyStudyFieldBaseCurve);
+
+    // gets ready for next acquisition
+    _pBaseCurveFieldAgent->InitializeAcquisition();
+
+    return TRUE;
+}
+
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::PreviewAction(void*) {
     // cout << "PNXCurveDivisionCmd::PreviewAction" << endl;
