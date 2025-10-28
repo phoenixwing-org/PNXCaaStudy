@@ -1,0 +1,13 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXCurveDivision.git 
+// Toolbar Addin header resource file
+//======================================================================
+PNXCurveDivisionAdnHeader.PNXCurveDivisionHdr.Title     = "PNX Curve Division" ;
+PNXCurveDivisionAdnHeader.PNXCurveDivisionHdr.ShortHelp = "PNX Curve Division" ;
+PNXCurveDivisionAdnHeader.PNXCurveDivisionHdr.Help      = "Create PNX Curve Division Object" ;
+PNXCurveDivisionAdnHeader.PNXCurveDivisionHdr.LongHelp  = "Create a PNX Curve Division Object. use point, direction and axis." ;
+PNXCurveDivisionAdnHeader.PNXCurveDivisionHdr.Category  = "Insert" ;
+

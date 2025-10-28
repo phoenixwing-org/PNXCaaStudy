@@ -1,0 +1,25 @@
+{
+    "cSpell.words": [
+        "addin",
+        "Bres",
+        "CATIA",
+        "CATIAV",
+        "CATMMUI",
+        "Featurization",
+        "HRESULT",
+        "Instanciate",
+        "Jiang",
+        "OIJK",
+        "pfia",
+        "PNXE",
+        "PNXI",
+        "Tesselator",
+        "Trian"
+    ],
+    "C_Cpp.default.includePath": [
+        "${env:KT_ROOT}/kt/core/include/**",
+        "${env:KT_ROOT}/kt/KTC/include/**",
+        "${workspaceFolder}/**"
+    ],
+    "C_Cpp.configurationWarnings": "enabled"
+}

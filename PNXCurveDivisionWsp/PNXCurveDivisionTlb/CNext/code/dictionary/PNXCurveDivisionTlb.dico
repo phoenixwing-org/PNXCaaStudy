@@ -1,0 +1,11 @@
+#======================================================================
+# @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+# @license     MIT
+# @author      Phoenix Wing
+# @checkout    PNXCurveDivision.git
+# @brief       Dictionary PNXCurveDivisionTlb.dico
+# associated with framework PNXCurveDivisionTlb
+#======================================================================
+# PNXCurveDivisionAddin    CATIWorkbenchAddin              libPNXCurveDivisionAdn
+PNXCurveDivisionAddin    CATIPrtWksAddin                 libPNXCurveDivisionAdn
+

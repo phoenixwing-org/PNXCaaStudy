@@ -1,6 +1,41 @@
 # copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
 # license     MIT
-# 设置需要忽略的目录
+
+# Parameters
+param(
+    [string]$Workspace = "",
+    [switch]$Help
+)
+
+# Show help information
+if ($Help -or [string]::IsNullOrEmpty($Workspace)) {
+    Write-Host "clangfile.ps1 - Code formatting tool" -ForegroundColor Green
+    Write-Host "=====================================" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Usage: clangfile.ps1 -Workspace <path> [options]" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "Parameters:" -ForegroundColor Yellow
+    Write-Host "  -Workspace or -w   Workspace path (required)" -ForegroundColor White
+    Write-Host "  -Help or -h        Show this help message" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Examples:" -ForegroundColor Yellow
+    Write-Host "  .\clangfile.ps1 -w 'C:\MyWorkspace'" -ForegroundColor Cyan
+    Write-Host "  .\clangfile.ps1 -Workspace 'C:\MyWorkspace' -Help" -ForegroundColor Cyan
+    Write-Host ""
+    if ([string]::IsNullOrEmpty($Workspace)) {
+        Write-Host "Error: Workspace path is required!" -ForegroundColor Red
+    }
+    exit 0
+}
+
+# Check if the workspace path exists
+if (-not (Test-Path $Workspace)) {
+    Write-Host "Error: Workspace path does not exist: $Workspace" -ForegroundColor Red
+    Write-Host "Please provide a valid workspace path using -Workspace parameter" -ForegroundColor Red
+    exit 1
+}
+
+# Set the directories to ignore
 $ignoreDirectories = @(
     '.git',
     'ToolsData',
@@ -23,15 +58,15 @@ $ignoreDirectories = @(
 
 $showDebug = 0
 
-# 设置要处理的文件扩展名
+# Set the file extensions to process
 $fileExtensions = @('*.h', '*.c', '*.hpp', '*.cpp')
 
-# 统计信息
+# Statistics
 $script:processedFiles = 0
 $script:processedDirs = 0
 $script:skippedDirs = 0
 
-# 检查目录是否应该被忽略
+# Check if the directory should be ignored
 function ShouldIgnoreDirectory {
     param (
         [string]$dirPath
@@ -55,7 +90,7 @@ function ShouldIgnoreDirectory {
     return $false
 }
 
-# 处理单个文件
+# Process a single file
 function ProcessFile {
     param (
         [string]$filePath
@@ -66,7 +101,7 @@ function ProcessFile {
     $script:processedFiles++
 }
 
-# 主处理函数
+# Main processing function
 function ProcessDirectory {
     param (
         [string]$currentDir
@@ -76,7 +111,7 @@ function ProcessDirectory {
         Write-Host "`n=== Checking Directory ===" -ForegroundColor Cyan
     }
     
-    # 检查当前目录是否应该被忽略
+    # Check if the current directory should be ignored
     if (ShouldIgnoreDirectory $currentDir) {
         if ($showDebug -ne 0) {
             Write-Host ">>> Skipping directory: $currentDir" -ForegroundColor Yellow
@@ -90,32 +125,36 @@ function ProcessDirectory {
     }
     $script:processedDirs++
     
-    # 处理当前目录中的文件
+    # Process the files in the current directory
     foreach ($ext in $fileExtensions) {
         Get-ChildItem -Path $currentDir -Filter $ext -File | ForEach-Object {
             ProcessFile $_.FullName
         }
     }
     
-    # 递归处理子目录
+    # Recursively process the subdirectories
     Get-ChildItem -Path $currentDir -Directory | ForEach-Object {
         ProcessDirectory $_.FullName
     }
 }
 
 Write-Host "-----Format files------" -ForegroundColor Cyan
-Write-Host "Starting directory: $PWD" -ForegroundColor Cyan
+Write-Host "Workspace: $Workspace" -ForegroundColor Cyan
 Write-Host ""
 
-# 清空输出
+# Clear the output
 Clear-Host
 
-# 开始处理
-Write-Host "=== Starting to process directory: $PWD ===" -ForegroundColor Cyan
-ProcessDirectory $PWD
+# Start processing
+Write-Host ""
+Write-Host "=== START ===" -ForegroundColor Cyan
+Write-Host "=== clang-formt Workspace : $Workspace ===" -ForegroundColor Green
+ProcessDirectory $Workspace
 
-# 显示统计信息
+# Show statistics
 Write-Host "`nSummary:" -ForegroundColor Cyan
 Write-Host "- Processed directories: $script:processedDirs"
 Write-Host "- Skipped directories: $script:skippedDirs"
 Write-Host "- Formatted files: $script:processedFiles"
+
+Write-Host "=== END ===" -ForegroundColor Green

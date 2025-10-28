@@ -1,0 +1,208 @@
+/**
+ * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+ * @license     MIT
+ * @author      Phoenix Wing
+ * @checkout    PNXCurveDivision.git
+ * @file
+ * @version		V1.0
+ * @brief
+ * @details
+ * @date		2021-9-1
+ * =============================================================================
+ * @note
+ * =============================================================================
+ */
+
+// Local Framework
+#include "PNXCurveDivisionDlg.h"
+
+// ApplicationFrame Framework
+#include "CATApplicationFrame.h" // needed to get the window of the frame
+
+// Dialog Framework
+#include "CATDlgGridConstraints.h" // needed to locate dialog element on the box's grid
+#include "CATDlgLabel.h"
+// Visualization Framework
+// #include "PNXAppFrameServicesCls.h"
+#include "iostream.h"
+
+// System Framework
+#include "CATUnicodeString.h"
+#include "KTCAutoCode.h"
+#include "KTCCoreDefine.h"
+
+int counterForSave = 0;
+namespace Kt {
+int round(double value) {
+    return int(value + 0.5);
+}
+}; // namespace Kt
+
+// set slector list display
+#define KT_AUTO_FIELD_SET_LINE(selector, specobject)   \
+  if (specobject != NULL_var) \
+    selector->SetLine(specobject->GetDisplayName()); \
+else \
+    selector->SetLine("(No Selection)"); 
+
+//-------------------------------------------------------------------------
+PNXCurveDivisionDlg::PNXCurveDivisionDlg()
+    : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
+                   // clang-format off
+//CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
+"PNXCurveDivisionDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
+//END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
+                   // clang-format on
+                   )
+    , dialogMore(NULL)
+    , parameter(NULL) {
+
+    // clang-format off
+//CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+ _FrameParams = NULL;
+ _LabelBaseCurve = NULL;
+ _SelectorListBaseCurve = NULL;
+ _SpinnerPointCount = NULL;
+ _LabelPointCount = NULL;
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+    // clang-format on
+
+    dialogMore = new PNXCurveDivisionParamDlg(this); // new one
+}
+//-------------------------------------------------------------------------
+PNXCurveDivisionDlg::~PNXCurveDivisionDlg() {
+    //  Do not delete the control elements of your dialog:
+    //     this is done automatically
+    //  --------------------------------------------------
+
+    // clang-format off
+//CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+ _FrameParams = NULL;
+ _LabelBaseCurve = NULL;
+ _SelectorListBaseCurve = NULL;
+ _SpinnerPointCount = NULL;
+ _LabelPointCount = NULL;
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+    // clang-format on
+
+    parameter = NULL;                         // not delete
+    KTCRequestDelayedDestruction(dialogMore); // DESTRUCTOR
+}
+//-------------------------------------------------------------------------
+void PNXCurveDivisionDlg::Build() {
+
+    // clang-format off
+//CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+ SetGridColumnResizable(0,1);
+ _FrameParams = new CATDlgFrame(this, "FrameParams", CATDlgFraNoFrame|CATDlgGridLayout);
+_FrameParams -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _FrameParams -> SetGridColumnResizable(1,1);
+ _LabelBaseCurve = new CATDlgLabel(_FrameParams, "LabelBaseCurve");
+_LabelBaseCurve -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _SelectorListBaseCurve = new CATDlgSelectorList(_FrameParams, "SelectorListBaseCurve");
+ _SelectorListBaseCurve -> SetVisibleTextHeight(1);
+_SelectorListBaseCurve -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _SpinnerPointCount = new CATDlgSpinner(_FrameParams, "SpinnerPointCount", CATDlgSpnEntry|CATDlgSpnDouble);
+ _SpinnerPointCount -> SetMinMaxStep(0.000000, 100.000000, 1.000000);
+ _SpinnerPointCount -> SetPrecision( 0 );
+_SpinnerPointCount -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _LabelPointCount = new CATDlgLabel(_FrameParams, "LabelPointCount");
+_LabelPointCount -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+    // clang-format on
+
+    // CAA2 WIZARD CALLBACK DECLARATION SECTION
+    // END CAA2 WIZARD CALLBACK DECLARATION SECTION
+
+    dialogMore->Build(); // Build
+
+    BuildMore(); // your build
+}
+//-------------------------------------------------------------------------
+void PNXCurveDivisionDlg::BuildMore() {
+    // your code here
+
+    //-----------------------------------------------------------------
+    // set step and visibility
+    //-----------------------------------------------------------------
+}
+//-------------------------------------------------------------------------
+void PNXCurveDivisionDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogAgent) {
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCurveDivision DIALOG NOTIFY
+
+    // clang-format off
+
+    // 1, BaseCurve, NOT SUPPORT, SelectorList, 1
+
+    // 2, PointCount
+    ipDialogAgent->AcceptOnNotify(_SpinnerPointCount, _SpinnerPointCount->GetSpinnerModifyNotification());
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCurveDivision DIALOG NOTIFY
+
+    // value change
+    ipDialogAgent->AcceptOnNotify(
+        dialogMore->_SpinnerForValueChange,
+        dialogMore->_SpinnerForValueChange->GetSpinnerModifyNotification());
+}
+//-------------------------------------------------------------------------
+void PNXCurveDivisionDlg::UpdateDialog() {
+    if (!parameter) // check pointer
+        return;
+
+    // KEVIN_SYSTEM_CODE START
+    this->dialogMore->_EditorFeatureVersion->SetIntegerValue(0, 0); // set version
+    // KEVIN_SYSTEM_CODE END
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE DIALOG
+
+    // clang-format off
+
+    // 1,BaseCurve,
+    KT_AUTO_FIELD_SET_LINE(_SelectorListBaseCurve, parameter->BaseCurve);
+
+    // 2,PointCount,
+    _SpinnerPointCount->SetValue(parameter->PointCount, 0);
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE DIALOG
+
+    // Code add by user
+
+    // if (parameter->BaseCurve != NULL_var)
+    //     _SelectorListBaseCurve->SetLine(parameter->BaseCurve->GetDisplayName());
+    // else
+    //     _SelectorListBaseCurve->SetLine("(No Selection)");
+
+    this->UpdateSensitivity(); // update sensitivity
+    // this->SetActiveFieldFocus(); // focus
+}
+//-----------------------------------------------------------------
+void PNXCurveDivisionDlg::UpdateInfos() {
+    if (!parameter) // check pointer
+        return;
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE INFORS
+
+    // clang-format off
+
+    // 1,BaseCurve,,NO ACTION,SelectorList,1
+
+    // 2,PointCount,
+    parameter->PointCount = Kt::round(_SpinnerPointCount->GetValue());
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE INFORS
+}
+//-------------------------------------------------------------------------
+void PNXCurveDivisionDlg::UpdateSensitivity() {
+    //_PushButtonMore->SetVisibility(CATDlgHide);//hide the param dialog now
+    // check OK Sensitivity
+    // this is Feature mode, Do not check OK sensitivity. always can press
+    // this->SetOKSensitivity(dlgState); //set state
+    // CATULong dlgState;
+}

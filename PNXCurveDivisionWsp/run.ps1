@@ -1,0 +1,1 @@
+& "../run.ps1" -v 19 -w $PSScriptRoot

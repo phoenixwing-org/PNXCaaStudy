@@ -1,0 +1,8 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXCurveDivision.git 
+// command resource file
+//======================================================================
+PNXCurveDivisionCmd.initialState.Message="Click anywhere in the viewer to exit";

@@ -1,1 +1,1 @@
-..\clangfile.ps1 $PWD
+& "../clangfile.ps1" -w $PSScriptRoot
