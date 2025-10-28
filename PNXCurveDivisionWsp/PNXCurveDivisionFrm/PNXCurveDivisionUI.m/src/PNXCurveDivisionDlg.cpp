@@ -174,8 +174,6 @@ void PNXCurveDivisionDlg::UpdateDialog() {
     // Code add by user
 
     if (parameter->BaseCurve != NULL_var) {
-        cout << parameter->BaseCurve->GetDisplayName() << endl;
-        cout << parameter->BaseCurve->GetName() << endl;
         _SelectorListBaseCurve->SetLine(parameter->BaseCurve->GetDisplayName(), 0,
                                         CATDlgDataModify);
     }

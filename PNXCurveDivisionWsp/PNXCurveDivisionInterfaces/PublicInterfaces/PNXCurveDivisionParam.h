@@ -98,6 +98,9 @@ public: // functions
      * @return HRESULT
      */
     HRESULT CheckoutAxis();
+
+    // dump
+    void dump();
 };
 
 #endif

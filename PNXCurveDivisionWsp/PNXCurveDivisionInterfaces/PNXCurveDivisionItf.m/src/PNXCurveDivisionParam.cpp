@@ -15,7 +15,6 @@
 #include "CATPoint.h"
 #include "iostream.h"
 
-
 // Local
 #include "PNXCurveDivisionParam.h"
 
@@ -93,4 +92,9 @@ HRESULT PNXCurveDivisionParam::CheckoutAxis() {
     //     return S_OK;
 
     return S_OK;
+}
+//-----------------------------------------------------------------------------
+void PNXCurveDivisionParam::dump() {
+    cout << "PointCount :" << PointCount << endl;
+    if (!!BaseCurve) cout << "PointCount :" << BaseCurve->GetDisplayName() << endl;
 }

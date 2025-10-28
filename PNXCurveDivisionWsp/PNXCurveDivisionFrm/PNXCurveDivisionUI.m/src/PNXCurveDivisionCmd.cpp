@@ -181,8 +181,7 @@ void PNXCurveDivisionCmd::BuildGraph() {
     //.............................................................................
 
     // Curve selection state
-    CATDialogState* WaitForCurveState =
-        GetInitialPanelState("Select a Point, Dir or another input field");
+    CATDialogState* WaitForCurveState = GetInitialPanelState("Select a Curve object");
     WaitForCurveState->AddDialogAgent(_pBaseCurveFieldAgent);
     WaitForCurveState->AddDialogAgent(_pBaseCurveAgent);
 
@@ -327,8 +326,13 @@ CATBoolean PNXCurveDivisionCmd::OkAction(void*) {
     // do not use AfterValueChange()
     //
 
-    EmptySO();             // 0. Empty SO
-    dialog->UpdateInfos(); // 1. update param
+    EmptySO();                         // 0. Empty SO
+    if (dialog) dialog->UpdateInfos(); // 1. update param
+
+    if (parameter) {
+        parameter->dump();
+        cout << "TODO : create divided point objects" << endl;
+    }
 
     return TRUE;
 }
