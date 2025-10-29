@@ -1,1 +1,1 @@
-& "../run.ps1" -v 19 -w $PSScriptRoot
+& "../tools/run.ps1" -v 19 -w $PSScriptRoot
