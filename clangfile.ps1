@@ -142,8 +142,7 @@ Write-Host "-----Format files------" -ForegroundColor Cyan
 Write-Host "Workspace: $Workspace" -ForegroundColor Cyan
 Write-Host ""
 
-# Clear the output
-Clear-Host
+# Clear the output: Clear-Host  No action
 
 # Start processing
 Write-Host ""

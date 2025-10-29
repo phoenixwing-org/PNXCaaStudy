@@ -31,14 +31,14 @@ if ($UseBat) {
     if (Test-Path $batFile) {
         & $batFile
         exit $LASTEXITCODE
-    } else {
+    }
+    else {
         Write-Host "Error: mk.bat not found at $batFile" -ForegroundColor Red
         exit 1
     }
 }
 
-# Clear screen
-Clear-Host
+# Clear screen Clear-Host No action
 
 Write-Host ""
 Write-Host "=== START ===" -ForegroundColor Cyan
@@ -116,7 +116,8 @@ try {
     Write-Host "Runtime: $($Duration.ToString('hh\:mm\:ss'))" -ForegroundColor Green
     Write-Host "Build completed successfully!" -ForegroundColor Green
     Write-Host "=== END ===" -ForegroundColor Green
-} catch {
+}
+catch {
     Write-Host ""
     Write-Host "Error occurred during build:" -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red

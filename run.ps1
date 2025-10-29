@@ -21,8 +21,7 @@ if ($Help) {
     exit 0
 }
 
-# Clear screen
-Clear-Host
+# Clear screen Clear-Host No action
 
 Write-Host ""
 Write-Host "=== START ===" -ForegroundColor Cyan
@@ -106,7 +105,8 @@ try {
     Write-Host "Run completed successfully!" -ForegroundColor Green
     Write-Host "=== END ===" -ForegroundColor Green
     
-} catch {
+}
+catch {
     Write-Host ""
     Write-Host "Error occurred during run:" -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
