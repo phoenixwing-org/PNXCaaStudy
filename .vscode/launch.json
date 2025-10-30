@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach CurveDivision",
+            "type": "cppvsdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "symbolSearchPath": "${workspaceFolder}\\PNXCurveDivisionWsp\\win_b64\\code\\bin;${workspaceFolder}\\KTCAutoCodeWsp\\win_b64\\code\\bin"
+        }, {
+            "name": "Attach BomAnalysis",
+            "type": "cppvsdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "symbolSearchPath": "${workspaceFolder}\\PNXBomAnalysisWsp\\win_b64\\code\\bin;${workspaceFolder}\\KTCAutoCodeWsp\\win_b64\\code\\bin"
+        }, {
+            "name": "Attach CombinedCurve",
+            "type": "cppvsdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "symbolSearchPath": "${workspaceFolder}\\PNXCombinedCurveWsp\\win_b64\\code\\bin;${workspaceFolder}\\KTCAutoCodeWsp\\win_b64\\code\\bin"
+        }
+    ]
+}
