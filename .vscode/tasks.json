@@ -7,7 +7,8 @@
             "command": ".\\mk.ps1",
             "options": {
                 "cwd": "${workspaceFolder}/KTCAutoCodeWsp"
-            }
+            },
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "mkmk BomAnalysis",
@@ -15,7 +16,8 @@
             "command": ".\\mk.ps1",
             "options": {
                 "cwd": "${workspaceFolder}\\PNXBomAnalysisWsp"
-            }
+            },
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "mkmk CombinedCurve",
@@ -23,15 +25,17 @@
             "command": ".\\mk.ps1",
             "options": {
                 "cwd": "${workspaceFolder}\\PNXCombinedCurveWsp"
-            }
+            },
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "mkmk CurveDivision",
             "type": "shell",
             "command": ".\\mk.ps1",
             "options": {
-                "cwd": "${workspaceFolder}\\PNXCurveDivisionWsp"
-            }
+                "cwd": "${workspaceFolder}/PNXCurveDivisionWsp"
+            },
+            "problemMatcher": "$msCompile"
         }, {
             "label": "mkmk Remaining Parallel",
             "dependsOn": [
