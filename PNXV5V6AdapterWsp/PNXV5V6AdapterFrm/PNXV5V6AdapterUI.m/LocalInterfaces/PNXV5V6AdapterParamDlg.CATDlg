@@ -1,0 +1,29 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PNXV5V6AdapterParamDlg
+{
+  STYLE = CATDlgGridLayout;
+  COLRES = { 0 };
+}
+
+CATDlgFrame FrameOthers
+{
+  FATHER = PNXV5V6AdapterParamDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel LabelVersion
+{
+  FATHER = FrameOthers;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor EditorFeatureVersion
+{
+  FATHER = FrameOthers;
+  STYLE = CATDlgEdtInteger|CATDlgEdtReadOnly;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE

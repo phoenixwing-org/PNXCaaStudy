@@ -1,0 +1,8 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXV5V6Adapter.git 
+// command resource file
+//======================================================================
+PNXV5V6AdapterCmd.initialState.Message="Click anywhere in the viewer to exit";

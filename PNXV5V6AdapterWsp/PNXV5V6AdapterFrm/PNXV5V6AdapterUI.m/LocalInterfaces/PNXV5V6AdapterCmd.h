@@ -1,0 +1,159 @@
+/**
+ * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+ * @license     MIT
+ * @author      Phoenix Wing
+ * @checkout    PNXV5V6Adapter.git
+ * @file
+ * @version		V1.0
+ * @brief
+ * @details
+ * @date		2021-9-1
+ * =============================================================================
+ * @note
+ * =============================================================================
+ */
+
+#ifndef PNXV5V6AdapterCmd_H
+#define PNXV5V6AdapterCmd_H
+
+// MechanicalModelerUI Framework
+#include "CATMMUIPanelStateCmd.h" // Needed to derive from CATMMUIPanelStateCmd
+
+// Local Framework
+#include "PNXV5V6AdapterCore.h"
+#include "PNXV5V6AdapterDlg.h"
+#include "PNXV5V6AdapterParam.h"
+
+#include "KTCAutoCode.h"
+
+// pre-declare class
+class CATFeatureImportAgent;
+class CATISpecObject;
+class CATHSO;
+class CATISO;
+class CATIGSMTool;
+class CATIPrtPart;
+class CATDialogState;
+
+#define KTCHSOKit int
+
+/**
+ * Class managing the dialog command to edit Sound Holes.
+ *
+ * refer to programming resources of MechanicalModelerUI framework.
+ * (consult base class description).
+ */
+class PNXV5V6AdapterCmd : public CATMMUIPanelStateCmd {
+
+public: // base
+    /** @brief Standard constructor
+     * @param[in] ipInstance input instance
+     */
+    PNXV5V6AdapterCmd();
+
+    /** @brief Standard destructor */
+    virtual ~PNXV5V6AdapterCmd();
+
+    /** @brief Build Graph */
+    void BuildGraph();
+
+public: // system function
+    /** @brief Action for Cancel */
+    CATBoolean CancelAction(void*);
+
+    /**
+     * @brief Returns a different value whether the command is used to create or
+     * edit. This parameter is used by CATMMUIPanelStateCmd services.
+     */
+    int GetMode();
+
+    /**
+     * @brief Returns the feature being created or edited
+     * This parameter is used by CATMMUIStateCmd services.
+     */
+    CATISpecObject_var GiveMyFeature();
+
+    /**
+     * @brief Returns a pointer to the dialog panel.
+     * This pointer is used by CATMMUIPanelStateCmd services.
+     */
+    CATDlgDialog* GiveMyPanel();
+
+    /** @brief Action for OK */
+    CATBoolean OkAction(void*);
+
+    /** @brief Action for Preview */
+    CATBoolean PreviewAction(void*);
+
+public:
+    /** @brief Method called when obj is selected */
+    CATBoolean ActionSelectorListFia(void*);
+
+    /** @brief Method called when Field is selected */
+    CATBoolean ActionSelectorListPda(void*);
+
+    /** @brief Method called when Value Change */
+    CATBoolean ActionValueChange(void*);
+
+    /** @brief called after value changed */
+    void AfterValueChange(bool isUpdateObj = false);
+
+    /** @brief CATFeatureImportAgent Clear */
+    void fiaAgentClear();
+
+    /** @brief CATFeatureImportAgent Clear */
+    void fiaAgentUpdate();
+
+    /**
+     * @brief Asks the panel to focus on an Active Field
+     * @param[in] field Active Field
+     */
+    void SetActiveField(PNXV5V6AdapterField field);
+
+private: // Prevent Use function
+    // Default Constructor, Copy constructor and equal operator, to prevent
+    // re-implementation
+    // ----------------------------------------------------------------
+    PNXV5V6AdapterCmd(PNXV5V6AdapterCmd&);
+    PNXV5V6AdapterCmd& operator=(PNXV5V6AdapterCmd&);
+
+private: // system function
+    // Manage the current feature in case of ordered and linear body
+    CATStatusChangeRC Activate(CATCommand* iCmd, CATNotification* iNotif);
+    CATStatusChangeRC Cancel(CATCommand* iCmd, CATNotification* iNotif);
+    CATStatusChangeRC Deactivate(CATCommand* iCmd, CATNotification* iNotif);
+
+private:
+    /** @brief Manage the Element creation */
+    HRESULT CreateElement();
+
+    /**
+     * Method called when a curve is selected.
+     */
+    CATBoolean CurveSelected(void*);
+
+    /**
+     * Method called when a curve or a line is selected, to add or remove it of
+     * the definition of the Combined Curve.
+     */
+    void ElementSelected(CATFeatureImportAgent* pAgent);
+
+    /**
+     * Method called when the field correponding to Curve.1 is selected.
+     */
+    CATBoolean BaseCurveFieldSelected(void*);
+
+private:
+    CATISpecObject_var     _featurePrevious; // previous feature
+    CATISpecObject_var     feature;          // feature
+    PNXV5V6AdapterParam* parameter;        // create Default value Instance
+    PNXV5V6AdapterCore*  core;
+    PNXV5V6AdapterDlg*   dialog;
+
+    CATFeatureImportAgent* _pBaseCurveAgent;
+    CATDialogAgent*        _pBaseCurveFieldAgent; ///< save button agent
+
+    KT_AUTO_CMD_AGENT_DECLARE_COMMON();
+};
+
+#endif

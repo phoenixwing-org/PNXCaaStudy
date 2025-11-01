@@ -1,0 +1,13 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXV5V6Adapter.git 
+// Toolbar Addin header resource file
+//======================================================================
+PNXV5V6AdapterAdnHeader.PNXV5V6AdapterHdr.Title     = "PNX V5V6 Adapter" ;
+PNXV5V6AdapterAdnHeader.PNXV5V6AdapterHdr.ShortHelp = "PNX V5V6 Adapter" ;
+PNXV5V6AdapterAdnHeader.PNXV5V6AdapterHdr.Help      = "Create PNX V5V6 Adapter Object" ;
+PNXV5V6AdapterAdnHeader.PNXV5V6AdapterHdr.LongHelp  = "Create a PNX V5V6 Adapter Object. use point, direction and axis." ;
+PNXV5V6AdapterAdnHeader.PNXV5V6AdapterHdr.Category  = "Insert" ;
+

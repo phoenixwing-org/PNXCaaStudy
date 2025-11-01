@@ -1,0 +1,8 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXV5V6Adapter.git 
+// Toolbar resource file
+//======================================================================
+PNXV5V6AdapterTlb.Title     = "PNX V5V6 Adapter" ;
