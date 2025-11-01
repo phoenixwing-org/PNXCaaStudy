@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PNXV5V6AdapterDlg
 {
-  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnOKApplyClose|CATDlgGridLayout;
   COLRES = { 0 };
 }
 

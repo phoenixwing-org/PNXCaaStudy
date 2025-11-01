@@ -39,9 +39,8 @@
 #include "CATLib.h"
 #include "CATMathTransformation.h"
 
-// KTC Core Framework
-
 // local Framework
+#include "PNXUniqueCore.h"
 #include "PNXV5V6AdapterCore.h"
 
 #include <time.h>
@@ -57,30 +56,47 @@ PNXV5V6AdapterCore::PNXV5V6AdapterCore() {
 PNXV5V6AdapterCore::~PNXV5V6AdapterCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXV5V6AdapterCore::Pretreat() {
-    // cout << "PNXV5V6AdapterCore::Pretreat" << endl;
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
+int PNXV5V6AdapterCore::pretreat() {
+    // cout << "PNXV5V6AdapterCore::pretreat" << endl;
+    if (NULL == parameter) return 1;
 
-    return S_OK;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXV5V6AdapterCore::Calculate() {
-    // cout << "PNXV5V6AdapterCore::Calculate" << endl;
+int PNXV5V6AdapterCore::calculate() {
+    cout << "- PNXV5V6AdapterCore::calculate" << endl;
 
-    HRESULT hr = E_FAIL;
-    return E_FAIL;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXV5V6AdapterCore::Create() {
-    // cout << "PNXV5V6AdapterCore::Create" << endl;
+int PNXV5V6AdapterCore::adapter() {
+    cout << "### PNXV5V6AdapterCore::adapter" << endl;
+    cout << "##### Prepare " << endl;
+    if (NULL == parameter) {
+        cout << "- [error] parameter is NULL" << endl;
+        return 100010;
+    }
 
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
-    if (NULL == _catFrmEditor) // editor pointer check
-        return E_INVALIDARG;
+    if (NULL_var == parameter->BaseCurve) {
+        cout << "- [error] Please set BaseCurve" << endl;
+        return 100011;
+    }
 
-    HRESULT hr = E_FAIL;
+    // define uniqueCore
+    PNXUniqueCore uniqueCore;
+    cout << "- pass parameter->BaseCurve to uniqueCore.calculate" << endl;
 
-    return S_OK;
+    uniqueCore.feature = parameter->BaseCurve; // set curve
+
+    cout << "##### test PNXUniqueCore::checkoutUniqueClass()" << endl;
+    PNXIMechanicalFeature_var out = uniqueCore.checkoutUniqueClass();
+    if (!out) {
+        cout << " - [error] uniqueCore.checkoutUniqueClass() is NULL_var" << endl;
+    }
+
+    cout << "##### test PNXUniqueCore::calculate()" << endl;
+    int code = uniqueCore.calculate(parameter->BaseCurve);
+    cout << " - code = " << code << endl;
+
+    return code;
 }

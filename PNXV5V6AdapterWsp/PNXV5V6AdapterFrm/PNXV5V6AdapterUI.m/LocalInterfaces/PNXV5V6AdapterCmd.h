@@ -83,7 +83,7 @@ public: // system function
     CATBoolean OkAction(void*);
 
     /** @brief Action for Preview */
-    CATBoolean PreviewAction(void*);
+    CATBoolean ApplyAction(void*);
 
 public:
     /** @brief Method called when obj is selected */
@@ -124,8 +124,10 @@ private: // system function
     CATStatusChangeRC Deactivate(CATCommand* iCmd, CATNotification* iNotif);
 
 private:
-    /** @brief Manage the Element creation */
-    HRESULT CreateElement();
+    /**
+     * Method called when the field corresponding to Curve.1 is selected.
+     */
+    CATBoolean BaseCurveFieldSelected(void*);
 
     /**
      * Method called when a curve is selected.
@@ -138,14 +140,9 @@ private:
      */
     void ElementSelected(CATFeatureImportAgent* pAgent);
 
-    /**
-     * Method called when the field correponding to Curve.1 is selected.
-     */
-    CATBoolean BaseCurveFieldSelected(void*);
-
 private:
-    CATISpecObject_var     _featurePrevious; // previous feature
-    CATISpecObject_var     feature;          // feature
+    CATISpecObject_var   _featurePrevious; // previous feature
+    CATISpecObject_var   feature;          // feature
     PNXV5V6AdapterParam* parameter;        // create Default value Instance
     PNXV5V6AdapterCore*  core;
     PNXV5V6AdapterDlg*   dialog;

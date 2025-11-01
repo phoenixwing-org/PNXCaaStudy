@@ -8,7 +8,7 @@
 
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "PNX V5V6 Adapter";
-BOK = "Create";
+BApply = "V5 V6 adapter";
 FrameParams.LabelBaseCurve.Title = "Base Curve";
 FrameParams.SelectorListBaseCurve.Help = "Select Base Curve";
 FrameParams.SelectorListBaseCurve.ShortHelp = "Select Base Curve";

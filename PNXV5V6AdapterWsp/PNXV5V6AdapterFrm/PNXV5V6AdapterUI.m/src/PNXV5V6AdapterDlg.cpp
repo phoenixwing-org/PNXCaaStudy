@@ -50,7 +50,7 @@ PNXV5V6AdapterDlg::PNXV5V6AdapterDlg()
     : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
                    // clang-format off
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PNXV5V6AdapterDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
+"PNXV5V6AdapterDlg",CATDlgWndBtnOKApplyClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                    // clang-format on
                    )

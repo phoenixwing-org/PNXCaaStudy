@@ -114,8 +114,8 @@ PNXV5V6AdapterCmd::PNXV5V6AdapterCmd()
     _catFrmEditor = CATFrmEditor::GetCurrentEditor();
     // core set
     core                = new PNXV5V6AdapterCore(); // Core
-    core->parameter     = parameter;                  // pass value
-    core->_catFrmEditor = _catFrmEditor;              // pass value
+    core->parameter     = parameter;                // pass value
+    core->_catFrmEditor = _catFrmEditor;            // pass value
 }
 //-----------------------------------------------------------------------------
 PNXV5V6AdapterCmd::~PNXV5V6AdapterCmd() {
@@ -270,15 +270,15 @@ void PNXV5V6AdapterCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
 
     if (NULL == pAgent || NULL == parameter) return;
 
-    // translates the selection into the good pointer on a CATBaseUnknwon model element
+    // translates the selection into the good pointer on a CATBaseUnknown model element
     CATBaseUnknown* pSelection = pAgent->GetElementValue(pAgent->GetValue());
 
     if (NULL != pSelection) {
         // gets a pointer on CATISpecObject for this element
         CATISpecObject_var specOnSelection = NULL_var;
-        HRESULT rc = pSelection->QueryInterface(IID_CATISpecObject, (void**)&specOnSelection);
-        if (FAILED(rc)) {
-            cout << " rc is failed" << endl;
+        HRESULT hr = pSelection->QueryInterface(IID_CATISpecObject, (void**)&specOnSelection);
+        if (FAILED(hr)) {
+            cout << " hr is failed" << endl;
             return;
         }
 
@@ -362,10 +362,9 @@ CATBoolean PNXV5V6AdapterCmd::BaseCurveFieldSelected(void*) {
 
     return TRUE;
 }
-
 //-----------------------------------------------------------------------------
-CATBoolean PNXV5V6AdapterCmd::PreviewAction(void*) {
-    // cout << "PNXV5V6AdapterCmd::PreviewAction" << endl;
+CATBoolean PNXV5V6AdapterCmd::ApplyAction(void*) {
+    cout << "PNXV5V6AdapterCmd::ApplyAction" << endl;
 
     //
     // 1- information
@@ -373,7 +372,7 @@ CATBoolean PNXV5V6AdapterCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    HRESULT hr = core->Calculate();
+    int code = core->adapter();
 
     dialog->UpdateDialog(); // updates all the param to the panel
     return TRUE;
@@ -454,18 +453,6 @@ void PNXV5V6AdapterCmd::AfterValueChange(bool isUpdateObj) {
 
     // your other code here
     dialog->UpdateDialog(); // updates all the param to the panel
-}
-//-----------------------------------------------------------------------------
-HRESULT PNXV5V6AdapterCmd::CreateElement() {
-    if (NULL_var != _MyFeature) // do not create when exist
-        return S_OK;
-
-    if (NULL == core) return E_INVALIDARG;
-
-    HRESULT hr = core->Create(); // create
-    if (FAILED(hr)) return hr;
-
-    return S_OK;
 }
 //-----------------------------------------------------------------------------
 void PNXV5V6AdapterCmd::fiaAgentClear() {

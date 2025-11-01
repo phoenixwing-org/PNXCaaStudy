@@ -33,14 +33,14 @@ private:
     PNXV5V6AdapterCore& operator=(PNXV5V6AdapterCore&);
 
 public:
-    /** @brief Calculate */
-    HRESULT Calculate();
+    /** @brief calculate */
+    int calculate();
 
     /** @brief Create the line */
-    HRESULT Create();
+    int adapter();
 
-    /** @brief Pretreat */
-    HRESULT Pretreat();
+    /** @brief pretreat */
+    int pretreat();
 
 private:
 };
