@@ -57,7 +57,7 @@ PNXV5V6AdapterCore::~PNXV5V6AdapterCore() {
 }
 //-----------------------------------------------------------------------------
 int PNXV5V6AdapterCore::pretreat() {
-    // cout << "PNXV5V6AdapterCore::pretreat" << endl;
+    // cout << "- PNXV5V6AdapterCore::pretreat" << endl;
     if (NULL == parameter) return 1;
 
     return 0;

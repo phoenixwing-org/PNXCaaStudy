@@ -231,7 +231,7 @@ void PNXV5V6AdapterCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXV5V6AdapterCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXV5V6AdapterCmd::Activate" << endl;
+    // cout << "- PNXV5V6AdapterCmd::Activate" << endl;
     if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
 
     // Sets the CC as the current feature
@@ -242,7 +242,7 @@ CATStatusChangeRC PNXV5V6AdapterCmd::Activate(CATCommand* iCmd, CATNotification*
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXV5V6AdapterCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXV5V6AdapterCmd::Cancel" << endl;
+    // cout << "- PNXV5V6AdapterCmd::Cancel" << endl;
 
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
@@ -254,7 +254,7 @@ CATBoolean PNXV5V6AdapterCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXV5V6AdapterCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXV5V6AdapterCmd::Deactivate" << endl;
+    // cout << "- PNXV5V6AdapterCmd::Deactivate" << endl;
 
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -266,7 +266,7 @@ CATStatusChangeRC PNXV5V6AdapterCmd::Deactivate(CATCommand* iCmd, CATNotificatio
 }
 //-----------------------------------------------------------------------------
 void PNXV5V6AdapterCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
-    cout << " PNXV5V6AdapterCmd::ElementSelected" << endl;
+    // cout << "- PNXV5V6AdapterCmd::ElementSelected" << endl;
 
     if (NULL == pAgent || NULL == parameter) return;
 
@@ -319,7 +319,7 @@ CATISpecObject_var PNXV5V6AdapterCmd::GiveMyFeature() {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::OkAction(void*) {
-    // cout << "PNXV5V6AdapterCmd::OkAction" << endl;
+    // cout << "- PNXV5V6AdapterCmd::OkAction" << endl;
 
     //
     // Get infors and set to feature
@@ -330,15 +330,15 @@ CATBoolean PNXV5V6AdapterCmd::OkAction(void*) {
     if (dialog) dialog->UpdateInfos(); // 1. update param
 
     if (parameter) {
-        parameter->dump();
-        cout << "TODO : create divided point objects" << endl;
+        // parameter->dump();
+        // cout << "TODO : create divided point objects" << endl;
     }
 
     return TRUE;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::CurveSelected(void*) {
-    cout << "I am in CurveSelected(void *)" << endl;
+    // cout << "I am in CurveSelected(void *)" << endl;
 
     // checks if the selected object must be added ( not  selected yet ) or removed ( already
     // selected ) as input curve
@@ -364,7 +364,7 @@ CATBoolean PNXV5V6AdapterCmd::BaseCurveFieldSelected(void*) {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::ApplyAction(void*) {
-    cout << "PNXV5V6AdapterCmd::ApplyAction" << endl;
+    cout << "- PNXV5V6AdapterCmd::ApplyAction" << endl;
 
     //
     // 1- information
@@ -383,7 +383,7 @@ CATBoolean PNXV5V6AdapterCmd::ApplyAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::ActionSelectorListFia(void* data) {
     // int field = CATPtrToINT32(data);
-    // // cout << "PNXV5V6AdapterCmd::ActionSelectorListFia, Field = " << field <<
+    // // cout << "- PNXV5V6AdapterCmd::ActionSelectorListFia, Field = " << field <<
     // // endl;
 
     // KTC::ValueActionMode mode = dialog->GetValueMode();
@@ -412,7 +412,7 @@ CATBoolean PNXV5V6AdapterCmd::ActionSelectorListFia(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::ActionSelectorListPda(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXV5V6AdapterCmd::ActionSelectorListPda, Field = " << field <<
+    // cout << "- PNXV5V6AdapterCmd::ActionSelectorListPda, Field = " << field <<
     // endl;
 
     bool fieldChange = 0; // (dialog->GetActiveField() != field);
@@ -448,7 +448,7 @@ CATBoolean PNXV5V6AdapterCmd::ActionValueChange(void*) {
 }
 //-----------------------------------------------------------------------------
 void PNXV5V6AdapterCmd::AfterValueChange(bool isUpdateObj) {
-    cout << "PNXV5V6AdapterCmd::AfterValueChange" << endl;
+    // cout << "- PNXV5V6AdapterCmd::AfterValueChange" << endl;
     dialog->UpdateInfos(); // refresh information
 
     // your other code here

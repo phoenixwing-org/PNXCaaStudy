@@ -38,7 +38,10 @@ int round(double value) {
 }
 }; // namespace Kt
 
-// set slector list display
+// set selector list display
+#ifdef KT_AUTO_FIELD_SET_LINE
+#undef KT_AUTO_FIELD_SET_LINE
+#endif
 #define KT_AUTO_FIELD_SET_LINE(selector, specobject)     \
     if (specobject != NULL_var)                          \
         selector->SetLine(specobject->GetDisplayName()); \
@@ -151,7 +154,7 @@ void PNXV5V6AdapterDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogA
 void PNXV5V6AdapterDlg::UpdateDialog() {
     if (!parameter) // check pointer
         return;
-    cout << " PNXV5V6AdapterDlg::UpdateDialog" << endl;
+    // cout << " PNXV5V6AdapterDlg::UpdateDialog" << endl;
 
     // KEVIN_SYSTEM_CODE START
     this->dialogMore->_EditorFeatureVersion->SetIntegerValue(0, 0); // set version
