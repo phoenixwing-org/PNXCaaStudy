@@ -21,5 +21,6 @@
         "${env:KT_ROOT}/kt/KTC/include/**",
         "${workspaceFolder}/**"
     ],
-    "C_Cpp.configurationWarnings": "enabled"
+    "C_Cpp.configurationWarnings": "enabled",
+    "C_Cpp.errorSquiggles": "disabled"
 }

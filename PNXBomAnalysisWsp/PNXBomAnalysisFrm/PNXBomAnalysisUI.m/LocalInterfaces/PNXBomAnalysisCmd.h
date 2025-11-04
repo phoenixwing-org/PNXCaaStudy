@@ -28,6 +28,7 @@
 
 // pre-declare class
 class CATFeatureImportAgent;
+class CATPathElementAgent;
 class CATISpecObject;
 class CATHSO;
 class CATISO;
@@ -128,11 +129,12 @@ private:
     HRESULT CreateElement();
 
 private:
-    CATISpecObject_var   _featurePrevious; // previous feature
-    CATISpecObject_var   feature;          // feature
-    PNXBomAnalysisParam* parameter;        // create Default value Instance
-    PNXBomAnalysisCore*  core;
-    PNXBomAnalysisDlg*   dialog;
+    CATISpecObject_var   _featurePrevious;   // previous feature
+    CATISpecObject_var   feature;            // feature
+    PNXBomAnalysisParam* parameter;          // create Default value Instance
+    PNXBomAnalysisCore*  core;               // core lass
+    PNXBomAnalysisDlg*   dialog;             // main dialog
+    CATPathElementAgent* _pfiaElementSelect; // path element
 
     KT_AUTO_CMD_AGENT_DECLARE_COMMON();
 };

@@ -34,7 +34,7 @@ PNXBomAnalysisParam::PNXBomAnalysisParam()
     // clang-format off
     : FirstProduct(NULL_var) // 1
     , FirstPartNumber() // 2
-    , PartCount(0.001) // 3
+    , PartCount(0) // 3
 
 // clang-format on
 // END KEVIN CAA WIZARD SECTION PNXBomAnalysis PARAM CONSTRUCTOR
@@ -52,7 +52,7 @@ PNXBomAnalysisParam::~PNXBomAnalysisParam() {
     // clang-format off
     FirstProduct = NULL_var; // 1
     // FirstPartNumber = ""; // 2
-    // PartCount = 0.001; // 3
+    // PartCount = 0; // 3
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXBomAnalysis PARAM DESTRUCTOR

@@ -22,19 +22,19 @@
 // Dialog Framework
 #include "CATDlgGridConstraints.h" // needed to locate dialog element on the box's grid
 #include "CATDlgLabel.h"
-// Visualization Framework
-// #include "PNXAppFrameServicesCls.h"
+
+#include "CATUnicodeString.h"
 #include "iostream.h"
 
 // System Framework
-#include "CATUnicodeString.h"
 #include "KTCAutoCode.h"
+#include "KTCAutoPanelCommand.h"
 #include "KTCCoreDefine.h"
 
 int counterForSave = 0;
 //-------------------------------------------------------------------------
 PNXBomAnalysisDlg::PNXBomAnalysisDlg()
-    : CATDlgDialog( (CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
+    : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
                    // clang-format off
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
 "PNXBomAnalysisDlg",CATDlgWndBtnOKCancelPreview|CATDlgGridLayout
@@ -47,8 +47,8 @@ PNXBomAnalysisDlg::PNXBomAnalysisDlg()
     // clang-format off
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _FrameParams = NULL;
- _LabelBaseCurve = NULL;
- _SelectorListBaseCurve = NULL;
+ _LabelFirstProduct = NULL;
+ _SelectorListFirstProduct = NULL;
  _EditorFirstPartNumber = NULL;
  _LabelFirstPartNumber = NULL;
  _FrameBom = NULL;
@@ -67,8 +67,8 @@ PNXBomAnalysisDlg::~PNXBomAnalysisDlg() {
     // clang-format off
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
  _FrameParams = NULL;
- _LabelBaseCurve = NULL;
- _SelectorListBaseCurve = NULL;
+ _LabelFirstProduct = NULL;
+ _SelectorListFirstProduct = NULL;
  _EditorFirstPartNumber = NULL;
  _LabelFirstPartNumber = NULL;
  _FrameBom = NULL;
@@ -89,11 +89,11 @@ void PNXBomAnalysisDlg::Build() {
  _FrameParams = new CATDlgFrame(this, "FrameParams", CATDlgFraNoFrame|CATDlgGridLayout);
 _FrameParams -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _FrameParams -> SetGridColumnResizable(1,1);
- _LabelBaseCurve = new CATDlgLabel(_FrameParams, "LabelBaseCurve");
-_LabelBaseCurve -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _SelectorListBaseCurve = new CATDlgSelectorList(_FrameParams, "SelectorListBaseCurve");
- _SelectorListBaseCurve -> SetVisibleTextHeight(1);
-_SelectorListBaseCurve -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _LabelFirstProduct = new CATDlgLabel(_FrameParams, "LabelFirstProduct");
+_LabelFirstProduct -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _SelectorListFirstProduct = new CATDlgSelectorList(_FrameParams, "SelectorListFirstProduct");
+ _SelectorListFirstProduct -> SetVisibleTextHeight(1);
+_SelectorListFirstProduct -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _EditorFirstPartNumber = new CATDlgEditor(_FrameParams, "EditorFirstPartNumber");
 _EditorFirstPartNumber -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _LabelFirstPartNumber = new CATDlgLabel(_FrameParams, "LabelFirstPartNumber");
@@ -125,6 +125,7 @@ void PNXBomAnalysisDlg::BuildMore() {
     //-----------------------------------------------------------------
     // set step and visibility
     //-----------------------------------------------------------------
+    _EditorFirstPartNumber->SetSensitivity(CATDlgDisable);
 }
 //-------------------------------------------------------------------------
 void PNXBomAnalysisDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogAgent) {
@@ -134,7 +135,7 @@ void PNXBomAnalysisDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogA
 
     // clang-format off
 
-    // 1, FirstProduct, NO ACTION, , 0
+    // 1, FirstProduct, NOT SUPPORT, SelectorList, 1
 
     // 2, FirstPartNumber
     ipDialogAgent->AcceptOnNotify(_EditorFirstPartNumber, _EditorFirstPartNumber->GetEditModifyNotification());
@@ -163,7 +164,8 @@ void PNXBomAnalysisDlg::UpdateDialog() {
 
     // clang-format off
 
-    // 1,FirstProduct,,NO ACTION,,0
+    // 1,FirstProduct,
+    KT_AUTO_FIELD_SET_LINE(_SelectorListFirstProduct, parameter->FirstProduct);
 
     _EditorFirstPartNumber->SetText(parameter->FirstPartNumber, 0);
 
@@ -187,7 +189,7 @@ void PNXBomAnalysisDlg::UpdateInfos() {
 
     // clang-format off
 
-    // 1,FirstProduct,,NO ACTION, ,0
+    // 1,FirstProduct,,NO ACTION,SelectorList,1
 
     // 2,FirstPartNumber,
     parameter->FirstPartNumber = _EditorFirstPartNumber->GetText();

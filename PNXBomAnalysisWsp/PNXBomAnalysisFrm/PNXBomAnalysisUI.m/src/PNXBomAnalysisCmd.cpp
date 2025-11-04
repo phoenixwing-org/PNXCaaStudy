@@ -44,6 +44,7 @@
 #include "CATIMmiNonOrderedGeometricalSet.h" // Only for GS feature
 
 // MechanicalModelerUI Framework
+#include "CATIProduct.h"
 #include "CATMmrLinearBodyServices.h" // To insert in ordered and linear body
 #include "CATPrtUpdateCom.h" // needed to update the feature according to the user's update settings
 
@@ -159,14 +160,28 @@ void PNXBomAnalysisCmd::BuildGraph() {
     // They make it possible for you not to worry about transition to OK and
     // Cancel States.
     //.............................................................................
-    CATCustomizableState* _catDialogState = GetInitialPanelState("InitialPanelState");
+    _catDialogState = GetInitialPanelState("InitialPanelState");
 
     //.............................................................................
     // KEVIN MANUAL CODE: User CATFeatureImportAgent set your code here
     //.............................................................................
     // _pfiaCurrentAxis to select an Axis
 
-    // _fiaBaseCurve to select a curve // face
+    // _fiaFirstProduct to select a curve // face
+
+    _pfiaElementSelect = new CATFeatureImportAgent("Select Product"); // 创建产品选择代理
+    CATLISTV(CATString) typeList1;                                    // 声明类型列表
+    typeList1.Append(CATString("CATIProduct"));                       // 添加产品类型
+    _pfiaElementSelect->SetOrderedTypeList(typeList1);                // 设置有序类型列表
+    _pfiaElementSelect->SetBehavior(CATDlgEngWithPrevaluation |
+                                    CATDlgEngWithPSOHSO | // 设置代理行为
+                                    CATDlgEngWithTooltip | CATDlgEngOneShot);
+
+    _catDialogState->AddDialogAgent(_pfiaElementSelect); // 添加对话框代理
+
+    AddTransition(_catDialogState, _catDialogState,         // 添加状态转换
+                  IsOutputSetCondition(_pfiaElementSelect), // 设置输出条件
+                  Action((ActionMethod)&PNXBomAnalysisCmd::ActionSelectorListFia)); // 设置动作方法
 
     //---------------------------------------------------
     // your menu set code:
@@ -272,11 +287,18 @@ CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
 
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void* data) {
-    // int field = CATPtrToINT32(data);
-    // // cout << "PNXBomAnalysisCmd::ActionSelectorListFia, Field = " << field <<
-    // // endl;
+    int field = CATPtrToINT32(data);
+    cout << "- PNXBomAnalysisCmd::ActionSelectorListFia, Field = " << field << endl;
 
     // KTC::ValueActionMode mode = dialog->GetValueMode();
+    if (NULL == _pfiaElementSelect) return CATFalse; // 检查路径元素代理是否有效
+
+    // 获取路径元素
+    CATPathElement* pPathElement = NULL;
+    CATBaseUnknown* pBaseUnknown = _pfiaElementSelect->GetElementValue(); // 获取选中的基础对象
+    _pfiaElementSelect->InitializeAcquisition();                          // 初始化获取操作
+    if (NULL == pBaseUnknown) return CATFalse;                            // 检查有效
+    cout << "- Select BASE element :" << pBaseUnknown << endl;
 
     // START KEVIN CAA WIZARD SECTION PNXBomAnalysis CMD ACTION FIA
 
@@ -295,6 +317,28 @@ CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void* data) {
     //.............................................................................
     // KEVIN MANUAL CODE: set next field. No action for this project
     //.............................................................................
+
+    // gets a pointer on CATISpecObject for this element
+
+    CATIProduct_var spSelectDinProduct = NULL_var; // 声明选中的产品变量
+
+    // 查询产品接口
+    HRESULT rc = pBaseUnknown->QueryInterface(IID_CATIProduct, (void**)&spSelectDinProduct);
+    if (FAILED(rc) || spSelectDinProduct == NULL_var) return CATFalse;
+
+    // 获取参考产品
+    CATIProduct_var spRefParentPro = spSelectDinProduct->GetReferenceProduct();
+    if (NULL_var == spRefParentPro) return CATFalse;
+    CATISpecObject_var input = spRefParentPro;
+    if (!input) {
+        cout << "- [error] change to CATISpecObject_var error" << endl;
+        return CATFalse;
+    }
+    cout << "- the input Object->GetDisplayName(): " << input->GetDisplayName() << endl;
+
+    // 切換object
+    parameter->FirstProduct =
+        parameter->FirstProduct == input ? NULL_var : parameter->FirstProduct = input;
 
     AfterValueChange(); // action after value change
     return TRUE;

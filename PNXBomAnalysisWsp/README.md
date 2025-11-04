@@ -22,7 +22,7 @@ PNXBomAnalysisAddin	   CATIPRDWorkshopAddin	           libPNXBomAnalysisAdn
 AddPrereqComponent("System", Protected);
 AddPrereqComponent("ApplicationFrame", Protected);
 AddPrereqComponent("MechanicalModelerUI", Public);
-AddPrereqComponent("ProductStructureUI", Protected); // 总成
+AddPrereqComponent("ProductStructureUI", Protected); 
 AddPrereqComponent("GSMInterfaces", Protected);      // GSM
 // END WIZARD EDITION ZONE
 ```

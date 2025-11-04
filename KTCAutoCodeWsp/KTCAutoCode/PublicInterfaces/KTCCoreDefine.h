@@ -1,13 +1,9 @@
 /**
- * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2021
- * @license     Shanghai Kuntai. (C) 2022SR0309887
- * @website     https://www.kuntaisoft.cn/
+ * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+ * @license     MIT
  * @file        KTCCoreDefine.h
- * @version		V1.0
- * @brief       Core defines
- * @details
  * @date		2021-9-16
- * @note        for Macro, Begin with Upper KTC,not KTC
+ * @brief       Core defines
  */
 #ifndef KTCCoreDefine_H_
 #define KTCCoreDefine_H_

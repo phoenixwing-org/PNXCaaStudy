@@ -14,6 +14,7 @@ AddPrereqComponent("GSMInterfaces", Public);
 AddPrereqComponent("GeometricObjects", Public);
 AddPrereqComponent("MechanicalModelerUI", Public);
 AddPrereqComponent("ObjectSpecsModeler", Public);
+AddPrereqComponent("ObjectModelerBase", Public);
 AddPrereqComponent("System", Public);
 
 // bypass link forte 6.1

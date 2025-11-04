@@ -10,5 +10,5 @@
 AddPrereqComponent("ApplicationFrame", Protected);
 AddPrereqComponent("System", Protected);
 AddPrereqComponent("MechanicalModelerUI", Public);
-AddPrereqComponent("GSMInterfaces", Protected);      // GSM
-AddPrereqComponent("ProductStructureUI", Protected); // ×Ü³É
+AddPrereqComponent("GSMInterfaces", Protected);
+AddPrereqComponent("ProductStructureUI", Protected);

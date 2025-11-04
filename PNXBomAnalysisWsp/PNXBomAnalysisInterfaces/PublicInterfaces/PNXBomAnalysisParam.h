@@ -17,16 +17,31 @@
 #define PNXBomAnalysisParam_H
 
 #include "CATISpecObject.h"
-#include "CATListOfDouble.h"
 #include "CATMathAxis.h"
 #include "CATMathPoint.h"
-#include "CATMathVector.h"
 #include "CATUnicodeString.h"
 
 // ObjectSpecModeler Framework
 #include "CATLISTV_CATISpecObject.h"
 
 #include "PNXBomAnalysisItf.h"
+
+struct PNXBomItem {
+    // the following in main properties
+    CATUnicodeString partNumber;
+    CATUnicodeString revision;
+    CATUnicodeString definition;
+    CATUnicodeString nonenclature;
+    CATUnicodeString source;
+    CATUnicodeString description;
+
+    // mechanical
+
+    float        volume;
+    float        mass;
+    float        surface;
+    CATMathPoint center;
+};
 
 /** @brief Field Type */
 enum PNXBomAnalysisField {
@@ -37,6 +52,7 @@ enum PNXBomAnalysisField {
     // @key    DlgDefineFieldType
     //.............................................................................
     Field_PNXBomAnalysis_None = 0, // None
+    Field_PNXBomAnalysis_FirstProduct = 1, // FirstProduct
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXBomAnalysis DLG DEFINE FIELD TYPE

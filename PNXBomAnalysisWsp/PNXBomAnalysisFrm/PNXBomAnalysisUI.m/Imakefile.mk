@@ -17,10 +17,12 @@ LINK_WITH=CATApplicationFrame         \
           CATObjectModelerBase        \
           CATObjectSpecsModeler \
           CATMechanicalModelerUI \
+          CATProductStructure1 \
           DI0PANV2                  \
           JS0FM                     \
           JS0GROUP \
-          PNXBomAnalysisItf
+          PNXBomAnalysisItf \
+          KTCAutoCodeUI
 
 #Link with with external libraries
 

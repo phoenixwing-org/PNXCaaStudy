@@ -70,8 +70,8 @@ private:
     // clang-format off
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _FrameParams;
- CATDlgLabel*      _LabelBaseCurve;
- CATDlgSelectorList*      _SelectorListBaseCurve;
+ CATDlgLabel*      _LabelFirstProduct;
+ CATDlgSelectorList*      _SelectorListFirstProduct;
  CATDlgEditor*      _EditorFirstPartNumber;
  CATDlgLabel*      _LabelFirstPartNumber;
  CATDlgFrame*      _FrameBom;

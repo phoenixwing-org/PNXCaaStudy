@@ -1,7 +1,6 @@
 /**
- * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2021
- * @license     Shanghai Kuntai. (C) 2022SR0309887
- * @website     https://www.kuntaisoft.cn/
+ * @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+ * @license     MIT
  * @file        KTCAutoCode.h
  * @note        Kt CAA Auto Code
  */

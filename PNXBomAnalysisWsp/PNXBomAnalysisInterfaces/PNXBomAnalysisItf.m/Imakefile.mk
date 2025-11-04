@@ -19,6 +19,7 @@ LINK_WITH=CATGeometricObjects          \
           CATMathStream                \
           CATMecModInterfaces          \
           CATMechanicalModeler         \
+          CATProductStructure1         \
           JS0GROUP                      \
           KnowledgeItf                  \       
           CATBasicTopologicalOpe        \
