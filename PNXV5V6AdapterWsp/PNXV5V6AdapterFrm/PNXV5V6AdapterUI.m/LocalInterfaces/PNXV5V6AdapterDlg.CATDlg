@@ -1,0 +1,46 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PNXV5V6AdapterDlg
+{
+  STYLE = CATDlgWndBtnOKApplyClose|CATDlgGridLayout;
+  COLRES = { 0 };
+}
+
+CATDlgFrame FrameParams
+{
+  FATHER = PNXV5V6AdapterDlg;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel LabelBaseCurve
+{
+  FATHER = FrameParams;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSelectorList SelectorListBaseCurve
+{
+  FATHER = FrameParams;
+  TH = 1;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner SpinnerPointCount
+{
+  FATHER = FrameParams;
+  STYLE = CATDlgSpnEntry|CATDlgSpnDouble;
+  MIN = 0.000000;
+  MAX = 100.000000;
+  STEP = 100.000000;
+  PREC = 0;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel LabelPointCount
+{
+  FATHER = FrameParams;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE

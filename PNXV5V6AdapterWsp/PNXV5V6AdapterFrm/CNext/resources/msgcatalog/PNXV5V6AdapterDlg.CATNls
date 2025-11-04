@@ -1,0 +1,18 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXV5V6Adapter.git 
+// @brief       Message catalog
+//======================================================================
+
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "PNX V5V6 Adapter";
+BApply = "V5 V6 adapter";
+FrameParams.LabelBaseCurve.Title = "Base Curve";
+FrameParams.SelectorListBaseCurve.Help = "Select Base Curve";
+FrameParams.SelectorListBaseCurve.ShortHelp = "Select Base Curve";
+FrameParams.SelectorListBaseCurve.LongHelp = "Select Base Curve";
+FrameParams.SpinnerPointCount.ShortHelp = "Point Count";
+FrameParams.LabelPointCount.Title = "Point Count";
+// END WIZARD REPLACEMENT ZONE

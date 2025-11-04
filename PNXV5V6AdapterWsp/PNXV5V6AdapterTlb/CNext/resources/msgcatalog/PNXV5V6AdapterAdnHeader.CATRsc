@@ -1,0 +1,8 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXV5V6Adapter.git 
+// Toolbar Addin header Images file
+//======================================================================
+PNXV5V6AdapterAdnHeader.PNXV5V6AdapterHdr.Icon.Normal    = "I_PNXV5V6Adapter" ;

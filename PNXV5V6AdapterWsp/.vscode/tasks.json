@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "mkmk workspace",
+            "type": "shell",
+            "command": ".\\mk.ps1",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run CNext.exe",
+            "type": "shell",
+            "command": ".\\run.ps1",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
+}

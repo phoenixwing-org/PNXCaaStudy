@@ -1,0 +1,35 @@
+{
+    "cSpell.words": [
+        "addin",
+        "Bres",
+        "CATGRID",
+        "CATHSO",
+        "CATIA",
+        "CATIAR",
+        "CATIAV",
+        "CATIGSM",
+        "CATMMUI",
+        "CATU",
+        "Featurization",
+        "HRESULT",
+        "Instanciate",
+        "Jiang",
+        "KTCHSO",
+        "Kuntai",
+        "OIJK",
+        "pfia",
+        "PNXE",
+        "PNXI",
+        "PNXV",
+        "Prevaluation",
+        "Tesselator",
+        "Trian"
+    ],
+    "C_Cpp.default.includePath": [
+        "${env:KT_ROOT}/kt/core/include/**",
+        "${env:KT_ROOT}/kt/KTC/include/**",
+        "${workspaceFolder}/**"
+    ],
+    "C_Cpp.configurationWarnings": "enabled",
+    "C_Cpp.errorSquiggles": "disabled"
+}
