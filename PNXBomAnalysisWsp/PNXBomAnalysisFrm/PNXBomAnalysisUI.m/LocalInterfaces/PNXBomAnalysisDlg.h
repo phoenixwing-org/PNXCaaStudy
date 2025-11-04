@@ -65,7 +65,6 @@ protected:
     /** @brief Update dialog Sensitivity */
     void UpdateSensitivity();
 
-protected: // Inset position for THE CAA2 WIZARD : protected:
 private:
     // clang-format off
 //CAA2 WIZARD WIDGET DECLARATION SECTION
@@ -76,6 +75,9 @@ private:
  CATDlgLabel*      _LabelFirstPartNumber;
  CATDlgFrame*      _FrameBom;
  CATDlgMultiList*      _MultiListPartBom;
+ CATDlgFrame*      _FrameOutput;
+ CATDlgPushButton*      _PushButtonJson;
+ CATDlgPushButton*      _PushButtonPrintMarkdown;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
     // clang-format on
 };

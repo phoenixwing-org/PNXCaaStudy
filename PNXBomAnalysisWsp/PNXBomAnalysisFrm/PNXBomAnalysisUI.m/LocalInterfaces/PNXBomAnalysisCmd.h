@@ -105,6 +105,9 @@ public:
     /** @brief CATFeatureImportAgent Clear */
     void fiaAgentUpdate();
 
+    /** @brief Callback on PushBActivate of _PushButtonJson */
+    void OnOutputBomCB(CATCommand*, CATNotification*, CATCommandClientData data);
+
     /**
      * @brief Asks the panel to focus on an Active Field
      * @param[in] field Active Field

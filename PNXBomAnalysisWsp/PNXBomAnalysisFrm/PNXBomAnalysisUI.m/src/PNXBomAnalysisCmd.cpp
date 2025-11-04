@@ -183,6 +183,17 @@ void PNXBomAnalysisCmd::BuildGraph() {
                   IsOutputSetCondition(_pfiaElementSelect), // 设置输出条件
                   Action((ActionMethod)&PNXBomAnalysisCmd::ActionSelectorListFia)); // 设置动作方法
 
+    // print json : 1
+    AddAnalyseNotificationCB(
+        dialog->_PushButtonJson, dialog->_PushButtonJson->GetPushBActivateNotification(),
+        (CATCommandMethod)&PNXBomAnalysisCmd::OnOutputBomCB, CATCommandClientData(1));
+
+    // print markdown : 2
+    AddAnalyseNotificationCB(dialog->_PushButtonPrintMarkdown,
+                             dialog->_PushButtonPrintMarkdown->GetPushBActivateNotification(),
+                             (CATCommandMethod)&PNXBomAnalysisCmd::OnOutputBomCB,
+                             CATCommandClientData(2));
+
     //---------------------------------------------------
     // your menu set code:
     //---------------------------------------------------
@@ -193,8 +204,8 @@ void PNXBomAnalysisCmd::BuildGraph() {
     // Show Dialog here, Maybe you should use SetVisibility to show the dialog.
     // Kevin. 2021-10
     //.............................................................................
-    parameter->CheckoutAxis(); // check out grid
-    dialog->UpdateDialog();    // Fills in the dialog panel fields.
+
+    dialog->UpdateDialog(); // Fills in the dialog panel fields.
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
@@ -286,19 +297,18 @@ CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
 #pragma endregion VirtualFunction
 
 //-----------------------------------------------------------------------------
-CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void* data) {
-    int field = CATPtrToINT32(data);
-    cout << "- PNXBomAnalysisCmd::ActionSelectorListFia, Field = " << field << endl;
+CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void*) {
+    // cout << "- PNXBomAnalysisCmd::ActionSelectorListFia " << endl;
 
-    // KTC::ValueActionMode mode = dialog->GetValueMode();
     if (NULL == _pfiaElementSelect) return CATFalse; // 检查路径元素代理是否有效
 
     // 获取路径元素
+    int             code         = 0; // error code
     CATPathElement* pPathElement = NULL;
     CATBaseUnknown* pBaseUnknown = _pfiaElementSelect->GetElementValue(); // 获取选中的基础对象
     _pfiaElementSelect->InitializeAcquisition();                          // 初始化获取操作
     if (NULL == pBaseUnknown) return CATFalse;                            // 检查有效
-    cout << "- Select BASE element :" << pBaseUnknown << endl;
+    // cout << "- Select BASE element :" << pBaseUnknown << endl;
 
     if (!parameter) return CATFalse;
     if (!core) return CATFalse;
@@ -322,34 +332,30 @@ CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void* data) {
     //.............................................................................
 
     // gets a pointer on CATISpecObject for this element
-
-    CATIProduct_var spSelectDinProduct = NULL_var; // 声明选中的产品变量
-
-    // 查询产品接口
-    HRESULT rc = pBaseUnknown->QueryInterface(IID_CATIProduct, (void**)&spSelectDinProduct);
-    if (FAILED(rc) || spSelectDinProduct == NULL_var) return CATFalse;
-
-    // 获取参考产品
-    CATIProduct_var spRefParentPro = spSelectDinProduct->GetReferenceProduct();
-    if (NULL_var == spRefParentPro) return CATFalse;
-    CATISpecObject_var input = spRefParentPro;
-    if (!input) {
-        cout << "- [error] change to CATISpecObject_var error" << endl;
+    CATISpecObject_var input;
+    HRESULT            rc = pBaseUnknown->QueryInterface(IID_CATISpecObject, (void**)&input);
+    if (FAILED(rc) || !input) {
+        cout << "    - [error] " << (code = 1104) << " : change to CATISpecObject_var error!"
+             << endl;
         return CATFalse;
     }
-    cout << "- the input Object->GetDisplayName(): " << input->GetDisplayName() << endl;
+
+    // cout << "- the input Object->GetDisplayName(): " << input->GetDisplayName() << endl;
 
     // 切換object
     parameter->FirstProduct =
-        parameter->FirstProduct == input ? NULL_var : parameter->FirstProduct = input;
+        parameter->FirstProduct == input ? NULL_var : (parameter->FirstProduct = input);
 
-    // calculate bom list
-
+    // calculate bom list pretreat
     rc = core->pretreat();
     if (FAILED(rc)) {
-        cout << "- [error] core pretreat failed" << endl;
+        cout << "    - [error] " << (code = 1105) << " : core pretreat failed!" << endl;
+        return CATFalse;
     }
+
+    // calculate bom
     rc = core->calculate();
+    // core->dumpJsonL();
 
     AfterValueChange(); // action after value change
     return TRUE;
@@ -440,6 +446,23 @@ void PNXBomAnalysisCmd::fiaAgentUpdate() {
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXBomAnalysis CMD AGENT UPDATE STATE
+}
+//-------------------------------------------------------------------------
+void PNXBomAnalysisCmd::OnOutputBomCB(CATCommand* cmd, CATNotification* evt,
+                                      CATCommandClientData data) {
+    int value = CATPtrToINT32(data);
+    cout << "- PNXBomAnalysisCmd::OnOutputBomCB " << value << endl;
+
+    switch (value) {
+    case 1: // json
+        core->dumpJsonL();
+        break;
+    case 2: // Markdown
+        core->dumpMarkdown();
+        break;
+        // default:
+        // core->dumpJsonL();
+    }
 }
 //-----------------------------------------------------------------------------
 void PNXBomAnalysisCmd::SetActiveField(PNXBomAnalysisField field) {

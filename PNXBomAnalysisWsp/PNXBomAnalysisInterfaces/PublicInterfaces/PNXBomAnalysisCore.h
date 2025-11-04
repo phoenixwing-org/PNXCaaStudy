@@ -47,6 +47,18 @@ public:
      */
     static int checkoutProperties(CATISpecObject_var productObject, PNXBomItem& item);
 
+    /** @brief dump Json */
+    int dumpJsonL();
+
+    /** @brief dump Json */
+    static int dumpJson(const PNXBomItem& item);
+
+    /** @brief dump Markdown */
+    int dumpMarkdown();
+
+    /** @brief dump Markdown */
+    static int dumpMarkdown(const PNXBomItem& item);
+
     /** @brief pretreat */
     HRESULT pretreat();
 

@@ -24,6 +24,7 @@ CATDlgSelectorList SelectorListFirstProduct
 {
   FATHER = FrameParams;
   TH = 1;
+  TW = 16;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
@@ -51,9 +52,29 @@ CATDlgFrame FrameBom
 CATDlgMultiList MultiListPartBom
 {
   FATHER = FrameBom;
-  CC = 1;
-  VCC = 1;
+  TW = 22;
+  CC = 5;
+  VCC = 4;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame FrameOutput
+{
+  FATHER = FrameBom;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton PushButtonJson
+{
+  FATHER = FrameOutput;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton PushButtonPrintMarkdown
+{
+  FATHER = FrameOutput;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

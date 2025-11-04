@@ -27,31 +27,48 @@
 #include "PNXBomAnalysisItf.h"
 
 // std
+#include <map>
 #include <vector>
 
+#define CATIA_PROD_PartNumber PartNumber
+#define CATIA_PROD_Revision Revision
+#define CATIA_PROD_Source Source
+#define CATIA_PROD_Definition Definition
+#define CATIA_PROD_Nomenclature Nomenclature
+#define CATIA_PROD_DscriptionRef DscriptionRef
+#define CATIA_PROD_InstanceName InstanceName
+#define CATIA_PROD_DescriptionInst DescriptionInst
+#define CATIA_PROD_ActivateBOM ActivateBOM
+
 struct PNXBomItem {
-    CATUnicodeString productAlias;
+    PNXBomItem() {
+        ActivateBOM = "1";
+    }
+    CATUnicodeString ParentPartNumber;
+
     // the following in main properties
-    CATUnicodeString partNumber;
-    CATUnicodeString revision;
-    CATUnicodeString definition;
-    CATUnicodeString nomenclature;
-    CATUnicodeString surfaceTreatment;
-    CATUnicodeString weight;
-    CATUnicodeString material;
-    CATUnicodeString source;
-    CATUnicodeString description;
+    CATUnicodeString PartNumber;
+    CATUnicodeString Revision;
+    CATUnicodeString Source;
+    CATUnicodeString Definition;
+    CATUnicodeString Nomenclature;
+    CATUnicodeString DscriptionRef;
+    CATUnicodeString InstanceName;
+    CATUnicodeString DescriptionInst;
+    CATUnicodeString ActivateBOM;
 
-    // mechanical
+    // User Proterties
+    std::map<CATUnicodeString, CATUnicodeString> UserProperties;
 
-    float        volume;
-    float        mass;
-    float        surface;
-    CATMathPoint center;
+    // Specobject properties
+    CATUnicodeString ProductAlias;
+    // CATUnicodeString productDisplayName;
 
-    // more
-
-    CATUnicodeString parentPartNumber;
+    // // mechanical
+    // float        volume;
+    // float        mass;
+    // float        surface;
+    // CATMathPoint center;
 };
 
 /** @brief Field Type */
@@ -130,10 +147,10 @@ public: // KEVIN_SYSTEM_CODE
 
 public: // functions
     /**
-     * @brief checkout
-     * @return HRESULT
+     * @brief convert Json
+     * @return CATUnicodeString
      */
-    HRESULT CheckoutAxis();
+    static CATUnicodeString convertJson(const PNXBomItem& item);
 };
 
 #endif

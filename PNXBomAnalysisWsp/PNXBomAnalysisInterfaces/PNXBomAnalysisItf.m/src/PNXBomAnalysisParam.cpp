@@ -90,12 +90,26 @@ int PNXBomAnalysisParam::GetSoftwareVersion() {
 }
 
 #pragma endregion KEVIN_SYSTEM_CODE_FUNCTIONS
+
 //-----------------------------------------------------------------------------
-HRESULT PNXBomAnalysisParam::CheckoutAxis() {
-    CATMathAxis MyAxis = CATMathOIJK; // set abs axis
+CATUnicodeString PNXBomAnalysisParam::convertJson(const PNXBomItem& item) {
+    CATUnicodeString strJson;
 
-    // if (NULL_var == CurrentAxis) // abs axis
-    //     return S_OK;
+    // clang-format off
+    strJson.Append("{");
+    strJson.Append("\"PartNumber\":\"");       strJson.Append(item.PartNumber);       strJson.Append("\",");
+    strJson.Append("\"Revision\":\"");         strJson.Append(item.Revision);         strJson.Append("\",");
+    strJson.Append("\"Source\":\"");           strJson.Append(item.Source);           strJson.Append("\",");
+    strJson.Append("\"Definition\":\"");       strJson.Append(item.Definition);       strJson.Append("\",");
+    strJson.Append("\"Nomenclature\":\"");     strJson.Append(item.Nomenclature);     strJson.Append("\",");
+    strJson.Append("\"DscriptionRef\":\"");    strJson.Append(item.DscriptionRef);    strJson.Append("\",");
+    strJson.Append("\"InstanceName\":\"");     strJson.Append(item.InstanceName);     strJson.Append("\",");
+    strJson.Append("\"DescriptionInst\":\"");  strJson.Append(item.DescriptionInst);  strJson.Append("\",");
+    strJson.Append("\"ActivateBOM\":\"");      strJson.Append(item.ActivateBOM);      strJson.Append("\",");
+    strJson.Append("\"ProductAlias\":\"");     strJson.Append(item.ProductAlias);     strJson.Append("\",");
+    strJson.Append("\"ParentPartNumber\":\""); strJson.Append(item.ParentPartNumber); strJson.Append("\"");
+    strJson.Append("}");
+    // clang-format on
 
-    return S_OK;
+    return strJson;
 }

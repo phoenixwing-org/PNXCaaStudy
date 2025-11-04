@@ -53,6 +53,9 @@ PNXBomAnalysisDlg::PNXBomAnalysisDlg()
  _LabelFirstPartNumber = NULL;
  _FrameBom = NULL;
  _MultiListPartBom = NULL;
+ _FrameOutput = NULL;
+ _PushButtonJson = NULL;
+ _PushButtonPrintMarkdown = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
     // clang-format on
 
@@ -73,6 +76,9 @@ PNXBomAnalysisDlg::~PNXBomAnalysisDlg() {
  _LabelFirstPartNumber = NULL;
  _FrameBom = NULL;
  _MultiListPartBom = NULL;
+ _FrameOutput = NULL;
+ _PushButtonJson = NULL;
+ _PushButtonPrintMarkdown = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
     // clang-format on
 
@@ -93,6 +99,7 @@ _FrameParams -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
 _LabelFirstProduct -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _SelectorListFirstProduct = new CATDlgSelectorList(_FrameParams, "SelectorListFirstProduct");
  _SelectorListFirstProduct -> SetVisibleTextHeight(1);
+ _SelectorListFirstProduct -> SetVisibleTextWidth(16);
 _SelectorListFirstProduct -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _EditorFirstPartNumber = new CATDlgEditor(_FrameParams, "EditorFirstPartNumber");
 _EditorFirstPartNumber -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
@@ -103,16 +110,29 @@ _FrameBom -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _FrameBom -> SetGridRowResizable(0,1);
  _FrameBom -> SetGridColumnResizable(0,1);
  _MultiListPartBom = new CATDlgMultiList(_FrameBom, "MultiListPartBom");
- CATUnicodeString MultiListPartBomTitles [ 1 ];
+ _MultiListPartBom -> SetVisibleTextWidth(22);
+ CATUnicodeString MultiListPartBomTitles [ 5 ];
  MultiListPartBomTitles[0] = CATMsgCatalog::BuildMessage("PNXBomAnalysisDlg", "FrameBom.MultiListPartBom.ColumnTitle1");
- _MultiListPartBom -> SetColumnTitles(1, MultiListPartBomTitles);
- _MultiListPartBom -> SetVisibleColumnCount( 1 );
+ MultiListPartBomTitles[1] = CATMsgCatalog::BuildMessage("PNXBomAnalysisDlg", "FrameBom.MultiListPartBom.ColumnTitle2");
+ MultiListPartBomTitles[2] = CATMsgCatalog::BuildMessage("PNXBomAnalysisDlg", "FrameBom.MultiListPartBom.ColumnTitle3");
+ MultiListPartBomTitles[3] = CATMsgCatalog::BuildMessage("PNXBomAnalysisDlg", "FrameBom.MultiListPartBom.ColumnTitle4");
+ MultiListPartBomTitles[4] = CATMsgCatalog::BuildMessage("PNXBomAnalysisDlg", "FrameBom.MultiListPartBom.ColumnTitle5");
+ _MultiListPartBom -> SetColumnTitles(5, MultiListPartBomTitles);
+ _MultiListPartBom -> SetVisibleColumnCount( 4 );
 _MultiListPartBom -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _FrameOutput = new CATDlgFrame(_FrameBom, "FrameOutput", CATDlgFraNoFrame|CATDlgGridLayout);
+_FrameOutput -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _PushButtonJson = new CATDlgPushButton(_FrameOutput, "PushButtonJson");
+_PushButtonJson -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PushButtonPrintMarkdown = new CATDlgPushButton(_FrameOutput, "PushButtonPrintMarkdown");
+_PushButtonPrintMarkdown -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-    // clang-format on
 
-    // CAA2 WIZARD CALLBACK DECLARATION SECTION
-    // END CAA2 WIZARD CALLBACK DECLARATION SECTION
+//CAA2 WIZARD CALLBACK DECLARATION SECTION
+
+//END CAA2 WIZARD CALLBACK DECLARATION SECTION
+
+    // clang-format on
 
     dialogMore->Build(); // Build
 

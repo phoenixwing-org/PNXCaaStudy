@@ -69,25 +69,22 @@ HRESULT PNXBomAnalysisCore::pretreat() {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXBomAnalysisCore::calculate() {
-    // cout << "PNXBomAnalysisCore::calculate" << endl;
     if (NULL == parameter) return E_INVALIDARG; // param check
     if (NULL == parameter->productItems) {
         cout << "- [error] parameter->productItems is NULL!" << endl;
         return E_INVALIDARG; // param check
     }
 
+    // clear
+    parameter->FirstPartNumber = ""; // clear partnumber
     if (!parameter->FirstProduct) {
         parameter->productItems->clear(); // clear list
-        parameter->FirstPartNumber = "";  // clear partnumber
         return S_OK;
     }
 
-    // TODO change to partnumber
-    parameter->FirstPartNumber = parameter->FirstProduct->GetDisplayName();
-
+    // cout << "### calculate Bom" << endl;
+    // first product item
     PNXBomItem firstItem;
-    firstItem.partNumber       = parameter->FirstPartNumber;
-    firstItem.parentPartNumber = "";
 
     // get properties
     int code = checkoutProperties(parameter->FirstProduct, firstItem);
@@ -95,20 +92,15 @@ HRESULT PNXBomAnalysisCore::calculate() {
         cout << "- [error] " << (code = 1005) << ": can not convert to CATIAlias_var." << endl;
         return E_FAIL;
     }
+    parameter->productItems->push_back(firstItem); // add to vector
 
-    CATIProduct_var firstProduct = parameter->FirstProduct; // 获取参考产品
+    parameter->FirstPartNumber = firstItem.PartNumber; // set first partnumber
 
-    // CATIProduct_var spRefParentPro = firstProduct->GetReferenceProduct(); // 获取参考产品
-    CATIProduct_var spRefParentPro = firstProduct;
-
-    if (NULL_var == spRefParentPro) return E_INVALIDARG; // 检查参考产品是否有效
-
-    // CATIAlias_var aliasOnCurrentRootPrd = spRefParentPro; // 获取当前根产品的别名接口
-
-    // CATUnicodeString strPathName = aliasOnCurrentRootPrd->GetAlias(); // 获取路径名称
+    // 转换第一个产品
+    CATIProduct_var firstProduct = parameter->FirstProduct; // 获取产品
+    if (NULL_var == firstProduct) return E_INVALIDARG;      // 检查参考产品是否有效
 
     CATListValCATBaseUnknown_var* plistOfChildren = firstProduct->GetChildren(); // 获取子产品列表
-
     if (plistOfChildren == NULL || plistOfChildren->Size() == 0) { // 检查子产品列表是否有效
         cout << "- [error] sub items count = 0" << endl;           // 输出错误信息
         return S_OK;
@@ -119,18 +111,18 @@ HRESULT PNXBomAnalysisCore::calculate() {
 
     std::map<CATUnicodeString, int> productMap;
 
-    // 如果是零件编号属性
-
-    for (int iProd = 1; iProd <= plistOfChildren->Size(); iProd++) { // 遍历子产品列表
-
-        CATISpecObject_var spCurrentPrd = (*plistOfChildren)[ iProd ]; // 获取当前产品
+    // 遍历子产品列表
+    for (int iProd = 1; iProd <= plistOfChildren->Size(); iProd++) {
+        // 获取当前产品
+        CATISpecObject_var spCurrentPrd = (*plistOfChildren)[ iProd ];
         if (spCurrentPrd == NULL_var) { // 检查当前产品是否有效
             continue;
         }
 
         // get item
         PNXBomItem item;
-        int        code = checkoutProperties(parameter->FirstProduct, item);
+        item.ParentPartNumber = firstItem.PartNumber; // set parrent part number
+        int code              = checkoutProperties(spCurrentPrd, item);
         if (code) { // error
             cout << "- [error] " << (code = 1007) << " : can not convert to CATIAlias_var." << endl;
             return E_FAIL;
@@ -138,9 +130,9 @@ HRESULT PNXBomAnalysisCore::calculate() {
 
         parameter->productItems->push_back(item); // add to vector
 
-        if (item.partNumber.GetLengthInChar() > 0) {
-            // if (productMap.) }
-        }
+        // if (item.PartNumber.GetLengthInChar() > 0) {
+        //     // if (productMap.) }
+        // }
     }
     return S_OK;
 }
@@ -176,8 +168,8 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
         return code;
     }
 
-    item.productAlias = aliasObj->GetAlias(); // get productAlias
-    cout << "    - alias : " << item.productAlias << endl;
+    item.ProductAlias = aliasObj->GetAlias(); // get productAlias
+    // cout << "- ProductAlias : " << item.ProductAlias << endl;
 
     // 获取产品属性接口
     CATIPrdProperties_var spPrdProperties = currentRef;
@@ -186,23 +178,37 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
         return code;
     }
 
-    // get nomenclature
-    spPrdProperties->GetNomenclature(item.nomenclature); // 获取零件名称
-    spPrdProperties->GetInstanceName(item.productAlias);
-    spPrdProperties->GetPartNumber(item.partNumber);
-    spPrdProperties->GetRevision(item.revision);
-    spPrdProperties->GetDefinition(item.definition);
+    // get main properties
+    spPrdProperties->GetPartNumber(item.PartNumber); // 零件号
+    spPrdProperties->GetRevision(item.Revision);     // 版本
+
+    // 来源
+    CatProductSource refSource;
+    spPrdProperties->GetSource(refSource); // 来源
+
+    // catProductSourceUnknown, catProductMade, catProductBought
+    switch (refSource) {
+    case catProductMade:
+        item.Source = "Made";
+        break;
+    case catProductBought:
+        item.Source = "Bought";
+        break;
+    default: // catProductSourceUnknown
+        item.Source = "Unknown";
+        break;
+    }
+    spPrdProperties->GetDefinition(item.Definition);           // 定义
+    spPrdProperties->GetNomenclature(item.Nomenclature);       // 获取零件名称
+    spPrdProperties->GetDescriptionRef(item.Nomenclature);     // 获取零件名称
+    spPrdProperties->GetInstanceName(item.InstanceName);       // 实例名
+    spPrdProperties->GetDescriptionInst(item.DescriptionInst); // 实例描述
+
+    CATBoolean activateBOM;
+    spPrdProperties->GetActivateBOM(activateBOM);
+    item.ActivateBOM = activateBOM != CATFalse ? "1" : "0";
 
     int index = 0;
-
-    cout << endl;
-    cout << "    |    index | property         | value          | " << endl;
-    cout << "    | -------- | ---------------- | -------------- | " << endl;
-    cout << "    | " << (index++) << " | nomenclature     | " << item.nomenclature << " |" << endl;
-    cout << "    | " << (index++) << " | productAlias     | " << item.productAlias << " |" << endl;
-    cout << "    | " << (index++) << " | partNumber     | " << item.partNumber << " |" << endl;
-    cout << "    | " << (index++) << " | revision     | " << item.revision << " |" << endl;
-    cout << "    | " << (index++) << " | definition     | " << item.definition << " |" << endl;
 
     // 声明参数发布者指针
     CATIParmPublisher* piParmPublisher = NULL;
@@ -220,20 +226,19 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
 
     if (listParamObj.Size() == 0) return 0; // ok
 
-    cout << "    - listParamObj.Size() :" << listParamObj.Size() << endl;
+    // cout << "    - listParamObj.Size() :" << listParamObj.Size() << endl;
 
     // protertyName
-    static const CATUnicodeString propPartNumber("Part Number");            // 零件编号
     static const CATUnicodeString propMaterial("Material");                 // 材料
     static const CATUnicodeString propSurfaceTreatment("Surfacetreatment"); // 表面处理
     static const CATUnicodeString propWeight("Weight");                     // 重量
 
     for (int iProperty = 1; iProperty <= listParamObj.Size(); iProperty++) { // 遍历参数对象列表
 
-        cout << " -  " << iProperty << endl;
+        // cout << " -  " << iProperty << endl;
         CATISpecObject_var spParamObject = listParamObj[ iProperty ]; // 获取参数对象
         if (NULL_var == spParamObject) {
-            cout << "    | " << iProperty << " |   |   |" << endl;
+            // cout << "    | " << iProperty << " |   |   |" << endl;
             continue; // 跳过无效参数对象
         }
         CATUnicodeString strAttrName = spParamObject->GetDisplayName(); // 获取属性名称
@@ -247,17 +252,80 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
                 strAttrValue = spCkeInst->AsString();       // 获取参数值字符串
             }
         }
-        cout << "    | " << (index++) << " | " << strAttrName << " | " << strAttrValue << " |"
-             << endl;
 
-        // 变量类型
-        if (strAttrName == propMaterial) // 如果是材料属性
-            item.material = strAttrValue;
-        else if (strAttrName == propSurfaceTreatment) // 如果是表面处理属性
-            item.surfaceTreatment = strAttrValue;
-        else if (strAttrName == propWeight) // 如果是重量属性
-            item.weight = strAttrValue;
+        // cout << "    | " << (++index) << " | " << strAttrName << " | " << strAttrValue << " |"
+        //      << endl;
+
+        // 变量类型 修改为你的类型
+        // if (strAttrName == propMaterial) // 如果是材料属性
+        //     item.material = strAttrValue;
+        // else if (strAttrName == propSurfaceTreatment) // 如果是表面处理属性
+        //     item.surfaceTreatment = strAttrValue;
+        // else if (strAttrName == propWeight) // 如果是重量属性
+        //     item.weight = strAttrValue;
     }
+
+    return 0; // ok
+}
+//-----------------------------------------------------------------------------
+int PNXBomAnalysisCore::dumpJsonL() {
+    if (!parameter || !(parameter->productItems)) return 0;
+    int                      code         = 0;
+    std::vector<PNXBomItem>& productItems = *(parameter->productItems);
+    if (productItems.size() == 0) return 0;
+
+    cout << "### Bom in JsonL format" << endl;
+
+    cout << "```json" << endl;
+    for (int i = 0; i < productItems.size(); i++) { // 遍历参数对象列表
+        dumpJson(productItems[ i ]);
+    }
+    cout << "```" << endl;
+
+    return 0; // ok
+}
+//-----------------------------------------------------------------------------
+int PNXBomAnalysisCore::dumpJson(const PNXBomItem& item) {
+    cout << PNXBomAnalysisParam::convertJson(item) << endl;
+    return 0;
+}
+//-----------------------------------------------------------------------------
+int PNXBomAnalysisCore::dumpMarkdown() {
+    if (!parameter || !(parameter->productItems)) return 0;
+    int                      code         = 0;
+    std::vector<PNXBomItem>& productItems = *(parameter->productItems);
+    if (productItems.size() == 0) return 0;
+
+    cout << "### Bom in markdown format" << endl;
+    for (int i = 0; i < productItems.size(); i++) { // 遍历参数对象列表
+        dumpMarkdown(productItems[ i ]);
+    }
+
+    return 0; // ok
+}
+//-----------------------------------------------------------------------------
+int PNXBomAnalysisCore::dumpMarkdown(const PNXBomItem& item) {
+    cout << "- ProductAlias : " << item.ProductAlias << endl;
+
+    int index = 0;
+
+    cout << endl;
+    // clang-format off
+    cout << "    |    index | property         | value          | " << endl;
+    cout << "    | -------- | ---------------- | -------------- | " << endl;
+    cout << "    | " << (++index) << " | PartNumber  | " << item.PartNumber << " |" << endl;
+    cout << "    | " << (++index) << " | Revision  | " << item.Revision << " |" << endl;
+    cout << "    | " << (++index) << " | Source  | " << item.Source << " |" << endl;
+    cout << "    | " << (++index) << " | Definition  | " << item.Definition << " |" << endl;
+    cout << "    | " << (++index) << " | Nomenclature  | " << item.Nomenclature << " |" << endl;
+    cout << "    | " << (++index) << " | DscriptionRef  | " << item.DscriptionRef << " |" << endl;
+    cout << "    | " << (++index) << " | InstanceName  | " << item.InstanceName << " |" << endl;
+    cout << "    | " << (++index) << " | DescriptionInst | " << item.DescriptionInst << " |"         << endl;
+    cout << "    | " << (++index) << " | ActivateBOM  | " << item.ActivateBOM << " |" << endl;
+    cout << "    | " << (++index) << " | ProductAlias  | " << item.ProductAlias << " |" << endl;
+    cout << "    | " << (++index) << " | ParentPartNumber | " << item.ParentPartNumber << " |" << endl;
+
+    // clang-format on
 
     return 0; // ok
 }
