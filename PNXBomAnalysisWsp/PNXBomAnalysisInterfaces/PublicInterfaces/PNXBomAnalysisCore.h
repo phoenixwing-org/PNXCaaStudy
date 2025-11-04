@@ -36,6 +36,8 @@ private:
     PNXBomAnalysisCore& operator=(PNXBomAnalysisCore&);
 
 public:
+    int bomAnalysis(CATISpecObject_var currentPrd, const CATUnicodeString& parentPartNumber);
+
     /** @brief calculate */
     HRESULT calculate();
 

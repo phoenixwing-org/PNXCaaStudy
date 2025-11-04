@@ -76,29 +76,38 @@ HRESULT PNXBomAnalysisCore::calculate() {
     }
 
     // clear
-    parameter->FirstPartNumber = ""; // clear partnumber
-    if (!parameter->FirstProduct) {
-        parameter->productItems->clear(); // clear list
-        return S_OK;
-    }
+    parameter->productItems->clear(); // clear list
+    parameter->FirstPartNumber = "";  // TODO delete
+
+    int count = bomAnalysis(parameter->FirstProduct, "");
+    cout << "- total pruduct count = " << count << endl;
+
+    return S_OK;
+}
+//-----------------------------------------------------------------------------
+int PNXBomAnalysisCore::bomAnalysis(CATISpecObject_var      currentPrd,
+                                    const CATUnicodeString& parentPartNumber) {
+    if (!currentPrd) return 0;
+    if (NULL == parameter->productItems) return 0;
 
     // cout << "### calculate Bom" << endl;
     // first product item
-    PNXBomItem firstItem;
+    PNXBomItem item;
+    item.ParentPartNumber = parentPartNumber;
 
     // get properties
-    int code = checkoutProperties(parameter->FirstProduct, firstItem);
+    int code = checkoutProperties(currentPrd, item);
     if (code) { // error
         cout << "- [error] " << (code = 1005) << ": can not convert to CATIAlias_var." << endl;
-        return E_FAIL;
+        return 0;
     }
-    parameter->productItems->push_back(firstItem); // add to vector
-
-    parameter->FirstPartNumber = firstItem.PartNumber; // set first partnumber
+    int count = 0;
+    parameter->productItems->push_back(item); // add to vector
+    count++;
 
     // 转换第一个产品
-    CATIProduct_var firstProduct = parameter->FirstProduct; // 获取产品
-    if (NULL_var == firstProduct) return E_INVALIDARG;      // 检查参考产品是否有效
+    CATIProduct_var firstProduct = currentPrd;         // 获取产品
+    if (NULL_var == firstProduct) return E_INVALIDARG; // 检查参考产品是否有效
 
     CATListValCATBaseUnknown_var* plistOfChildren = firstProduct->GetChildren(); // 获取子产品列表
     if (plistOfChildren == NULL || plistOfChildren->Size() == 0) { // 检查子产品列表是否有效
@@ -119,22 +128,10 @@ HRESULT PNXBomAnalysisCore::calculate() {
             continue;
         }
 
-        // get item
-        PNXBomItem item;
-        item.ParentPartNumber = firstItem.PartNumber; // set parrent part number
-        int code              = checkoutProperties(spCurrentPrd, item);
-        if (code) { // error
-            cout << "- [error] " << (code = 1007) << " : can not convert to CATIAlias_var." << endl;
-            return E_FAIL;
-        }
-
-        parameter->productItems->push_back(item); // add to vector
-
-        // if (item.PartNumber.GetLengthInChar() > 0) {
-        //     // if (productMap.) }
-        // }
+        // 递归调用
+        count += bomAnalysis(spCurrentPrd, item.PartNumber);
     }
-    return S_OK;
+    return count;
 }
 //-----------------------------------------------------------------------------
 int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNXBomItem& item) {
