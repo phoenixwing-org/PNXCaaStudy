@@ -7,7 +7,7 @@
 //======================================================================
 PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Title     = "PNX Bom Analysis" ;
 PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.ShortHelp = "PNX Bom Analysis" ;
-PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Help      = "Create PNX Bom Analysis Object" ;
-PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.LongHelp  = "Create a PNX Bom Analysis Object. use point, direction and axis." ;
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Help      = "PNX Bom Analysis" ;
+PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.LongHelp  = "PNX Bom Analysis" ;
 PNXBomAnalysisAdnHeader.PNXBomAnalysisHdr.Category  = "Insert" ;
 

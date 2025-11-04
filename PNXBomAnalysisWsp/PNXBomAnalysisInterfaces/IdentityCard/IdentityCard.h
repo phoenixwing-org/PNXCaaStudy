@@ -16,6 +16,8 @@ AddPrereqComponent("GeometricObjects", Public);
 AddPrereqComponent("System", Public);
 AddPrereqComponent("ObjectSpecsModeler", Public);
 AddPrereqComponent("Mathematics", Public);
+AddPrereqComponent("KnowledgeInterfaces", Public);
+AddPrereqComponent("ObjectModelerBase", Public);
 
 // bypass link forte 6.1
 AddPrereqComponent("ProductStructure", Public);

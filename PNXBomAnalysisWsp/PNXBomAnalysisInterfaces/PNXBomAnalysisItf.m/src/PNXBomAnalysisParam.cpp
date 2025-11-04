@@ -15,7 +15,6 @@
 #include "CATPoint.h"
 #include "iostream.h"
 
-
 // Local
 #include "PNXBomAnalysisParam.h"
 
@@ -36,14 +35,17 @@ PNXBomAnalysisParam::PNXBomAnalysisParam()
     , FirstPartNumber() // 2
     , PartCount(0) // 3
 
-// clang-format on
-// END KEVIN CAA WIZARD SECTION PNXBomAnalysis PARAM CONSTRUCTOR
-{
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXBomAnalysis PARAM CONSTRUCTOR
+    , productItems(NULL) {
+    productItems = new std::vector<PNXBomItem>();
 
     // your code here:
 }
 //-----------------------------------------------------------------------------
 PNXBomAnalysisParam::~PNXBomAnalysisParam() {
+    delete productItems;
+    productItems = NULL;
 
     // 0A,FeatureVersion
 

@@ -18,6 +18,7 @@ LINK_WITH=CATGeometricObjects          \
           CATMathematics               \
           CATMathStream                \
           CATMecModInterfaces          \
+          CATObjectModelerBase         \
           CATMechanicalModeler         \
           CATProductStructure1         \
           JS0GROUP                      \

@@ -16,6 +16,9 @@
 #ifndef PNXBomAnalysisCore_H
 #define PNXBomAnalysisCore_H
 
+// CAT
+#include "CATIProduct.h"
+
 // Local Framework
 #include "PNXBomAnalysisCoreData.h"
 
@@ -33,14 +36,19 @@ private:
     PNXBomAnalysisCore& operator=(PNXBomAnalysisCore&);
 
 public:
-    /** @brief Calculate */
-    HRESULT Calculate();
+    /** @brief calculate */
+    HRESULT calculate();
 
-    /** @brief Create the line */
-    HRESULT Create();
+    /**
+     * @brief checkout properties
+     * @param productObject input product
+     * @param item output bom item
+     * @return error code
+     */
+    static int checkoutProperties(CATISpecObject_var productObject, PNXBomItem& item);
 
-    /** @brief Pretreat */
-    HRESULT Pretreat();
+    /** @brief pretreat */
+    HRESULT pretreat();
 
 private:
 };

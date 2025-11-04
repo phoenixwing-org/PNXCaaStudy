@@ -26,12 +26,19 @@
 
 #include "PNXBomAnalysisItf.h"
 
+// std
+#include <vector>
+
 struct PNXBomItem {
+    CATUnicodeString productAlias;
     // the following in main properties
     CATUnicodeString partNumber;
     CATUnicodeString revision;
     CATUnicodeString definition;
-    CATUnicodeString nonenclature;
+    CATUnicodeString nomenclature;
+    CATUnicodeString surfaceTreatment;
+    CATUnicodeString weight;
+    CATUnicodeString material;
     CATUnicodeString source;
     CATUnicodeString description;
 
@@ -41,6 +48,10 @@ struct PNXBomItem {
     float        mass;
     float        surface;
     CATMathPoint center;
+
+    // more
+
+    CATUnicodeString parentPartNumber;
 };
 
 /** @brief Field Type */
@@ -103,6 +114,8 @@ public:
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXBomAnalysis PARAM DECLARATION
+
+    std::vector<PNXBomItem>* productItems;
 
 public: // KEVIN_SYSTEM_CODE
     // KEVIN_SYSTEM_CODE START

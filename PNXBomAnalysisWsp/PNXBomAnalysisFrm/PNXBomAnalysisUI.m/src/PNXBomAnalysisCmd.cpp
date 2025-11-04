@@ -277,7 +277,7 @@ CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    HRESULT hr = core->Calculate();
+    HRESULT hr = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
     return TRUE;
@@ -299,6 +299,9 @@ CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void* data) {
     _pfiaElementSelect->InitializeAcquisition();                          // 初始化获取操作
     if (NULL == pBaseUnknown) return CATFalse;                            // 检查有效
     cout << "- Select BASE element :" << pBaseUnknown << endl;
+
+    if (!parameter) return CATFalse;
+    if (!core) return CATFalse;
 
     // START KEVIN CAA WIZARD SECTION PNXBomAnalysis CMD ACTION FIA
 
@@ -339,6 +342,14 @@ CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void* data) {
     // 切換object
     parameter->FirstProduct =
         parameter->FirstProduct == input ? NULL_var : parameter->FirstProduct = input;
+
+    // calculate bom list
+
+    rc = core->pretreat();
+    if (FAILED(rc)) {
+        cout << "- [error] core pretreat failed" << endl;
+    }
+    rc = core->calculate();
 
     AfterValueChange(); // action after value change
     return TRUE;
@@ -394,9 +405,6 @@ HRESULT PNXBomAnalysisCmd::CreateElement() {
         return S_OK;
 
     if (NULL == core) return E_INVALIDARG;
-
-    HRESULT hr = core->Create(); // create
-    if (FAILED(hr)) return hr;
 
     return S_OK;
 }
