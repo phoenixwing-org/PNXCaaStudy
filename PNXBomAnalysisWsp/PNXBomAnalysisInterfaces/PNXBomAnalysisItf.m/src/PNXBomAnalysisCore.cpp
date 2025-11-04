@@ -146,10 +146,18 @@ HRESULT PNXBomAnalysisCore::calculate() {
 }
 //-----------------------------------------------------------------------------
 int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNXBomItem& item) {
+    int code = 0;
+    if (productObject == NULL_var) { // error
+        cout << "    - [error] " << (code = 1009) << ": input productObject is NULL.";
+        return code;
+    }
+
     // 获取当前产品
-    CATIProduct_var currentPrd = productObject;
-    int             code       = 0;
-    if (currentPrd == NULL_var) { // error
+    CATIProduct_var currentPrd;
+
+    // 查询产品接口
+    HRESULT rc = productObject->QueryInterface(IID_CATIProduct, (void**)&currentPrd);
+    if (FAILED(rc) || currentPrd == NULL_var) { // error
         cout << "    - [error] " << (code = 1001) << ": can not convert to CATIProduct_var.";
         return code;
     }
@@ -180,6 +188,21 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
 
     // get nomenclature
     spPrdProperties->GetNomenclature(item.nomenclature); // 获取零件名称
+    spPrdProperties->GetInstanceName(item.productAlias);
+    spPrdProperties->GetPartNumber(item.partNumber);
+    spPrdProperties->GetRevision(item.revision);
+    spPrdProperties->GetDefinition(item.definition);
+
+    int index = 0;
+
+    cout << endl;
+    cout << "    |    index | property         | value          | " << endl;
+    cout << "    | -------- | ---------------- | -------------- | " << endl;
+    cout << "    | " << (index++) << " | nomenclature     | " << item.nomenclature << " |" << endl;
+    cout << "    | " << (index++) << " | productAlias     | " << item.productAlias << " |" << endl;
+    cout << "    | " << (index++) << " | partNumber     | " << item.partNumber << " |" << endl;
+    cout << "    | " << (index++) << " | revision     | " << item.revision << " |" << endl;
+    cout << "    | " << (index++) << " | definition     | " << item.definition << " |" << endl;
 
     // 声明参数发布者指针
     CATIParmPublisher* piParmPublisher = NULL;
@@ -198,9 +221,6 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
     if (listParamObj.Size() == 0) return 0; // ok
 
     cout << "    - listParamObj.Size() :" << listParamObj.Size() << endl;
-
-    cout << "    |    index | property         | value          | " << endl;
-    cout << "    | -------- | ---------------- | -------------- | " << endl;
 
     // protertyName
     static const CATUnicodeString propPartNumber("Part Number");            // 零件编号
@@ -227,13 +247,11 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
                 strAttrValue = spCkeInst->AsString();       // 获取参数值字符串
             }
         }
-        cout << "    | " << iProperty << " | " << strAttrName << " | " << strAttrValue << " |"
+        cout << "    | " << (index++) << " | " << strAttrName << " | " << strAttrValue << " |"
              << endl;
 
         // 变量类型
-        if (strAttrName == propPartNumber) // 如果是零件编号属性
-            item.partNumber = strAttrValue;
-        else if (strAttrName == propMaterial) // 如果是材料属性
+        if (strAttrName == propMaterial) // 如果是材料属性
             item.material = strAttrValue;
         else if (strAttrName == propSurfaceTreatment) // 如果是表面处理属性
             item.surfaceTreatment = strAttrValue;
