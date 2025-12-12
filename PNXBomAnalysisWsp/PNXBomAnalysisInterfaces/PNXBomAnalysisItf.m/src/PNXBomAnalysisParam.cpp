@@ -113,3 +113,17 @@ CATUnicodeString PNXBomAnalysisParam::convertJson(const PNXBomItem& item) {
 
     return strJson;
 }
+//-----------------------------------------------------------------------------
+CATUnicodeString PNXBomAnalysisParam::ConvertErrorListToString() const {
+    CATUnicodeString result;
+    
+    int size = errorMessage.Size();
+    for (int i = 1; i <= size; i++) {
+        result.Append(errorMessage[i]);
+        if (i < size) {
+            result.Append("\n");
+        }
+    }
+    
+    return result;
+}

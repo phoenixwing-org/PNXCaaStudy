@@ -134,6 +134,14 @@ public:
 
     std::vector<PNXBomItem>* productItems;
 
+    /**
+    * @brief Error Message List
+    * @author Phoenix
+    * @date 2025/12/12
+    * @id 4
+    */
+    CATListOfCATUnicodeString errorMessage;
+
 public: // KEVIN_SYSTEM_CODE
     // KEVIN_SYSTEM_CODE START
     /**
@@ -151,6 +159,15 @@ public: // functions
      * @return CATUnicodeString
      */
     static CATUnicodeString convertJson(const PNXBomItem& item);
+
+    /**
+     * @brief Convert Error List to String
+     * @param errorMessage
+     * @return CATUnicodeString
+     * @note KEVIN_SYSTEM_CODE
+     */
+    CATUnicodeString ConvertErrorListToString() const; 
+
 };
 
 #endif
