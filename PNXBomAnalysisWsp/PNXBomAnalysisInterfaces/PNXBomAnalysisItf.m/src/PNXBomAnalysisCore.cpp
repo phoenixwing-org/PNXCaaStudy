@@ -282,6 +282,24 @@ int PNXBomAnalysisCore::dumpJsonL() {
     return 0; // ok
 }
 //-----------------------------------------------------------------------------
+CATUnicodeString PNXBomAnalysisCore::OutPutJson() {
+	if (!parameter || !(parameter->productItems)) return 0;
+
+	CATUnicodeString oJson;
+	int                      code         = 0;
+	std::vector<PNXBomItem>& productItems = *(parameter->productItems);
+	if (productItems.size() == 0) return 0;
+
+	oJson.Append( "### Bom in JsonL format");
+	oJson.Append( "```json");
+	for (int i = 0; i < productItems.size(); i++) { // 遍历参数对象列表
+		oJson.Append(PNXBomAnalysisParam::convertJson(productItems[ i ]));
+	}
+	oJson.Append(  "```" );
+	return oJson; // ok
+}
+
+//-----------------------------------------------------------------------------
 int PNXBomAnalysisCore::dumpJson(const PNXBomItem& item) {
     cout << PNXBomAnalysisParam::convertJson(item) << endl;
     return 0;

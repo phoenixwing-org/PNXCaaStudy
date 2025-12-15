@@ -8,14 +8,14 @@
 
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "PNX Bom Analysis";
-FrameParams.LabelFirstProduct.Title = "Base Curve";
+FrameParams.LabelFirstProduct.Title = "Root Product:";
 FrameParams.SelectorListFirstProduct.Help = "Select Base Curve";
 FrameParams.SelectorListFirstProduct.ShortHelp = "Select Base Curve";
 FrameParams.SelectorListFirstProduct.LongHelp = "Select Base Curve";
 FrameParams.EditorFirstPartNumber.Help = "First Part Number";
 FrameParams.EditorFirstPartNumber.ShortHelp = "First Part Number";
 FrameParams.EditorFirstPartNumber.LongHelp = "First Part Number";
-FrameParams.LabelFirstPartNumber.Title = "Part Number";
+FrameParams.LabelFirstPartNumber.Title = "Part Number:";
 FrameBom.Title = "Bom";
 FrameBom.MultiListPartBom.Help = "Part Bom";
 FrameBom.MultiListPartBom.ShortHelp = "Part Bom";

@@ -455,7 +455,11 @@ void PNXBomAnalysisCmd::OnOutputBomCB(CATCommand* cmd, CATNotification* evt,
 
     switch (value) {
     case 1: // json
-        core->dumpJsonL();
+		{
+			core->dumpJsonL();
+			CATUnicodeString JsonStr = core->OutPutJson();
+			dialog->_EditorOutInfo->SetText(JsonStr);
+		}
         break;
     case 2: // Markdown
         core->dumpMarkdown();
