@@ -1,16 +1,29 @@
 # PowerShell version of run.bat
 param(
-    [string]$Version = "19",
+    [string]$Version = "",
     [string]$Workspace = "",
     [switch]$Help
 )
+
+# if Version is empty use env CAA_MK_VERSION
+if ([string]::IsNullOrEmpty($Version)) {
+    $Version = $env:CAA_MK_VERSION
+    Write-Host "Version from env: $Version" -ForegroundColor Yellow
+    if ([string]::IsNullOrEmpty($Version)) {
+        $Version = "19"
+        Write-Host "Version set to default: $Version" -ForegroundColor Yellow
+    }
+}
+else {
+    Write-Host "Version from parameter: $Version" -ForegroundColor Yellow
+}
 
 # Show help if requested
 if ($Help) {
     Write-Host "Usage: run.ps1 [options]" -ForegroundColor Green
     Write-Host "Options:" -ForegroundColor Yellow
     Write-Host "  -Help or -h        Show this help message" -ForegroundColor White
-    Write-Host "  -Version or -v     Set version number (default: 19)" -ForegroundColor White
+    Write-Host "  -Version or -v     Set version number (default: 19) or use env CAA_MK_VERSION" -ForegroundColor White
     Write-Host "  -Workspace or -w   Set workspace path" -ForegroundColor White
     Write-Host ""
     Write-Host "Examples:" -ForegroundColor Yellow

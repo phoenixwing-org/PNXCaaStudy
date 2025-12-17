@@ -1,1 +1,1 @@
-& "../tools/mk.ps1" -v 19
+& "../tools/mk.ps1"

@@ -1,10 +1,23 @@
 # PowerShell version of mk.bat
 param(
-    [string]$Version = "19",
+    [string]$Version = "",
     [string]$Workspace = "",
     [switch]$Help,
     [switch]$UseBat
 )
+
+# if Version is empty use env CAA_MK_VERSION
+if ([string]::IsNullOrEmpty($Version)) {
+    $Version = $env:CAA_MK_VERSION
+    Write-Host "Version from env: $Version" -ForegroundColor Yellow
+    if ([string]::IsNullOrEmpty($Version)) {
+        $Version = "19"
+        Write-Host "Version set to default: $Version" -ForegroundColor Yellow
+    }
+}
+else {
+    Write-Host "Version from parameter: $Version" -ForegroundColor Yellow
+}
 
 # Show help if requested
 if ($Help) {
