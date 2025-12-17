@@ -24,7 +24,8 @@ LINK_WITH=CATGeometricObjects          \
           JS0GROUP                      \
           KnowledgeItf                  \       
           CATBasicTopologicalOpe        \
-          CATObjectSpecsModeler 
+          CATObjectSpecsModeler \
+          KTCAutoCodeItf
 
 
 #Link with with external libraries

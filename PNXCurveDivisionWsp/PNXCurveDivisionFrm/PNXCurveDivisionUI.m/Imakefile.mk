@@ -20,7 +20,9 @@ LINK_WITH=CATApplicationFrame         \
           DI0PANV2                  \
           JS0FM                     \
           JS0GROUP \
-          PNXCurveDivisionItf
+          PNXCurveDivisionItf \
+          KTCAutoCodeUI   \
+          KTCAutoCodeItf
 
 #Link with with external libraries
 

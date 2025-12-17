@@ -28,10 +28,9 @@
 
 // System Framework
 #include "KTCAutoCode.h"
-#include "KTCAutoPanelCommand.h"
 #include "KTCCoreDefine.h"
+#include "KTCDlgFunctions.h"
 
-int counterForSave = 0;
 //-------------------------------------------------------------------------
 PNXBomAnalysisDlg::PNXBomAnalysisDlg()
     : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),

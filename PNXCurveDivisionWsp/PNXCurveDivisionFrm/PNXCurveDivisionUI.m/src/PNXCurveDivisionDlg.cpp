@@ -31,7 +31,6 @@
 #include "KTCAutoCode.h"
 #include "KTCCoreDefine.h"
 
-int counterForSave = 0;
 namespace Kt {
 int round(double value) {
     return int(value + 0.5);

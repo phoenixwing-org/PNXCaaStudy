@@ -17,7 +17,8 @@ AddPrereqComponent("ObjectSpecsModeler", Public);
 AddPrereqComponent("System", Public);
 
 // KTC
-AddPrereqComponent("KTCAutoCode", Public);
+AddPrereqComponent("KTCAutoCodeInterfaces", Public);
+AddPrereqComponent("KTCAutoCodeFrm", Public);
 
 // self
 AddPrereqComponent("PNXV5V6AdapterInterfaces", Public);

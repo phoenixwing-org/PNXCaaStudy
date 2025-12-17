@@ -22,7 +22,8 @@ LINK_WITH=CATApplicationFrame         \
           JS0FM                     \
           JS0GROUP \
           PNXBomAnalysisItf \
-          KTCAutoCodeUI
+          KTCAutoCodeUI   \
+          KTCAutoCodeItf
 
 #Link with with external libraries
 

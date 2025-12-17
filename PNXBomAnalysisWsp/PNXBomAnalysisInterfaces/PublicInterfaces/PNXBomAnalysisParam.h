@@ -24,6 +24,7 @@
 // ObjectSpecModeler Framework
 #include "CATLISTV_CATISpecObject.h"
 
+#include "KTCParamUnknown.h"
 #include "PNXBomAnalysisItf.h"
 
 // std
@@ -87,7 +88,7 @@ enum PNXBomAnalysisField {
 };
 
 /** @brief KTC BomAnalysis Param */
-class ExportedByPNXBomAnalysisItf PNXBomAnalysisParam {
+class ExportedByPNXBomAnalysisItf PNXBomAnalysisParam : public KTCParamUnknown {
 public:
     /** @brief Standard constructors and destructors */
     PNXBomAnalysisParam();
@@ -135,11 +136,11 @@ public:
     std::vector<PNXBomItem>* productItems;
 
     /**
-    * @brief Error Message List
-    * @author Phoenix
-    * @date 2025/12/12
-    * @id 4
-    */
+     * @brief Error Message List
+     * @author Phoenix
+     * @date 2025/12/12
+     * @id 4
+     */
     CATListOfCATUnicodeString errorMessage;
 
 public: // KEVIN_SYSTEM_CODE
@@ -166,8 +167,7 @@ public: // functions
      * @return CATUnicodeString
      * @note KEVIN_SYSTEM_CODE
      */
-    CATUnicodeString ConvertErrorListToString() const; 
-
+    CATUnicodeString ConvertErrorListToString() const;
 };
 
 #endif

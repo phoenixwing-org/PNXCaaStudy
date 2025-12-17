@@ -36,58 +36,84 @@
                 "cwd": "${workspaceFolder}/PNXCurveDivisionWsp"
             },
             "problemMatcher": "$msCompile"
-        }, {
+        },
+        {
+            "label": "mkmk TemplateFeature",
+            "type": "shell",
+            "command": ".\\mk.ps1",
+            "options": {
+                "cwd": "${workspaceFolder}/PNXTemplateFeatureWsp"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "mkmk Remaining Parallel",
             "dependsOn": [
-                "mkmk CombinedCurve", "mkmk CurveDivision", "mkmk BomAnalysis"
+                "mkmk CombinedCurve",
+                "mkmk CurveDivision",
+                "mkmk BomAnalysis",
+                "mkmk TemplateFeature"
             ],
             "dependsOrder": "parallel",
             "group": "build"
-        }, {
+        },
+        {
             "label": "mkmk All Sequentially",
             "dependsOn": [
-                "mkmk AutoCodeWsp", "mkmk Remaining in Parallel"
+                "mkmk AutoCodeWsp",
+                "mkmk Remaining in Parallel"
             ],
             "dependsOrder": "sequence",
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
-        }, {
+        },
+        {
             "label": "mkmk All Parallel",
             "dependsOn": [
-                "mkmk AutoCodeWsp", "mkmk CombinedCurve", "mkmk CurveDivision", "mkmk BomAnalysis"
+                "mkmk AutoCodeWsp",
+                "mkmk CombinedCurve",
+                "mkmk CurveDivision",
+                "mkmk BomAnalysis",
+                "mkmk TemplateFeature"
             ],
             "dependsOrder": "parallel",
             "group": "build"
-        }, {
+        },
+        {
             "label": "Run BomAnalysis",
             "type": "shell",
             "command": "${workspaceFolder}/tools/run.ps1",
             "args": [
-                "-v", "19", "-w", "${workspaceFolder}/PNXBomAnalysisWsp"
+                "-w",
+                "${workspaceFolder}/PNXBomAnalysisWsp"
             ],
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}/PNXBomAnalysisWsp"
             }
-        }, {
+        },
+        {
             "label": "Run CombinedCurve",
             "type": "shell",
             "command": "${workspaceFolder}/tools/run.ps1",
             "args": [
-                "-v", "19", "-w", "${workspaceFolder}/PNXCombinedCurveWsp"
+                "-w",
+                "${workspaceFolder}/PNXCombinedCurveWsp"
             ],
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}/PNXCombinedCurveWsp"
             }
-        }, {
+        },
+        {
             "label": "Run CurveDivision",
             "type": "shell",
             "command": "${workspaceFolder}/tools/run.ps1",
             "args": [
-                "-v", "19", "-w", "${workspaceFolder}/PNXCurveDivisionWsp"
+                "-w",
+                "${workspaceFolder}/PNXCurveDivisionWsp"
             ],
             "group": "none",
             "options": {

@@ -10,4 +10,6 @@ AddPrereqComponent("ApplicationFrame", Public);
 AddPrereqComponent("CATIAApplicationFrame", Public);
 AddPrereqComponent("Dialog", Public);
 AddPrereqComponent("DialogEngine", Public);
+AddPrereqComponent("MechanicalModelerUI", Public);
+AddPrereqComponent("ObjectSpecsModeler", Public);
 AddPrereqComponent("System", Public);

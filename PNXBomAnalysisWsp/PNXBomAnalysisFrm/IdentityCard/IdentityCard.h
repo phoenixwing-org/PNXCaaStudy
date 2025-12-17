@@ -22,7 +22,8 @@ AddPrereqComponent("ProductStructure", Public);
 AddPrereqComponent("ProductStructureUI", Public);
 
 // KTC
-AddPrereqComponent("KTCAutoCode", Public);
+AddPrereqComponent("KTCAutoCodeInterfaces", Public);
+AddPrereqComponent("KTCAutoCodeFrm", Public);
 
 // self
 AddPrereqComponent("PNXBomAnalysisInterfaces", Public);

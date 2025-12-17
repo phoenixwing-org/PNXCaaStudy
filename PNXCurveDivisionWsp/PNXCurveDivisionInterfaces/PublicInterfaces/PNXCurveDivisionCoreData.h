@@ -47,8 +47,7 @@ private:
 
 public:
 public:
-    // START KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM
-    // DECLARATION
+    // START KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM DECLARATION
     // clang-format off
 
     // @app Kt Auto Code
@@ -79,11 +78,9 @@ public:
     CATFrmEditor* _catFrmEditor;
 
     // clang-format on
-    // END KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM
-    // DECLARATION
+    // END KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM DECLARATION
 
 protected:
-
     int _code; // CODE
 };
 

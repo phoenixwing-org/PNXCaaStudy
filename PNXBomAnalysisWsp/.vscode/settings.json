@@ -17,8 +17,8 @@
         "Trian"
     ],
     "C_Cpp.default.includePath": [
-        "${env:KT_ROOT}/kt/core/include/**",
-        "${env:KT_ROOT}/kt/KTC/include/**",
+        "${env:ROOT_DIR}/kt/core/include/**",
+        "${env:ROOT_DIR}/kt/KTC/include/**",
         "${workspaceFolder}/**"
     ],
     "C_Cpp.configurationWarnings": "enabled",

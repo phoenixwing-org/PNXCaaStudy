@@ -13,7 +13,7 @@
  * @brief FIELD SET LINE
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_FIELD_SET_LINE KTC::CATDlgSelectorListSetLine
+#define KT_AUTO_FIELD_SET_LINE KTCDlgFunctions::CATDlgSelectorListSetLine
 
 /**
  * @brief Agent Initialize
@@ -63,7 +63,7 @@
 
 /**
  * @brief CMD AGENT BUILD GRAPH, Start Part
- * @param[in] PREFIX a string like KTCGridAxis
+ * @param[in] PREFIX a string like KTCBaseSample
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_BUILD_START(PREFIX)      \
@@ -73,7 +73,7 @@
 
 /**
  * @brief CMD AGENT BUILD GRAPH, End Part
- * @param[in] PREFIX a string like KTCGridAxis
+ * @param[in] PREFIX a string like KTCBaseSample
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_BUILD_END(PREFIX)                                                     \
@@ -87,7 +87,7 @@
 
 /**
  * @brief CMD AGENT BUILD GRAPH, field part
- * @param[in] PREFIX a string like KTCGridAxis
+ * @param[in] PREFIX a string like KTCBaseSample
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
@@ -177,7 +177,7 @@
     _fia##NAME->SetOrderedElementType("CATIMfBiDimResult")
 
 /**
- * @brief CMD AGENT BUILD GRAPH FIA, field Grid Axis
+ * @brief CMD AGENT BUILD GRAPH FIA, field My Axis
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
