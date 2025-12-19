@@ -38,6 +38,16 @@ public:
      */
     int ActionSubCommandReturn();
 
+    /** @brief Get Active Field */
+    inline int GetActiveField() const {
+        return _currentField;
+    };
+
+    /** @brief Get Active Field */
+    inline KTC::ValueActionMode GetValueMode() const {
+        return _actionMode;
+    };
+
     /** @brief Register Parameter Dialog */
     void RegisterParameterDialog(CATDlgDialog* dlg);
 
@@ -57,6 +67,9 @@ public:
      */
     virtual void SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogAgent) = 0;
 
+    /** @brief Set Active Field */
+    void SetActiveField(int feild);
+
     /** @brief Set Active Field Focus */
     void SetActiveFieldFocus();
 
@@ -74,9 +87,12 @@ public:
 
 protected:
 public:
-    CATDlgDialog* _parameterDialog;
-    int           _currentField;
-    CATHSO*       _catHSO; // catia HSO
+    CATDlgDialog* _parameterDialog; // sub dialog
+    CATHSO*       _catHSO;          // catia HSO
+
+private:
+    int                  _currentField; // current field
+    KTC::ValueActionMode _actionMode;   // action mode
 };
 
 #endif

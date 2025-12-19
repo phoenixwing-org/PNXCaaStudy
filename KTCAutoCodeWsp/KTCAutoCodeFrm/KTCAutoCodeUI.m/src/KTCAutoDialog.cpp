@@ -27,7 +27,8 @@ KTCAutoDialog::KTCAutoDialog(CATDialog* iParent, CATMMUIPanelStateCmd* iFatherCm
     : CATDlgDialog(iParent, iFatherCmd, iObjectName, iStyle)
     , _parameterDialog(NULL)
     , _currentField(0)
-    , _catHSO(NULL) {
+    , _catHSO(NULL)
+    , _actionMode(KTC::ValueNormal) {
 }
 //-------------------------------------------------------------------------
 KTCAutoDialog::~KTCAutoDialog() {
@@ -43,6 +44,9 @@ void KTCAutoDialog::RegisterParameterDialog(CATDlgDialog* dlg) {
 int KTCAutoDialog::ActionSubCommandReturn() {
     cout << "TODO KTCAutoDialog::ActionSubCommandReturn" << endl;
     return 0;
+}
+void KTCAutoDialog::SetActiveField(int feild) {
+    _currentField = feild;
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::SetActiveFieldFocus() {

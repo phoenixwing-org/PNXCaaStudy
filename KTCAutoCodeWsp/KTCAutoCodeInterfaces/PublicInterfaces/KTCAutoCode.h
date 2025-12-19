@@ -46,7 +46,7 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_HSO_ADD(NAME) _ktcHSO.AddElement(parameter->NAME)
+#define KT_AUTO_HSO_ADD(NAME) _ktcHSO.add_element(parameter->NAME)
 
 /**
  * @brief CMD ACTION PDA
@@ -55,16 +55,16 @@ class CATDialogState;
  */
 #define KT_AUTO_CMD_ACTION_PDA(NAME)    \
     _da##NAME->InitializeAcquisition(); \
-    if (fieldChange) _ktcHSO.AddElement(parameter->NAME)
+    if (fieldChange) _ktcHSO.add_element(parameter->NAME)
 
 /**
  * @brief CMD ACTION FIA
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_CMD_ACTION_FIA(NAME)                                         \
-    count = _ktcHSO.AfterElementSelected(_fia##NAME, parameter->NAME, mode); \
-    if (0 == count) cout << "Error to Select " << #NAME << "!" << endl;      \
+#define KT_AUTO_CMD_ACTION_FIA(NAME)                                           \
+    count = _ktcHSO.after_element_selected(_fia##NAME, parameter->NAME, mode); \
+    if (0 == count) cout << "Error to Select " << #NAME << "!" << endl;        \
     _fia##NAME->InitializeAcquisition();
 
 /**
@@ -80,7 +80,7 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_BUILD_START(PREFIX)      \
-    _ktcHSO.Initial(_catFrmEditor, _catHSO); \
+    _ktcHSO.initial(_catFrmEditor, _catHSO); \
     dialog->_catHSO              = _catHSO;  \
     CATDlgSelectorList* selector = NULL
 

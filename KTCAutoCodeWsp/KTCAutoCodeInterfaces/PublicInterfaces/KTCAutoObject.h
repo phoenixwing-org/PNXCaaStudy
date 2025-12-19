@@ -34,7 +34,10 @@ private:
     KTCAutoObject& operator=(const KTCAutoObject&);
 
 public:
-    HRESULT update(CATISpecObject_var object, bool check);
+    /**
+     * @brief update spec object
+     */
+    static HRESULT update(CATISpecObject_var object, bool check);
 };
 
 #endif
