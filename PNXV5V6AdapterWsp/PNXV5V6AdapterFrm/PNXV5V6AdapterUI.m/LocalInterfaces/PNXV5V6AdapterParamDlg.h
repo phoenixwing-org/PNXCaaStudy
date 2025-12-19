@@ -16,8 +16,10 @@
 #ifndef PNXV5V6AdapterParamDlg_H
 #define PNXV5V6AdapterParamDlg_H
 
-#include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
+
+// Auto Code
+#include "CATDlgDialog.h"
 
 /** @brief param setting dialog */
 class PNXV5V6AdapterParamDlg : public CATDlgDialog {
@@ -34,15 +36,15 @@ public:
 protected:
     /** @brief close  */
     virtual void OnPNXV5V6AdapterParamDlgWindCloseNotification(CATCommand*, CATNotification*,
-                                                                  CATCommandClientData data);
+                                                               CATCommandClientData data);
 
     /** @brief CANCEL  */
     virtual void OnPNXV5V6AdapterParamDlgDiaCANCELNotification(CATCommand*, CATNotification*,
-                                                                  CATCommandClientData data);
+                                                               CATCommandClientData data);
 
     /** @brief OK  */
     virtual void OnPNXV5V6AdapterParamDlgDiaOKNotification(CATCommand*, CATNotification*,
-                                                              CATCommandClientData data);
+                                                           CATCommandClientData data);
 
 public:
     /** @brief send value change notify  */

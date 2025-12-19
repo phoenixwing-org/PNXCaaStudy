@@ -58,10 +58,10 @@ LINK_WITH=CATGeometricObjects          \
 #endif
 
 #Link with with external libraries
-LOCAL_LDFLAGS =/LIBPATH:"$(ROOT_DIR)\CAA\B$(CAA_MK_VERSION)\win_b64\code\bin"
+LOCAL_LDFLAGS =/LIBPATH:"$(ROOT_DIR_CORE)\bin"
 
 #Link with include file
-LOCAL_CCFLAGS = /I"$(ROOT_DIR)\core\include"
+LOCAL_CCFLAGS = /I"$(ROOT_DIR_CORE)\include" 
 
 #Name of the libraries
-# SYS_LIBS = KtCore.lib
+SYS_LIBS = KtCore.lib

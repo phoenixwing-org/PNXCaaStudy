@@ -1,9 +1,5 @@
 // COPYRIGHT DASSAULT SYSTEMES 2000
 
-// Local Framework
-#include "PNXCombinedCurveDlg.h"
-#include "PNXSubCurveDlg.h"
-
 // ApplicationFrame Framework
 #include "CATApplicationFrame.h" // needed to get the window of the frame
 
@@ -11,15 +7,18 @@
 #include "CATDlgGridConstraints.h" // needed to locate dialog element on the box's grid
 #include "CATDlgLabel.h"
 
-// System Framework
-#include "CATUnicodeString.h"
-//-------------------------------------------------------------------------
-// Constructor
-//-------------------------------------------------------------------------
+// auto code
+#include "KTCAutoIncludeUI.h"
 
+// Local Framework
+#include "PNXCombinedCurveDlg.h"
+#include "PNXSubCurveDlg.h"
+
+//-------------------------------------------------------------------------
 PNXCombinedCurveDlg::PNXCombinedCurveDlg()
-    : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), "CombinedCurve",
-                   CATDlgGridLayout | CATDlgWndOK | CATDlgWndCANCEL | CATDlgWndNoResize)
+    : KTCAutoDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), NULL,
+                    "CombinedCurve",
+                    CATDlgGridLayout | CATDlgWndOK | CATDlgWndCANCEL | CATDlgWndNoResize)
     , _selectorListFirstPoint(NULL)
     , _selectorListMainDir(NULL)
     , _pushButtonSaveJson(NULL)

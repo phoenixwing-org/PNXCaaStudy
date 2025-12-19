@@ -100,22 +100,22 @@ _EditorMyResult -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 
     // CAA2 WIZARD CALLBACK DECLARATION SECTION
     // END CAA2 WIZARD CALLBACK DECLARATION SECTION
-    AddAnalyseNotificationCB(this, GetWindCloseNotification(),
-                             (CATCommandMethod)&PNXBomAnalysisParamDlg::
-                                 OnPNXBomAnalysisParamDlgWindCloseNotification,
-                             NULL);
-    AddAnalyseNotificationCB(this, GetDiaCANCELNotification(),
-                             (CATCommandMethod)&PNXBomAnalysisParamDlg::
-                                 OnPNXBomAnalysisParamDlgDiaCANCELNotification,
-                             NULL);
+    AddAnalyseNotificationCB(
+        this, GetWindCloseNotification(),
+        (CATCommandMethod)&PNXBomAnalysisParamDlg::OnPNXBomAnalysisParamDlgWindCloseNotification,
+        NULL);
+    AddAnalyseNotificationCB(
+        this, GetDiaCANCELNotification(),
+        (CATCommandMethod)&PNXBomAnalysisParamDlg::OnPNXBomAnalysisParamDlgDiaCANCELNotification,
+        NULL);
     AddAnalyseNotificationCB(
         this, GetDiaOKNotification(),
-        (CATCommandMethod)&PNXBomAnalysisParamDlg::OnPNXBomAnalysisParamDlgDiaOKNotification,
-        NULL);
+        (CATCommandMethod)&PNXBomAnalysisParamDlg::OnPNXBomAnalysisParamDlgDiaOKNotification, NULL);
 }
 //-------------------------------------------------------------------------
-void PNXBomAnalysisParamDlg::OnPNXBomAnalysisParamDlgDiaOKNotification(
-    CATCommand* cmd, CATNotification* evt, CATCommandClientData data) {
+void PNXBomAnalysisParamDlg::OnPNXBomAnalysisParamDlgDiaOKNotification(CATCommand*          cmd,
+                                                                       CATNotification*     evt,
+                                                                       CATCommandClientData data) {
     // Add your code here
     SetVisibility(CATDlgHide);
 }

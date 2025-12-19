@@ -19,7 +19,8 @@
 #include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
 
-//----------------------------------------------------------------------
+// Auto Code
+#include "KTCAutoDialog.h"
 
 /**
  * Describe the purpose of your panel here.

@@ -13,3 +13,6 @@ AddPrereqComponent("DialogEngine", Public);
 AddPrereqComponent("MechanicalModelerUI", Public);
 AddPrereqComponent("ObjectSpecsModeler", Public);
 AddPrereqComponent("System", Public);
+
+// KTC
+AddPrereqComponent("KTCAutoCodeInterfaces", Public);

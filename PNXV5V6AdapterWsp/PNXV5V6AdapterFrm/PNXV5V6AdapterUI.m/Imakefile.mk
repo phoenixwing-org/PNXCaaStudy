@@ -20,11 +20,7 @@ LINK_WITH=CATApplicationFrame         \
           DI0PANV2                  \
           JS0FM                     \
           JS0GROUP \
-          PNXV5V6AdapterItf
-
-#Link with with external libraries
-
-#Link with include file
-
-#Name of the libraries
+          PNXV5V6AdapterItf \
+          KTCAutoCodeUI   \
+          KTCAutoCodeItf
 				

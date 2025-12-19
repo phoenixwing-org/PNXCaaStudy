@@ -2,10 +2,10 @@
 #define PNXCombinedCurveDlg_H
 
 // COPYRIGHT DASSAULT SYSTEMES 2000
-
-// Dialog Framework
-#include "CATDlgDialog.h"  // needed to derive from CATDlgDialog
 #include "CATDlgInclude.h" // needed to use Dialog framework objects
+
+// Auto Code
+#include "KTCAutoDialog.h"
 
 /**
  * Field enum for input field
@@ -32,9 +32,9 @@ class PNXSubCurveDlg;
  * refer to programming resources of Dialog framework.
  * (consult base class description).
  */
-class PNXCombinedCurveDlg : public CATDlgDialog {
+class PNXCombinedCurveDlg : public KTCAutoDialog {
 
-    DeclareResource(PNXCombinedCurveDlg, CATDlgDialog);
+    DeclareResource(PNXCombinedCurveDlg, KTCAutoDialog);
 
 public:
     PNXCombinedCurveDlg();

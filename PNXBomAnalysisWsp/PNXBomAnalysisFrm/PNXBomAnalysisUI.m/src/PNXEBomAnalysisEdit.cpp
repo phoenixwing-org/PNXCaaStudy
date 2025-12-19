@@ -11,8 +11,8 @@
 #include "CATCommand.h"
 
 // Local FrameWork
-#include "PNXEBomAnalysisEdit.h"
 #include "PNXBomAnalysisCmd.h" // needed to return the Sound Hole edition command
+#include "PNXEBomAnalysisEdit.h"
 
 CATImplementClass(PNXEBomAnalysisEdit, DataExtension, CATIEdit, PNXBomAnalysis);
 

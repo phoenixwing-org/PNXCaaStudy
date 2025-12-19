@@ -11,6 +11,7 @@
     - 环境变量 `CAA_MK_VERSION`  设定为需要的版本，比如19
     - ROOT_DIR 自定义库根目录
     - ROOT_DIR_3rdParty 三方库根目录
+    - ROOT_DIR_CORE core的目录
 
 
 ## 管理员身份永久更改执行PowerShell策略

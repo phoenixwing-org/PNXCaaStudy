@@ -10,9 +10,6 @@
 #include "CATIReplace.h"    // To handle a List of Attributes pointing to a Feature
 #include "CATISpecObject.h" // To handle feature, update it
 
-// System Framework
-#include "CATUnicodeString.h"
-
 #include <iostream.h>
 
 CATImplementClass(PNXECombinedCurveReplaceUI, DataExtension, CATBaseUnknown, CombinedCurve);

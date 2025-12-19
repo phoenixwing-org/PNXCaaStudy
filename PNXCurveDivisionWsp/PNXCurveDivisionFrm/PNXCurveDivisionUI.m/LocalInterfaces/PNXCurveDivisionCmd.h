@@ -24,6 +24,7 @@
 #include "PNXCurveDivisionDlg.h"
 #include "PNXCurveDivisionParam.h"
 
+// auto code
 #include "KTCAutoCode.h"
 
 // pre-declare class
@@ -34,8 +35,6 @@ class CATISO;
 class CATIGSMTool;
 class CATIPrtPart;
 class CATDialogState;
-
-#define KTCHSOKit int
 
 /**
  * Class managing the dialog command to edit Sound Holes.

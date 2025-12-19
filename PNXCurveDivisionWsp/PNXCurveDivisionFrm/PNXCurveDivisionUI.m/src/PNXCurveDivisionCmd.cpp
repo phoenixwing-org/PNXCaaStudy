@@ -76,8 +76,9 @@
 #include "PNXCurveDivisionCmd.h"
 #include "PNXCurveDivisionDlg.h"
 
+// auto code
 #include "KTCAutoCode.h"
-#include "KTCCoreDefine.h"
+#include "KTCAutoDefine.h"
 
 // PNXCurveDivisionInterfaces Framework
 

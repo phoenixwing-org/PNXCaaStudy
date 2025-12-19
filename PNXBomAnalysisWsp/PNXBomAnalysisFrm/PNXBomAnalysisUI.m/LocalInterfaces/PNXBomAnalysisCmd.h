@@ -24,19 +24,9 @@
 #include "PNXBomAnalysisDlg.h"
 #include "PNXBomAnalysisParam.h"
 
+// auto code
 #include "KTCAutoCode.h"
-
-// pre-declare class
-class CATFeatureImportAgent;
-class CATPathElementAgent;
-class CATISpecObject;
-class CATHSO;
-class CATISO;
-class CATIGSMTool;
-class CATIPrtPart;
-class CATDialogState;
-
-#define KTCHSOKit int
+#include "KTCAutoHSO.h"
 
 /**
  * Class managing the dialog command to edit Sound Holes.

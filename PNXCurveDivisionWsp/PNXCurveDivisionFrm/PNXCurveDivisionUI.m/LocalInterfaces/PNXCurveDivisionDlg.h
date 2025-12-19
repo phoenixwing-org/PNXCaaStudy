@@ -25,12 +25,15 @@
 #include "PNXCurveDivisionParam.h"
 #include "PNXCurveDivisionParamDlg.h"
 
+// Auto Code
+#include "KTCAutoDialog.h"
+
 class PNXCurveDivisionCmd;
 
 /** @brief main Dialog */
-class PNXCurveDivisionDlg : public CATDlgDialog {
+class PNXCurveDivisionDlg : public KTCAutoDialog {
     friend class PNXCurveDivisionCmd;
-    DeclareResource(PNXCurveDivisionDlg, CATDlgDialog);
+    DeclareResource(PNXCurveDivisionDlg, KTCAutoDialog);
 
 public:
     PNXCurveDivisionDlg();

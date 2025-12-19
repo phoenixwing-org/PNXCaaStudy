@@ -9,11 +9,24 @@
 
 // Kt CAA Auto Code
 
+// for class define
+class KTCAutoSelectorCtx;
+// pre-declare CAT
+class CATFeatureImportAgent;
+class CATPathElementAgent;
+class CATISpecObject;
+class CATMMUIPanelStateCmd;
+class CATHSO;
+class CATISO;
+class CATIGSMTool;
+class CATIPrtPart;
+class CATDialogState;
+
 /**
  * @brief FIELD SET LINE
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_FIELD_SET_LINE KTCDlgFunctions::CATDlgSelectorListSetLine
+#define KT_AUTO_FIELD_SET_LINE KTCAutoDialog::selectorlist_setline
 
 /**
  * @brief Agent Initialize
@@ -97,7 +110,7 @@
     if (NULL == _ctx##NAME || NULL == _ctx##NAME->DlgSelector) {                              \
         msg = " {NG}. for register field " #NAME;                                             \
         cout << msg << endl;                                                                  \
-        KTC::ShowMessageBox(msg, dialog);                                                     \
+        KTCAutoDialog::ShowMessageBox(msg, dialog);                                           \
         RequestDelayedDestruction();                                                          \
         return;                                                                               \
     }                                                                                         \
@@ -251,7 +264,7 @@
     CATDialogAgent* _daValueChange;        \
     CATFrmEditor*   _catFrmEditor;         \
     CATHSO*         _catHSO;               \
-    KTCHSOKit       _ktcHSO;               \
+    KTCAutoHSO      _ktcHSO;               \
     int             _mode;                 \
     int             _code
 
@@ -274,7 +287,7 @@
 #define KT_AUTO_CMD_AGENT_DECLARE_FIELD(NAME) \
     CATDialogAgent*        _da##NAME;         \
     CATFeatureImportAgent* _fia##NAME;        \
-    KTC::DlgSelectorCtx*   _ctx##NAME
+    KTCAutoSelectorCtx*    _ctx##NAME
 
 /**
  * @brief CMD AGENT DESTRUCTOR, common part

@@ -34,15 +34,15 @@ public:
 protected:
     /** @brief close  */
     virtual void OnPNXCurveDivisionParamDlgWindCloseNotification(CATCommand*, CATNotification*,
-                                                                  CATCommandClientData data);
+                                                                 CATCommandClientData data);
 
     /** @brief CANCEL  */
     virtual void OnPNXCurveDivisionParamDlgDiaCANCELNotification(CATCommand*, CATNotification*,
-                                                                  CATCommandClientData data);
+                                                                 CATCommandClientData data);
 
     /** @brief OK  */
     virtual void OnPNXCurveDivisionParamDlgDiaOKNotification(CATCommand*, CATNotification*,
-                                                              CATCommandClientData data);
+                                                             CATCommandClientData data);
 
 public:
     /** @brief send value change notify  */

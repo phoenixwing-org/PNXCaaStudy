@@ -24,7 +24,7 @@
 // ObjectSpecModeler Framework
 #include "CATLISTV_CATISpecObject.h"
 
-#include "KTCParamUnknown.h"
+#include "KTCAutoParam.h"
 #include "PNXBomAnalysisItf.h"
 
 // std
@@ -88,7 +88,7 @@ enum PNXBomAnalysisField {
 };
 
 /** @brief KTC BomAnalysis Param */
-class ExportedByPNXBomAnalysisItf PNXBomAnalysisParam : public KTCParamUnknown {
+class ExportedByPNXBomAnalysisItf PNXBomAnalysisParam : public KTCAutoParam {
 public:
     /** @brief Standard constructors and destructors */
     PNXBomAnalysisParam();

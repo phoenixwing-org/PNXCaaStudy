@@ -17,6 +17,8 @@
 #define PNXBomAnalysisParamDlg_H
 
 #include "CATDlgDialog.h"
+
+// KTC
 #include "CATDlgInclude.h"
 
 /** @brief param setting dialog */
@@ -34,15 +36,15 @@ public:
 protected:
     /** @brief close  */
     virtual void OnPNXBomAnalysisParamDlgWindCloseNotification(CATCommand*, CATNotification*,
-                                                                  CATCommandClientData data);
+                                                               CATCommandClientData data);
 
     /** @brief CANCEL  */
     virtual void OnPNXBomAnalysisParamDlgDiaCANCELNotification(CATCommand*, CATNotification*,
-                                                                  CATCommandClientData data);
+                                                               CATCommandClientData data);
 
     /** @brief OK  */
     virtual void OnPNXBomAnalysisParamDlgDiaOKNotification(CATCommand*, CATNotification*,
-                                                              CATCommandClientData data);
+                                                           CATCommandClientData data);
 
 public:
     /** @brief send value change notify  */
