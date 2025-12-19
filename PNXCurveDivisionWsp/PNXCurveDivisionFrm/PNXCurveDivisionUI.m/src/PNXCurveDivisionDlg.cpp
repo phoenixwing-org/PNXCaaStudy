@@ -26,33 +26,18 @@
 // #include "PNXAppFrameServicesCls.h"
 #include "iostream.h"
 
-// System Framework
-#include "CATUnicodeString.h"
-#include "KTCAutoCode.h"
-#include "KTCCoreDefine.h"
-
-namespace Kt {
-int round(double value) {
-    return int(value + 0.5);
-}
-}; // namespace Kt
-
-// set slector list display
-#define KT_AUTO_FIELD_SET_LINE(selector, specobject)     \
-    if (specobject != NULL_var)                          \
-        selector->SetLine(specobject->GetDisplayName()); \
-    else                                                 \
-        selector->SetLine("(No Selection)");
+// auto code
+#include "KTCAutoIncludeUI.h"
 
 //-------------------------------------------------------------------------
 PNXCurveDivisionDlg::PNXCurveDivisionDlg()
-    : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
-                   // clang-format off
+    // clang-format off
+    : KTCAutoDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), NULL
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
 "PNXCurveDivisionDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-                   // clang-format on
-                   )
+                    // clang-format on
+                    )
     , dialogMore(NULL)
     , parameter(NULL) {
 
@@ -162,7 +147,7 @@ void PNXCurveDivisionDlg::UpdateDialog() {
     // clang-format off
 
     // 1,BaseCurve,
-    // KT_AUTO_FIELD_SET_LINE(_SelectorListBaseCurve, parameter->BaseCurve);
+    KT_AUTO_FIELD_SET_LINE(_SelectorListBaseCurve, parameter->BaseCurve);
 
     // 2,PointCount,
     _SpinnerPointCount->SetValue(parameter->PointCount, 0);

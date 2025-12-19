@@ -6,9 +6,6 @@
 // ObjectModelerBase Framework
 #include "CATIAlias.h"
 
-// System Framework
-#include "CATUnicodeString.h"
-
 // Standard C++ library
 #include "iostream.h"
 

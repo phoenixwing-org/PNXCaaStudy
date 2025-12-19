@@ -242,8 +242,8 @@ int PNXBomAnalysisCore::checkoutProperties(CATISpecObject_var productObject, PNX
 
         CATUnicodeString strAttrValue(""); // 声明属性值变量
 
-        CATICkeParm_var spCkeParm = spParamObject; // 获取知识工程参数接口
-        if (NULL_var != spCkeParm) {               // 检查知识工程参数接口是否有效
+        CATICkeParm_var spCkeParm = spParamObject;          // 获取知识工程参数接口
+        if (NULL_var != spCkeParm) {                        // 检查知识工程参数接口是否有效
             CATICkeInst_var spCkeInst = spCkeParm->Value(); // 获取参数实例
             if (NULL_var != spCkeInst) {                    // 检查参数实例是否有效
                 strAttrValue = spCkeInst->AsString();       // 获取参数值字符串

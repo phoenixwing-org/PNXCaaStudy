@@ -17,29 +17,24 @@
 #include "PNXBomAnalysisDlg.h"
 
 // ApplicationFrame Framework
-#include "CATApplicationFrame.h" // needed to get the window of the frame
-
-// Dialog Framework
-#include "CATDlgGridConstraints.h" // needed to locate dialog element on the box's grid
+#include "CATApplicationFrame.h"
+#include "CATDlgGridConstraints.h"
 #include "CATDlgLabel.h"
-
 #include "CATUnicodeString.h"
 #include "iostream.h"
 
-// System Framework
-#include "KTCAutoCode.h"
-#include "KTCCoreDefine.h"
-#include "KTCDlgFunctions.h"
+// auto code
+#include "KTCAutoIncludeUI.h"
 
 //-------------------------------------------------------------------------
 PNXBomAnalysisDlg::PNXBomAnalysisDlg()
-    : CATDlgDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
-                   // clang-format off
+    // clang-format off
+    : KTCAutoDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), NULL,
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
 "PNXBomAnalysisDlg",CATDlgWndBtnOKCancelPreview|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-                   // clang-format on
-                   )
+                    // clang-format on
+                    )
     , dialogMore(NULL)
     , parameter(NULL) {
 

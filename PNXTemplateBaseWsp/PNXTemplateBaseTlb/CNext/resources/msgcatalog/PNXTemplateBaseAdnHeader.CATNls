@@ -1,0 +1,14 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXTemplateBase 
+// Toolbar Addin header resource file
+//======================================================================
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Title     = "PNX Template Baseissibility" ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.ShortHelp = "PNX Template Baseissibility" ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Help      = "Create PNX Template Baseissibility Object" ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.LongHelp  = "Create a PNX Template Baseissibility Object. use point, direction and axis." ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Category  = "Insert" ;
+
+

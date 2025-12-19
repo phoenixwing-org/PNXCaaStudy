@@ -24,6 +24,7 @@
 #include "PNXV5V6AdapterDlg.h"
 #include "PNXV5V6AdapterParam.h"
 
+// auto code
 #include "KTCAutoCode.h"
 
 // pre-declare class
@@ -34,8 +35,6 @@ class CATISO;
 class CATIGSMTool;
 class CATIPrtPart;
 class CATDialogState;
-
-#define KTCHSOKit int
 
 /**
  * Class managing the dialog command to edit Sound Holes.

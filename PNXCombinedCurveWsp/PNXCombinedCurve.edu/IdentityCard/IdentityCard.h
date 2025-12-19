@@ -40,3 +40,7 @@ AddPrereqComponent("ConstraintModelerInterfaces", Public);
 AddPrereqComponent("ObjectModelerSystem", Public);
 
 // END WIZARD EDITION ZONE
+
+// KTC
+AddPrereqComponent("KTCAutoCodeInterfaces", Public);
+AddPrereqComponent("KTCAutoCodeFrm", Public);

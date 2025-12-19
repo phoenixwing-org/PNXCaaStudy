@@ -147,7 +147,7 @@ void PNXBomAnalysisCmd::BuildGraph() {
     if (FAILED(hr)) {
         if (msg.GetLengthInChar() > 0) {
             cout << msg << endl;
-            // KTC::ShowMessageBox(msg, dialog);
+            // KTCAutoDialog::ShowMessageBox(msg, dialog);
         }
         RequestDelayedDestruction();
         return;
@@ -179,8 +179,8 @@ void PNXBomAnalysisCmd::BuildGraph() {
 
     _catDialogState->AddDialogAgent(_pfiaElementSelect); // 添加对话框代理
 
-    AddTransition(_catDialogState, _catDialogState,         // 添加状态转换
-                  IsOutputSetCondition(_pfiaElementSelect), // 设置输出条件
+    AddTransition(_catDialogState, _catDialogState,                                 // 添加状态转换
+                  IsOutputSetCondition(_pfiaElementSelect),                         // 设置输出条件
                   Action((ActionMethod)&PNXBomAnalysisCmd::ActionSelectorListFia)); // 设置动作方法
 
     // print json : 1

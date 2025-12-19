@@ -54,8 +54,8 @@ void PNXCurveDivisionAdn::CreateCommands() {
     // step 1. new PNXCurveDivisionAdnHeader for each icon
     //
 
-    new PNXCurveDivisionAdnHeader("PNXCurveDivisionHdr", "PNXCurveDivisionUI", "PNXCurveDivisionCmd",
-                                (void*)NULL);
+    new PNXCurveDivisionAdnHeader("PNXCurveDivisionHdr", "PNXCurveDivisionUI",
+                                  "PNXCurveDivisionCmd", (void*)NULL);
 }
 // Implements
 // CATIPrtWksAddin::CreateToolbars-------------------------------------------------

@@ -38,11 +38,11 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "mkmk TemplateFeature",
+            "label": "mkmk TemplateBase",
             "type": "shell",
             "command": ".\\mk.ps1",
             "options": {
-                "cwd": "${workspaceFolder}/PNXTemplateFeatureWsp"
+                "cwd": "${workspaceFolder}/PNXTemplateBaseWsp"
             },
             "problemMatcher": "$msCompile"
         },
@@ -52,7 +52,7 @@
                 "mkmk CombinedCurve",
                 "mkmk CurveDivision",
                 "mkmk BomAnalysis",
-                "mkmk TemplateFeature"
+                "mkmk TemplateBase"
             ],
             "dependsOrder": "parallel",
             "group": "build"
@@ -76,7 +76,7 @@
                 "mkmk CombinedCurve",
                 "mkmk CurveDivision",
                 "mkmk BomAnalysis",
-                "mkmk TemplateFeature"
+                "mkmk TemplateBase"
             ],
             "dependsOrder": "parallel",
             "group": "build"

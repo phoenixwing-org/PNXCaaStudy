@@ -1,0 +1,1 @@
+& "../tools/run.ps1" -w $PSScriptRoot

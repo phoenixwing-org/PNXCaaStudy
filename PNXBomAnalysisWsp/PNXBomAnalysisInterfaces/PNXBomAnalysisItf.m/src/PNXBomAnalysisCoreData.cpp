@@ -15,7 +15,6 @@
 // local Framework
 #include "PNXBomAnalysisCoreData.h"
 
-
 //-----------------------------------------------------------------------------
 PNXBomAnalysisCoreData::PNXBomAnalysisCoreData()
     : _code(0)
@@ -27,9 +26,9 @@ PNXBomAnalysisCoreData::PNXBomAnalysisCoreData()
     , parameter(NULL) // 102
     , _catFrmEditor(NULL) // 103
 
-    // clang-format on
-    // END KEVIN CAA WIZARD SECTION PNXBomAnalysisCoreDataPublic PARAM
-    // CONSTRUCTOR
+// clang-format on
+// END KEVIN CAA WIZARD SECTION PNXBomAnalysisCoreDataPublic PARAM
+// CONSTRUCTOR
 
 {
 }
@@ -47,5 +46,4 @@ PNXBomAnalysisCoreData::~PNXBomAnalysisCoreData() {
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXBomAnalysisCoreDataPublic PARAM
     // DESTRUCTOR
-
 }

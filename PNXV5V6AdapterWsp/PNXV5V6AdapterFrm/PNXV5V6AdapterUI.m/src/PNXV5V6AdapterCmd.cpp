@@ -77,7 +77,7 @@
 #include "PNXV5V6AdapterDlg.h"
 
 #include "KTCAutoCode.h"
-#include "KTCCoreDefine.h"
+#include "KTCAutoDefine.h"
 
 // PNXV5V6AdapterInterfaces Framework
 
@@ -154,7 +154,7 @@ void PNXV5V6AdapterCmd::BuildGraph() {
     if (FAILED(hr)) {
         if (msg.GetLengthInChar() > 0) {
             cout << msg << endl;
-            // KTC::ShowMessageBox(msg, dialog);
+            // KTCAutoDialog::ShowMessageBox(msg, dialog);
         }
         RequestDelayedDestruction();
         return;

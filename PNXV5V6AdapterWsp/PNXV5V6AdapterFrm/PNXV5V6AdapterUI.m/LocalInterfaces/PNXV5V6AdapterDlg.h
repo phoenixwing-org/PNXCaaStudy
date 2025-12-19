@@ -25,12 +25,15 @@
 #include "PNXV5V6AdapterParam.h"
 #include "PNXV5V6AdapterParamDlg.h"
 
+// Auto Code
+#include "KTCAutoDialog.h"
+
 class PNXV5V6AdapterCmd;
 
 /** @brief main Dialog */
-class PNXV5V6AdapterDlg : public CATDlgDialog {
+class PNXV5V6AdapterDlg : public KTCAutoDialog {
     friend class PNXV5V6AdapterCmd;
-    DeclareResource(PNXV5V6AdapterDlg, CATDlgDialog);
+    DeclareResource(PNXV5V6AdapterDlg, KTCAutoDialog);
 
 public:
     PNXV5V6AdapterDlg();

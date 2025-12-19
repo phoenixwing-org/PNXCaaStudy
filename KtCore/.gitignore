@@ -1,0 +1,12 @@
+.DS_Store
+.cache
+build
+wasm
+*.bigray
+*.zip
+*.ppm
+.obsidian
+*.history.obj
+output/*.*
+my.cmake
+temp.md

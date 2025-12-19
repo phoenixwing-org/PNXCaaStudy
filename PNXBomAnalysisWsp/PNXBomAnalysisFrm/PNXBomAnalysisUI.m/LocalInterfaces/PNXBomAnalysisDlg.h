@@ -25,12 +25,15 @@
 #include "PNXBomAnalysisParam.h"
 #include "PNXBomAnalysisParamDlg.h"
 
+// KTC
+#include "KTCAutoDialog.h"
+
 class PNXBomAnalysisCmd;
 
 /** @brief main Dialog */
-class PNXBomAnalysisDlg : public CATDlgDialog {
+class PNXBomAnalysisDlg : public KTCAutoDialog {
     friend class PNXBomAnalysisCmd;
-    DeclareResource(PNXBomAnalysisDlg, CATDlgDialog);
+    DeclareResource(PNXBomAnalysisDlg, KTCAutoDialog);
 
 public:
     PNXBomAnalysisDlg();

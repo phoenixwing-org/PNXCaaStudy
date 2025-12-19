@@ -15,7 +15,6 @@
 // local Framework
 #include "PNXCurveDivisionCoreData.h"
 
-
 //-----------------------------------------------------------------------------
 PNXCurveDivisionCoreData::PNXCurveDivisionCoreData()
     : _code(0)
@@ -27,9 +26,9 @@ PNXCurveDivisionCoreData::PNXCurveDivisionCoreData()
     , parameter(NULL) // 102
     , _catFrmEditor(NULL) // 103
 
-    // clang-format on
-    // END KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM
-    // CONSTRUCTOR
+// clang-format on
+// END KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM
+// CONSTRUCTOR
 
 {
 }
@@ -47,5 +46,4 @@ PNXCurveDivisionCoreData::~PNXCurveDivisionCoreData() {
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCurveDivisionCoreDataPublic PARAM
     // DESTRUCTOR
-
 }
