@@ -1,0 +1,1 @@
+& "../clangfile.ps1" -w $PSScriptRoot

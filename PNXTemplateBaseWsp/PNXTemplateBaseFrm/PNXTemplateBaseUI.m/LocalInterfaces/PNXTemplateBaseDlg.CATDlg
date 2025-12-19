@@ -1,0 +1,73 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PNXTemplateBaseDlg
+{
+  STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame FrameParams
+{
+  FATHER = PNXTemplateBaseDlg;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel LabelMyCurve
+{
+  FATHER = FrameParams;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSelectorList SelectorListMyCurve
+{
+  FATHER = FrameParams;
+  TH = 1;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel LabelMyAxis
+{
+  FATHER = FrameParams;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSelectorList SelectorListMyAxis
+{
+  FATHER = FrameParams;
+  TH = 1;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel LabelTransmissibility
+{
+  FATHER = FrameParams;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor EditorTransmissibility
+{
+  FATHER = FrameParams;
+  STYLE = CATDlgEdtFloat|CATDlgEdtReadOnly;
+  TH = 1;
+  GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame FrameMyFaces
+{
+  FATHER = PNXTemplateBaseDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgSelectorList SelectorListMyFaces
+{
+  FATHER = FrameMyFaces;
+  TH = 6;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE
