@@ -1,0 +1,14 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXTemplateFeature 
+// Toolbar Addin header resource file
+//======================================================================
+PNXTemplateFeatureAdnHeader.PNXTemplateFeatureHdr.Title     = "PNX Template Feature" ;
+PNXTemplateFeatureAdnHeader.PNXTemplateFeatureHdr.ShortHelp = "PNX Template Feature" ;
+PNXTemplateFeatureAdnHeader.PNXTemplateFeatureHdr.Help      = "Create PNX Template Feature Object" ;
+PNXTemplateFeatureAdnHeader.PNXTemplateFeatureHdr.LongHelp  = "Create a PNX Template Feature Object. use point, direction and axis." ;
+PNXTemplateFeatureAdnHeader.PNXTemplateFeatureHdr.Category  = "Insert" ;
+
+

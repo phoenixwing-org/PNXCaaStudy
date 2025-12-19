@@ -1,0 +1,9 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXTemplateFeature 
+// Toolbar Addin header Images file
+//======================================================================
+PNXTemplateFeatureAdnHeader.PNXTemplateFeatureHdr.Icon.Normal    = "I_PNXTemplateFeature" ;
+

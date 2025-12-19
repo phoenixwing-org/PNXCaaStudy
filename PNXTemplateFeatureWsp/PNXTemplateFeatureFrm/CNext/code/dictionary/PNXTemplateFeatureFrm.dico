@@ -1,0 +1,15 @@
+#======================================================================
+# @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+# @license     MIT
+# @author      Phoenix Wing
+# @checkout    PNXTemplateFeature
+# @brief       Dictionary PNXTemplateFeatureFrm.dico
+# associated with framework PNXTemplateFeatureFrm
+#======================================================================
+
+PNXTemplateFeature               CATIEdit                        libPNXTemplateFeatureUI
+PNXTemplateFeature               CATIContextualSubMenu           libPNXTemplateFeatureUI
+
+#PNXTemplateFeature               CATICatalogEnable               libPNXTemplateFeatureCatalogUtl
+#PNXTemplateFeature               CATICatalogInstantiation        libPNXTemplateFeatureCatalogUtl
+#PNXTemplateFeature               CATICatalogSynchronize          libPNXTemplateFeatureCatalogUtl

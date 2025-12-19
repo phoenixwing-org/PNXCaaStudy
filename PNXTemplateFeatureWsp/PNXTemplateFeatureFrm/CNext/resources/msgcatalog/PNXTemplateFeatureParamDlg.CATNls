@@ -1,0 +1,17 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXTemplateFeature 
+// @brief       Message catalog
+//======================================================================
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Parameter Dialog";
+FrameOthers.Title = "Other parameters";
+FrameOthers.LabelVersion.Title = "Version:";
+FrameOthers.LabelMyStep.Title = "Step :";
+FrameOthers.SpinnerMyStep.ShortHelp = "My Step, max length";
+FrameOthers.LabelUnit.Title = "mm";
+EditorOutputMessage.ShortHelp = "Output Message";
+LabelOutputMessage.Title = "Output Message";
+// END WIZARD REPLACEMENT ZONE
