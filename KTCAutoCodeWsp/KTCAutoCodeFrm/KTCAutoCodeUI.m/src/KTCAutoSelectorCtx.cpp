@@ -14,24 +14,36 @@
 #include "CATMMUIPanelStateCmd.h"
 #include "iostream.h"
 
-// Local Framework
+// auto code
 #include "KTCAutoSelectorCtx.h"
 
 //-------------------------------------------------------------------------
-KTCAutoSelectorCtx::KTCAutoSelectorCtx(CATDlgDialog* dlg)
-    : parentDialog(NULL)
-    , feature(NULL_var) {
+KTCAutoSelectorCtx::KTCAutoSelectorCtx(int field, CATDlgSelectorList* selector)
+    : fieldKey(field)
+    , DlgSelector(selector)
+    , feature(NULL)
+    , featureList(NULL)
+    , _parentDialog(NULL)
+    , fieldName() {
 }
 //-------------------------------------------------------------------------
 KTCAutoSelectorCtx::~KTCAutoSelectorCtx() {
-    parentDialog = NULL;
-    feature      = NULL_var;
+    _parentDialog = NULL;
+    feature       = NULL;
+    featureList   = NULL;
+    DlgSelector   = NULL;
 }
 //-------------------------------------------------------------------------
-void KTCAutoSelectorCtx::RegisterFeature(CATISpecObject_var feature) {
-    this->feature = feature;
+void KTCAutoSelectorCtx::RegisterFeature(CATISpecObject_var& feature) {
+    this->feature     = &feature;
+    this->featureList = NULL; // »¥³â
+}
+//-------------------------------------------------------------------------
+void KTCAutoSelectorCtx::RegisterFeature(CATListValCATISpecObject_var& iList) {
+    this->feature     = NULL; // »¥³â
+    this->featureList = &iList;
 }
 //-------------------------------------------------------------------------
 void KTCAutoSelectorCtx::set_parent(CATDlgDialog* dlg) {
-    parentDialog = dlg;
+    _parentDialog = dlg;
 }

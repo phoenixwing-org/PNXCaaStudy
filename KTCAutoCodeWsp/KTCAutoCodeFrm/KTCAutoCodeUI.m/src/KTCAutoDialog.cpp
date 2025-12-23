@@ -18,6 +18,7 @@
 
 // Auto Code
 #include "KTCAutoDialog.h"
+#include "KTCAutoSelectorCtx.h"
 
 //-------------------------------------------------------------------------
 KTCAutoDialog::KTCAutoDialog(CATDialog* iParent, CATMMUIPanelStateCmd* iFatherCmd,
@@ -28,13 +29,51 @@ KTCAutoDialog::KTCAutoDialog(CATDialog* iParent, CATMMUIPanelStateCmd* iFatherCm
     , _parameterDialog(NULL)
     , _currentField(0)
     , _catHSO(NULL)
-    , _actionMode(KTC::ValueNormal) {
+    , _actionMode(KTC::ValueNormal)
+    , _selectorMap(NULL) {
+    _selectorMap = new std::map<int, KTCAutoSelectorCtx*>();
 }
 //-------------------------------------------------------------------------
 KTCAutoDialog::~KTCAutoDialog() {
     _parameterDialog = NULL;
     _catHSO          = NULL;
     // _currentField = 0;
+
+    if (_selectorMap) {
+        KTCAutoSelectorCtx* ctx;
+        for (size_t i = 0; i < _selectorMap->size(); i++) {
+            ctx = (*_selectorMap)[ i ]; // get
+            delete ctx;                 // delete
+        }
+        delete _selectorMap, _selectorMap = NULL;
+    }
+}
+//-------------------------------------------------------------------------
+int KTCAutoDialog::InitialMenuRightClick() {
+    // TODO initial
+    return 0;
+}
+//-------------------------------------------------------------------------
+KTCAutoSelectorCtx* KTCAutoDialog::RegisterField(int field, CATDlgSelectorList* selector,
+                                                 const KtString& name) {
+    if (!selector) return NULL;
+
+    if (!_selectorMap) _selectorMap = new KTCAutoSelectorCtxMap();
+    // C++98 需要显式指定迭代器类型
+    KTCAutoSelectorCtxMap::iterator it = _selectorMap->find(field);
+    if (it != _selectorMap->end()) {
+        // 找到元素
+        KTCAutoSelectorCtx* ctx = it->second;
+        return ctx;
+    }
+
+    // 未找到元素，注册
+    KTCAutoSelectorCtx* ctx = new KTCAutoSelectorCtx(field, selector);
+    // ctx->DlgSelector        = selector;
+    ctx->fieldName = name;
+
+    (*_selectorMap)[ field ] = ctx;
+    return NULL;
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::RegisterParameterDialog(CATDlgDialog* dlg) {

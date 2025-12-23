@@ -18,11 +18,15 @@
 #include "CATString.h"
 
 // auto code
+#include "KTCAutoBaseOpt.h"
 #include "KTCAutoCode.h"
 #include "KTCAutoCommand.h"
 #include "KTCAutoDefine.h"
 #include "KTCAutoDialog.h"
+#include "KTCAutoGSM.h"
 #include "KTCAutoIncludeItf.h"
+#include "KTCAutoNotificationValueChanged.h"
+#include "KTCAutoObject.h"
 #include "KTCAutoSelectorCtx.h"
 
 // kt

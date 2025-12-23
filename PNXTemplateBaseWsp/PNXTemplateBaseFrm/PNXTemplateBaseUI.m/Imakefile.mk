@@ -26,7 +26,8 @@ LINK_WITH=CATApplicationFrame         \
           JS0FM                     \
           JS0GROUP					\
           PNXTemplateBaseItf      \
-          KTCAutoCodeItf
+          KTCAutoCodeItf   \
+          KTCAutoCodeUI
 
 #Link with with external libraries
 LOCAL_LDFLAGS =/LIBPATH:"$(ROOT_DIR_CORE)\bin"

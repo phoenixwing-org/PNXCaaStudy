@@ -74,11 +74,7 @@
 #include "PNXTemplateBaseDlg.h"
 
 // Auto Code
-#include "KTCAutoBaseOpt.h"
-#include "KTCAutoDefine.h"
-#include "KTCAutoGSM.h"
-#include "KTCAutoObject.h"
-#include "KTCAutoSelectorCtx.h"
+#include "KTCAutoIncludeUI.h"
 
 CATCreateClass(PNXTemplateBaseCmd);
 
@@ -228,7 +224,7 @@ void PNXTemplateBaseCmd::BuildGraph() {
     // 1.1 define fia
     KT_AUTO_CMD_BUILD_FIA_CURVE(MyCurve);
     // 1.2 others
-    KT_AUTO_CMD_BUILD_FIELD(PNXTemplateBase, MyCurve);
+    KT_AUTO_CMD_BUILD_FIELD(PNXTemplateBase, MyCurve); 
 
     // Field 2 MyFaces .......................
     // 2.1 define fia
@@ -634,4 +630,5 @@ void PNXTemplateBaseCmd::SetActiveField(PNXTemplateBaseField field) {
 int PNXTemplateBaseCmd::UpdatefiaSelectFaces() {
     // check, if same, nothing to do
     // KTC_UPDATE_SELECT_MODE_FACES_SOLID(parameter->SelectMode, _fiaMyFaces);
+    return 0;
 }

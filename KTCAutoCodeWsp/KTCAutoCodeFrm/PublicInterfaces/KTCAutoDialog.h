@@ -19,10 +19,11 @@
 #include "CATISpecObject.h"
 #include "CATString.h"
 
-// local
+// auto code
 #include "KTCAutoCode.h"
 #include "KTCAutoCodeUI.h"
 #include "KTCAutoHSO.h"
+#include "KTCAutoSelectorCtx.h"
 
 /** @brief KTCAutoDialog Dialog */
 class ExportedByKTCAutoCodeUI KTCAutoDialog : public CATDlgDialog {
@@ -48,6 +49,21 @@ public:
     inline KTC::ValueActionMode GetValueMode() const {
         return _actionMode;
     };
+
+    /**
+     * @brief nodoc
+     */
+    int InitialMenuRightClick();
+
+    /**
+     * @brief register field
+     * @param field field id
+     * @param selector CATDlgSelectorList pointer
+     * @param name selector name
+     * @return KTCAutoSelectorCtx pointer
+     */
+    KTCAutoSelectorCtx* RegisterField(int field, CATDlgSelectorList* selector,
+                                      const KtString& name = "");
 
     /** @brief Register Parameter Dialog */
     void RegisterParameterDialog(CATDlgDialog* dlg);
@@ -92,8 +108,9 @@ public:
     CATHSO*       _catHSO;          // catia HSO
 
 private:
-    int                  _currentField; // current field
-    KTC::ValueActionMode _actionMode;   // action mode
+    int                    _currentField; // current field
+    KTC::ValueActionMode   _actionMode;   // action mode
+    KTCAutoSelectorCtxMap* _selectorMap;  // selector map
 };
 
 #endif
