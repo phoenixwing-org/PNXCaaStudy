@@ -142,3 +142,54 @@ CATDlgSelectorList* PNXCombinedCurveDlg::GetField(int iFieldNumber) {
     }
     return NULL;
 }
+//-------------------------------------------------------------------------
+void PNXCombinedCurveDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogAgent) {
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve DIALOG NOTIFY
+
+    // clang-format off
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve DIALOG NOTIFY
+}
+//-------------------------------------------------------------------------
+void PNXCombinedCurveDlg::UpdateDialog() {
+    // if (!parameter) return; // check pointer
+
+    // KEVIN_SYSTEM_CODE START
+    // KEVIN_SYSTEM_CODE END
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE DIALOG
+
+    // clang-format off
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE DIALOG
+
+    // Code add by user
+
+    this->UpdateSensitivity(); // update sensitivity
+    // this->SetActiveFieldFocus(); // focus
+}
+//-----------------------------------------------------------------
+void PNXCombinedCurveDlg::UpdateInfos() {
+    // if (!parameter) return; // check pointer
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE INFORS
+
+    // clang-format off
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE INFORS
+}
+//-------------------------------------------------------------------------
+void PNXCombinedCurveDlg::UpdateSensitivity() {
+    //_PushButtonMore->SetVisibility(CATDlgHide);//hide the param dialog now
+    // check OK Sensitivity
+    // this is Feature mode, Do not check OK sensitivity. always can press
+    // this->SetOKSensitivity(dlgState); //set state
+    // CATULong dlgState;
+}

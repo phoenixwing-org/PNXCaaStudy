@@ -11,18 +11,16 @@ BUILT_OBJECT_TYPE=SHARED LIBRARY
  
 LINK_WITH=CATApplicationFrame         \
           CATDialogEngine             \
-          CATMathematics			\
           CATMechanicalCommands       \
-          CATMecModInterfaces         \
           CATObjectModelerBase        \
-          CATObjectSpecsModeler \
-          CATMechanicalModelerUI \
-          CATProductStructure1 \
-          DI0PANV2                  \
-          JS0FM                     \
-          JS0GROUP \
+          CATObjectSpecsModeler       \
+          CATMechanicalModelerUI      \
+          CATProductStructure1        \
+          DI0PANV2          \
+          JS0FM             \
+          JS0GROUP          \
           PNXBomAnalysisItf \
-          KTCAutoCodeUI   \
+          KTCAutoCodeUI     \
           KTCAutoCodeItf
 
 #Link with with external libraries

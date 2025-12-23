@@ -13,6 +13,7 @@
 #define KTCAutoDialog_H
 
 // Dialog Framework
+#include "CATDialogAgent.h"
 #include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
 #include "CATISpecObject.h"
