@@ -1,0 +1,10 @@
+#======================================================================
+# IID definitions PNXTemplateFeatureInterfaces.iid
+#  associated with framework PNXTemplateFeatureInterfaces
+#======================================================================
+# DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE 
+{9e622979-fcb6-4a85-8ab8-bd4a35d0af59}     PNXITemplateFeatureFactory
+
+{59757bf7-bf01-4661-9246-69bcb21672cf}     PNXITemplateFeature
+
+# END WIZARD EDITION ZONE

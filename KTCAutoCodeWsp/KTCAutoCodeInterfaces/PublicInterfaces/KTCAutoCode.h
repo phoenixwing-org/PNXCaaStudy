@@ -96,7 +96,7 @@ class CATDialogState;
     _catDialogState->AddDialogAgent(_daValueChange);                                      \
     AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_daValueChange), \
                   Action((ActionMethod)&PREFIX##Cmd::ActionValueChange));                 \
-    _daValueChange->AcceptOnNotify(NULL, KTCNotificationValueChanged::ClassName())
+    _daValueChange->AcceptOnNotify(NULL, KTCAutoNotificationValueChanged::ClassName())
 
 /**
  * @brief CMD AGENT BUILD GRAPH, field part

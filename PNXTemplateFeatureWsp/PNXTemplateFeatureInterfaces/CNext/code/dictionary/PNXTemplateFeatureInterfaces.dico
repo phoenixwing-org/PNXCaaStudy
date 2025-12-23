@@ -1,0 +1,17 @@
+#======================================================================
+# @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+# @license     MIT
+# @author      Phoenix Wing
+# @checkout    PNXTemplateFeature
+# @brief       Dictionary PNXTemplateFeatureInterfaces.dico
+# associated with framework PNXTemplateFeatureInterfaces
+#======================================================================
+
+PNXTemplateFeature              PNXITemplateFeature            		libPNXTemplateFeatureItf
+PNXTemplateFeature              CATIBuild                   libPNXTemplateFeatureItf
+CATPrtCont                    PNXITemplateFeatureFactory          libPNXTemplateFeatureItf
+PNXTemplateFeature              CATIIcon                    libPNXTemplateFeatureItf
+
+
+
+

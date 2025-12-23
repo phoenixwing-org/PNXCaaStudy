@@ -45,6 +45,12 @@ public:
      */
     void Build();
 
+public:
+    /**
+     * Returns the field_number-th field of the panel.
+     */
+    CATDlgSelectorList* GetField(int iFieldNumber);
+
     /**
      * Sets the focus on the active entry field
      */
@@ -55,10 +61,21 @@ public:
      */
     void SetName(int iFieldNumber, CATUnicodeString iName);
 
+protected:
     /**
-     * Returns the field_number-th field of the panel.
+     * @brief Set Accept On Notify Of Value Change
+     * @param[in] ipDialogAgent Value Change Agent
      */
-    CATDlgSelectorList* GetField(int iFieldNumber);
+    void SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogAgent);
+
+    /** @brief Set Params to Dialog */
+    void UpdateDialog();
+
+    /** @brief Update Params From Dialog */
+    void UpdateInfos();
+
+    /** @brief Update dialog Sensitivity */
+    void UpdateSensitivity();
 
 public:
     CATDlgSelectorList *_selectorListFirstPoint, *_selectorListMainDir;

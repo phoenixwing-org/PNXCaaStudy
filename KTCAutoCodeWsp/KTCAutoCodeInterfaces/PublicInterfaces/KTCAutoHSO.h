@@ -3,7 +3,7 @@
  * @license     MIT
  * @author      Phoenix Wing
  * @checkout    PNXAutoCode
- * @file
+ * @file        KTCAutoHSO.h
  * @version		V1.0
  * @brief
  * @details
@@ -20,7 +20,7 @@
 
 // KTC
 #include "KTCAutoCodeItf.h"
-#include "KTCAutoHSO.h"
+#include "KTCAutoDefine.h"
 
 class CATHSO;
 class CATFrmEditor;

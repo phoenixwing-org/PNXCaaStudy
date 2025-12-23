@@ -1,0 +1,19 @@
+//======================================================================
+// @copyright   Shanghai Kuntai Software Technology Co., Ltd. 2025
+// @license     MIT
+// @author      Phoenix Wing
+// @checkout    PNXTemplateFeature 
+// @brief       Message catalog
+//======================================================================
+
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Template of Feature";
+FrameParams.LabelMyCurve.Title = "Curve";
+FrameParams.SelectorListMyCurve.ShortHelp = "Select My Curve";
+FrameParams.LabelMyAxis.Title = "My Axis";
+FrameParams.SelectorListMyAxis.ShortHelp = "Select My Axis";
+FrameParams.LabelTransmissibility.Title = "Transm :";
+FrameParams.EditorTransmissibility.ShortHelp = "My Result";
+FrameMyFaces.Title = "My Faces";
+FrameMyFaces.SelectorListMyFaces.ShortHelp = "Select My Faces";
+// END WIZARD REPLACEMENT ZONE

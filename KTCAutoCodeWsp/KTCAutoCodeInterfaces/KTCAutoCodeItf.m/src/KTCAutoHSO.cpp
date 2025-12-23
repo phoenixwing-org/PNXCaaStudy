@@ -9,6 +9,9 @@
  * @brief
  */
 
+// cat
+#include "iostream.h"
+
 // Local
 #include "KTCAutoHSO.h"
 

@@ -8,17 +8,14 @@
         "Featurization",
         "HRESULT",
         "Instanciate",
-        "Jiang",
         "OIJK",
         "pfia",
         "PNXE",
         "PNXI",
-        "Tesselator",
         "Trian"
     ],
     "C_Cpp.default.includePath": [
         "${env:ROOT_DIR}/kt/core/include/**",
-        "${env:ROOT_DIR}/kt/KTC/include/**",
         "${workspaceFolder}/**"
     ],
     "C_Cpp.configurationWarnings": "enabled",

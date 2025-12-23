@@ -507,7 +507,7 @@ void PNXCombinedCurveCmd::SetActiveField(int ActiveField) {
 
             if (pPathElement != NULL) { // the geometrical element corresponding to the active field
                                         // is now highlighted
-                _HSO->add_element(pPathElement);
+                _HSO->AddElement(pPathElement);
 
                 pPathElement->Release();
                 pPathElement = NULL;

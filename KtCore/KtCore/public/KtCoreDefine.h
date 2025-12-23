@@ -20,7 +20,7 @@
     pointer = NULL
 
 namespace Kt {
-int round(double value) {
+inline int round(double value) {
     return int(value + 0.5);
 }
 }; // namespace Kt

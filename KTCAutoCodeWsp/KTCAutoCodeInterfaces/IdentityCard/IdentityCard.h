@@ -29,8 +29,6 @@ AddPrereqComponent("Visualization", Public);
 AddPrereqComponent("VisualizationBase", Public);
 AddPrereqComponent("ComponentsCatalogsInterfaces", Public);
 AddPrereqComponent("InteractiveInterfaces", Public);
-AddPrereqComponent("SketcherInterfaces", Public);
-AddPrereqComponent("Tessellation", Public);
 
 // bypass link forte 6.1
 AddPrereqComponent("ProductStructure", Public);

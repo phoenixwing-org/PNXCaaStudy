@@ -32,7 +32,7 @@
 //-------------------------------------------------------------------------
 PNXCurveDivisionDlg::PNXCurveDivisionDlg()
     // clang-format off
-    : KTCAutoDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), NULL
+    : KTCAutoDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), NULL,
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
 "PNXCurveDivisionDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
@@ -118,27 +118,14 @@ void PNXCurveDivisionDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialo
 
     // clang-format off
 
-    // 1, BaseCurve, NOT SUPPORT, SelectorList, 1
-
-    // 2, PointCount
-    ipDialogAgent->AcceptOnNotify(_SpinnerPointCount, _SpinnerPointCount->GetSpinnerModifyNotification());
-
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCurveDivision DIALOG NOTIFY
-
-    // value change
-    ipDialogAgent->AcceptOnNotify(
-        dialogMore->_SpinnerForValueChange,
-        dialogMore->_SpinnerForValueChange->GetSpinnerModifyNotification());
 }
 //-------------------------------------------------------------------------
 void PNXCurveDivisionDlg::UpdateDialog() {
-    if (!parameter) // check pointer
-        return;
-    cout << " PNXCurveDivisionDlg::UpdateDialog" << endl;
+    // if (!parameter) return; // check pointer
 
     // KEVIN_SYSTEM_CODE START
-    this->dialogMore->_EditorFeatureVersion->SetIntegerValue(0, 0); // set version
     // KEVIN_SYSTEM_CODE END
 
     // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
@@ -146,41 +133,22 @@ void PNXCurveDivisionDlg::UpdateDialog() {
 
     // clang-format off
 
-    // 1,BaseCurve,
-    KT_AUTO_FIELD_SET_LINE(_SelectorListBaseCurve, parameter->BaseCurve);
-
-    // 2,PointCount,
-    _SpinnerPointCount->SetValue(parameter->PointCount, 0);
-
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE DIALOG
 
     // Code add by user
-
-    if (parameter->BaseCurve != NULL_var) {
-        _SelectorListBaseCurve->SetLine(parameter->BaseCurve->GetDisplayName(), 0,
-                                        CATDlgDataModify);
-    }
-    else
-        _SelectorListBaseCurve->SetLine("(No Selection)", 0, CATDlgDataModify);
 
     this->UpdateSensitivity(); // update sensitivity
     // this->SetActiveFieldFocus(); // focus
 }
 //-----------------------------------------------------------------
 void PNXCurveDivisionDlg::UpdateInfos() {
-    if (!parameter) // check pointer
-        return;
+    // if (!parameter) return; // check pointer
 
     // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
     // START KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE INFORS
 
     // clang-format off
-
-    // 1,BaseCurve,,NO ACTION,SelectorList,1
-
-    // 2,PointCount,
-    parameter->PointCount = Kt::round(_SpinnerPointCount->GetValue());
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCurveDivision UPDATE INFORS

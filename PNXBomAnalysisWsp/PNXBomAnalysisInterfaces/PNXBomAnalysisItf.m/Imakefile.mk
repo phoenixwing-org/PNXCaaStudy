@@ -13,17 +13,13 @@ BUILT_OBJECT_TYPE=SHARED LIBRARY
 LINK_WITH=CATGeometricObjects          \
           CATCGMGeoMath                \
           CATApplicationFrame          \
-          CATGraphicProperties         \
 	      CATGitInterfaces             \
           CATMathematics               \
           CATMathStream                \
-          CATMecModInterfaces          \
           CATObjectModelerBase         \
-          CATMechanicalModeler         \
           CATProductStructure1         \
           JS0GROUP                      \
-          KnowledgeItf                  \       
-          CATBasicTopologicalOpe        \
+          KnowledgeItf                  \
           CATObjectSpecsModeler \
           KTCAutoCodeItf
 
