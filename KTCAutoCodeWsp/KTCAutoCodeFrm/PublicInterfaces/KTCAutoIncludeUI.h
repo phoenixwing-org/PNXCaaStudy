@@ -25,7 +25,7 @@
 #include "KTCAutoDialog.h"
 #include "KTCAutoGSM.h"
 #include "KTCAutoIncludeItf.h"
-#include "KTCAutoNotificationValueChanged.h"
+#include "KTCAutoValueChangedNtf.h"
 #include "KTCAutoObject.h"
 #include "KTCAutoSelectorCtx.h"
 

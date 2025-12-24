@@ -2,7 +2,7 @@
 CATDlgDialog PNXTemplateFeatureDlg
 {
   STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
-  ROWRES = { 0 };
+  ROWRES = { 1 };
   COLRES = { 0 };
 }
 
@@ -10,7 +10,7 @@ CATDlgFrame FrameParams
 {
   FATHER = PNXTemplateFeatureDlg;
   STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
   COLRES = { 1 };
 }
 
@@ -27,47 +27,51 @@ CATDlgSelectorList SelectorListMyCurve
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgLabel LabelMyAxis
+CATDlgLabel LabelMyResult
 {
   FATHER = FrameParams;
   GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgSelectorList SelectorListMyAxis
-{
-  FATHER = FrameParams;
-  TH = 1;
-  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgLabel LabelTransmissibility
-{
-  FATHER = FrameParams;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgEditor EditorTransmissibility
+CATDlgEditor EditorMyResult
 {
   FATHER = FrameParams;
   STYLE = CATDlgEdtFloat|CATDlgEdtReadOnly;
   TH = 1;
-  GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgFrame FrameMyFaces
 {
   FATHER = PNXTemplateFeatureDlg;
-  STYLE = CATDlgGridLayout;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
-  ROWRES = { 0 };
-  COLRES = { 0 };
+  COLRES = { 1 };
+}
+
+CATDlgLabel LabelMyFaces
+{
+  FATHER = FrameMyFaces;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSeparator Separator003
+{
+  FATHER = FrameMyFaces;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES|CATGRID_CST_HEIGHT };
+}
+
+CATDlgPushButton PushButtonOption
+{
+  FATHER = FrameMyFaces;
+  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgSelectorList SelectorListMyFaces
 {
-  FATHER = FrameMyFaces;
+  FATHER = PNXTemplateFeatureDlg;
   TH = 6;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

@@ -47,6 +47,15 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "mkmk TemplateFeature",
+            "type": "shell",
+            "command": ".\\mk.ps1",
+            "options": {
+                "cwd": "${workspaceFolder}/PNXTemplateFeatureWsp"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "mkmk Remaining Parallel",
             "dependsOn": [
                 "mkmk CombinedCurve",
@@ -118,6 +127,32 @@
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}/PNXCurveDivisionWsp"
+            }
+        },
+        {
+            "label": "Run TemplateBase",
+            "type": "shell",
+            "command": "${workspaceFolder}/tools/run.ps1",
+            "args": [
+                "-w",
+                "${workspaceFolder}/PNXTemplateBaseWsp"
+            ],
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}/PNXTemplateBaseWsp"
+            }
+        },
+        {
+            "label": "Run TemplateFeature",
+            "type": "shell",
+            "command": "${workspaceFolder}/tools/run.ps1",
+            "args": [
+                "-w",
+                "${workspaceFolder}/PNXTemplateFeatureWsp"
+            ],
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}/PNXTemplateFeatureWsp"
             }
         }
     ]

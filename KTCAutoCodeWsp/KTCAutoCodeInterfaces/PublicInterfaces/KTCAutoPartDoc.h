@@ -14,12 +14,16 @@
 #define KTCAutoPartDoc_H
 
 #include "CATISpecObject.h"
+#include "CATLISTV_CATISpecObject.h"
+#include "CATListOfCATPathElement.h"
 #include "CATListOfCATUnicodeString.h"
 #include "CATUnicodeString.h"
 
-// KTC
+// auto code
 #include "KTCAutoCodeItf.h"
 #include "KTCAutoPartDoc.h"
+
+class CATFrmEditor;
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoPartDoc {
@@ -28,10 +32,40 @@ public:
     KTCAutoPartDoc();
     virtual ~KTCAutoPartDoc();
 
+public:
+    /**
+     * @brief checkout path element
+     * @param object CATISpecObject_var
+     * @param pathElement CATPathElement**
+     * @return HRESULT
+     */
+    HRESULT checkout_pathelement(CATISpecObject_var object, CATPathElement** pathElement);
+
+    HRESULT checkout_pathelement(const CATListValCATISpecObject_var& list,
+                                 CATPathElement**                    pathElement);
+    /**
+     * @brief checkout path element
+     * @param iList CATListValCATISpecObject_var
+     * @param oList CATListOfCATPathElement&
+     * @return HRESULT
+     */
+    HRESULT checkout_pathelement(const CATListValCATISpecObject_var& iList,
+                                 CATLISTP(CATPathElement) & oList);
+
+    /**
+     * @brief initial editor
+     * @param editor CATFrmEditor*
+     * @return HRESULT
+     */
+    HRESULT initial_editor(CATFrmEditor* editor);
+
 private:
     /** @brief Copy constructor and equal operator */
     KTCAutoPartDoc(const KTCAutoPartDoc&);
     KTCAutoPartDoc& operator=(const KTCAutoPartDoc&);
+
+public:
+    CATFrmEditor* _editor; // catia frame editor
 };
 
 #endif

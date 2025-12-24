@@ -43,13 +43,6 @@ public:
     void BuildMore();
 
 protected:
-    /** @brief Param Dialog pointer define */
-    PNXTemplateFeatureParamDlg* dialogMore;
-
-    /** @brief param pointer define */
-    PNXTemplateFeatureParam* parameter;
-
-protected:
     /**
      * @brief Set Accept On Notify Of Value Change
      * @param[in] ipDialogAgent Value Change Agent
@@ -65,19 +58,26 @@ protected:
     /** @brief Update dialog Sensitivity */
     void UpdateSensitivity();
 
-protected: // Inset position for THE CAA2 WIZARD
+protected:
+    /** @brief Param Dialog pointer define */
+    PNXTemplateFeatureParamDlg* dialogMore;
+
+    /** @brief param pointer define */
+    PNXTemplateFeatureParam* parameter;
+
 private:
     // clang-format off
 //CAA2 WIZARD WIDGET DECLARATION SECTION
-CATDlgFrame*        _FrameParams;
-CATDlgLabel*        _LabelMyCurve;
-CATDlgSelectorList* _SelectorListMyCurve;
-CATDlgLabel*        _LabelMyAxis;
-CATDlgSelectorList* _SelectorListMyAxis;
-CATDlgLabel*        _LabelTransmissibility;
-CATDlgEditor*       _EditorTransmissibility;
-CATDlgFrame*        _FrameMyFaces;
-CATDlgSelectorList* _SelectorListMyFaces;
+ CATDlgFrame*      _FrameParams;
+ CATDlgLabel*      _LabelMyCurve;
+ CATDlgSelectorList*      _SelectorListMyCurve;
+ CATDlgLabel*      _LabelMyResult;
+ CATDlgEditor*      _EditorMyResult;
+ CATDlgFrame*      _FrameMyFaces;
+ CATDlgLabel*      _LabelMyFaces;
+ CATDlgSeparator*      _Separator003;
+ CATDlgPushButton*      _PushButtonOption;
+ CATDlgSelectorList*      _SelectorListMyFaces;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
     // clang-format on
 };

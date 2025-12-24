@@ -10,30 +10,31 @@
  * @date		2025-12-17
  */
 
-#ifndef KTCAutoNotificationValueChanged_H
-#define KTCAutoNotificationValueChanged_H
+#ifndef KTCAutoValueChangedNtf_H
+#define KTCAutoValueChangedNtf_H
 
+// CAT
 #include "CATDlgSelectorList.h"
 #include "CATISpecObject.h"
+#include "CATNotification.h"
 #include "CATUnicodeString.h"
 
 // KTC
 #include "KTCAutoCodeUI.h"
 
 /** @brief KTC AutoCode Param */
-class ExportedByKTCAutoCodeUI KTCAutoNotificationValueChanged {
+class ExportedByKTCAutoCodeUI KTCAutoValueChangedNtf : public CATNotification {
 public:
+    CATDeclareClass;
+
     /** @brief Standard constructors and destructors */
-    KTCAutoNotificationValueChanged();
-    virtual ~KTCAutoNotificationValueChanged();
+    KTCAutoValueChangedNtf();
+    virtual ~KTCAutoValueChangedNtf();
 
 private:
     /** @brief Copy constructor and equal operator */
-    KTCAutoNotificationValueChanged(const KTCAutoNotificationValueChanged&);
-    KTCAutoNotificationValueChanged& operator=(const KTCAutoNotificationValueChanged&);
-
-public:
-    static const char* ClassName();
+    KTCAutoValueChangedNtf(const KTCAutoValueChangedNtf&);
+    KTCAutoValueChangedNtf& operator=(const KTCAutoValueChangedNtf&);
 };
 
 #endif

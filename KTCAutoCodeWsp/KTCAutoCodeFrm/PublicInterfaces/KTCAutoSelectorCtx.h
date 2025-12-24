@@ -16,6 +16,7 @@
 #include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
 #include "CATISpecObject.h"
+#include "CATLISTV_CATISpecObject.h"
 
 // auto code
 #include "KTCAutoCodeUI.h"
@@ -31,20 +32,56 @@ public:
     virtual ~KTCAutoSelectorCtx();
 
 public:
-    void RegisterFeature(CATISpecObject_var& feature);
-    void RegisterFeature(CATListValCATISpecObject_var& iList);
+    /**
+     * @brief Clear Feature
+     * @return cleared count
+     */
+    int clear_feature();
 
-    void set_parent(CATDlgDialog* dlg);
+    /**
+     * @brief Clear Select
+     * @note call selector->ClearSelect
+     * same name as selector->ClearSelect
+     */
+    void ClearSelect();
+
+    /**
+     * @brief Register Feature
+     * @param feature CATISpecObject_var reference
+     * @note set feature
+     */
+    void regitster_feature(CATISpecObject_var& feature);
+
+    /**
+     * @brief Register Feature
+     * @param iList CATListValCATISpecObject_var reference
+     * @note set featureList
+     */
+    void regitster_feature(CATListValCATISpecObject_var& iList);
+
+    /**
+     * @brief Set Dialog
+     * @param dlg CATDlgDialog pointer
+     * @note set dialog
+     */
+    void set_dialog(CATDlgDialog* dlg);
+
+    /**
+     * @brief Set Select
+     * @param notify notify type, 0 for no notify, 1 for notify
+     * @return the number of selected lines.
+     * @note set select, call selector->SetSelect
+     * same name as selector->SetSelect
+     */
+    int SetSelect(int notify = 0);
 
 public:
     int                           fieldKey;
     KtString                      fieldName;
-    CATDlgSelectorList*           DlgSelector;
+    CATDlgSelectorList*           selector;
     CATISpecObject_var*           feature;
     CATListValCATISpecObject_var* featureList;
-
-private:
-    CATDlgDialog* _parentDialog;
+    CATDlgDialog*                 dialog;
 };
 
 typedef std::map<int, KTCAutoSelectorCtx*> KTCAutoSelectorCtxMap;

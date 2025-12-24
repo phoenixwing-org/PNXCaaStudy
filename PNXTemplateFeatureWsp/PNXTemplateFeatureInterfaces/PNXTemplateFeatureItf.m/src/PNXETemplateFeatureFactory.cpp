@@ -284,9 +284,6 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
 
             // your code here
 
-            // set ReadOnly for Transmissibility
-            // if (spListParmName[i] == "Transmissibility")
-
             // set all read only
             spListParm[ i ]->SetUserAccess(CATICkeParm::ReadOnly);
 

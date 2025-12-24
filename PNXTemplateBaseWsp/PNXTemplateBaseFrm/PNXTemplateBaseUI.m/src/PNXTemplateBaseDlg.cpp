@@ -42,17 +42,17 @@ PNXTemplateBaseDlg::PNXTemplateBaseDlg(CATMMUIPanelStateCmd* iFatherCmd)
  _FrameParams = NULL;
  _LabelMyCurve = NULL;
  _SelectorListMyCurve = NULL;
- _LabelMyAxis = NULL;
- _SelectorListMyAxis = NULL;
- _LabelTransmissibility = NULL;
- _EditorTransmissibility = NULL;
+ _LabelMyResult = NULL;
+ _EditorMyResult = NULL;
  _FrameMyFaces = NULL;
+ _LabelMyFaces = NULL;
+ _PushButtonOption = NULL;
+ _Separator003 = NULL;
  _SelectorListMyFaces = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
     // clang-format on
 
-    dialogMore = new PNXTemplateBaseParamDlg(this);     // new one
-    KTCAutoDialog::RegisterParameterDialog(dialogMore); // register parameter dialog
+    dialogMore = new PNXTemplateBaseParamDlg(this); // new one
 }
 //-------------------------------------------------------------------------
 PNXTemplateBaseDlg::~PNXTemplateBaseDlg() {
@@ -65,11 +65,12 @@ PNXTemplateBaseDlg::~PNXTemplateBaseDlg() {
  _FrameParams = NULL;
  _LabelMyCurve = NULL;
  _SelectorListMyCurve = NULL;
- _LabelMyAxis = NULL;
- _SelectorListMyAxis = NULL;
- _LabelTransmissibility = NULL;
- _EditorTransmissibility = NULL;
+ _LabelMyResult = NULL;
+ _EditorMyResult = NULL;
  _FrameMyFaces = NULL;
+ _LabelMyFaces = NULL;
+ _PushButtonOption = NULL;
+ _Separator003 = NULL;
  _SelectorListMyFaces = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
     // clang-format on
@@ -84,33 +85,33 @@ void PNXTemplateBaseDlg::Build() {
 
     // clang-format off
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
- SetGridRowResizable(0,1);
+ SetGridRowResizable(1,1);
  SetGridColumnResizable(0,1);
  _FrameParams = new CATDlgFrame(this, "FrameParams", CATDlgFraNoFrame|CATDlgGridLayout);
-_FrameParams -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+_FrameParams -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _FrameParams -> SetGridColumnResizable(1,1);
  _LabelMyCurve = new CATDlgLabel(_FrameParams, "LabelMyCurve");
 _LabelMyCurve -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _SelectorListMyCurve = new CATDlgSelectorList(_FrameParams, "SelectorListMyCurve");
  _SelectorListMyCurve -> SetVisibleTextHeight(1);
 _SelectorListMyCurve -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
- _LabelMyAxis = new CATDlgLabel(_FrameParams, "LabelMyAxis");
-_LabelMyAxis -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _SelectorListMyAxis = new CATDlgSelectorList(_FrameParams, "SelectorListMyAxis");
- _SelectorListMyAxis -> SetVisibleTextHeight(1);
-_SelectorListMyAxis -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
- _LabelTransmissibility = new CATDlgLabel(_FrameParams, "LabelTransmissibility");
-_LabelTransmissibility -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
- _EditorTransmissibility = new CATDlgEditor(_FrameParams, "EditorTransmissibility", CATDlgEdtFloat|CATDlgEdtReadOnly);
- _EditorTransmissibility -> SetVisibleTextHeight(1);
-_EditorTransmissibility -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
- _FrameMyFaces = new CATDlgFrame(this, "FrameMyFaces", CATDlgGridLayout);
+ _LabelMyResult = new CATDlgLabel(_FrameParams, "LabelMyResult");
+_LabelMyResult -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _EditorMyResult = new CATDlgEditor(_FrameParams, "EditorMyResult", CATDlgEdtFloat|CATDlgEdtReadOnly);
+ _EditorMyResult -> SetVisibleTextHeight(1);
+_EditorMyResult -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _FrameMyFaces = new CATDlgFrame(this, "FrameMyFaces", CATDlgFraNoFrame|CATDlgGridLayout);
 _FrameMyFaces -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _FrameMyFaces -> SetGridRowResizable(0,1);
- _FrameMyFaces -> SetGridColumnResizable(0,1);
- _SelectorListMyFaces = new CATDlgSelectorList(_FrameMyFaces, "SelectorListMyFaces");
+ _FrameMyFaces -> SetGridColumnResizable(1,1);
+ _LabelMyFaces = new CATDlgLabel(_FrameMyFaces, "LabelMyFaces");
+_LabelMyFaces -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PushButtonOption = new CATDlgPushButton(_FrameMyFaces, "PushButtonOption");
+_PushButtonOption -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
+ _Separator003 = new CATDlgSeparator(_FrameMyFaces, "Separator003");
+_Separator003 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES|CATGRID_CST_HEIGHT);
+ _SelectorListMyFaces = new CATDlgSelectorList(this, "SelectorListMyFaces");
  _SelectorListMyFaces -> SetVisibleTextHeight(6);
-_SelectorListMyFaces -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+_SelectorListMyFaces -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
     // clang-format on
 
@@ -121,8 +122,10 @@ _SelectorListMyFaces -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
     // clang-format on
 
     dialogMore->Build(); // Build
+    BuildMore();         // your build
 
-    BuildMore(); // your build
+    // register parameter dialog on option button
+    register_option_dialog(dialogMore, _PushButtonOption);
 }
 //-------------------------------------------------------------------------
 void PNXTemplateBaseDlg::BuildMore() {

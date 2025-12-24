@@ -16,6 +16,7 @@
     ],
     "C_Cpp.default.includePath": [
         "${env:ROOT_DIR}/kt/core/include/**",
+        "C:/DS/B${env:CAA_MK_VERSION}/**",
         "${workspaceFolder}/**"
     ],
     "C_Cpp.configurationWarnings": "enabled",

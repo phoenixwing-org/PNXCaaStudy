@@ -10,10 +10,9 @@
 Title = "Template of Feature";
 FrameParams.LabelMyCurve.Title = "Curve";
 FrameParams.SelectorListMyCurve.ShortHelp = "Select My Curve";
-FrameParams.LabelMyAxis.Title = "My Axis";
-FrameParams.SelectorListMyAxis.ShortHelp = "Select My Axis";
-FrameParams.LabelTransmissibility.Title = "Transm :";
-FrameParams.EditorTransmissibility.ShortHelp = "My Result";
-FrameMyFaces.Title = "My Faces";
-FrameMyFaces.SelectorListMyFaces.ShortHelp = "Select My Faces";
+FrameParams.LabelMyResult.Title = "My Result";
+FrameParams.EditorMyResult.ShortHelp = "My Result";
+FrameMyFaces.LabelMyFaces.Title = "My Faces";
+FrameMyFaces.PushButtonOption.Title = "M";
+SelectorListMyFaces.ShortHelp = "Select My Faces";
 // END WIZARD REPLACEMENT ZONE

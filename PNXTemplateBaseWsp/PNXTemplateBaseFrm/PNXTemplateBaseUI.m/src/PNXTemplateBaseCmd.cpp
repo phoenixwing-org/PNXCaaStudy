@@ -519,7 +519,7 @@ CATBoolean PNXTemplateBaseCmd::ActionValueChange(void*) {
 }
 //-----------------------------------------------------------------------------
 void PNXTemplateBaseCmd::AfterValueChange(bool isUpdateObj) {
-    cout << "PNXTemplateBaseCmd::AfterValueChange" << endl;
+    // cout << "- PNXTemplateBaseCmd::AfterValueChange" << endl;
     dialog->UpdateInfos();           // refresh information
     if (UpdatefiaSelectFaces() == 1) // only change Select mode
         return;

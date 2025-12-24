@@ -46,7 +46,7 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_HSO_ADD(NAME) _ktcHSO.add_element(parameter->NAME)
+#define KT_AUTO_HSO_ADD(NAME) _ktcHSO.AddElement(parameter->NAME)
 
 /**
  * @brief CMD ACTION PDA
@@ -55,7 +55,7 @@ class CATDialogState;
  */
 #define KT_AUTO_CMD_ACTION_PDA(NAME)    \
     _da##NAME->InitializeAcquisition(); \
-    if (fieldChange) _ktcHSO.add_element(parameter->NAME)
+    if (fieldChange) _ktcHSO.AddElement(parameter->NAME)
 
 /**
  * @brief CMD ACTION FIA
@@ -96,7 +96,7 @@ class CATDialogState;
     _catDialogState->AddDialogAgent(_daValueChange);                                      \
     AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_daValueChange), \
                   Action((ActionMethod)&PREFIX##Cmd::ActionValueChange));                 \
-    _daValueChange->AcceptOnNotify(NULL, KTCAutoNotificationValueChanged::ClassName())
+    _daValueChange->AcceptOnNotify(NULL, KTCAutoValueChangedNtf::ClassName())
 
 /**
  * @brief CMD AGENT BUILD GRAPH, field part
@@ -106,15 +106,15 @@ class CATDialogState;
  */
 #define KT_AUTO_CMD_BUILD_FIELD(PREFIX, NAME)                                                 \
     selector   = dialog->_SelectorList##NAME;                                                 \
-    _ctx##NAME = dialog->RegisterField(Field_##PREFIX##_##NAME, selector, #NAME);             \
-    if (NULL == _ctx##NAME || NULL == _ctx##NAME->DlgSelector) {                              \
+    _ctx##NAME = dialog->regitster_field(Field_##PREFIX##_##NAME, selector, #NAME);           \
+    if (NULL == _ctx##NAME || NULL == _ctx##NAME->selector) {                                 \
         msg = " {NG}. for register field " #NAME;                                             \
         cout << msg << endl;                                                                  \
         KTCAutoDialog::ShowMessageBox(msg, dialog);                                           \
         RequestDelayedDestruction();                                                          \
         return;                                                                               \
     }                                                                                         \
-    _ctx##NAME->RegisterFeature(parameter->NAME);                                             \
+    _ctx##NAME->regitster_feature(parameter->NAME);                                           \
     _fia##NAME->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot); \
     _fia##NAME->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport |                     \
                                  MfRelimitedFeaturization);                                   \

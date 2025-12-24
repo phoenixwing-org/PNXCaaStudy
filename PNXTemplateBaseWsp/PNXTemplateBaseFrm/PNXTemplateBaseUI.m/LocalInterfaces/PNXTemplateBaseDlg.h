@@ -69,15 +69,16 @@ protected: // Inset position for THE CAA2 WIZARD
 private:
     // clang-format off
 //CAA2 WIZARD WIDGET DECLARATION SECTION
-CATDlgFrame*        _FrameParams;
-CATDlgLabel*        _LabelMyCurve;
-CATDlgSelectorList* _SelectorListMyCurve;
-CATDlgLabel*        _LabelMyAxis;
-CATDlgSelectorList* _SelectorListMyAxis;
-CATDlgLabel*        _LabelTransmissibility;
-CATDlgEditor*       _EditorTransmissibility;
-CATDlgFrame*        _FrameMyFaces;
-CATDlgSelectorList* _SelectorListMyFaces;
+ CATDlgFrame*      _FrameParams;
+ CATDlgLabel*      _LabelMyCurve;
+ CATDlgSelectorList*      _SelectorListMyCurve;
+ CATDlgLabel*      _LabelMyResult;
+ CATDlgEditor*      _EditorMyResult;
+ CATDlgFrame*      _FrameMyFaces;
+ CATDlgLabel*      _LabelMyFaces;
+ CATDlgPushButton*      _PushButtonOption;
+ CATDlgSeparator*      _Separator003;
+ CATDlgSelectorList*      _SelectorListMyFaces;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
     // clang-format on
 };

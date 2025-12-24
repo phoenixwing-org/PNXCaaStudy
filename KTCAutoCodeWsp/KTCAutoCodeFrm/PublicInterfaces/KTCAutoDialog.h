@@ -24,6 +24,7 @@
 #include "KTCAutoCodeUI.h"
 #include "KTCAutoHSO.h"
 #include "KTCAutoSelectorCtx.h"
+#include "KTCAutoValueChangedNtf.h"
 
 /** @brief KTCAutoDialog Dialog */
 class ExportedByKTCAutoCodeUI KTCAutoDialog : public CATDlgDialog {
@@ -42,7 +43,7 @@ public:
 
     /** @brief Get Active Field */
     inline int GetActiveField() const {
-        return _currentField;
+        return _activeField;
     };
 
     /** @brief Get Active Field */
@@ -55,6 +56,9 @@ public:
      */
     int InitialMenuRightClick();
 
+    /** @brief Callback on show option dialog */
+    virtual void on_show_option_dialog(CATCommand*, CATNotification*, CATCommandClientData);
+
     /**
      * @brief register field
      * @param field field id
@@ -62,11 +66,14 @@ public:
      * @param name selector name
      * @return KTCAutoSelectorCtx pointer
      */
-    KTCAutoSelectorCtx* RegisterField(int field, CATDlgSelectorList* selector,
-                                      const KtString& name = "");
+    KTCAutoSelectorCtx* regitster_field(int field, CATDlgSelectorList* selector,
+                                        const KtString& name = "");
 
     /** @brief Register Parameter Dialog */
-    void RegisterParameterDialog(CATDlgDialog* dlg);
+    void register_option_dialog(CATDlgDialog* dlg);
+
+    /** @brief Register Parameter Dialog */
+    void register_option_dialog(CATDlgDialog* dlg, CATDlgPushButton* optionBtn);
 
     /** @brief nodoc */
     static int selectorlist_setline(CATDlgSelectorList*     selectorList,
@@ -77,6 +84,9 @@ public:
     static int selectorlist_setline(CATDlgSelectorList*                 selectorList,
                                     const CATListValCATISpecObject_var& iList,
                                     const CATUnicodeString&             noneSel = "(No Selection)");
+
+    /** @brief send value change notification */
+    void SendValueCHangeNotification();
 
     /**
      * @brief Set Accept On Notify Of Value Change
@@ -91,7 +101,7 @@ public:
     void SetActiveFieldFocus();
 
     /** @brief nodoc */
-    static void ShowMessageBox(const CATUnicodeString& msg, CATDlgDialog* dialog = NULL);
+    static void ShowMessageBox(const CATUnicodeString& msg, CATDialog* dialog = NULL);
 
     /** @brief Set Params to Dialog */
     virtual void UpdateDialog() = 0;
@@ -104,13 +114,14 @@ public:
 
 protected:
 public:
-    CATDlgDialog* _parameterDialog; // sub dialog
-    CATHSO*       _catHSO;          // catia HSO
+    CATDlgDialog* _optionDialog; // sub dialog
+    CATHSO*       _catHSO;       // catia HSO
 
 private:
-    int                    _currentField; // current field
-    KTC::ValueActionMode   _actionMode;   // action mode
-    KTCAutoSelectorCtxMap* _selectorMap;  // selector map
+    int                     _activeField;    // current field
+    KTC::ValueActionMode    _actionMode;     // action mode
+    KTCAutoSelectorCtxMap*  _selectorMap;    // selector map
+    KTCAutoValueChangedNtf* _valueChangeNtf; // value change notification
 };
 
 #endif

@@ -18,9 +18,10 @@
 #include "CATListOfCATUnicodeString.h"
 #include "CATUnicodeString.h"
 
-// KTC
+// auto code
 #include "KTCAutoCodeItf.h"
 #include "KTCAutoDefine.h"
+#include "KTCAutoPartDoc.h"
 
 class CATHSO;
 class CATFrmEditor;
@@ -39,32 +40,68 @@ public:
 
 public:
     /**
+     * @brief add element to hso
+     * @param object CATISpecObject_var
      * @return add count
+     * @note call _hso->AddElement
      */
-    int add_element(CATISpecObject_var object);
-
-    int add_element(const CATListValCATISpecObject_var& list);
+    int AddElement(CATISpecObject_var object);
 
     /**
-     * @return count
+     * @brief add elements to hso
+     * @param object CATISpecObject_var
+     * @return add count
+     * @note call _hso->AddElements
      */
-    int after_element_selected(CATFeatureImportAgent* agent, CATISpecObject_var object,
+    int AddElement(const CATListValCATISpecObject_var& list);
+
+    /**
+     * @brief after element selected
+     * @param agent CATFeatureImportAgent*
+     * @param ioObject CATISpecObject_var& input/output object
+     * @param mode KTC::ValueActionMode
+     * @return treated count
+     */
+    int after_element_selected(CATFeatureImportAgent* agent, CATISpecObject_var& ioObject,
                                KTC::ValueActionMode mode);
 
     /**
-     * @return count
+     * @brief after element selected
+     * @param agent CATFeatureImportAgent*
+     * @param ioList CATListValCATISpecObject_var& input/output list
+     * @param mode KTC::ValueActionMode
+     * @return treated count
      */
-    int after_element_selected(CATFeatureImportAgent*              agent,
-                               const CATListValCATISpecObject_var& list, KTC::ValueActionMode mode);
-
+    int after_element_selected(CATFeatureImportAgent* agent, CATListValCATISpecObject_var& ioList,
+                               KTC::ValueActionMode mode);
     /**
-     * @return initial
+     * @brief initial editor and hso
+     * @param editor CATFrmEditor*
+     * @param hso CATHSO*
+     * @note set _editor and _hso
      */
     void initial(CATFrmEditor* editor, CATHSO* hso);
 
+    /**
+     * @brief remove element from hso
+     * @param object CATISpecObject_var
+     * @return remove count
+     * @note call _hso->RemoveElement
+     */
+    int RemoveElement(CATISpecObject_var object);
+
+    /**
+     * @brief add elements to hso
+     * @param object CATISpecObject_var
+     * @return remove count
+     * @note call _hso->RemoveElements
+     */
+    int RemoveElement(const CATListValCATISpecObject_var& list);
+
 public:
-    CATFrmEditor* _editor; // catia frame editor
-    CATHSO*       _hso;    // catia hso
+    CATFrmEditor*  _editor;  // catia frame editor
+    CATHSO*        _hso;     // catia hso
+    KTCAutoPartDoc _partDoc; // catia part doc
 };
 
 #endif

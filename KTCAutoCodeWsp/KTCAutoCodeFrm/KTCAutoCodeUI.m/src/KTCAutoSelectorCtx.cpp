@@ -18,32 +18,71 @@
 #include "KTCAutoSelectorCtx.h"
 
 //-------------------------------------------------------------------------
-KTCAutoSelectorCtx::KTCAutoSelectorCtx(int field, CATDlgSelectorList* selector)
-    : fieldKey(field)
-    , DlgSelector(selector)
+KTCAutoSelectorCtx::KTCAutoSelectorCtx(int iField, CATDlgSelectorList* iSelector)
+    : fieldKey(iField)
+    , selector(iSelector)
     , feature(NULL)
     , featureList(NULL)
-    , _parentDialog(NULL)
+    , dialog(NULL)
     , fieldName() {
 }
 //-------------------------------------------------------------------------
 KTCAutoSelectorCtx::~KTCAutoSelectorCtx() {
-    _parentDialog = NULL;
-    feature       = NULL;
-    featureList   = NULL;
-    DlgSelector   = NULL;
+    dialog      = NULL;
+    feature     = NULL;
+    featureList = NULL;
+    selector    = NULL;
 }
 //-------------------------------------------------------------------------
-void KTCAutoSelectorCtx::RegisterFeature(CATISpecObject_var& feature) {
-    this->feature     = &feature;
-    this->featureList = NULL; // »¥³â
+int KTCAutoSelectorCtx::clear_feature() {
+    if (feature) {
+        // single feature mode
+        if (NULL_var != *feature) *feature = NULL_var;
+        return 1;
+    }
+    if (featureList) {
+        // list mode
+        if (featureList->Size() > 0) {
+            int count = featureList->Size();
+            featureList->RemoveAll();
+            return count;
+        }
+    }
+    return 0;
 }
 //-------------------------------------------------------------------------
-void KTCAutoSelectorCtx::RegisterFeature(CATListValCATISpecObject_var& iList) {
-    this->feature     = NULL; // »¥³â
+void KTCAutoSelectorCtx::ClearSelect() {
+    if (selector) selector->ClearSelect();
+}
+//-------------------------------------------------------------------------
+void KTCAutoSelectorCtx::regitster_feature(CATISpecObject_var& iFeature) {
+    this->feature     = &iFeature;
+    this->featureList = NULL; // clear
+}
+//-------------------------------------------------------------------------
+void KTCAutoSelectorCtx::regitster_feature(CATListValCATISpecObject_var& iList) {
+    this->feature     = NULL; // clear
     this->featureList = &iList;
 }
 //-------------------------------------------------------------------------
-void KTCAutoSelectorCtx::set_parent(CATDlgDialog* dlg) {
-    _parentDialog = dlg;
+void KTCAutoSelectorCtx::set_dialog(CATDlgDialog* iDialog) {
+    dialog = iDialog;
+}
+//-------------------------------------------------------------------------
+int KTCAutoSelectorCtx::SetSelect(int notify) {
+    if (!selector) return 0;
+    if (selector->GetSelectCount() > 0) return selector->GetSelectCount();
+
+    // no lines
+    if (selector->GetLineCount() == 0) {
+        CATUnicodeString msg[ 1 ];
+        msg[ 0 ] = "(No Selection)";
+        selector->SetSelect(msg, 1, notify);
+        return 1;
+    }
+
+    // have lines
+    int row = 0;                          // first line
+    selector->SetSelect(&row, 1, notify); // select row
+    return 1;
 }

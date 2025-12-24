@@ -5,10 +5,10 @@
 // @checkout    PNXTemplateBase 
 // Toolbar Addin header resource file
 //======================================================================
-PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Title     = "PNX Template Baseissibility" ;
-PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.ShortHelp = "PNX Template Baseissibility" ;
-PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Help      = "Create PNX Template Baseissibility Object" ;
-PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.LongHelp  = "Create a PNX Template Baseissibility Object. use point, direction and axis." ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Title     = "PNX Template Base" ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.ShortHelp = "PNX Template Base" ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Help      = "Create PNX Template Base Object" ;
+PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.LongHelp  = "Create a PNX Template Base Object. use point, direction and axis." ;
 PNXTemplateBaseAdnHeader.PNXTemplateBaseHdr.Category  = "Insert" ;
 
 
