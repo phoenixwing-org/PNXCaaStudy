@@ -21,7 +21,7 @@
         "string_view": "cpp"
     },
     "C_Cpp.default.includePath": [
-        "${env:ROOT_DIR}/kt/core/include/**",
+        "${env:ROOT_DIR_CORE}/include/**",
         "C:/DS/B${env:CAA_MK_VERSION}/**",
         "${workspaceFolder}/**"
     ],
