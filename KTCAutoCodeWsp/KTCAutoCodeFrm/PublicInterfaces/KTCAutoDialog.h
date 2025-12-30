@@ -41,6 +41,13 @@ public:
      */
     int ActionSubCommandReturn();
 
+    /**
+     * @brief checkout title
+     * @param object input object
+     * @return title string for dialog, if null ,return ""
+     */
+    static CATUnicodeString checkout_title(CATISpecObject_var object);
+
     /** @brief Get Active Field */
     inline int GetActiveField() const {
         return _activeField;

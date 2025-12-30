@@ -14,6 +14,7 @@
 #include "CATDialogAgent.h"
 #include "CATDlgNotify.h"
 #include "CATDlgWindow.h"
+#include "CATIAlias.h"
 #include "CATLISTV_CATISpecObject.h"
 #include "CATListOfCATUnicodeString.h"
 #include "CATMMUIPanelStateCmd.h"
@@ -54,6 +55,17 @@ KTCAutoDialog::~KTCAutoDialog() {
     }
 
     // TODO: delete _valueChangeNtf?
+}
+//-----------------------------------------------------------------------------
+CATUnicodeString KTCAutoDialog::checkout_title(CATISpecObject_var object) {
+    if (!object) return ""; // 没有特征
+
+    // 存在，检出名字
+    CATIAlias_var alias = object;
+    if (!!alias) // get alias
+        return alias->GetAlias();
+    else // or get display name
+        return object->GetDisplayName();
 }
 //-------------------------------------------------------------------------
 int KTCAutoDialog::InitialMenuRightClick() {
@@ -140,8 +152,8 @@ int KTCAutoDialog::selectorlist_setline(CATDlgSelectorList*     selectorList,
     if (selectorList->GetLineCount() > 1) selectorList->ClearLine(); // clear multi line
 
     // set diaplay name or no selection
-    if (inputObject != NULL_var) {
-        selectorList->SetLine(inputObject->GetDisplayName(), 0, CATDlgDataModify);
+    if (!!inputObject) {
+        selectorList->SetLine(checkout_title(inputObject), 0, CATDlgDataModify);
     }
     else
         selectorList->SetLine(noneSel, 0, CATDlgDataModify);
@@ -166,10 +178,10 @@ int KTCAutoDialog::selectorlist_setline(CATDlgSelectorList*                 sele
 
     // loop ,list index from 1
     for (size_t i = 1; i <= iList.Size(); i++) {
-        object = iList[ i ];
+        object = iList[ i ]; // get object
 
         if (!!object)
-            title = object->GetDisplayName();
+            title = checkout_title(object);
         else
             title = "(NULL Object)";
 

@@ -16,7 +16,8 @@ LINK_WITH=CATApplicationFrame       \
           CATObjectSpecsModeler     \
           DI0PANV2                  \
           JS0FM                     \
-          JS0GROUP                  \   
+          JS0GROUP                  \ 
+          CATObjectModelerBase      \  
           KTCAutoCodeItf
 
 #Link with with external libraries
