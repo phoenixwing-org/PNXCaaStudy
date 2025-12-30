@@ -144,11 +144,8 @@ void PNXBomAnalysisCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
-    if (FAILED(hr)) {
-        if (msg.GetLengthInChar() > 0) {
-            cout << msg << endl;
-            // KTCAutoDialog::ShowMessageBox(msg, dialog);
-        }
+    if (_code) {
+        KTCAutoDialog::ShowMessageBox(_code, msg, dialog);
         RequestDelayedDestruction();
         return;
     }

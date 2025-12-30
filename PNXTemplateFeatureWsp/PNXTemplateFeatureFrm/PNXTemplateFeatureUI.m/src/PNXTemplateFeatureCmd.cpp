@@ -232,10 +232,8 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
-    if (FAILED(hr) || NULL_var == feature) {
-        if (msg.GetLengthInChar() > 0) {
-            KTCAutoDialog::ShowMessageBox(msg, dialog);
-        }
+    if (_code || NULL_var == feature) {
+        KTCAutoDialog::ShowMessageBox(_code, msg, dialog);
         RequestDelayedDestruction();
         return;
     }

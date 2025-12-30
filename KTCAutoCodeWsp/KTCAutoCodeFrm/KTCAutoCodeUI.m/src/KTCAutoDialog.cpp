@@ -198,11 +198,30 @@ void KTCAutoDialog::SendValueCHangeNotification() {
 }
 //-----------------------------------------------------------------------------
 void KTCAutoDialog::ShowMessageBox(const CATUnicodeString& msg, CATDialog* dialog) {
-
+    ShowMessageBox(0, msg, dialog);
+}
+//-----------------------------------------------------------------------------
+void KTCAutoDialog::ShowMessageBox(int code, const CATUnicodeString& msg, CATDialog* dialog) {
     if (!dialog) dialog = (CATApplicationFrame::GetApplicationFrame())->GetMainWindow();
 
     // 创建消息通知对话框
-    CATDlgNotify* notify = new CATDlgNotify(dialog, "Message", CATDlgNfyInformation);
-    notify->DisplayBlocked(msg, "Warning");             // 显示对话框（模态）
-    notify->RequestDelayedDestruction(), notify = NULL; // 释放资源
+    CATDlgNotify* notify = NULL;
+    if (code != 0) { // 有错误
+        // message
+        CATUnicodeString num;   // code
+        num.BuildFromNum(code); // code to string
+
+        // 没有输入msg就显示空信息，code等
+        CATUnicodeString message = "[ERROR " + num + "]\n" + msg;
+
+        // 弹出
+        notify = new CATDlgNotify(dialog, "Error", CATDlgNfyError);
+        notify->DisplayBlocked(message, "Error"); // 显示对话框（模态）
+    }
+    else { // 没有错误
+        notify = new CATDlgNotify(dialog, "Information", CATDlgNfyInformation);
+        notify->DisplayBlocked(msg, "Information"); // 显示对话框（模态）
+    }
+
+    KTCRequestDelayedDestruction(notify); // 释放资源
 }

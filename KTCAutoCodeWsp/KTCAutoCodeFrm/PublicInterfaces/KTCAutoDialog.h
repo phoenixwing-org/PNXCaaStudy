@@ -107,8 +107,20 @@ public:
     /** @brief Set Active Field Focus */
     void SetActiveFieldFocus();
 
-    /** @brief nodoc */
+    /**
+     * @brief Show Message Box
+     * @param[in] msg message
+     * @param[in] dialog Parrent dialo
+     */
     static void ShowMessageBox(const CATUnicodeString& msg, CATDialog* dialog = NULL);
+
+    /**
+     * @brief Show Message Box
+     * @param[in] code Error Code
+     * @param[in] msg message
+     * @param[in] dialog Parrent dialo
+     */
+    static void ShowMessageBox(int code, const CATUnicodeString& msg, CATDialog* dialog = NULL);
 
     /** @brief Set Params to Dialog */
     virtual void UpdateDialog() = 0;
