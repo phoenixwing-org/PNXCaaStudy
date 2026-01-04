@@ -6,13 +6,8 @@
 // MechanicalModelerUI Framework
 #include "CATMMUIPanelStateCmd.h" // Needed to derive from CATMMUIPanelStateCmd
 
-class CATFeatureImportAgent;
-class CATISpecObject;
 class PNXCombinedCurveDlg;
-class CATHSO;
 class PNXICombinedCurve;
-class CATIGSMTool;
-class CATIPrtPart;
 
 /**
  * Class managing the dialog command to edit Combined Curves.

@@ -27,15 +27,6 @@
 // auto code
 #include "KTCAutoCode.h"
 
-// pre-declare class
-class CATFeatureImportAgent;
-class CATISpecObject;
-class CATHSO;
-class CATISO;
-class CATIGSMTool;
-class CATIPrtPart;
-class CATDialogState;
-
 /**
  * Class managing the dialog command to edit Sound Holes.
  *

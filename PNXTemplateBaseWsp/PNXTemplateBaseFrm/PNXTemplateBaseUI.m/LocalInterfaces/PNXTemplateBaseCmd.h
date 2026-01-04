@@ -27,13 +27,6 @@
 
 // pre-declare class
 class PNXITemplateBase;
-class CATFeatureImportAgent;
-class CATISpecObject;
-class CATHSO;
-class CATISO;
-class CATIGSMTool;
-class CATIPrtPart;
-class CATDialogState;
 
 // user define: do not use PNXITemplateBase_var
 typedef CATISpecObject_var PNXITemplateBase_var;
@@ -99,10 +92,10 @@ public:
     /** @brief called after value changed */
     void AfterValueChange(bool isUpdateObj = false);
 
-    /** @brief CATFeatureImportAgent Clear */
+    /** @brief CATPathElementAgent Clear */
     void fiaAgentClear();
 
-    /** @brief CATFeatureImportAgent Clear */
+    /** @brief CATPathElementAgent Clear */
     void fiaAgentUpdate();
 
     /**

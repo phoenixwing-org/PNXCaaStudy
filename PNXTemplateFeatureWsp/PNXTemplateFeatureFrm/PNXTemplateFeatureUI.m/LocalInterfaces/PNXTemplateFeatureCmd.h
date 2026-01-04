@@ -25,16 +25,6 @@
 #include "PNXTemplateFeatureDlg.h"
 #include "PNXTemplateFeatureParam.h"
 
-// pre-declare class
-class PNXITemplateFeature;
-class CATFeatureImportAgent;
-class CATISpecObject;
-class CATHSO;
-class CATISO;
-class CATIGSMTool;
-class CATIPrtPart;
-class CATDialogState;
-
 /**
  * Class managing the dialog command to edit Sound Holes.
  *

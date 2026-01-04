@@ -12,7 +12,9 @@
 // for class define
 class KTCAutoSelectorCtx;
 // pre-declare CAT
+class CATPathElementAgent;
 class CATFeatureImportAgent;
+class CATOtherDocumentAgent;
 class CATPathElementAgent;
 class CATISpecObject;
 class CATMMUIPanelStateCmd;
@@ -116,8 +118,6 @@ class CATDialogState;
     }                                                                                         \
     _ctx##NAME->regitster_feature(parameter->NAME);                                           \
     _fia##NAME->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot); \
-    _fia##NAME->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport |                     \
-                                 MfRelimitedFeaturization);                                   \
     _da##NAME = new CATDialogAgent("Pda" #NAME);                                              \
     _da##NAME->AcceptOnNotify(selector, selector->GetListSelectNotification());               \
     _catDialogState->AddDialogAgent(_da##NAME);                                               \
@@ -214,7 +214,10 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_CMD_BUILD_FIA_NEW(NAME) _fia##NAME = new CATFeatureImportAgent("Fia" #NAME)
+#define KT_AUTO_CMD_BUILD_FIA_NEW(NAME)                                        \
+    CATFeatureImportAgent* fia##NAME = new CATFeatureImportAgent("Fia" #NAME); \
+    _fia##NAME                       = fia##NAME;                              \
+    fia##NAME->SetAgentBehavior(MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization)
 
 /**
  * @brief CMD AGENT BUILD GRAPH FIA, field plane
@@ -285,9 +288,9 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_AGENT_DECLARE_FIELD(NAME) \
-    CATDialogAgent*        _da##NAME;         \
-    CATFeatureImportAgent* _fia##NAME;        \
-    KTCAutoSelectorCtx*    _ctx##NAME
+    CATDialogAgent*      _da##NAME;           \
+    CATPathElementAgent* _fia##NAME;          \
+    KTCAutoSelectorCtx*  _ctx##NAME
 
 /**
  * @brief CMD AGENT DESTRUCTOR, common part

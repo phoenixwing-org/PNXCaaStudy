@@ -12,6 +12,7 @@
 // cat
 #include "CATFeatureImportAgent.h"
 #include "CATHSO.h"
+#include "CATOtherDocumentAgent.h"
 #include "CATPathElement.h"
 #include "iostream.h"
 
@@ -94,19 +95,15 @@ int KTCAutoHSO::AddElement(const CATListValCATISpecObject_var& list) {
     return count;
 }
 //-----------------------------------------------------------------------------
-int KTCAutoHSO::after_element_selected(CATFeatureImportAgent* agent, CATISpecObject_var& ioObject,
+int KTCAutoHSO::after_element_selected(CATPathElementAgent* agent, CATISpecObject_var& ioObject,
                                        KTC::ValueActionMode mode) {
     /**
      * 作用： 从agent获得选入元素，根据mode，设定ioObject
      */
     if (!agent) return 0;
 
-    // 获得 path element
-    CATPathElement* pathElement = agent->GetValue();
-    if (!pathElement) return 0;
-
     // 获得 base unknown
-    CATBaseUnknown* baseUnknown = agent->GetElementValue(pathElement);
+    CATBaseUnknown* baseUnknown = agent->GetElementValue();
     if (!baseUnknown) return 0;
 
     // 获得 spec object
@@ -114,27 +111,40 @@ int KTCAutoHSO::after_element_selected(CATFeatureImportAgent* agent, CATISpecObj
     HRESULT            hr = baseUnknown->QueryInterface(IID_CATISpecObject, (void**)&specObject);
     if (FAILED(hr) || !specObject) return 0;
 
+    // 获得 path element，用於反選
+    CATPathElement* pathElement = agent->GetValue();
+    if (!pathElement) return 0;
+
     // 处理模式
     switch (mode) {
     case KTC::ValueAdd: // 不一致，设定值 or 一致不动作
+    {
         if (specObject != ioObject) ioObject = specObject;
         break;
+    }
     case KTC::ValueSubtract: // 存在，清空 or 不存在，不动作
+    {
+        RemoveElement(pathElement); // 处理hso
         if (specObject == ioObject) ioObject = NULL_var;
         break;
-    default: // case KTC::ValueNormal: // 相同清空 or 不同赋值
-        if (specObject == ioObject)
+    }
+    default: // case KTC::ValueNormal:
+    {
+        if (specObject == ioObject) {   // 相同清空
+            RemoveElement(pathElement); // 处理hso
             ioObject = NULL_var;
-        else
+        }
+        else // or 不同赋值
             ioObject = specObject;
         break;
+    }
     }
 
     // cout << "- [Debug] OK KTCAutoHSO::after_element_selected(... object) = 1" << endl;
     return 1;
 }
 //-----------------------------------------------------------------------------
-int KTCAutoHSO::after_element_selected(CATFeatureImportAgent*        agent,
+int KTCAutoHSO::after_element_selected(CATPathElementAgent*          agent,
                                        CATListValCATISpecObject_var& ioList,
                                        KTC::ValueActionMode          mode) {
     /**
@@ -142,12 +152,8 @@ int KTCAutoHSO::after_element_selected(CATFeatureImportAgent*        agent,
      */
     if (!agent) return 0;
 
-    // 获得 path element
-    CATPathElement* pathElement = agent->GetValue();
-    if (!pathElement) return 0;
-
     // 获得 base unknown
-    CATBaseUnknown* baseUnknown = agent->GetElementValue(pathElement);
+    CATBaseUnknown* baseUnknown = agent->GetElementValue();
     if (!baseUnknown) return 0;
 
     // 获得 spec object
@@ -156,6 +162,10 @@ int KTCAutoHSO::after_element_selected(CATFeatureImportAgent*        agent,
     if (FAILED(hr) || !specObject) return 0;
 
     const int location = ioList.Locate(specObject);
+
+    // 获得 path element，用於反選
+    CATPathElement* pathElement = agent->GetValue();
+    if (!pathElement) return 0;
 
     // 处理模式
     switch (mode) {
@@ -169,13 +179,13 @@ int KTCAutoHSO::after_element_selected(CATFeatureImportAgent*        agent,
         if (location > 0) ioList.RemoveValue(specObject); // 处理列表
         break;
     default:
-        // case KTC::ValueNormal: // 存在清空 or 不同添加
-        if (location == 0) {
-            ioList.Append(specObject);
-        }
-        else {
+        // case KTC::ValueNormal:
+        if (location != 0) {                // 存在清空
             RemoveElement(pathElement);     // 处理hso
             ioList.RemoveValue(specObject); // 处理列表
+        }
+        else { // or 不存在添加
+            ioList.Append(specObject);
         }
         break;
     }

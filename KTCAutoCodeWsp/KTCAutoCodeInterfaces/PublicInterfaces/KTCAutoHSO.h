@@ -25,7 +25,7 @@
 
 class CATHSO;
 class CATFrmEditor;
-class CATFeatureImportAgent;
+class CATPathElementAgent;
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoHSO {
@@ -57,22 +57,22 @@ public:
 
     /**
      * @brief after element selected
-     * @param agent CATFeatureImportAgent*
+     * @param agent CATPathElementAgent*
      * @param ioObject CATISpecObject_var& input/output object
      * @param mode KTC::ValueActionMode
      * @return treated count
      */
-    int after_element_selected(CATFeatureImportAgent* agent, CATISpecObject_var& ioObject,
+    int after_element_selected(CATPathElementAgent* agent, CATISpecObject_var& ioObject,
                                KTC::ValueActionMode mode);
 
     /**
      * @brief after element selected
-     * @param agent CATFeatureImportAgent*
+     * @param agent CATPathElementAgent*
      * @param ioList CATListValCATISpecObject_var& input/output list
      * @param mode KTC::ValueActionMode
      * @return treated count
      */
-    int after_element_selected(CATFeatureImportAgent* agent, CATListValCATISpecObject_var& ioList,
+    int after_element_selected(CATPathElementAgent* agent, CATListValCATISpecObject_var& ioList,
                                KTC::ValueActionMode mode);
     /**
      * @brief initial editor and hso
