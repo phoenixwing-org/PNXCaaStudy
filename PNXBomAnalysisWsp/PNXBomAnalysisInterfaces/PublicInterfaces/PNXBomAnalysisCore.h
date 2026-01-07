@@ -51,6 +51,7 @@ public:
 
     /** @brief dump Json */
     int dumpJsonL();
+	CATUnicodeString OutPutJson();
 
     /** @brief dump Json */
     static int dumpJson(const PNXBomItem& item);

@@ -50,6 +50,7 @@ PNXBomAnalysisDlg::PNXBomAnalysisDlg()
  _FrameOutput = NULL;
  _PushButtonJson = NULL;
  _PushButtonPrintMarkdown = NULL;
+ _EditorOutInfo = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
     // clang-format on
 
@@ -73,6 +74,7 @@ PNXBomAnalysisDlg::~PNXBomAnalysisDlg() {
  _FrameOutput = NULL;
  _PushButtonJson = NULL;
  _PushButtonPrintMarkdown = NULL;
+ _EditorOutInfo = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
     // clang-format on
 
@@ -120,6 +122,9 @@ _FrameOutput -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 _PushButtonJson -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _PushButtonPrintMarkdown = new CATDlgPushButton(_FrameOutput, "PushButtonPrintMarkdown");
 _PushButtonPrintMarkdown -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _EditorOutInfo = new CATDlgEditor(this, "EditorOutInfo", CATDlgEdtMultiline);
+ _EditorOutInfo -> SetVisibleTextHeight(6);
+_EditorOutInfo -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION

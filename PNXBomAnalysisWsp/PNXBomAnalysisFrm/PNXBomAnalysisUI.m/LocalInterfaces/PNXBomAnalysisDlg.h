@@ -81,6 +81,7 @@ private:
  CATDlgFrame*      _FrameOutput;
  CATDlgPushButton*      _PushButtonJson;
  CATDlgPushButton*      _PushButtonPrintMarkdown;
+ CATDlgEditor*      _EditorOutInfo;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
     // clang-format on
 };

@@ -77,4 +77,12 @@ CATDlgPushButton PushButtonPrintMarkdown
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
+CATDlgEditor EditorOutInfo
+{
+  FATHER = PNXBomAnalysisDlg;
+  STYLE = CATDlgEdtMultiline;
+  TH = 6;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
 // END WIZARD REPLACEMENT ZONE
