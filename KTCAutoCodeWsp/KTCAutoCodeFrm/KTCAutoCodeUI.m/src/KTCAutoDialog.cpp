@@ -230,7 +230,12 @@ void KTCAutoDialog::ShowMessageBox(int code, const CATUnicodeString& msg, CATDia
 //-----------------------------------------------------------------------------
 void KTCAutoDialog::ShowMessageBox(int code, const KtString& msg, CATDialog* dialog) {
     if (0 == code && msg.size() == 0) return; // 没有错误信息，不弹出
-
-    CATUnicodeString message = msg.str(); // 从本地码转换
-    ShowMessageBox(code, message, dialog);
+    CATUnicodeString message = msg.str();     // 从本地码转换
+    ShowMessageBox(code, message, dialog);    // 调用CAA参数的信息框
+}
+//-----------------------------------------------------------------------------
+void KTCAutoDialog::ShowMessageBox(int code, const char* msg, CATDialog* dialog) {
+    if (0 == code && msg == NULL) return;  // 没有错误信息，不弹出
+    CATUnicodeString message = msg;        // 从本地码转换
+    ShowMessageBox(code, message, dialog); // 调用CAA参数的信息框
 }
