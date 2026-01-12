@@ -30,14 +30,14 @@ private:
     PNXTemplateFeatureCore& operator=(PNXTemplateFeatureCore&);
 
 public:
-    /** @brief Calculate */
-    HRESULT Calculate();
+    /** @brief calculate */
+    HRESULT calculate();
 
     /** @brief Create the line */
-    HRESULT Create();
+    HRESULT create();
 
     /** @brief Pretreat */
-    HRESULT Pretreat();
+    HRESULT pretreat();
 
     /** @brief show_rep */
     HRESULT show_rep();

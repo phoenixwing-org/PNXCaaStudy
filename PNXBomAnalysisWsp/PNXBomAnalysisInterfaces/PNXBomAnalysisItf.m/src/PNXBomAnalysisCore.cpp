@@ -62,7 +62,8 @@ PNXBomAnalysisCore::~PNXBomAnalysisCore() {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXBomAnalysisCore::pretreat() {
-    // cout << "PNXBomAnalysisCore::pretreat" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL == parameter) return E_INVALIDARG; // param check
 
     return S_OK;

@@ -20,12 +20,14 @@ PNXUniqueCore::~PNXUniqueCore() {
 }
 //-----------------------------------------------------------------------------
 PNXIMechanicalFeature_var PNXUniqueCore::checkoutUniqueClass() {
-    cout << "- PNXUniqueCore::checkoutUniqueClass" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     if (NULL_var == feature) return NULL_var;
 
     int code = 0;
 #ifdef CATIAR424
-    cout << "- PNXUniqueCore::calculate for V6" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     // checkout CATIMmiMechanicalFeature
     CATIMmiMechanicalFeature_var base = NULL_var;
     HRESULT hr = feature->QueryInterface(IID_CATIMmiMechanicalFeature, (void**)&base);
@@ -39,7 +41,8 @@ PNXIMechanicalFeature_var PNXUniqueCore::checkoutUniqueClass() {
         return NULL_var;
     }
 #else //  CATIAV5R19
-    cout << "- PNXUniqueCore::calculate for V5" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     // checkout specObject
     CATISpecObject_var base = NULL_var;
     HRESULT            hr   = feature->QueryInterface(IID_CATISpecObject, (void**)&base);
@@ -58,12 +61,14 @@ PNXIMechanicalFeature_var PNXUniqueCore::checkoutUniqueClass() {
 }
 //-----------------------------------------------------------------------------
 int PNXUniqueCore::calculate(PNXIMechanicalFeature_var spFeature) {
-    cout << "- PNXUniqueCore::calculate" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     if (NULL_var == spFeature) return 100001;
 
     int code = 0;
 #ifdef CATIAR424
-    cout << "- PNXUniqueCore::calculate for V6" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     // checkout specObject
     CATIMmiMechanicalFeature_var base = NULL_var;
     HRESULT hr = spFeature->QueryInterface(IID_CATIMmiMechanicalFeature, (void**)&base);
@@ -76,7 +81,8 @@ int PNXUniqueCore::calculate(PNXIMechanicalFeature_var spFeature) {
         cout << "- [" << code << "] Failed to checkout CATIMmiMechanicalFeature form input" << endl;
     }
 #else //  CATIAV5R19
-    cout << "- PNXUniqueCore::calculate for V5" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     // checkout specObject
     CATISpecObject_var base = NULL_var;
     HRESULT            hr   = spFeature->QueryInterface(IID_CATISpecObject, (void**)&base);

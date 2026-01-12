@@ -168,7 +168,7 @@ HRESULT PNXETemplateFeature::SetVersion(const int& value) // 0A
 //-----------------------------------------------------------------------------
 HRESULT PNXETemplateFeature::UpdateVersion() // 0X
 {
-    // cout <<"PNXETemplateFeature::UpdateVersion" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     const int softVersion    = PNXTemplateFeatureParam::GetSoftwareVersion(); // get soft version
     const int featureVersion = this->GetVersion(); // get current feature version

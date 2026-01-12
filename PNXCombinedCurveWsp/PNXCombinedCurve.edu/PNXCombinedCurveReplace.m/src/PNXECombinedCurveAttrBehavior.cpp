@@ -31,11 +31,11 @@ TIE_CATIAttrBehavior(PNXECombinedCurveAttrBehavior);
 //========================================================================
 PNXECombinedCurveAttrBehavior::PNXECombinedCurveAttrBehavior()
     : CATBaseUnknown() {
-    cout << "PNXECombinedCurveAttrBehavior::PNXECombinedCurveAttrBehavior" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 PNXECombinedCurveAttrBehavior::~PNXECombinedCurveAttrBehavior() {
-    cout << "PNXECombinedCurveAttrBehavior::~PNXECombinedCurveAttrBehavior" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //------------------------------------------------------------------------
@@ -43,7 +43,7 @@ PNXECombinedCurveAttrBehavior::~PNXECombinedCurveAttrBehavior() {
 //------------------------------------------------------------------------
 HRESULT PNXECombinedCurveAttrBehavior::GetRequestedBehavior(const CATUnicodeString* ipAttrId,
                                                             CATBehaviorSpecs**      oppBehavior) {
-    cout << "PNXECombinedCurveAttrBehavior::GetRequestedBehavior" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     HRESULT exit = E_FAIL;
     if ((NULL != oppBehavior) && (NULL != ipAttrId)) {

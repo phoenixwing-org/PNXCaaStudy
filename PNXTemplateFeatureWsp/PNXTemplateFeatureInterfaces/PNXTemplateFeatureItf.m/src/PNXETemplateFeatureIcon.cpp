@@ -32,15 +32,16 @@ TIE_CATIIcon(PNXETemplateFeatureIcon);
 //-----------------------------------------------------------------------------
 PNXETemplateFeatureIcon::PNXETemplateFeatureIcon()
     : CATBaseUnknown() {
-    // cout << "PNXETemplateFeatureIcon::PNXETemplateFeatureIcon" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 }
 //-----------------------------------------------------------------------------
 PNXETemplateFeatureIcon::~PNXETemplateFeatureIcon() {
-    // cout << "PNXETemplateFeatureIcon::~PNXETemplateFeatureIcon" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXETemplateFeatureIcon::GetIconName(CATUnicodeString& oName) {
-    // cout << "PNXETemplateFeatureIcon::GetIconName" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     oName = CATUnicodeString("I_PNXTemplateFeature");
     /*
     use these for get different icon if you want
@@ -54,7 +55,8 @@ HRESULT PNXETemplateFeatureIcon::GetIconName(CATUnicodeString& oName) {
 //-----------------------------------------------------------------------------
 HRESULT PNXETemplateFeatureIcon::SetIconName(const CATUnicodeString& iName) {
     /* // use these for set if you want
-    cout << "PNXETemplateFeatureIcon::SetIconName" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     if (iName.GetLengthInChar() < 4)
         return E_FAIL;
 

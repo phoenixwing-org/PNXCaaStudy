@@ -104,7 +104,7 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
 
 // end
 {
-    // cout <<"PNXTemplateBaseCmd::PNXTemplateBaseCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     _MyFeature = NULL_var;
 
@@ -147,7 +147,7 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
 }
 //-----------------------------------------------------------------------------
 PNXTemplateBaseCmd::~PNXTemplateBaseCmd() {
-    // cout <<"PNXTemplateBaseCmd::~PNXTemplateBaseCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
@@ -287,7 +287,8 @@ void PNXTemplateBaseCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXTemplateBaseCmd::Activate" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
 
     // if exist dialog
@@ -330,7 +331,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateBaseCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXTemplateBaseCmd::Cancel" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
 
@@ -358,7 +359,7 @@ CATBoolean PNXTemplateBaseCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateBaseCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXTemplateBaseCmd::Deactivate" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -398,7 +399,7 @@ CATISpecObject_var PNXTemplateBaseCmd::GiveMyFeature() {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::OkAction(void*) {
-    // cout << "PNXTemplateBaseCmd::OkAction" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // Get infors and set to feature
@@ -413,7 +414,7 @@ CATBoolean PNXTemplateBaseCmd::OkAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::PreviewAction(void*) {
-    // cout << "PNXTemplateBaseCmd::PreviewAction" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // 1- information
@@ -421,7 +422,7 @@ CATBoolean PNXTemplateBaseCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    HRESULT hr = core->Calculate();
+    HRESULT hr = core->calculate();
 
     //
     // 2- Updates
@@ -438,7 +439,8 @@ CATBoolean PNXTemplateBaseCmd::PreviewAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::ActionSelectorListFia(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXTemplateBaseCmd::ActionSelectorListFia, Field = " << field
+    // cout << "### " << __FUNCTION__ << endl;
+
     // << endl;
 
     KTC::ValueActionMode mode = dialog->GetValueMode();
@@ -474,7 +476,8 @@ CATBoolean PNXTemplateBaseCmd::ActionSelectorListFia(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::ActionSelectorListPda(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXTemplateBaseCmd::ActionSelectorListPda, Field = " << field
+    // cout << "### " << __FUNCTION__ << endl;
+
     // << endl;
 
     bool fieldChange = (dialog->GetActiveField() != field);
@@ -519,7 +522,8 @@ CATBoolean PNXTemplateBaseCmd::ActionValueChange(void*) {
 }
 //-----------------------------------------------------------------------------
 void PNXTemplateBaseCmd::AfterValueChange(bool isUpdateObj) {
-    // cout << "- PNXTemplateBaseCmd::AfterValueChange" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     dialog->UpdateInfos();           // refresh information
     if (UpdatefiaSelectFaces() == 1) // only change Select mode
         return;
@@ -537,7 +541,7 @@ HRESULT PNXTemplateBaseCmd::CreateElement() {
 
     if (NULL == core) return E_INVALIDARG;
 
-    HRESULT hr = core->Create(); // create
+    HRESULT hr = core->create(); // create
     if (FAILED(hr)) return hr;
 
     if (NULL_var == core->feature) return E_FAIL;

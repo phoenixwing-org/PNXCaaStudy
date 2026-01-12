@@ -50,7 +50,7 @@ HRESULT PNXCombinedCurveCatalogSynchronize::GetAlias(CATUnicodeString& oAlias) {
 //-----------------------------------------------------------------------------
 
 HRESULT PNXCombinedCurveCatalogSynchronize::GetEmbeddedPreview(CATPixelImage** oImage) {
-    cout << " PNXCombinedCurveCatalogSynchronize::GetEmbeddedPreview" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     return E_FAIL;
 }
@@ -59,7 +59,7 @@ HRESULT PNXCombinedCurveCatalogSynchronize::GetEmbeddedPreview(CATPixelImage** o
 
 HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeString& iKeywordName,
                                                             int&                    oKeyWordValue) {
-    cout << " PNXCombinedCurveCatalogSynchronize::GetKeywordValue int" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     HRESULT          rc  = S_OK;
     CATUnicodeString Key = "Inputs number";
@@ -80,7 +80,8 @@ HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeStri
 HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeString& iKeywordName,
                                                             const CATICkeType*      iKeywordType,
                                                             double&                 oKeyWordValue) {
-    cout << " PNXCombinedCurveCatalogSynchronize::GetKeywordValue CATICkeType*" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     return E_FAIL;
 }
 
@@ -88,7 +89,8 @@ HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeStri
 
 HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeString& iKeywordName,
                                                             CATCke::Boolean&        oKeyWordValue) {
-    cout << " PNXCombinedCurveCatalogSynchronize::GetKeywordValue CATCke::Boolean" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     return E_FAIL;
 }
 
@@ -96,7 +98,7 @@ HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeStri
 
 HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeString& iKeywordName,
                                                             CATUnicodeString&       oKeyWordValue) {
-    cout << " PNXCombinedCurveCatalogSynchronize::GetKeywordValue CATUnicodeString" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     HRESULT rc = E_FAIL;
 

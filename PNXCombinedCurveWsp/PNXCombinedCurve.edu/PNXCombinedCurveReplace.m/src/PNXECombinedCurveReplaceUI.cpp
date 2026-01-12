@@ -27,13 +27,13 @@ TIE_CATIReplaceUI(PNXECombinedCurveReplaceUI);
 
 PNXECombinedCurveReplaceUI::PNXECombinedCurveReplaceUI()
     : CATBaseUnknown() {
-    cout << "PNXECombinedCurveReplaceUI::PNXECombinedCurveReplaceUI" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-----------------------------------------------------------------------------
 
 PNXECombinedCurveReplaceUI::~PNXECombinedCurveReplaceUI() {
-    cout << "PNXECombinedCurveReplaceUI::~PNXECombinedCurveReplaceUI" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ HRESULT PNXECombinedCurveReplaceUI::FindValidElementForReplace(const CATUnicodeS
                                                                const CATPathElement*   ipSelection,
                                                                const CATBaseUnknown*   ipOldValue,
                                                                CATBaseUnknown*& opFoundElement) {
-    cout << "PNXECombinedCurveReplaceUI::FindValidElementForReplace" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // Init of the pointer to return
     opFoundElement = NULL;

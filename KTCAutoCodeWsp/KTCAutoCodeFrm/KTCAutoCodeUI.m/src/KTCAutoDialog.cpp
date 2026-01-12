@@ -120,7 +120,7 @@ void KTCAutoDialog::register_option_dialog(CATDlgDialog* dlg, CATDlgPushButton* 
 }
 //-------------------------------------------------------------------------
 int KTCAutoDialog::ActionSubCommandReturn() {
-    cout << "TODO KTCAutoDialog::ActionSubCommandReturn" << endl;
+    cout << "TODO " << __FUNCTION__ << endl;
     return 0;
 }
 //-------------------------------------------------------------------------

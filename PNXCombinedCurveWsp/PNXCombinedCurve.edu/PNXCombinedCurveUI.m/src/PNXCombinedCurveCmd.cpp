@@ -85,7 +85,7 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
     , _piCombinedCurve(NULL)
     , _panel(NULL)
     , _ActiveField(0) {
-    cout << "PNXCombinedCurveCmd::PNXCombinedCurveCmd" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     _mode = 1; // creation mode
 
@@ -133,7 +133,7 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
 // PNXCombinedCurveCmd : destructor
 //-----------------------------------------------------------------------------
 PNXCombinedCurveCmd::~PNXCombinedCurveCmd() {
-    cout << "PNXCombinedCurveCmd::~PNXCombinedCurveCmd" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // Releases member data pointers before leaving.
     if (_piCombinedCurve != NULL) _piCombinedCurve->Release();
@@ -439,7 +439,8 @@ CATBoolean PNXCombinedCurveCmd::MainDirFieldSelected(void*) {
 CATBoolean PNXCombinedCurveCmd::OnPushButtonSaveJsonAgent(void* data) {
     // 把data转为整数
     CATLong mode = CATPtrToLONG32(data);
-    cout << " PNXCombinedCurveCmd::OnPushButtonSaveJsonAgent(data)" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     cout << " data = " << data << " to long :" << mode << endl;
 
     // TODO save the a file
@@ -454,7 +455,8 @@ void PNXCombinedCurveCmd::OnPushButtonCB(CATCommand* iCmd, CATNotification* iNot
                                          CATCommandClientData iData) {
     // 把data转为整数
     CATLong data = CATPtrToINT32(iData);
-    cout << " PNXCombinedCurveCmd::OnPushButtonCB(data)" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     cout << " iData = " << iData << " to long :" << data << endl;
 
     switch (data) {
@@ -526,7 +528,7 @@ void PNXCombinedCurveCmd::SetActiveField(int ActiveField) {
 // PNXCombinedCurveCmd : ElementSelected()
 //-----------------------------------------------------------------------------
 void PNXCombinedCurveCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
-    cout << " PNXCombinedCurveCmd::ElementSelected" << _ActiveField << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     if ((pAgent == NULL) || (_ActiveField == 0)) return;
 
@@ -639,7 +641,7 @@ int PNXCombinedCurveCmd::GetMode() {
 //-----------------------------------------------------------------------------
 
 HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
-    cout << " PNXCombinedCurveCmd::CreateCombinedCurve" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     HRESULT rc = E_FAIL;
 
@@ -974,7 +976,7 @@ HRESULT PNXCombinedCurveCmd::CreateTool(CATIPrtPart* pIPrtPart, CATIGSMTool** pI
 //-----------------------------------------------------------------------------
 
 CATStatusChangeRC PNXCombinedCurveCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    cout << " PNXCombinedCurveCmd::Activate" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // Sets the CC as the current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -1009,7 +1011,7 @@ CATStatusChangeRC PNXCombinedCurveCmd::Activate(CATCommand* iCmd, CATNotificatio
 
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCombinedCurveCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    cout << " PNXCombinedCurveCmd::Deactivate" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -1028,7 +1030,7 @@ CATStatusChangeRC PNXCombinedCurveCmd::Deactivate(CATCommand* iCmd, CATNotificat
 
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCombinedCurveCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    cout << " PNXCombinedCurveCmd::Cancel" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // Check if the CC is inside an ordered body
     CATBoolean IsInsideOrderedBody = FALSE;

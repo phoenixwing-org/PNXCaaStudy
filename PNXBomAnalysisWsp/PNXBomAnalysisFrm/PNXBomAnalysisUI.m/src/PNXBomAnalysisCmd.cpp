@@ -95,7 +95,7 @@ PNXBomAnalysisCmd::PNXBomAnalysisCmd()
 
 // end
 {
-    // cout <<"PNXBomAnalysisCmd::PNXBomAnalysisCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     // create parameter
     parameter = new PNXBomAnalysisParam(); // create Default value Instance
@@ -115,7 +115,7 @@ PNXBomAnalysisCmd::PNXBomAnalysisCmd()
 }
 //-----------------------------------------------------------------------------
 PNXBomAnalysisCmd::~PNXBomAnalysisCmd() {
-    // cout <<"PNXBomAnalysisCmd::~PNXBomAnalysisCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
@@ -206,7 +206,8 @@ void PNXBomAnalysisCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXBomAnalysisCmd::Activate" << endl;
+    //  cout  << "### " << __FUNCTION__ << endl;
+
     if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
 
     // Sets the CC as the current feature
@@ -217,7 +218,7 @@ CATStatusChangeRC PNXBomAnalysisCmd::Activate(CATCommand* iCmd, CATNotification*
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXBomAnalysisCmd::Cancel" << endl;
+    //  cout  << "### " << __FUNCTION__ << endl;
 
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
@@ -229,7 +230,7 @@ CATBoolean PNXBomAnalysisCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXBomAnalysisCmd::Deactivate" << endl;
+    //  cout  << "### " << __FUNCTION__ << endl;
 
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -263,7 +264,7 @@ CATISpecObject_var PNXBomAnalysisCmd::GiveMyFeature() {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::OkAction(void*) {
-    // cout << "PNXBomAnalysisCmd::OkAction" << endl;
+    //  cout  << "### " << __FUNCTION__ << endl;
 
     //
     // Get infors and set to feature
@@ -277,7 +278,7 @@ CATBoolean PNXBomAnalysisCmd::OkAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
-    // cout << "PNXBomAnalysisCmd::PreviewAction" << endl;
+    //  cout  << "### " << __FUNCTION__ << endl;
 
     //
     // 1- information
@@ -295,7 +296,7 @@ CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
 
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void*) {
-    // cout << "- PNXBomAnalysisCmd::ActionSelectorListFia " << endl;
+    //  cout  << "### " << __FUNCTION__ << endl;
 
     if (NULL == _pfiaElementSelect) return CATFalse; // 检查路径元素代理是否有效
 
@@ -360,7 +361,8 @@ CATBoolean PNXBomAnalysisCmd::ActionSelectorListFia(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::ActionSelectorListPda(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXBomAnalysisCmd::ActionSelectorListPda, Field = " << field <<
+    //  cout  << "### " << __FUNCTION__ << endl;
+
     // endl;
 
     bool fieldChange = 0; // (dialog->GetActiveField() != field);
@@ -396,7 +398,8 @@ CATBoolean PNXBomAnalysisCmd::ActionValueChange(void*) {
 }
 //-----------------------------------------------------------------------------
 void PNXBomAnalysisCmd::AfterValueChange(bool isUpdateObj) {
-    cout << "PNXBomAnalysisCmd::AfterValueChange" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     dialog->UpdateInfos(); // refresh information
 
     // your other code here
@@ -448,16 +451,15 @@ void PNXBomAnalysisCmd::fiaAgentUpdate() {
 void PNXBomAnalysisCmd::OnOutputBomCB(CATCommand* cmd, CATNotification* evt,
                                       CATCommandClientData data) {
     int value = CATPtrToINT32(data);
-    cout << "- PNXBomAnalysisCmd::OnOutputBomCB " << value << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     switch (value) {
     case 1: // json
-		{
-			core->dumpJsonL();
-			CATUnicodeString JsonStr = core->OutPutJson();
-			dialog->_EditorOutInfo->SetText(JsonStr);
-		}
-        break;
+    {
+        core->dumpJsonL();
+        CATUnicodeString JsonStr = core->OutPutJson();
+        dialog->_EditorOutInfo->SetText(JsonStr);
+    } break;
     case 2: // Markdown
         core->dumpMarkdown();
         break;

@@ -41,8 +41,7 @@ KTCAutoCatalogParam& KTCAutoCatalogParam::operator=(const KTCAutoCatalogParam& i
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoCatalogParam::CatalogAddAttribute(CATISpecObject*                   startUp,
                                                  std::vector<KTCAutoCatalogParam>& itemList) {
-
-    cout << "TODO add code for KTCAutoCatalogParam::CatalogAddAttribute" << endl;
+    cout << "TODO " << __FUNCTION__ << endl;
     return E_NOTIMPL;
 }
 //-----------------------------------------------------------------------------

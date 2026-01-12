@@ -31,25 +31,27 @@ TIE_CATIMechanicalProperties(PNXECombinedCurveMechProp);
 
 //-------------------------------------------------------------------------------------
 PNXECombinedCurveMechProp::PNXECombinedCurveMechProp() {
-    cout << " PNXECombinedCurveMechProp::PNXECombinedCurveMechProp" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     _status = 0;
 }
 
 //-------------------------------------------------------------------------------------
 PNXECombinedCurveMechProp::~PNXECombinedCurveMechProp() {
-    cout << " PNXECombinedCurveMechProp::~PNXECombinedCurveMechProp" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-------------------------------------------------------------------------------------
 int PNXECombinedCurveMechProp::IsInactive() const {
-    cout << " PNXECombinedCurveMechProp::IsInactive:" << _status << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     return _status;
 }
 
 //-------------------------------------------------------------------------------------
 
 void PNXECombinedCurveMechProp::Activate() {
-    cout << " PNXECombinedCurveMechProp::Activate" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // begin of temporary code
     // If you use a knowlege parameter
@@ -96,7 +98,7 @@ void PNXECombinedCurveMechProp::Activate() {
 void PNXECombinedCurveMechProp::InActivate()
 
 {
-    cout << " PNXECombinedCurveMechProp::InActivate" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // begin of temporary code
     // If you use a knowlege parameter

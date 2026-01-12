@@ -110,7 +110,7 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
 
 // end
 {
-    // cout <<"PNXTemplateFeatureCmd::PNXTemplateFeatureCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     _MyFeature = NULL_var;
 
@@ -161,7 +161,7 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
 }
 //-----------------------------------------------------------------------------
 PNXTemplateFeatureCmd::~PNXTemplateFeatureCmd() {
-    // cout <<"PNXTemplateFeatureCmd::~PNXTemplateFeatureCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
@@ -337,7 +337,8 @@ void PNXTemplateFeatureCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateFeatureCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXTemplateFeatureCmd::Activate" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
 
     // if exist dialog
@@ -380,7 +381,7 @@ CATStatusChangeRC PNXTemplateFeatureCmd::Activate(CATCommand* iCmd, CATNotificat
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateFeatureCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXTemplateFeatureCmd::Cancel" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
 
@@ -408,7 +409,7 @@ CATBoolean PNXTemplateFeatureCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateFeatureCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXTemplateFeatureCmd::Deactivate" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -448,7 +449,7 @@ CATISpecObject_var PNXTemplateFeatureCmd::GiveMyFeature() {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::OkAction(void*) {
-    // cout << "PNXTemplateFeatureCmd::OkAction" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // Get infors and set to feature
@@ -464,7 +465,7 @@ CATBoolean PNXTemplateFeatureCmd::OkAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
-    // cout << "PNXTemplateFeatureCmd::PreviewAction" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // 1- information
@@ -472,7 +473,7 @@ CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    HRESULT hr = core->Calculate();
+    HRESULT hr = core->calculate();
     KTC_SHOW_IMAGES_DIALOG(parameter); // show image dialog
 
     //
@@ -490,7 +491,8 @@ CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::ActionSelectorListFia(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXTemplateFeatureCmd::ActionSelectorListFia, Field = " << field
+    // cout << "### " << __FUNCTION__ << endl;
+
     // << endl;
 
     KTC::ValueActionMode mode = dialog->GetValueMode();
@@ -527,7 +529,8 @@ CATBoolean PNXTemplateFeatureCmd::ActionSelectorListFia(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::ActionSelectorListPda(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXTemplateFeatureCmd::ActionSelectorListPda, Field = " << field
+    // cout << "### " << __FUNCTION__ << endl;
+
     // << endl;
 
     bool fieldChange = (dialog->GetActiveField() != field);
@@ -572,7 +575,8 @@ CATBoolean PNXTemplateFeatureCmd::ActionValueChange(void*) {
 }
 //-----------------------------------------------------------------------------
 void PNXTemplateFeatureCmd::AfterValueChange(bool isUpdateObj) {
-    cout << "PNXTemplateFeatureCmd::AfterValueChange" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     dialog->UpdateInfos();           // refresh information
     if (UpdatefiaSelectFaces() == 1) // only change Select mode
         return;
@@ -610,7 +614,7 @@ HRESULT PNXTemplateFeatureCmd::CreateElement() {
 
     if (NULL == core) return E_INVALIDARG;
 
-    HRESULT hr = core->Create(); // create
+    HRESULT hr = core->create(); // create
     if (FAILED(hr)) return hr;
 
     if (NULL_var == core->feature) return E_FAIL;

@@ -85,7 +85,7 @@ PNXECombinedCurveBuild::~PNXECombinedCurveBuild() {
 
 //-----------------------------------------------------------------------------
 HRESULT PNXECombinedCurveBuild::Build() {
-    cout << " PNXECombinedCurveBuild::Build" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     HRESULT rc = E_FAIL;
 

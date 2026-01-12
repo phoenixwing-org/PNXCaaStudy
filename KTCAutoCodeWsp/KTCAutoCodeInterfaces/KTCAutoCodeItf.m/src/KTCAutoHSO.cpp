@@ -140,7 +140,7 @@ int KTCAutoHSO::after_element_selected(CATPathElementAgent* agent, CATISpecObjec
     }
     }
 
-    // cout << "- [Debug] OK KTCAutoHSO::after_element_selected(... object) = 1" << endl;
+    // cout << "- [Debug] OK " << __FUNCTION__ << "(... object) = 1" << endl;
     return 1;
 }
 //-----------------------------------------------------------------------------
@@ -190,7 +190,7 @@ int KTCAutoHSO::after_element_selected(CATPathElementAgent*          agent,
         break;
     }
 
-    // cout << "- [Debug] OK KTCAutoHSO::after_element_selected(... list) = 1" << endl;
+    // cout << "- [Debug] OK " << __FUNCTION__ << "(... list) = 1" << endl;
     return 1;
 }
 //-----------------------------------------------------------------------------

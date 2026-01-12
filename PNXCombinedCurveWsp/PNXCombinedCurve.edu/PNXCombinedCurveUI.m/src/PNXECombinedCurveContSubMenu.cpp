@@ -30,7 +30,7 @@ PNXECombinedCurveContSubMenu::PNXECombinedCurveContSubMenu()
     , _pCAAMmrSwapActiveStr(NULL)
 
 {
-    cout << "PNXECombinedCurveContSubMenu::PNXECombinedCurveContSubMenu" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // Creation of the starters
     NewAccess(CATCmdStarter, pCAAMmrResetPropertiesStr, CAAMmrResetPropertiesStr);
@@ -67,7 +67,7 @@ PNXECombinedCurveContSubMenu::PNXECombinedCurveContSubMenu()
 //-----------------------------------------------------------------------------------------
 
 PNXECombinedCurveContSubMenu::~PNXECombinedCurveContSubMenu() {
-    cout << "PNXECombinedCurveContSubMenu::~PNXECombinedCurveContSubMenu" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     if (NULL != _pMenu) _pMenu->Release();
     _pMenu = NULL;
@@ -78,7 +78,7 @@ PNXECombinedCurveContSubMenu::~PNXECombinedCurveContSubMenu() {
 //-----------------------------------------------------------------------------------------
 
 CATCmdAccess* PNXECombinedCurveContSubMenu::GetContextualSubMenu() {
-    cout << "PNXECombinedCurveContSubMenu::GetContextualSubMenu" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // The right command header is associated with the starter named _pCAAMmrSwapActiveStr,
     // This starter has been created once time in the extension's constructor,

@@ -54,7 +54,7 @@ TIE_CATICatalogInstantiation(PNXCombinedCurveCatalogInstantiation);
 HRESULT PNXCombinedCurveCatalogInstantiation::RunInstantiationCmd(
     const CATICatalogLink* pCatalogLink, const CATICatalogBrowser* pBrowser, int InstantiateMode,
     int RepeatMode, int& NotDone) {
-    cout << " PNXCombinedCurveCatalogInstantiation::RunInstantiationCmd" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     // The job is done by this method
     NotDone = 0;

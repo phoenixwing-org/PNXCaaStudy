@@ -32,6 +32,6 @@ KTCAutoGSM& KTCAutoGSM::operator=(const KTCAutoGSM& iOriginal) {
 }
 //-----------------------------------------------------------------------------
 bool KTCAutoGSM::IsInsideOrderedBody(CATISpecObject_var feature) {
-    cout << "TODO KTCAutoGSM::IsInsideOrderedBody" << endl;
+    cout << "TODO " << __FUNCTION__ << endl;
     return false;
 }

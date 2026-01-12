@@ -20,12 +20,12 @@ TIE_CATIMf3DBehavior(PNXECombinedCurveMf3DBehavior);
 
 //-------------------------------------------------------------------------------------
 PNXECombinedCurveMf3DBehavior::PNXECombinedCurveMf3DBehavior() {
-    cout << " PNXECombinedCurveMf3DBehavior::PNXECombinedCurveMf3DBehavior" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-------------------------------------------------------------------------------------
 PNXECombinedCurveMf3DBehavior::~PNXECombinedCurveMf3DBehavior() {
-    cout << " PNXECombinedCurveMf3DBehavior::~PNXECombinedCurveMf3DBehavior" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-------------------------------------------------------------------------------------

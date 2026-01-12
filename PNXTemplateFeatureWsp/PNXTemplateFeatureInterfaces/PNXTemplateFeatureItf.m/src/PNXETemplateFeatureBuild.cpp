@@ -106,7 +106,7 @@ PNXETemplateFeatureBuild::~PNXETemplateFeatureBuild() {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXETemplateFeatureBuild::Build() {
-    cout << "PNXETemplateFeatureBuild::Build" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     PNXITemplateFeature* piTemplateFeature = NULL;
     this->QueryInterface(IID_PNXITemplateFeature, (void**)&piTemplateFeature);

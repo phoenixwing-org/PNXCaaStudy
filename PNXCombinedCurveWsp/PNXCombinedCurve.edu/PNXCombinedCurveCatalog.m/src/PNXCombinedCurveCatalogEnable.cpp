@@ -10,14 +10,14 @@ CATImplementClass(PNXCombinedCurveCatalogEnable, DataExtension, CATBaseUnknown, 
 // PNXCombinedCurveCatalogEnable : constructor
 //-----------------------------------------------------------------------------
 PNXCombinedCurveCatalogEnable::PNXCombinedCurveCatalogEnable() {
-    cout << "PNXCombinedCurveCatalogEnable::PNXCombinedCurveCatalogEnable" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-----------------------------------------------------------------------------
 // PNXCombinedCurveCatalogEnable : destructor
 //-----------------------------------------------------------------------------
 PNXCombinedCurveCatalogEnable::~PNXCombinedCurveCatalogEnable() {
-    cout << "PNXCombinedCurveCatalogEnable::~PNXCombinedCurveCatalogEnable" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 // Tie the implementation to its interface

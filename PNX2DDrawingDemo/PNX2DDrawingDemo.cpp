@@ -17,8 +17,8 @@
 
 // DrawingInterfaces Framework
 #include "CATI2DAnnotation.h"
-#include "CATI2DLine.h"
 #include "CATI2DArrow.h"
+#include "CATI2DLine.h"
 
 // Visualization Framework
 #include "CATIVisProperties.h"
@@ -33,13 +33,13 @@
 //-----------------------------------------------------------------------------
 HRESULT PNX2DDrawingDemo::SetLineThickness(CATI2DLine* ip2DLine, int iThickness) {
     if (NULL == ip2DLine) {
-        cout << "[ERROR] PNX2DDrawingDemo::SetLineThickness: ip2DLine is NULL" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ": ip2DLine is NULL" << endl;
         return E_FAIL;
     }
 
     // 方法1: 通过CATI2DAnnotation接口设置（推荐）
     CATI2DAnnotation* pi2DAnnotation = NULL;
-    HRESULT rc = ip2DLine->QueryInterface(IID_CATI2DAnnotation, (void**)&pi2DAnnotation);
+    HRESULT           rc = ip2DLine->QueryInterface(IID_CATI2DAnnotation, (void**)&pi2DAnnotation);
     if (SUCCEEDED(rc) && pi2DAnnotation != NULL) {
         rc = SetAnnotationThickness(pi2DAnnotation, iThickness);
         pi2DAnnotation->Release();
@@ -57,7 +57,7 @@ HRESULT PNX2DDrawingDemo::SetLineThickness(CATI2DLine* ip2DLine, int iThickness)
         return rc;
     }
 
-    cout << "[ERROR] PNX2DDrawingDemo::SetLineThickness: Failed to get interface" << endl;
+    cout << "[ERROR] " << __FUNCTION__ << ": Failed to get interface" << endl;
     return E_FAIL;
 }
 
@@ -66,13 +66,13 @@ HRESULT PNX2DDrawingDemo::SetLineThickness(CATI2DLine* ip2DLine, int iThickness)
 //-----------------------------------------------------------------------------
 HRESULT PNX2DDrawingDemo::SetArrowThickness(CATI2DArrow* ip2DArrow, int iThickness) {
     if (NULL == ip2DArrow) {
-        cout << "[ERROR] PNX2DDrawingDemo::SetArrowThickness: ip2DArrow is NULL" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ": ip2DArrow is NULL" << endl;
         return E_FAIL;
     }
 
     // 方法1: 通过CATI2DAnnotation接口设置（推荐）
     CATI2DAnnotation* pi2DAnnotation = NULL;
-    HRESULT rc = ip2DArrow->QueryInterface(IID_CATI2DAnnotation, (void**)&pi2DAnnotation);
+    HRESULT           rc = ip2DArrow->QueryInterface(IID_CATI2DAnnotation, (void**)&pi2DAnnotation);
     if (SUCCEEDED(rc) && pi2DAnnotation != NULL) {
         rc = SetAnnotationThickness(pi2DAnnotation, iThickness);
         pi2DAnnotation->Release();
@@ -90,7 +90,7 @@ HRESULT PNX2DDrawingDemo::SetArrowThickness(CATI2DArrow* ip2DArrow, int iThickne
         return rc;
     }
 
-    cout << "[ERROR] PNX2DDrawingDemo::SetArrowThickness: Failed to get interface" << endl;
+    cout << "[ERROR] " << __FUNCTION__ << ": Failed to get interface" << endl;
     return E_FAIL;
 }
 
@@ -99,15 +99,15 @@ HRESULT PNX2DDrawingDemo::SetArrowThickness(CATI2DArrow* ip2DArrow, int iThickne
 //-----------------------------------------------------------------------------
 HRESULT PNX2DDrawingDemo::SetAnnotationThickness(CATI2DAnnotation* ip2DAnnotation, int iThickness) {
     if (NULL == ip2DAnnotation) {
-        cout << "[ERROR] PNX2DDrawingDemo::SetAnnotationThickness: ip2DAnnotation is NULL" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ": ip2DAnnotation is NULL" << endl;
         return E_FAIL;
     }
 
     // 获取CATISpecObject接口
     CATISpecObject* piSpecObject = NULL;
-    HRESULT rc = ip2DAnnotation->QueryInterface(IID_CATISpecObject, (void**)&piSpecObject);
+    HRESULT         rc = ip2DAnnotation->QueryInterface(IID_CATISpecObject, (void**)&piSpecObject);
     if (FAILED(rc) || piSpecObject == NULL) {
-        cout << "[ERROR] PNX2DDrawingDemo::SetAnnotationThickness: Failed to get CATISpecObject" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ": Failed to get CATISpecObject" << endl;
         return E_FAIL;
     }
 
@@ -123,21 +123,18 @@ HRESULT PNX2DDrawingDemo::SetAnnotationThickness(CATI2DAnnotation* ip2DAnnotatio
 //-----------------------------------------------------------------------------
 // PNX2DDrawingDemo::Set2DElementProperties
 //-----------------------------------------------------------------------------
-HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotation, 
-                                               int iThickness,
-                                               int iRed, 
-                                               int iGreen, 
-                                               int iBlue) {
+HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotation, int iThickness,
+                                                 int iRed, int iGreen, int iBlue) {
     if (NULL == ip2DAnnotation) {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementProperties: ip2DAnnotation is NULL" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ": ip2DAnnotation is NULL" << endl;
         return E_FAIL;
     }
 
     // 获取CATISpecObject接口
     CATISpecObject* piSpecObject = NULL;
-    HRESULT rc = ip2DAnnotation->QueryInterface(IID_CATISpecObject, (void**)&piSpecObject);
+    HRESULT         rc = ip2DAnnotation->QueryInterface(IID_CATISpecObject, (void**)&piSpecObject);
     if (FAILED(rc) || piSpecObject == NULL) {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementProperties: Failed to get CATISpecObject" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ":ISpecObject" << endl;
         return E_FAIL;
     }
 
@@ -145,7 +142,7 @@ HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotatio
     CATIVisProperties* piVisProperties = NULL;
     rc = piSpecObject->QueryInterface(IID_CATIVisProperties, (void**)&piVisProperties);
     if (FAILED(rc) || piVisProperties == NULL) {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementProperties: Failed to get CATIVisProperties" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ":IVisProperties" << endl;
         piSpecObject->Release();
         piSpecObject = NULL;
         return E_FAIL;
@@ -153,14 +150,12 @@ HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotatio
 
     // 创建属性值对象并设置属性
     CATVisPropertiesValues attribut;
-    
+
     // 设置线宽（thickness）
     attribut.SetWidth(iThickness);
-    
+
     // 设置颜色（如果提供了颜色值）
-    if (iRed >= 0 && iRed <= 255 && 
-        iGreen >= 0 && iGreen <= 255 && 
-        iBlue >= 0 && iBlue <= 255) {
+    if (iRed >= 0 && iRed <= 255 && iGreen >= 0 && iGreen <= 255 && iBlue >= 0 && iBlue <= 255) {
         attribut.SetColor(iRed, iGreen, iBlue);
     }
 
@@ -170,10 +165,11 @@ HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotatio
     rc = piVisProperties->SetPropertiesAtt(attribut, CATVPAllPropertyType, CATVPLine);
 
     if (SUCCEEDED(rc)) {
-        cout << "[INFO] PNX2DDrawingDemo::Set2DElementProperties: Successfully set thickness=" 
-             << iThickness << ", color=(" << iRed << "," << iGreen << "," << iBlue << ")" << endl;
-    } else {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementProperties: Failed to set properties" << endl;
+        cout << "[INFO] " << __FUNCTION__ << ": Successfully set thickness="
+             << iThick] " << __FUNCTION__ << ":<< ")" << endl;
+    }
+    else {
+        cout << "[ERROR] " << __FUNCTION__ << ": Failed to set properties" << endl;] ] " << __FUNCTION__ << ":
     }
 
     // 释放接口
@@ -188,9 +184,10 @@ HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotatio
 //-----------------------------------------------------------------------------
 // PNX2DDrawingDemo::Set2DElementThicknessFromSpec
 //-----------------------------------------------------------------------------
-HRESULT PNX2DDrawingDemo::Set2DElementThicknessFromSpec(CATISpecObject* ipSpecObject, int iThickness) {
+HRESULT PNX2DDrawingDemo::Set2DElementThicknessFromSpec(CATISpecObject* ipSpecObject,
+                                                        int             iThickness) {
     if (NULL == ipSpecObject) {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementThicknessFromSpec: ipSpecObject is NULL" << endl;
+        cout << "[ERROR] " << __FUNCTION__ << ": ipSpecObject is NULL" << endl;
         return E_FAIL;
     }
 
@@ -198,26 +195,29 @@ HRESULT PNX2DDrawingDemo::Set2DElementThicknessFromSpec(CATISpecObject* ipSpecOb
     CATIVisProperties* piVisProperties = NULL;
     HRESULT rc = ipSpecObject->QueryInterface(IID_CATIVisProperties, (void**)&piVisProperties);
     if (FAILED(rc) || piVisProperties == NULL) {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementThicknessFromSpec: Failed to get CATIVisProperties" << endl;
+        cout << "[ERROR] " << __FUNCTION__
+             << ": Failed to get "
+                "CATIVisProperties"
+             << endl;
         return E_FAIL;
     }
 
     // 创建属性值对象
     CATVisPropertiesValues attribut;
-    
+
     // 设置线宽（thickness）
     attribut.SetWidth(iThickness);
-    
+
     // 应用属性
     // CATVPAllPropertyType: 应用所有属性类型
     // CATVPLine: 应用到线条类型（适用于2D图纸中的直线、箭头等元素）
     rc = piVisProperties->SetPropertiesAtt(attribut, CATVPAllPropertyType, CATVPLine);
 
     if (SUCCEEDED(rc)) {
-        cout << "[INFO] PNX2DDrawingDemo::Set2DElementThicknessFromSpec: Successfully set thickness=" 
-             << iThickness << endl;
-    } else {
-        cout << "[ERROR] PNX2DDrawingDemo::Set2DElementThicknessFromSpec: Failed to set thickness" << endl;
+        cout << "[INFO] " << __FUNCTION__ << ": Successfully set thickness=" << iThickness << endl;
+    }
+    else {
+        cout << "[ERROR] " << __FUNCTION__ << ": Failed to set thickness" << endl;
     }
 
     // 释放接口
@@ -226,4 +226,3 @@ HRESULT PNX2DDrawingDemo::Set2DElementThicknessFromSpec(CATISpecObject* ipSpecOb
 
     return rc;
 }
-

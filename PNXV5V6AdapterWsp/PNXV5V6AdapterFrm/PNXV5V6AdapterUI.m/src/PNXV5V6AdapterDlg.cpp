@@ -36,8 +36,8 @@ PNXV5V6AdapterDlg::PNXV5V6AdapterDlg()
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
 "PNXV5V6AdapterDlg",CATDlgWndBtnOKApplyClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-                    // clang-format on
-                    )
+                   // clang-format on
+                   )
     , dialogMore(NULL)
     , parameter(NULL) {
 
@@ -135,7 +135,7 @@ void PNXV5V6AdapterDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialogA
 void PNXV5V6AdapterDlg::UpdateDialog() {
     if (!parameter) // check pointer
         return;
-    // cout << " PNXV5V6AdapterDlg::UpdateDialog" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     // KEVIN_SYSTEM_CODE START
     this->dialogMore->_EditorFeatureVersion->SetIntegerValue(0, 0); // set version

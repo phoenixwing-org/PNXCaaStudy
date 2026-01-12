@@ -46,7 +46,7 @@
 #include <time.h>
 
 // Error title
-#define ERROR_TITLE_Create "Error : PNXV5V6AdapterCore::Create(...) ..."
+#define ERROR_TITLE_Create "Error : PNXV5V6AdapterCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------
@@ -57,20 +57,22 @@ PNXV5V6AdapterCore::~PNXV5V6AdapterCore() {
 }
 //-----------------------------------------------------------------------------
 int PNXV5V6AdapterCore::pretreat() {
-    // cout << "- PNXV5V6AdapterCore::pretreat" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL == parameter) return 1;
 
     return 0;
 }
 //-----------------------------------------------------------------------------
 int PNXV5V6AdapterCore::calculate() {
-    cout << "- PNXV5V6AdapterCore::calculate" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     return 0;
 }
 //-----------------------------------------------------------------------------
 int PNXV5V6AdapterCore::adapter() {
-    cout << "### PNXV5V6AdapterCore::adapter" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     cout << "##### Prepare " << endl;
     if (NULL == parameter) {
         cout << "- [error] parameter is NULL" << endl;
@@ -88,13 +90,15 @@ int PNXV5V6AdapterCore::adapter() {
 
     uniqueCore.feature = parameter->BaseCurve; // set curve
 
-    cout << "##### test PNXUniqueCore::checkoutUniqueClass()" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     PNXIMechanicalFeature_var out = uniqueCore.checkoutUniqueClass();
     if (!out) {
         cout << " - [error] uniqueCore.checkoutUniqueClass() is NULL_var" << endl;
     }
 
-    cout << "##### test PNXUniqueCore::calculate()" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     int code = uniqueCore.calculate(parameter->BaseCurve);
     cout << " - code = " << code << endl;
 

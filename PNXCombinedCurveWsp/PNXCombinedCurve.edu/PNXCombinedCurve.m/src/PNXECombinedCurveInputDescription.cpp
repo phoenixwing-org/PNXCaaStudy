@@ -21,12 +21,12 @@ CATImplementBOA(CATIInputDescription, PNXECombinedCurveInputDescription);
 //-------------------------------------------------------------------------------------
 PNXECombinedCurveInputDescription::PNXECombinedCurveInputDescription()
     : CATIniInputDescriptionAdaptor() {
-    cout << " PNXECombinedCurveInputDescription::PNXECombinedCurveInputDescription" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-------------------------------------------------------------------------------------
 PNXECombinedCurveInputDescription::~PNXECombinedCurveInputDescription() {
-    cout << " PNXECombinedCurveInputDescription::~PNXECombinedCurveInputDescription" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ HRESULT PNXECombinedCurveInputDescription::GetMainInput(CATBaseUnknown_var& oMai
 
 HRESULT PNXECombinedCurveInputDescription::GetFeatureType(
     CATIInputDescription::FeatureType& oFeature_type) {
-    cout << " PNXECombinedCurveInputDescription::GetFeatureType" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     oFeature_type = CATIInputDescription::FeatureType_Creation;
     return S_OK;

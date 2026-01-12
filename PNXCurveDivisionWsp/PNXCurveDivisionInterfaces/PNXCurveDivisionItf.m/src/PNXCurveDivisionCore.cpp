@@ -47,7 +47,7 @@
 #include <time.h>
 
 // Error title
-#define ERROR_TITLE_Create "Error : PNXCurveDivisionCore::Create(...) ..."
+#define ERROR_TITLE_Create "Error : PNXCurveDivisionCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------
@@ -57,23 +57,24 @@ PNXCurveDivisionCore::PNXCurveDivisionCore() {
 PNXCurveDivisionCore::~PNXCurveDivisionCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCore::Pretreat() {
-    // cout << "PNXCurveDivisionCore::Pretreat" << endl;
+HRESULT PNXCurveDivisionCore::pretreat() {
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL == parameter) // param pointer check
         return E_INVALIDARG;
 
     return S_OK;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCore::Calculate() {
-    // cout << "PNXCurveDivisionCore::Calculate" << endl;
+HRESULT PNXCurveDivisionCore::calculate() {
+    // cout << "### " << __FUNCTION__ << endl;
 
     HRESULT hr = E_FAIL;
     return E_FAIL;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCore::Create() {
-    // cout << "PNXCurveDivisionCore::Create" << endl;
+HRESULT PNXCurveDivisionCore::create() {
+    // cout << "### " << __FUNCTION__ << endl;
 
     if (NULL == parameter) // param pointer check
         return E_INVALIDARG;

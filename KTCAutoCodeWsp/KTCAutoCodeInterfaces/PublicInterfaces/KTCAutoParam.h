@@ -17,9 +17,10 @@
 #include "CATListOfCATUnicodeString.h"
 #include "CATUnicodeString.h"
 
-// KTC
+// auto code
 #include "KTCAutoCodeItf.h"
 #include "KTCAutoParam.h"
+#include "KtString.h"
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoParam {
@@ -33,7 +34,29 @@ public:
     KTCAutoParam& operator=(const KTCAutoParam&);
 
 public:
+    /**
+     * @brief Feature Version
+     * @author Phoenix
+     * @date 2026/01/12
+     * @id -1
+     */
     int FeatureVersion;
+
+    /**
+     * @brief Error code
+     * @author Phoenix
+     * @date 2026/01/12
+     * @id -2
+     */
+    int code;
+
+    /**
+     * @brief message
+     * @author Phoenix
+     * @date 2026/01/12
+     * @id -3
+     */
+    KtString message;
 };
 
 #endif

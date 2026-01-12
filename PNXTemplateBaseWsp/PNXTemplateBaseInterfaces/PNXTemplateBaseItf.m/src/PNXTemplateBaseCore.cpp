@@ -79,7 +79,7 @@
 #include <time.h>
 
 // Error title
-#define ERROR_TITLE_Create "Error : PNXTemplateBaseCore::Create(...) ..."
+#define ERROR_TITLE_Create "Error : PNXTemplateBaseCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------
@@ -90,8 +90,9 @@ PNXTemplateBaseCore::PNXTemplateBaseCore()
 PNXTemplateBaseCore::~PNXTemplateBaseCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::Pretreat() {
-    // cout << "PNXTemplateBaseCore::Pretreat" << endl;
+HRESULT PNXTemplateBaseCore::pretreat() {
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL == parameter) // param pointer check
         return E_INVALIDARG;
 
@@ -100,8 +101,8 @@ HRESULT PNXTemplateBaseCore::Pretreat() {
     return S_OK;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::Calculate() {
-    // cout << "PNXTemplateBaseCore::Calculate" << endl;
+HRESULT PNXTemplateBaseCore::calculate() {
+    // cout << "### " << __FUNCTION__ << endl;
 
     //.............................need calculate time
 
@@ -112,8 +113,9 @@ HRESULT PNXTemplateBaseCore::Calculate() {
     return hr;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::Create() {
-    // cout << "PNXTemplateBaseCore::Create" << endl;
+HRESULT PNXTemplateBaseCore::create() {
+    // cout << "### " << __FUNCTION__ << endl;
+
     feature = NULL_var; // clear first
 
     if (NULL == parameter) // param pointer check

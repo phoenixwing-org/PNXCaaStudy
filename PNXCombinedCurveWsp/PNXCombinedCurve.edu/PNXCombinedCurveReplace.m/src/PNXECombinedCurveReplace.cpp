@@ -53,13 +53,13 @@ CATImplementBOA(CATIReplace, PNXECombinedCurveReplace);
 
 PNXECombinedCurveReplace::PNXECombinedCurveReplace()
     : CATSpecReplaceExt() {
-    cout << "PNXECombinedCurveReplace::PNXECombinedCurveReplace" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-----------------------------------------------------------------------------
 
 PNXECombinedCurveReplace::~PNXECombinedCurveReplace() {
-    cout << "PNXECombinedCurveReplace::~PNXECombinedCurveReplace" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ PNXECombinedCurveReplace::IsElementValidForReplace(const CATUnicodeString&   iNa
                                                    CATUnicodeString&         oMessage,
                                                    int&                      oElementValidity,
                                                    const CATBaseUnknown_var& iOldValue) {
-    cout << "PNXECombinedCurveReplace::IsElementValidForReplace" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     HRESULT exit = S_OK;
 
@@ -90,7 +90,7 @@ PNXECombinedCurveReplace::Replace(const CATUnicodeString&   iNameOfRole,
                                   const CATBaseUnknown_var& ispOldValue) {
     HRESULT rc = E_FAIL;
 
-    cout << "PNXECombinedCurveReplace::Replace" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     CATISpecObject_var spCurrent    = this;
     CATISpecObject_var spNewSpec    = ispNewElement;
@@ -185,7 +185,7 @@ PNXECombinedCurveReplace::Replace(const CATUnicodeString&   iNameOfRole,
 //------------------------------------------------------------------------
 CATISpecObject_var
     PNXECombinedCurveReplace::ExtractFeature(const CATBaseUnknown_var& ispSelectedObject) {
-    cout << "PNXECombinedCurveReplace::ExtractFeature" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     CATISpecObject_var spNewValue = ispSelectedObject;
 
@@ -218,7 +218,7 @@ CATISpecObject_var
 CATISpecObject_var
     PNXECombinedCurveReplace::InvertFeature(const CATBaseUnknown_var& ispSelectedObject,
                                             const CATISpecObject_var& ispCurrentSpec) {
-    cout << "PNXECombinedCurveReplace::InvertFeature" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     CATISpecObject_var spToReturn = ispCurrentSpec;
 

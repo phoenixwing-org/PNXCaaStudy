@@ -88,7 +88,7 @@
 #include <time.h>
 
 // Error title
-#define ERROR_TITLE_Create "Error : PNXTemplateFeatureCore::Create(...) ..."
+#define ERROR_TITLE_Create "Error : PNXTemplateFeatureCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------
@@ -99,8 +99,9 @@ PNXTemplateFeatureCore::PNXTemplateFeatureCore()
 PNXTemplateFeatureCore::~PNXTemplateFeatureCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::Pretreat() {
-    // cout << "PNXTemplateFeatureCore::Pretreat" << endl;
+HRESULT PNXTemplateFeatureCore::pretreat() {
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL == parameter) // param pointer check
         return E_INVALIDARG;
     parameter->MyTime.clear(); // clear time string
@@ -130,8 +131,8 @@ HRESULT PNXTemplateFeatureCore::Pretreat() {
     return S_OK;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::Calculate() {
-    // cout << "PNXTemplateFeatureCore::Calculate" << endl;
+HRESULT PNXTemplateFeatureCore::calculate() {
+    // cout << "### " << __FUNCTION__ << endl;
 
     //.............................need calculate time
 
@@ -142,8 +143,9 @@ HRESULT PNXTemplateFeatureCore::Calculate() {
     return hr;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::Create() {
-    // cout << "PNXTemplateFeatureCore::Create" << endl;
+HRESULT PNXTemplateFeatureCore::create() {
+    // cout << "### " << __FUNCTION__ << endl;
+
     feature = NULL_var; // clear first
 
     if (NULL == parameter) // param pointer check
@@ -158,7 +160,7 @@ HRESULT PNXTemplateFeatureCore::Create() {
     //
 
     // Factory control, class for partDocument unities. initial from editor.
-    KTCAutoPartDoc partDocument1;               // initial
+    KTCAutoPartDoc partDocument1;                // initial
     partDocument1._catFrmEditor = _catFrmEditor; // set editor
 
     // query PNXITemplateFeatureFactory factory under the part container

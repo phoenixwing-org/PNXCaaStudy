@@ -100,7 +100,7 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
 
 // end
 {
-    // cout <<"PNXCurveDivisionCmd::PNXCurveDivisionCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     // create parameter
     parameter = new PNXCurveDivisionParam(); // create Default value Instance
@@ -120,7 +120,7 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
 }
 //-----------------------------------------------------------------------------
 PNXCurveDivisionCmd::~PNXCurveDivisionCmd() {
-    // cout <<"PNXCurveDivisionCmd::~PNXCurveDivisionCmd" << endl;
+    // cout <<"### " << __FUNCTION__ << endl;
 
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
@@ -229,7 +229,8 @@ void PNXCurveDivisionCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCurveDivisionCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXCurveDivisionCmd::Activate" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
+
     if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
 
     // Sets the CC as the current feature
@@ -240,7 +241,7 @@ CATStatusChangeRC PNXCurveDivisionCmd::Activate(CATCommand* iCmd, CATNotificatio
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCurveDivisionCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXCurveDivisionCmd::Cancel" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
@@ -252,7 +253,7 @@ CATBoolean PNXCurveDivisionCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCurveDivisionCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "PNXCurveDivisionCmd::Deactivate" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
@@ -264,7 +265,7 @@ CATStatusChangeRC PNXCurveDivisionCmd::Deactivate(CATCommand* iCmd, CATNotificat
 }
 //-----------------------------------------------------------------------------
 void PNXCurveDivisionCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
-    cout << " PNXCurveDivisionCmd::ElementSelected" << endl;
+    cout << "### " << __FUNCTION__ << endl;
 
     if (NULL == pAgent || NULL == parameter) return;
 
@@ -317,7 +318,7 @@ CATISpecObject_var PNXCurveDivisionCmd::GiveMyFeature() {
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::OkAction(void*) {
-    // cout << "PNXCurveDivisionCmd::OkAction" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // Get infors and set to feature
@@ -363,7 +364,7 @@ CATBoolean PNXCurveDivisionCmd::BaseCurveFieldSelected(void*) {
 
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::PreviewAction(void*) {
-    // cout << "PNXCurveDivisionCmd::PreviewAction" << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // 1- information
@@ -371,7 +372,7 @@ CATBoolean PNXCurveDivisionCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    HRESULT hr = core->Calculate();
+    HRESULT hr = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
     return TRUE;
@@ -382,7 +383,8 @@ CATBoolean PNXCurveDivisionCmd::PreviewAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::ActionSelectorListFia(void* data) {
     // int field = CATPtrToINT32(data);
-    // // cout << "PNXCurveDivisionCmd::ActionSelectorListFia, Field = " << field <<
+    // // cout << "### " << __FUNCTION__ << endl;
+
     // // endl;
 
     // KTC::ValueActionMode mode = dialog->GetValueMode();
@@ -411,7 +413,8 @@ CATBoolean PNXCurveDivisionCmd::ActionSelectorListFia(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::ActionSelectorListPda(void* data) {
     int field = CATPtrToINT32(data);
-    // cout << "PNXCurveDivisionCmd::ActionSelectorListPda, Field = " << field <<
+    // cout << "### " << __FUNCTION__ << endl;
+
     // endl;
 
     bool fieldChange = 0; // (dialog->GetActiveField() != field);
@@ -447,7 +450,8 @@ CATBoolean PNXCurveDivisionCmd::ActionValueChange(void*) {
 }
 //-----------------------------------------------------------------------------
 void PNXCurveDivisionCmd::AfterValueChange(bool isUpdateObj) {
-    cout << "PNXCurveDivisionCmd::AfterValueChange" << endl;
+    cout << "### " << __FUNCTION__ << endl;
+
     dialog->UpdateInfos(); // refresh information
 
     // your other code here
@@ -460,7 +464,7 @@ HRESULT PNXCurveDivisionCmd::CreateElement() {
 
     if (NULL == core) return E_INVALIDARG;
 
-    HRESULT hr = core->Create(); // create
+    HRESULT hr = core->create(); // create
     if (FAILED(hr)) return hr;
 
     return S_OK;
