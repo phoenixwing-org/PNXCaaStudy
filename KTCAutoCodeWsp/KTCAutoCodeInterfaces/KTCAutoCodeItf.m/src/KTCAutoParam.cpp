@@ -17,7 +17,7 @@ KTCAutoParam::KTCAutoParam()
     : FeatureVersion(0)
     , code(0)
     , message()
-    , PreviewCode() {
+    , previewCode() {
 }
 //-----------------------------------------------------------------------------
 KTCAutoParam::~KTCAutoParam() {
@@ -31,7 +31,7 @@ KTCAutoParam& KTCAutoParam::operator=(const KTCAutoParam& iOriginal) {
     FeatureVersion = iOriginal.FeatureVersion;
     code           = iOriginal.code;
     message        = iOriginal.message;
-    PreviewCode    = iOriginal.PreviewCode;
+    previewCode    = iOriginal.previewCode;
     return *this;
 }
 //-----------------------------------------------------------------------------

@@ -101,7 +101,7 @@ public:
      * @date 2026/01/12
      * @id -4
      */
-    int PreviewCode;
+    int previewCode;
 };
 
 #endif
