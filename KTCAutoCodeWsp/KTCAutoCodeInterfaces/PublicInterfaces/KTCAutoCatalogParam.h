@@ -18,8 +18,8 @@
 #include "CATUnicodeString.h"
 
 // KTC
-#include "KTCAutoCodeItf.h"
 #include "KTCAutoCatalogParam.h"
+#include "KTCAutoCodeItf.h"
 
 // std
 #include <vector>

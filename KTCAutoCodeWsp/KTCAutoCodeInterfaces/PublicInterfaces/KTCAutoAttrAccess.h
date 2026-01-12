@@ -18,8 +18,8 @@
 #include "CATUnicodeString.h"
 
 // KTC
-#include "KTCAutoCodeItf.h"
 #include "KTCAutoAttrAccess.h"
+#include "KTCAutoCodeItf.h"
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoAttrAccess {
