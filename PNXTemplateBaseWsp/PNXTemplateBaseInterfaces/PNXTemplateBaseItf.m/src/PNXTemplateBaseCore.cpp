@@ -106,7 +106,6 @@ HRESULT PNXTemplateBaseCore::calculate() {
 
     //.............................need calculate time
 
-    _myData               = -1;
     parameter->FinishCalc = 0;
     HRESULT hr            = S_OK;
 

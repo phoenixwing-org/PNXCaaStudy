@@ -202,6 +202,8 @@ void KTCAutoDialog::ShowMessageBox(const CATUnicodeString& msg, CATDialog* dialo
 }
 //-----------------------------------------------------------------------------
 void KTCAutoDialog::ShowMessageBox(int code, const CATUnicodeString& msg, CATDialog* dialog) {
+    if (0 == code && msg.GetLengthInChar() == 0) return; // 没有错误信息，不弹出
+
     if (!dialog) dialog = (CATApplicationFrame::GetApplicationFrame())->GetMainWindow();
 
     // 创建消息通知对话框
@@ -224,4 +226,11 @@ void KTCAutoDialog::ShowMessageBox(int code, const CATUnicodeString& msg, CATDia
     }
 
     KTCRequestDelayedDestruction(notify); // 释放资源
+}
+//-----------------------------------------------------------------------------
+void KTCAutoDialog::ShowMessageBox(int code, const KtString& msg, CATDialog* dialog) {
+    if (0 == code && msg.size() == 0) return; // 没有错误信息，不弹出
+
+    CATUnicodeString message = msg.str(); // 从本地码转换
+    ShowMessageBox(code, message, dialog);
 }

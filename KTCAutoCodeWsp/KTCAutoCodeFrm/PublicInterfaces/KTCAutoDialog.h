@@ -119,8 +119,18 @@ public:
      * @param[in] code Error Code
      * @param[in] msg message
      * @param[in] dialog Parrent dialo
+     * @note DONOT show message if code == 0 and msg is empty
      */
     static void ShowMessageBox(int code, const CATUnicodeString& msg, CATDialog* dialog = NULL);
+
+    /**
+     * @brief Show Message Box
+     * @param[in] code Error Code
+     * @param[in] msg Kt String, Local charset
+     * @param[in] dialog Parrent dialo
+     * @note DONOT show message if code == 0 and msg is empty
+     */
+    static void ShowMessageBox(int code, const KtString& msg, CATDialog* dialog = NULL);
 
     /** @brief Set Params to Dialog */
     virtual void UpdateDialog() = 0;

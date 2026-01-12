@@ -35,6 +35,43 @@ public:
 
 public:
     /**
+     * @brief append  message
+     * @param message message
+     * @note set code and set message with format "\n[INFO] {{message}}"
+     */
+    void append_message(const KtString& message);
+
+    /**
+     * @brief append the error code and message
+     * @param code error code
+     * @param message message
+     * @note set code and set message with format "\n[ERROR {{code}}] {{message}}"
+     */
+    void append_message(int code, const KtString& message);
+
+    /**
+     * @brief build messag like [ERROR {{code}}] {{message}}
+     * @param[in] code Error Code
+     * @param[in] msg Kt String, Local charset
+     */
+    static KtString build_message(int code, const KtString& msg);
+
+    /**
+     * @brief clear the error code and message
+     * @note set code 0 and set message empty
+     */
+    void clear_error();
+
+    /**
+     * @brief set the error code and message
+     * @param code error code
+     * @param message message
+     * @note set code and set message with format "[ERROR {{code}}] {{message}}"
+     */
+    void set_message(int code, const KtString& message);
+
+public:
+    /**
      * @brief Feature Version
      * @author Phoenix
      * @date 2026/01/12
@@ -57,6 +94,14 @@ public:
      * @id -3
      */
     KtString message;
+
+    /**
+     * @brief Preview Code
+     * @author Phoenix
+     * @date 2026/01/12
+     * @id -4
+     */
+    int PreviewCode;
 };
 
 #endif
