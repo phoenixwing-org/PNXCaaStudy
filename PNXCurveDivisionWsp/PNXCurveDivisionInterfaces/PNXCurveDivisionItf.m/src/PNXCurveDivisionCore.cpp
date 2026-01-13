@@ -57,31 +57,27 @@ PNXCurveDivisionCore::PNXCurveDivisionCore() {
 PNXCurveDivisionCore::~PNXCurveDivisionCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCore::pretreat() {
+int PNXCurveDivisionCore::pretreat() {
     // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001; // param pointer check
 
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
-
-    return S_OK;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCore::calculate() {
+int PNXCurveDivisionCore::calculate() {
     // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001; // param pointer check
 
     HRESULT hr = E_FAIL;
-    return E_FAIL;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCore::create() {
+int PNXCurveDivisionCore::create() {
     // cout << "### " << __FUNCTION__ << endl;
-
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
-    if (NULL == _catFrmEditor) // editor pointer check
-        return E_INVALIDARG;
+    if (NULL == parameter) return 100001;     // param pointer check
+    if (NULL == _catFrmEditor) return 100002; // editor pointer check
 
     HRESULT hr = E_FAIL;
 
-    return S_OK;
+    return 0;
 }

@@ -39,7 +39,7 @@ public:
     int bomAnalysis(CATISpecObject_var currentPrd, const CATUnicodeString& parentPartNumber);
 
     /** @brief calculate */
-    HRESULT calculate();
+    int calculate();
 
     /**
      * @brief checkout properties
@@ -50,8 +50,8 @@ public:
     static int checkoutProperties(CATISpecObject_var productObject, PNXBomItem& item);
 
     /** @brief dump Json */
-    int dumpJsonL();
-	CATUnicodeString OutPutJson();
+    int              dumpJsonL();
+    CATUnicodeString OutPutJson();
 
     /** @brief dump Json */
     static int dumpJson(const PNXBomItem& item);
@@ -63,7 +63,7 @@ public:
     static int dumpMarkdown(const PNXBomItem& item);
 
     /** @brief pretreat */
-    HRESULT pretreat();
+    int pretreat();
 
 private:
 };

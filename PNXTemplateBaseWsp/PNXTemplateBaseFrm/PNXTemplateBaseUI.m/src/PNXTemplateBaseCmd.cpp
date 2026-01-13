@@ -260,13 +260,6 @@ void PNXTemplateBaseCmd::BuildGraph() {
     //---------------------------------------------------
     // Setting an ID to be able to read the created import
     //---------------------------------------------------
-    GUID guid = {// {795D00E4-5187-4c4f-89F0-8FD2FAD6CB3D}
-                 0x795d00e4,
-                 0x5187,
-                 0x4c4f,
-                 {0x89, 0xf0, 0x8f, 0xd2, 0xfa, 0xd6, 0xcb, 0x3d}};
-
-    _fiaMyFaces->SetImportApplicativeId(guid);
 
     //.............................................................................
     // KEVIN MANUAL CODE: Dialog show
@@ -415,22 +408,20 @@ CATBoolean PNXTemplateBaseCmd::OkAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::PreviewAction(void*) {
     // cout << "### " << __FUNCTION__ << endl;
+    if (!core || !parameter) return FALSE;
 
     //
     // 1- information
     //
     dialog->UpdateInfos(); // refresh information
 
-    // show rep and warning
-    HRESULT hr = core->calculate();
-
-    //
-    // 2- Updates
-    //
-    // feature->SetParams(*parameter);
-    // KTCAutoObject::update(_MyFeature, false);
+    _code = core->pretreat();
+    if (0 == _code) _code = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
+
+    // Show error if any
+    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
     return TRUE;
 }
 
@@ -536,13 +527,12 @@ void PNXTemplateBaseCmd::AfterValueChange(bool isUpdateObj) {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXTemplateBaseCmd::CreateElement() {
-    if (NULL_var != _MyFeature) // do not create when exist
-        return S_OK;
+    if (NULL_var != _MyFeature) return S_OK; // do not create when exist
 
     if (NULL == core) return E_INVALIDARG;
 
-    HRESULT hr = core->create(); // create
-    if (FAILED(hr)) return hr;
+    _code = core->create(); // create
+    if (_code) return E_FAIL;
 
     if (NULL_var == core->feature) return E_FAIL;
 

@@ -31,16 +31,16 @@ private:
 
 public:
     /** @brief calculate */
-    HRESULT calculate();
+    int calculate();
 
     /** @brief Create the line */
-    HRESULT create();
+    int create();
 
     /** @brief Pretreat */
-    HRESULT pretreat();
+    int pretreat();
 
     /** @brief show_rep */
-    HRESULT show_rep();
+    int show_rep();
 };
 
 #endif

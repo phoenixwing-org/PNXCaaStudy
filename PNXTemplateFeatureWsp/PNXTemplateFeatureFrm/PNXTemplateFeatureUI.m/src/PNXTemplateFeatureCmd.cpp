@@ -466,15 +466,17 @@ CATBoolean PNXTemplateFeatureCmd::OkAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
     // cout << "### " << __FUNCTION__ << endl;
+    if (!core || !parameter) return FALSE;
 
     //
     // 1- information
     //
     dialog->UpdateInfos(); // refresh information
 
-    // show rep and warning
-    HRESULT hr = core->calculate();
-    KTC_SHOW_IMAGES_DIALOG(parameter); // show image dialog
+    _code = core->pretreat();
+    if (0 == _code) _code = core->calculate();
+
+    // KTC_SHOW_IMAGES_DIALOG(parameter); // show image dialog
 
     //
     // 2- Updates
@@ -483,6 +485,10 @@ CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
     KTCAutoObject::update(_MyFeature, false);
 
     dialog->UpdateDialog(); // updates all the param to the panel
+
+    // Show error if any
+    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
+
     return TRUE;
 }
 
@@ -609,13 +615,12 @@ void PNXTemplateFeatureCmd::AfterValueChange(bool isUpdateObj) {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXTemplateFeatureCmd::CreateElement() {
-    if (NULL_var != _MyFeature) // do not create when exist
-        return S_OK;
+    if (NULL_var != _MyFeature) return S_OK; // do not create when exist
 
     if (NULL == core) return E_INVALIDARG;
 
-    HRESULT hr = core->create(); // create
-    if (FAILED(hr)) return hr;
+    _code = core->create(); // create
+    if (_code) return E_FAIL;
 
     if (NULL_var == core->feature) return E_FAIL;
 

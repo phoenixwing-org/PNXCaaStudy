@@ -90,49 +90,75 @@ PNXTemplateBaseCore::PNXTemplateBaseCore()
 PNXTemplateBaseCore::~PNXTemplateBaseCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::pretreat() {
+int PNXTemplateBaseCore::pretreat() {
     // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001;
+    int&      previewCode = parameter->previewCode; // 引用预处理Code
+    KtString& message     = parameter->message;     // 引用message
+    message.clear();
+    parameter->code        = 100010; // 没有计算
+    parameter->previewCode = 0;      // 初始化为0（无错误）
 
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
+    // if (NULL != _catISO) _catISO->Empty();
 
-    if (NULL != _catISO) _catISO->Empty();
+    // 检查输入，set previewCode
+    if (!parameter->MyCurve) {
+        parameter->set_message(100102, "Please select MyCurve");
+        return previewCode = parameter->code;
+    }
+    if (!parameter->MyFaces.Size() == 0) {
+        parameter->set_message(100103, "Please select MyFaces");
+        return previewCode = parameter->code;
+    }
+
+    if (previewCode) return previewCode; // if error return
 
     return S_OK;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::calculate() {
+int PNXTemplateBaseCore::calculate() {
     // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001; // param check
 
-    //.............................need calculate time
+    int& code       = parameter->code; // 引用
+    parameter->code = 100010;          // 没有计算
+    parameter->message.clear();
+
+    // if (NULL != _catISO) _catISO->Empty();
 
     parameter->FinishCalc = 0;
-    HRESULT hr            = S_OK;
 
-    return hr;
+    // HRESULT hr            = S_OK;
+
+    return code;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::create() {
+int PNXTemplateBaseCore::create() {
     // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001;                       // param check
+    if (NULL == _catFrmEditor) return parameter->code = 100002; // editor pointer check
+    if (parameter->previewCode) return parameter->code = parameter->previewCode; // no pretreat
 
     feature = NULL_var; // clear first
 
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
-    if (NULL == _catFrmEditor) // editor pointer check
-        return E_INVALIDARG;
+    //=====================================================
+    // 不用再查检查“结果列表”中所有草图对象都能匹配,Pretreat里面检查过了
+    // do not check sketches.size again
+    //=====================================================
 
-    HRESULT hr = E_FAIL;
+    // 变量设定======
+    KtString msg; // 临时信息
+    int&     code = parameter->code;
+    parameter->clear_error(); // 设置为无错误
+    HRESULT hr = S_OK;
 
-    return S_OK;
+    return code;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCore::show_rep() {
-    if (NULL == _catISO) return E_POINTER;
+int PNXTemplateBaseCore::show_rep() {
+    if (NULL == _catISO) return 100003;
 
     CAT3DRep* pRep = NULL;
 
-    //   KTC::RepShowCurve(&_ktc3DRep, curve); // show origin curve
-
-    return S_OK;
+    return 0;
 }

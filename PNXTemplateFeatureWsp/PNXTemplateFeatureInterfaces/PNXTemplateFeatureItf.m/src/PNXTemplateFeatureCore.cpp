@@ -99,12 +99,10 @@ PNXTemplateFeatureCore::PNXTemplateFeatureCore()
 PNXTemplateFeatureCore::~PNXTemplateFeatureCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::pretreat() {
+int PNXTemplateFeatureCore::pretreat() {
     // cout << "### " << __FUNCTION__ << endl;
-
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
-    parameter->MyTime.clear(); // clear time string
+    if (NULL == parameter) return 100001; // param check
+    parameter->MyTime.clear();            // clear time string
 
     if (NULL != _catISO) _catISO->Empty();
 
@@ -128,11 +126,12 @@ HRESULT PNXTemplateFeatureCore::pretreat() {
 
     _list3DRep->release(); // release first
 
-    return S_OK;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::calculate() {
+int PNXTemplateFeatureCore::calculate() {
     // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001; // param check
 
     //.............................need calculate time
 
@@ -140,18 +139,14 @@ HRESULT PNXTemplateFeatureCore::calculate() {
     parameter->FinishCalc = 0;
     HRESULT hr            = S_OK;
 
-    return hr;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::create() {
+int PNXTemplateFeatureCore::create() {
     // cout << "### " << __FUNCTION__ << endl;
-
-    feature = NULL_var; // clear first
-
-    if (NULL == parameter) // param pointer check
-        return E_INVALIDARG;
-    if (NULL == _catFrmEditor) // editor pointer check
-        return E_INVALIDARG;
+    if (NULL == parameter) return 100001;     // param pointer check
+    if (NULL == _catFrmEditor) return 100001; // editor pointer check
+    feature = NULL_var;                       // clear first
 
     HRESULT hr = E_FAIL;
 
@@ -170,7 +165,7 @@ HRESULT PNXTemplateFeatureCore::create() {
     if (FAILED(hr)) {
         cout << ERROR_TITLE_Create << " QueryInterface(IID_PNXITemplateFeatureFactory). hr = " << hr
              << endl;
-        return hr;
+        return 100004;
     }
 
     //
@@ -180,7 +175,7 @@ HRESULT PNXTemplateFeatureCore::create() {
     hr = piTemplateFeatureFactory->CreateTemplateFeature(*parameter, feature);
     KTCRelease(piTemplateFeatureFactory);
     if (FAILED(hr)) { // already print warning
-        return hr;
+        return 100005;
     }
     parameter->feature = feature; // record self Spec
 
@@ -192,21 +187,22 @@ HRESULT PNXTemplateFeatureCore::create() {
     if (NULL_var == spProceduralView) {                   // error
         hr = E_POINTER;
         cout << ERROR_TITLE_Create << " get CATIGSMProceduralView_var.  " << hr << endl;
-        return hr;
+        return 100006;
     }
 
     // inset in view
     spProceduralView->InsertInProceduralView();
 
-    return S_OK;
+    return 0;
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXTemplateFeatureCore::show_rep() {
-    if (NULL == _catISO) return E_POINTER;
+int PNXTemplateFeatureCore::show_rep() {
+    if (NULL == _catISO) return 100002;
+    if (NULL == parameter) return 100001; // param check
 
     CAT3DRep* pRep = NULL;
 
     //   KTC::RepShowCurve(&_ktc3DRep, curve); // show origin curve
 
-    return S_OK;
+    return 0;
 }

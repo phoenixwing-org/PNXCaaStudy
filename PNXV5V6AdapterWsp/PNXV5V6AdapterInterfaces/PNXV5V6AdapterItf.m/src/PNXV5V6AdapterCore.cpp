@@ -58,14 +58,14 @@ PNXV5V6AdapterCore::~PNXV5V6AdapterCore() {
 //-----------------------------------------------------------------------------
 int PNXV5V6AdapterCore::pretreat() {
     // cout << "### " << __FUNCTION__ << endl;
-
-    if (NULL == parameter) return 1;
+    if (NULL == parameter) return 100001; // param check
 
     return 0;
 }
 //-----------------------------------------------------------------------------
 int PNXV5V6AdapterCore::calculate() {
     cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001; // param check
 
     return 0;
 }

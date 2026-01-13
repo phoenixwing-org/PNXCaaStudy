@@ -61,29 +61,28 @@ PNXBomAnalysisCore::PNXBomAnalysisCore() {
 PNXBomAnalysisCore::~PNXBomAnalysisCore() {
 }
 //-----------------------------------------------------------------------------
-HRESULT PNXBomAnalysisCore::pretreat() {
+int PNXBomAnalysisCore::pretreat() {
     // cout << "### " << __FUNCTION__ << endl;
-
-    if (NULL == parameter) return E_INVALIDARG; // param check
-
-    return S_OK;
-}
-//-----------------------------------------------------------------------------
-HRESULT PNXBomAnalysisCore::calculate() {
-    if (NULL == parameter) return E_INVALIDARG; // param check
+    if (NULL == parameter) return 100001; // param check
     if (NULL == parameter->productItems) {
-        cout << "- [error] parameter->productItems is NULL!" << endl;
-        return E_INVALIDARG; // param check
+        parameter->set_message(100002, "- [error] parameter->productItems is NULL!");
+        return parameter->previewCode = parameter->code;
     }
 
+    return parameter->previewCode = 0;
+}
+//-----------------------------------------------------------------------------
+int PNXBomAnalysisCore::calculate() {
+    if (NULL == parameter) return 100001; // param check
+    if (parameter->previewCode) return parameter->code = parameter->previewCode;
+
     // clear
-    parameter->productItems->clear(); // clear list
-    parameter->FirstPartNumber = "";  // TODO delete
+    parameter->FirstPartNumber = ""; // TODO delete
 
     int count = bomAnalysis(parameter->FirstProduct, "");
     cout << "- total pruduct count = " << count << endl;
 
-    return S_OK;
+    return 0;
 }
 //-----------------------------------------------------------------------------
 int PNXBomAnalysisCore::bomAnalysis(CATISpecObject_var      currentPrd,

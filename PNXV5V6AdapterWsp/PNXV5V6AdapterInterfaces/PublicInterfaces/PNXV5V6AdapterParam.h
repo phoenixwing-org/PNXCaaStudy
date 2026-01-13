@@ -28,6 +28,9 @@
 
 #include "PNXV5V6AdapterItf.h"
 
+// auto code
+#include "KTCAutoParam.h"
+
 /** @brief Field Type */
 enum PNXV5V6AdapterField {
     // START KEVIN CAA WIZARD SECTION PNXV5V6Adapter DLG DEFINE FIELD TYPE
@@ -44,7 +47,7 @@ enum PNXV5V6AdapterField {
 };
 
 /** @brief KTC V5V6Adapter Param */
-class ExportedByPNXV5V6AdapterItf PNXV5V6AdapterParam {
+class ExportedByPNXV5V6AdapterItf PNXV5V6AdapterParam : public KTCAutoParam {
 public:
     /** @brief Standard constructors and destructors */
     PNXV5V6AdapterParam();

@@ -34,15 +34,13 @@ private:
 
 public:
     /** @brief calculate */
-    HRESULT calculate();
+    int calculate();
 
     /** @brief Create the line */
-    HRESULT create();
+    int create();
 
     /** @brief Pretreat */
-    HRESULT pretreat();
-
-private:
+    int pretreat();
 };
 
 #endif

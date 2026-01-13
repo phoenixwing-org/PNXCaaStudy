@@ -28,6 +28,9 @@
 
 #include "PNXCurveDivisionItf.h"
 
+// auto code
+#include "KTCAutoParam.h"
+
 /** @brief Field Type */
 enum PNXCurveDivisionField {
     // START KEVIN CAA WIZARD SECTION PNXCurveDivision DLG DEFINE FIELD TYPE
@@ -44,7 +47,7 @@ enum PNXCurveDivisionField {
 };
 
 /** @brief KTC CurveDivision Param */
-class ExportedByPNXCurveDivisionItf PNXCurveDivisionParam {
+class ExportedByPNXCurveDivisionItf PNXCurveDivisionParam : public KTCAutoParam {
 public:
     /** @brief Standard constructors and destructors */
     PNXCurveDivisionParam();

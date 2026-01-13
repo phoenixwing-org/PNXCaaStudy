@@ -8,6 +8,7 @@
 
 class PNXCombinedCurveDlg;
 class PNXICombinedCurve;
+class CATFeatureImportAgent;
 
 /**
  * Class managing the dialog command to edit Combined Curves.

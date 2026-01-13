@@ -279,6 +279,7 @@ CATBoolean PNXBomAnalysisCmd::OkAction(void*) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
     //  cout  << "### " << __FUNCTION__ << endl;
+    if (!core || !parameter) return FALSE;
 
     //
     // 1- information
@@ -286,9 +287,14 @@ CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    HRESULT hr = core->calculate();
+    _code = core->pretreat();
+    if (0 == _code) _code = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
+
+    // Show error if any
+    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
+
     return TRUE;
 }
 
