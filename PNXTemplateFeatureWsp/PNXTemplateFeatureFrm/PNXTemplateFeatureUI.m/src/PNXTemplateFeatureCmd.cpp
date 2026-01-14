@@ -80,7 +80,8 @@
 #include "KTCAutoBaseOpt.h"
 #include "KTCAutoDefine.h"
 #include "KTCAutoGSM.h"
-#include "KTCVisualizationTools.h"
+#include "KTCAutoObject.h"
+// #include "KTCVisualizationTools.h" TODO
 
 CATCreateClass(PNXTemplateFeatureCmd);
 
@@ -105,8 +106,8 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeature CMD AGENT CONSTRUCTOR
 
-    , _featurePrevious(NULL_var)
-    , _catISO(NULL)
+    , featurePrevious_(NULL_var)
+    , catISO_(NULL)
 
 // end
 {
@@ -118,7 +119,7 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
     parameter = new PNXTemplateFeatureParam(); // create Default value Instance
 
     if (ipInstance != NULL) {
-        _mode = 0; // Edition mode.
+        mode_ = 0; // Edition mode.
 
         // Memorises what curve is being edited.
         feature = ipInstance;
@@ -139,24 +140,24 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
 
     // To manage the highlight of the Sound Hole and the UI active object that
     // is used to put the Sound Hole at the right place.
-    _catFrmEditor = CATFrmEditor::GetCurrentEditor();
-    _catHSO       = NULL;
-    if (NULL != _catFrmEditor) {
-        _catHSO = _catFrmEditor->GetHSO();
-        _catISO = _catFrmEditor->GetISO();
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
+    catHSO_       = NULL;
+    if (NULL != catFrmEditor_) {
+        catHSO_ = catFrmEditor_->GetHSO();
+        catISO_ = catFrmEditor_->GetISO();
 
-        _catISO->Empty();
+        catISO_->Empty();
     }
     else {
-        _code = 1;
+        code_ = 1;
     }
 
     // core set
     core                  = new PNXTemplateFeatureCore(); // Core
     core->parameter       = parameter;                    // pass value
-    core->_catFrmEditor   = _catFrmEditor;                // pass value
-    core->_catISO         = _catISO;                      // pass value
-    core->_featureCurrent = GetCurrentFeature();          // pass value
+    core->catFrmEditor_   = catFrmEditor_;                // pass value
+    core->catISO_         = catISO_;                      // pass value
+    core->featureCurrent_ = GetCurrentFeature();          // pass value
     core->feature         = _MyFeature;                   // pass value
 }
 //-----------------------------------------------------------------------------
@@ -166,9 +167,9 @@ PNXTemplateFeatureCmd::~PNXTemplateFeatureCmd() {
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
     //.............................................................................
-    _featurePrevious = NULL_var;
+    featurePrevious_ = NULL_var;
 
-    KTCEmpty(_catISO); // Empty and set NULL
+    KTCEmpty(catISO_); // Empty and set NULL
 
     // START KEVIN CAA WIZARD SECTION PNXTemplateFeature CMD AGENT DESTRUCTOR
 
@@ -197,7 +198,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check Error for conductor
     //.............................................................................
-    if (_code > 0) {
+    if (code_ > 0) {
         msg = " Error conductor. Exit!";
         hr  = E_FAIL;
     }
@@ -208,7 +209,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
 
     // check mode and create or update
     if (SUCCEEDED(hr)) {
-        if (KTC::FeatureModeCreation == _mode) {
+        if (KTC::FeatureModeCreation == mode_) {
             hr = CreateElement(); // create one
             if (FAILED(hr)) msg = "Create element error!";
 
@@ -232,8 +233,8 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
-    if (_code || NULL_var == feature) {
-        KTCAutoDialog::ShowMessageBox(_code, msg, dialog);
+    if (code_ || NULL_var == feature) {
+        KTCAutoDialog::ShowMessageBox(code_, msg, dialog);
         RequestDelayedDestruction();
         return;
     }
@@ -301,9 +302,9 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     //---------------------------------------------------
     // your menu set code:
     //---------------------------------------------------
-    _ctxMyCurve->MenuDef = KTC_Id_CurveMenu | KTC_Id_CurveSmoothMenu; // for curve
-    _ctxMyFaces->MenuDef = KTC_Id_NoMenu;                             // for face
-    _ctxMyAxis->MenuDef  = KTC_Id_MyAxisMenuGroup;                    // for My Axis
+    // _ctxMyCurve->MenuDef = KTC_Id_CurveMenu | KTC_Id_CurveSmoothMenu; // for curve
+    // _ctxMyFaces->MenuDef = KTC_Id_NoMenu;                             // for face
+    // _ctxMyAxis->MenuDef  = KTC_Id_MyAxisMenuGroup;                    // for My Axis
 
     //---------------------------------------------------
     // Setting an ID to be able to read the created import
@@ -314,7 +315,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
                  0x4c4f,
                  {0x89, 0xf0, 0x8f, 0xd2, 0xfa, 0xd6, 0xcb, 0x3d}};
 
-    _fiaMyFaces->SetImportApplicativeId(guid);
+    // TODO _fiaMyFaces->SetImportApplicativeId(guid);
 
     //.............................................................................
     // KEVIN MANUAL CODE: Dialog show
@@ -326,9 +327,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     dialog->UpdateDialog();    // Fills in the dialog panel fields.
 
     // set active field
-    if (NULL_var == parameter->MyAxis)
-        SetActiveField(Field_PNXTemplateFeature_MyAxis);
-    else if (NULL_var == parameter->MyCurve)
+    if (NULL_var == parameter->MyCurve)
         SetActiveField(Field_PNXTemplateFeature_MyCurve);
     else
         SetActiveField(Field_PNXTemplateFeature_MyFaces);
@@ -370,7 +369,7 @@ CATStatusChangeRC PNXTemplateFeatureCmd::Activate(CATCommand* iCmd, CATNotificat
             if (((CATStateActivateNotification*)iNotif)->GetType() ==
                 CATStateActivateNotification::Begin) {
                 // GetCurrentFeature is a method of CATMMUIStateCommand
-                _featurePrevious = GetCurrentFeature();
+                featurePrevious_ = GetCurrentFeature();
             }
 
             // Sets the CC as current - method of CATMMUIStateCommand
@@ -389,7 +388,7 @@ CATStatusChangeRC PNXTemplateFeatureCmd::Cancel(CATCommand* iCmd, CATNotificatio
     // and if the CC is inside an ordered body
     if ((0 == GetMode()) && isOrdered) {
         // method of CATMMUIStateCommand
-        SetCurrentFeature(_featurePrevious);
+        SetCurrentFeature(featurePrevious_);
     }
 
     // Set the newly CC as the current feature in creation mode
@@ -404,7 +403,7 @@ CATStatusChangeRC PNXTemplateFeatureCmd::Cancel(CATCommand* iCmd, CATNotificatio
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::CancelAction(void*) {
     // Unset Repeat mode  when cancel or close is clicked
-    if (_catFrmEditor) _catFrmEditor->UnsetRepeatedCommand();
+    if (catFrmEditor_) catFrmEditor_->UnsetRepeatedCommand();
     return TRUE;
 }
 //-----------------------------------------------------------------------------
@@ -419,7 +418,7 @@ CATStatusChangeRC PNXTemplateFeatureCmd::Deactivate(CATCommand* iCmd, CATNotific
         bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
         if (isOrdered) {
             // method of CATMMUIStateCommand
-            SetCurrentFeature(_featurePrevious);
+            SetCurrentFeature(featurePrevious_);
         }
     }
 
@@ -435,7 +434,7 @@ int PNXTemplateFeatureCmd::GetMode() {
 
     // CATModeCreation 1	:Creation mode
     // CATModeEdit 0		: edit mode
-    return _mode;
+    return mode_;
 }
 //-----------------------------------------------------------------------------
 CATDlgDialog* PNXTemplateFeatureCmd::GiveMyPanel() {
@@ -473,8 +472,8 @@ CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
     //
     dialog->UpdateInfos(); // refresh information
 
-    _code = core->pretreat();
-    if (0 == _code) _code = core->calculate();
+    code_ = core->pretreat();
+    if (0 == code_) code_ = core->calculate();
 
     // KTC_SHOW_IMAGES_DIALOG(parameter); // show image dialog
 
@@ -487,7 +486,7 @@ CATBoolean PNXTemplateFeatureCmd::PreviewAction(void*) {
     dialog->UpdateDialog(); // updates all the param to the panel
 
     // Show error if any
-    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
+    KTCAutoDialog::ShowMessageBox(code_, parameter->message, dialog);
 
     return TRUE;
 }
@@ -619,8 +618,8 @@ HRESULT PNXTemplateFeatureCmd::CreateElement() {
 
     if (NULL == core) return E_INVALIDARG;
 
-    _code = core->create(); // create
-    if (_code) return E_FAIL;
+    code_ = core->create(); // create
+    if (code_) return E_FAIL;
 
     if (NULL_var == core->feature) return E_FAIL;
 
@@ -711,5 +710,6 @@ void PNXTemplateFeatureCmd::SetActiveField(PNXTemplateFeatureField field) {
 //-----------------------------------------------------------------------------
 int PNXTemplateFeatureCmd::UpdatefiaSelectFaces() {
     // check, if same, nothing to do
-    KTC_UPDATE_SELECT_MODE_FACES_SOLID(parameter->SelectMode, _fiaMyFaces);
+    // KTC_UPDATE_SELECT_MODE_FACES_SOLID(parameter->SelectMode, _fiaMyFaces);
+    return 0;
 }

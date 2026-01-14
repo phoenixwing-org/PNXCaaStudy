@@ -14,17 +14,12 @@
 #define PNXTemplateFeatureData_H
 
 // System  Framework
+#include "CAT3DRep.h"
 #include "CATBaseUnknown.h"
+#include "CATFrmEditor.h"
 #include "CATISO.h"
 #include "CATISpecObject.h"
 #include "CATMathTransformation.h"
-
-// CAT pre-declare class
-class PNXITemplateFeature;
-class CATIGSMTool;
-class CATIPrtPart;
-class CATFrmEditor;
-class CAT3DRep;
 
 // Kt
 #include "KtListV.h"
@@ -66,7 +61,7 @@ public:
      * @date 2025/12/17
      * @id 100
      */
-    CATISpecObject_var _featureCurrent;
+    CATISpecObject_var featureCurrent_;
 
     /**
      * @brief My Feature
@@ -90,7 +85,7 @@ public:
      * @date 2025/12/17
      * @id 103
      */
-    CATFrmEditor* _catFrmEditor;
+    CATFrmEditor* catFrmEditor_;
 
     /**
      * @brief CATISO pointer
@@ -98,7 +93,15 @@ public:
      * @date 2025/12/17
      * @id 104
      */
-    CATISO* _catISO;
+    CATISO* catISO_;
+
+    /**
+     * @brief Rep Pointer List
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 105
+     */
+    KtListP<CAT3DRep>* list3DRep_;
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataPublic PARAM DECLARATION
@@ -117,12 +120,12 @@ protected:
      * @date 2025/12/17
      * @id 200
      */
-    double _myData;
+    double myData_;
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataProtected PARAM DECLARATION
 
-    int _code;
+    int code_;
 };
 
 #endif

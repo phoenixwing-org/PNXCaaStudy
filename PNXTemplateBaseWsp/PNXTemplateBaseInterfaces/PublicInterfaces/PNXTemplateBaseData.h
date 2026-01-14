@@ -66,7 +66,7 @@ public:
      * @date 2025/12/17
      * @id 100
      */
-    CATISpecObject_var _featureCurrent;
+    CATISpecObject_var featureCurrent_;
 
     /**
      * @brief My Feature
@@ -90,7 +90,7 @@ public:
      * @date 2025/12/17
      * @id 103
      */
-    CATFrmEditor* _catFrmEditor;
+    CATFrmEditor* catFrmEditor_;
 
     /**
      * @brief CATISO pointer
@@ -98,7 +98,7 @@ public:
      * @date 2025/12/17
      * @id 104
      */
-    CATISO* _catISO;
+    CATISO* catISO_;
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateBaseDataPublic PARAM DECLARATION
@@ -122,7 +122,7 @@ protected:
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateBaseDataProtected PARAM DECLARATION
 
-    int _code;
+    int code_;
 };
 
 #endif

@@ -75,7 +75,7 @@ int PNXCurveDivisionCore::calculate() {
 int PNXCurveDivisionCore::create() {
     // cout << "### " << __FUNCTION__ << endl;
     if (NULL == parameter) return 100001;     // param pointer check
-    if (NULL == _catFrmEditor) return 100002; // editor pointer check
+    if (NULL == catFrmEditor_) return 100002; // editor pointer check
 
     HRESULT hr = E_FAIL;
 

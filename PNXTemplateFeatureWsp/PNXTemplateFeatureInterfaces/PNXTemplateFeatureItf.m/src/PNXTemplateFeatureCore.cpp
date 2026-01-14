@@ -55,9 +55,9 @@
 // rep
 #include "CAT3DRep.h"
 
-// This command is used by a CATCommandheader
+// CAA
 #include "CATCreateExternalObject.h"
-
+#include "CATIGSMProceduralView.h"
 #include "CATMathTransformation.h"
 
 // object
@@ -79,13 +79,6 @@
 #include "PNXTemplateFeatureCore.h"
 
 // Kt
-#include "KtCode.h"
-#include "KtDump.h"
-#include "KtTimer.h"
-#include "ListKtMathBox.h"
-#include "MatrixKtByteKit.h"
-
-#include <time.h>
 
 // Error title
 #define ERROR_TITLE_Create "Error : PNXTemplateFeatureCore::create(...) ..."
@@ -104,27 +97,11 @@ int PNXTemplateFeatureCore::pretreat() {
     if (NULL == parameter) return 100001; // param check
     parameter->MyTime.clear();            // clear time string
 
-    if (NULL != _catISO) _catISO->Empty();
+    if (NULL != catISO_) catISO_->Empty();
 
-    // set _stepFace, value from dialog
-    _stepFace = parameter->MyStep;
-    if (_stepFace < 0.01) _stepFace = 0.01; // default
+    // TODO _ktc3DRep.ISOSet(catISO_);
 
-    // set _sagFace, value from dialog
-    _sagFace = parameter->TessSag;
-    if (_sagFace < 0.001) _sagFace = 0.001; // default
-
-    // sag is define when initial
-    _tessCurve.SetStep(_stepFace);
-    _tessCurve.SetSag(_sagFace); // set sag for curve
-
-    _ktc3DRep.ISOSet(_catISO);
-
-    // set kit, fill boundary
-    _matrixKit.k_boundary = 0;
-    _matrixKit.k_fill     = 255;
-
-    _list3DRep->release(); // release first
+    // list3DRep_->release(); // release first
 
     return 0;
 }
@@ -135,7 +112,6 @@ int PNXTemplateFeatureCore::calculate() {
 
     //.............................need calculate time
 
-    _myResult             = -1;
     parameter->FinishCalc = 0;
     HRESULT hr            = S_OK;
 
@@ -145,7 +121,7 @@ int PNXTemplateFeatureCore::calculate() {
 int PNXTemplateFeatureCore::create() {
     // cout << "### " << __FUNCTION__ << endl;
     if (NULL == parameter) return 100001;     // param pointer check
-    if (NULL == _catFrmEditor) return 100001; // editor pointer check
+    if (NULL == catFrmEditor_) return 100001; // editor pointer check
     feature = NULL_var;                       // clear first
 
     HRESULT hr = E_FAIL;
@@ -156,17 +132,18 @@ int PNXTemplateFeatureCore::create() {
 
     // Factory control, class for partDocument unities. initial from editor.
     KTCAutoPartDoc partDocument1;                // initial
-    partDocument1._catFrmEditor = _catFrmEditor; // set editor
+    partDocument1.initial_editor(catFrmEditor_); // set editor
 
     // query PNXITemplateFeatureFactory factory under the part container
     PNXITemplateFeatureFactory* piTemplateFeatureFactory = NULL; // Need release.
-    hr = partDocument1.CheckoutFactory(IID_PNXITemplateFeatureFactory,
-                                       (void**)&piTemplateFeatureFactory);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_Create << " QueryInterface(IID_PNXITemplateFeatureFactory). hr = " << hr
-             << endl;
-        return 100004;
-    }
+    // hr = partDocument1.che(IID_PNXITemplateFeatureFactory,
+    //                                    (void**)&piTemplateFeatureFactory);
+    // if (FAILED(hr)) {
+    //     cout << ERROR_TITLE_Create << " QueryInterface(IID_PNXITemplateFeatureFactory). hr = " <<
+    //     hr
+    //          << endl;
+    //     return 100004;
+    // }
 
     //
     // 2- Creating the element
@@ -197,7 +174,7 @@ int PNXTemplateFeatureCore::create() {
 }
 //-----------------------------------------------------------------------------
 int PNXTemplateFeatureCore::show_rep() {
-    if (NULL == _catISO) return 100002;
+    if (NULL == catISO_) return 100002;
     if (NULL == parameter) return 100001; // param check
 
     CAT3DRep* pRep = NULL;

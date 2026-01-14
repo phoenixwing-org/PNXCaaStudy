@@ -99,7 +99,7 @@ int PNXTemplateBaseCore::pretreat() {
     parameter->code        = 100010; // 没有计算
     parameter->previewCode = 0;      // 初始化为0（无错误）
 
-    // if (NULL != _catISO) _catISO->Empty();
+    // if (NULL != catISO_) catISO_->Empty();
 
     // 检查输入，set previewCode
     if (!parameter->MyCurve) {
@@ -124,7 +124,7 @@ int PNXTemplateBaseCore::calculate() {
     parameter->code = 100010;          // 没有计算
     parameter->message.clear();
 
-    // if (NULL != _catISO) _catISO->Empty();
+    // if (NULL != catISO_) catISO_->Empty();
 
     parameter->FinishCalc = 0;
 
@@ -136,7 +136,7 @@ int PNXTemplateBaseCore::calculate() {
 int PNXTemplateBaseCore::create() {
     // cout << "### " << __FUNCTION__ << endl;
     if (NULL == parameter) return 100001;                       // param check
-    if (NULL == _catFrmEditor) return parameter->code = 100002; // editor pointer check
+    if (NULL == catFrmEditor_) return parameter->code = 100002; // editor pointer check
     if (parameter->previewCode) return parameter->code = parameter->previewCode; // no pretreat
 
     feature = NULL_var; // clear first
@@ -156,7 +156,7 @@ int PNXTemplateBaseCore::create() {
 }
 //-----------------------------------------------------------------------------
 int PNXTemplateBaseCore::show_rep() {
-    if (NULL == _catISO) return 100003;
+    if (NULL == catISO_) return 100003;
 
     CAT3DRep* pRep = NULL;
 

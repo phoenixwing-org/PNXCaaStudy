@@ -61,7 +61,8 @@
                 "mkmk CombinedCurve",
                 "mkmk CurveDivision",
                 "mkmk BomAnalysis",
-                "mkmk TemplateBase"
+                "mkmk TemplateBase",
+                "mkmk TemplateFeature"
             ],
             "dependsOrder": "parallel",
             "group": "build"
@@ -85,74 +86,23 @@
                 "mkmk CombinedCurve",
                 "mkmk CurveDivision",
                 "mkmk BomAnalysis",
-                "mkmk TemplateBase"
+                "mkmk TemplateBase",
+                "mkmk TemplateFeature"
             ],
             "dependsOrder": "parallel",
             "group": "build"
         },
         {
-            "label": "Run BomAnalysis",
+            "label": "Run Cnext",
             "type": "shell",
             "command": "${workspaceFolder}/tools/run.ps1",
             "args": [
                 "-w",
-                "${workspaceFolder}/PNXBomAnalysisWsp"
+                "${workspaceFolder}"
             ],
             "group": "none",
             "options": {
-                "cwd": "${workspaceFolder}/PNXBomAnalysisWsp"
-            }
-        },
-        {
-            "label": "Run CombinedCurve",
-            "type": "shell",
-            "command": "${workspaceFolder}/tools/run.ps1",
-            "args": [
-                "-w",
-                "${workspaceFolder}/PNXCombinedCurveWsp"
-            ],
-            "group": "none",
-            "options": {
-                "cwd": "${workspaceFolder}/PNXCombinedCurveWsp"
-            }
-        },
-        {
-            "label": "Run CurveDivision",
-            "type": "shell",
-            "command": "${workspaceFolder}/tools/run.ps1",
-            "args": [
-                "-w",
-                "${workspaceFolder}/PNXCurveDivisionWsp"
-            ],
-            "group": "none",
-            "options": {
-                "cwd": "${workspaceFolder}/PNXCurveDivisionWsp"
-            }
-        },
-        {
-            "label": "Run TemplateBase",
-            "type": "shell",
-            "command": "${workspaceFolder}/tools/run.ps1",
-            "args": [
-                "-w",
-                "${workspaceFolder}/PNXTemplateBaseWsp"
-            ],
-            "group": "none",
-            "options": {
-                "cwd": "${workspaceFolder}/PNXTemplateBaseWsp"
-            }
-        },
-        {
-            "label": "Run TemplateFeature",
-            "type": "shell",
-            "command": "${workspaceFolder}/tools/run.ps1",
-            "args": [
-                "-w",
-                "${workspaceFolder}/PNXTemplateFeatureWsp"
-            ],
-            "group": "none",
-            "options": {
-                "cwd": "${workspaceFolder}/PNXTemplateFeatureWsp"
+                "cwd": "${workspaceFolder}"
             }
         }
     ]

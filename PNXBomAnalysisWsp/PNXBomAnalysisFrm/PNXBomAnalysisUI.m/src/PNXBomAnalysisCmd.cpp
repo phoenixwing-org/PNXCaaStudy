@@ -107,11 +107,11 @@ PNXBomAnalysisCmd::PNXBomAnalysisCmd()
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
     dialog->Build();
-    _catFrmEditor = CATFrmEditor::GetCurrentEditor();
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
     // core set
     core                = new PNXBomAnalysisCore(); // Core
     core->parameter     = parameter;                // pass value
-    core->_catFrmEditor = _catFrmEditor;            // pass value
+    core->catFrmEditor_ = catFrmEditor_;            // pass value
 }
 //-----------------------------------------------------------------------------
 PNXBomAnalysisCmd::~PNXBomAnalysisCmd() {
@@ -120,10 +120,10 @@ PNXBomAnalysisCmd::~PNXBomAnalysisCmd() {
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
     //.............................................................................
-    _featurePrevious = NULL_var;
+    featurePrevious_ = NULL_var;
 
     // START KEVIN CAA WIZARD SECTION PNXBomAnalysis CMD AGENT DESTRUCTOR
-    _catFrmEditor = NULL;
+    catFrmEditor_ = NULL;
 }
 #pragma region VirtualFunction
 //-----------------------------------------------------------------------------
@@ -144,8 +144,8 @@ void PNXBomAnalysisCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
-    if (_code) {
-        KTCAutoDialog::ShowMessageBox(_code, msg, dialog);
+    if (code_) {
+        KTCAutoDialog::ShowMessageBox(code_, msg, dialog);
         RequestDelayedDestruction();
         return;
     }
@@ -209,7 +209,7 @@ CATStatusChangeRC PNXBomAnalysisCmd::Activate(CATCommand* iCmd, CATNotification*
     //  cout  << "### " << __FUNCTION__ << endl;
 
     if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
-
+    _MyFeature;
     // Sets the CC as the current feature
     // only in edition mode and if the CC is inside an ordered body
     //
@@ -225,7 +225,7 @@ CATStatusChangeRC PNXBomAnalysisCmd::Cancel(CATCommand* iCmd, CATNotification* i
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::CancelAction(void*) {
     // Unset Repeat mode  when cancel or close is clicked
-    if (_catFrmEditor) _catFrmEditor->UnsetRepeatedCommand();
+    if (catFrmEditor_) catFrmEditor_->UnsetRepeatedCommand();
     return TRUE;
 }
 //-----------------------------------------------------------------------------
@@ -287,13 +287,13 @@ CATBoolean PNXBomAnalysisCmd::PreviewAction(void*) {
     dialog->UpdateInfos(); // refresh information
 
     // show rep and warning
-    _code = core->pretreat();
-    if (0 == _code) _code = core->calculate();
+    code_ = core->pretreat();
+    if (0 == code_) code_ = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
 
     // Show error if any
-    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
+    KTCAutoDialog::ShowMessageBox(code_, parameter->message, dialog);
 
     return TRUE;
 }

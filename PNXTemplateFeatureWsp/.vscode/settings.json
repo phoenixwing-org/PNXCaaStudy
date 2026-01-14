@@ -1,0 +1,24 @@
+{
+    "cSpell.words": [
+        "addin",
+        "Bres",
+        "CATIA",
+        "CATIAV",
+        "CATMMUI",
+        "Featurization",
+        "HRESULT",
+        "Instanciate",
+        "OIJK",
+        "pfia",
+        "PNXE",
+        "PNXI",
+        "Trian"
+    ],
+    "C_Cpp.default.includePath": [
+        "${env:ROOT_DIR_CORE}/include/**",
+        "C:/DS/B${env:CAA_MK_VERSION}/**",
+        "${workspaceFolder}/**"
+    ],
+    "C_Cpp.configurationWarnings": "enabled",
+    "C_Cpp.errorSquiggles": "disabled"
+}

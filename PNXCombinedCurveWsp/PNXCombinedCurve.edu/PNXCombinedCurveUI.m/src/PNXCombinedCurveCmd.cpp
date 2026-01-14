@@ -87,11 +87,11 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
     , _ActiveField(0) {
     cout << "### " << __FUNCTION__ << endl;
 
-    _mode = 1; // creation mode
+    mode_ = 1; // creation mode
 
     if (ipiCombinedCurve != NULL) {
         // Edition mode.
-        _mode = 0;
+        mode_ = 0;
 
         // Memorises what curve is being edited.
         _piCombinedCurve = ipiCombinedCurve;
@@ -634,7 +634,7 @@ int PNXCombinedCurveCmd::GetMode() {
     // for example, it is not possible to create a sick Combined Curve ( a Combined Curve generating
     // an error )
 
-    return _mode; // 0 : edit mode
+    return mode_; // 0 : edit mode
                   // 1 : creation mode
 }
 

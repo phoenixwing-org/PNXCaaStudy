@@ -111,11 +111,11 @@ PNXV5V6AdapterCmd::PNXV5V6AdapterCmd()
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
     dialog->Build();
-    _catFrmEditor = CATFrmEditor::GetCurrentEditor();
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
     // core set
     core                = new PNXV5V6AdapterCore(); // Core
     core->parameter     = parameter;                // pass value
-    core->_catFrmEditor = _catFrmEditor;            // pass value
+    core->catFrmEditor_ = catFrmEditor_;            // pass value
 }
 //-----------------------------------------------------------------------------
 PNXV5V6AdapterCmd::~PNXV5V6AdapterCmd() {
@@ -124,11 +124,11 @@ PNXV5V6AdapterCmd::~PNXV5V6AdapterCmd() {
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
     //.............................................................................
-    _featurePrevious = NULL_var;
+    featurePrevious_ = NULL_var;
 
     KTCRequestDelayedDestruction(_pBaseCurveAgent);
     KTCRequestDelayedDestruction(_pBaseCurveFieldAgent);
-    _catFrmEditor = NULL;
+    catFrmEditor_ = NULL;
     if (core) delete core;
     if (parameter) delete parameter;
 }
@@ -152,7 +152,7 @@ void PNXV5V6AdapterCmd::BuildGraph() {
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
     if (FAILED(hr)) {
-        KTCAutoDialog::ShowMessageBox(_code, msg, dialog);
+        KTCAutoDialog::ShowMessageBox(code_, msg, dialog);
         RequestDelayedDestruction();
         return;
     }
@@ -247,7 +247,7 @@ CATStatusChangeRC PNXV5V6AdapterCmd::Cancel(CATCommand* iCmd, CATNotification* i
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::CancelAction(void*) {
     // Unset Repeat mode  when cancel or close is clicked
-    if (_catFrmEditor) _catFrmEditor->UnsetRepeatedCommand();
+    if (catFrmEditor_) catFrmEditor_->UnsetRepeatedCommand();
     return TRUE;
 }
 //-----------------------------------------------------------------------------

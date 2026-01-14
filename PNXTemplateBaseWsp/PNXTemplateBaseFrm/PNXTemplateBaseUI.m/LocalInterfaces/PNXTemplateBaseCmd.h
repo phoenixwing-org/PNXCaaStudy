@@ -141,8 +141,8 @@ private:
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateBase CMD AGENT DECLARE
 
-    CATISpecObject_var _featurePrevious; // previous feature
-    CATISO*            _catISO;          // CATISO pointer
+    CATISpecObject_var featurePrevious_; // previous feature
+    CATISO*            catISO_;          // CATISO pointer
 };
 
 #endif

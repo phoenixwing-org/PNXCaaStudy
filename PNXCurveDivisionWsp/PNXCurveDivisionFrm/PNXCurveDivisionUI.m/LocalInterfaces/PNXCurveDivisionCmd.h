@@ -134,7 +134,7 @@ private:
     CATBoolean BaseCurveFieldSelected(void*);
 
 private:
-    CATISpecObject_var     _featurePrevious; // previous feature
+    CATISpecObject_var     featurePrevious_; // previous feature
     CATISpecObject_var     feature;          // feature
     PNXCurveDivisionParam* parameter;        // create Default value Instance
     PNXCurveDivisionCore*  core;

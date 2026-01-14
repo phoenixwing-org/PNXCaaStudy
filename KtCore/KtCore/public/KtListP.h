@@ -1,32 +1,28 @@
 /**
  * @copyright   Shanghai Kuntai Software Technology Co., Ltd.
  * @license     MIT
- * @file        KtListV.h
+ * @file        KtListP.h
  * @brief       Simple generic container with vector-like behavior.
  *
- * This header defines a small template class `KtListV<T>` that behaves like a
+ *  collect pointer list
+ * This header defines a small template class `KtListP<T>` that behaves like a
  * very light-weight wrapper around `std::vector<T>`. It is designed for simple
  * use cases where you need:
  *   - to append elements at the end (similar to `push_back`)
  *   - to get the current number of stored elements
  *   - to access elements by index
  *
- * Only a minimal API is provided on purpose.
+ *
  */
 
-#ifndef KtListV_H
-#define KtListV_H
+#ifndef KtListP_H
+#define KtListP_H
 
 // Standard Library
 #include <vector>
 
-// core
-#include "KtListP.h"
-
-// TODO replace vector to KtListP
-
 /**
- * @class KtListV
+ * @class KtListP
  * @brief Simple value list container.
  *
  * This template class implements a small container storing elements of type `T`.
@@ -40,19 +36,19 @@
  *
  * Example usage:
  * @code
- *   KtListV<CATUnicodeString> names;
+ *   KtListP<CATUnicodeString> names;
  *   names.Append(CATUnicodeString("Hello"));
  *   names.Append(CATUnicodeString("World"));
  *   int count = names.Size();  // count == 2
  * @endcode
  */
-template <typename T> class KtListV {
+template <typename T> class KtListP {
 public:
     /// Type aliases for convenience.
-    typedef T                                       value_type;
-    typedef typename std::vector<T>::size_type      size_type;
-    typedef typename std::vector<T>::iterator       iterator;
-    typedef typename std::vector<T>::const_iterator const_iterator;
+    typedef T                                        value_type;
+    typedef typename std::vector<T*>::size_type      size_type;
+    typedef typename std::vector<T*>::iterator       iterator;
+    typedef typename std::vector<T*>::const_iterator const_iterator;
 
 public:
     /**
@@ -60,7 +56,7 @@ public:
      *
      * Creates an empty list.
      */
-    KtListV() {}
+    KtListP() {}
 
     /**
      * @brief Returns the number of elements stored in the list.
@@ -87,7 +83,7 @@ public:
      *
      * @param iValue Element to be appended (copied into the container).
      */
-    void Append(const T& iValue) {
+    void Append(const T* iValue) {
         _data.push_back(iValue);
     }
 
@@ -100,7 +96,7 @@ public:
      * @param iIndex Index of the element (0-based).
      * @return Reference to the element at position `iIndex`.
      */
-    T& operator[](size_type iIndex) {
+    T*& operator[](size_type iIndex) {
         return _data[ iIndex ];
     }
 
@@ -113,7 +109,7 @@ public:
      * @param iIndex Index of the element (0-based).
      * @return Const reference to the element at position `iIndex`.
      */
-    const T& operator[](size_type iIndex) const {
+    const T*& operator[](size_type iIndex) const {
         return _data[ iIndex ];
     }
 
@@ -155,7 +151,7 @@ public:
 
 private:
     /// Internal storage for elements.
-    std::vector<T> _data;
+    std::vector<T*> _data;
 };
 
-#endif // KtListV_H
+#endif // KtListP_H

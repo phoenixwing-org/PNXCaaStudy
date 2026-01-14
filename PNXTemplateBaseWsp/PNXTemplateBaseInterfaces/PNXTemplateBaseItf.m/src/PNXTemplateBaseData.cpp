@@ -22,15 +22,15 @@
 
 //-----------------------------------------------------------------------------
 PNXTemplateBaseData::PNXTemplateBaseData()
-    : _code(0)
+    : code_(0)
     // START KEVIN CAA WIZARD SECTION PNXTemplateBaseDataPublic PARAM CONSTRUCTOR
 
     // clang-format off
-    , _featureCurrent(NULL_var) // 100
+    , featureCurrent_(NULL_var) // 100
     , feature(NULL_var) // 101
     , parameter(NULL) // 102
-    , _catFrmEditor(NULL) // 103
-    , _catISO(NULL) // 104
+    , catFrmEditor_(NULL) // 103
+    , catISO_(NULL) // 104
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateBaseDataPublic PARAM CONSTRUCTOR
@@ -50,11 +50,11 @@ PNXTemplateBaseData::~PNXTemplateBaseData() {
     // START KEVIN CAA WIZARD SECTION PNXTemplateBaseDataPublic PARAM DESTRUCTOR
 
     // clang-format off
-    _featureCurrent = NULL_var; // 100
+    featureCurrent_ = NULL_var; // 100
     feature = NULL_var; // 101
     parameter = NULL; // 102
-    _catFrmEditor = NULL; // 103
-    _catISO = NULL; // 104
+    catFrmEditor_ = NULL; // 103
+    catISO_ = NULL; // 104
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateBaseDataPublic PARAM DESTRUCTOR

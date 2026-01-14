@@ -122,7 +122,7 @@ private:
     HRESULT CreateElement();
 
 private:
-    CATISpecObject_var   _featurePrevious;   // previous feature
+    CATISpecObject_var   featurePrevious_;   // previous feature
     CATISpecObject_var   feature;            // feature
     PNXBomAnalysisParam* parameter;          // create Default value Instance
     PNXBomAnalysisCore*  core;               // core lass

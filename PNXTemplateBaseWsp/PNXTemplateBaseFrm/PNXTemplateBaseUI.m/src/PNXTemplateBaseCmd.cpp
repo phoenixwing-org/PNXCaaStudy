@@ -99,8 +99,8 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateBase CMD AGENT CONSTRUCTOR
 
-    , _featurePrevious(NULL_var)
-    , _catISO(NULL)
+    , featurePrevious_(NULL_var)
+    , catISO_(NULL)
 
 // end
 {
@@ -112,7 +112,7 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
     parameter = new PNXTemplateBaseParam(); // create Default value Instance
 
     if (!!feature) {
-        // _mode      = 0; // Edition mode.
+        // mode_      = 0; // Edition mode.
         _MyFeature = feature;
     }
     // creates the dialog box
@@ -125,24 +125,24 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
 
     // To manage the highlight of the Sound Hole and the UI active object that
     // is used to put the Sound Hole at the right place.
-    _catFrmEditor = CATFrmEditor::GetCurrentEditor();
-    _catHSO       = NULL;
-    if (NULL != _catFrmEditor) {
-        _catHSO = _catFrmEditor->GetHSO();
-        _catISO = _catFrmEditor->GetISO();
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
+    catHSO_       = NULL;
+    if (NULL != catFrmEditor_) {
+        catHSO_ = catFrmEditor_->GetHSO();
+        catISO_ = catFrmEditor_->GetISO();
 
-        _catISO->Empty();
+        catISO_->Empty();
     }
     else {
-        _code = 1;
+        code_ = 1;
     }
 
     // core set
     core                  = new PNXTemplateBaseCore(); // Core
     core->parameter       = parameter;                 // pass value
-    core->_catFrmEditor   = _catFrmEditor;             // pass value
-    core->_catISO         = _catISO;                   // pass value
-    core->_featureCurrent = GetCurrentFeature();       // pass value
+    core->catFrmEditor_   = catFrmEditor_;             // pass value
+    core->catISO_         = catISO_;                   // pass value
+    core->featureCurrent_ = GetCurrentFeature();       // pass value
     core->feature         = _MyFeature;                // pass value
 }
 //-----------------------------------------------------------------------------
@@ -152,9 +152,9 @@ PNXTemplateBaseCmd::~PNXTemplateBaseCmd() {
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
     //.............................................................................
-    _featurePrevious = NULL_var;
+    featurePrevious_ = NULL_var;
 
-    KTCEmpty(_catISO); // Empty and set NULL
+    KTCEmpty(catISO_); // Empty and set NULL
 
     // START KEVIN CAA WIZARD SECTION PNXTemplateBase CMD AGENT DESTRUCTOR
 
@@ -183,7 +183,7 @@ void PNXTemplateBaseCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check Error for conductor
     //.............................................................................
-    if (_code > 0) {
+    if (code_ > 0) {
         msg = " Error conductor. Exit!";
         hr  = E_FAIL;
     }
@@ -313,7 +313,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification
             if (((CATStateActivateNotification*)iNotif)->GetType() ==
                 CATStateActivateNotification::Begin) {
                 // GetCurrentFeature is a method of CATMMUIStateCommand
-                _featurePrevious = GetCurrentFeature();
+                featurePrevious_ = GetCurrentFeature();
             }
 
             // Sets the CC as current - method of CATMMUIStateCommand
@@ -332,7 +332,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Cancel(CATCommand* iCmd, CATNotification* 
     // and if the CC is inside an ordered body
     if ((0 == GetMode()) && isOrdered) {
         // method of CATMMUIStateCommand
-        SetCurrentFeature(_featurePrevious);
+        SetCurrentFeature(featurePrevious_);
     }
 
     // Set the newly CC as the current feature in creation mode
@@ -347,7 +347,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Cancel(CATCommand* iCmd, CATNotification* 
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::CancelAction(void*) {
     // Unset Repeat mode  when cancel or close is clicked
-    if (_catFrmEditor) _catFrmEditor->UnsetRepeatedCommand();
+    if (catFrmEditor_) catFrmEditor_->UnsetRepeatedCommand();
     return TRUE;
 }
 //-----------------------------------------------------------------------------
@@ -362,7 +362,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Deactivate(CATCommand* iCmd, CATNotificati
         bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
         if (isOrdered) {
             // method of CATMMUIStateCommand
-            SetCurrentFeature(_featurePrevious);
+            SetCurrentFeature(featurePrevious_);
         }
     }
 
@@ -378,7 +378,7 @@ int PNXTemplateBaseCmd::GetMode() {
 
     // CATModeCreation 1	:Creation mode
     // CATModeEdit 0		: edit mode
-    return _mode;
+    return mode_;
 }
 //-----------------------------------------------------------------------------
 CATDlgDialog* PNXTemplateBaseCmd::GiveMyPanel() {
@@ -415,13 +415,13 @@ CATBoolean PNXTemplateBaseCmd::PreviewAction(void*) {
     //
     dialog->UpdateInfos(); // refresh information
 
-    _code = core->pretreat();
-    if (0 == _code) _code = core->calculate();
+    code_ = core->pretreat();
+    if (0 == code_) code_ = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
 
     // Show error if any
-    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
+    KTCAutoDialog::ShowMessageBox(code_, parameter->message, dialog);
     return TRUE;
 }
 
@@ -531,8 +531,8 @@ HRESULT PNXTemplateBaseCmd::CreateElement() {
 
     if (NULL == core) return E_INVALIDARG;
 
-    _code = core->create(); // create
-    if (_code) return E_FAIL;
+    code_ = core->create(); // create
+    if (code_) return E_FAIL;
 
     if (NULL_var == core->feature) return E_FAIL;
 

@@ -11,8 +11,8 @@
 #include "PNXETemplateFeatureFactory.h"
 
 // KTCAutoCode Framework
-#include "KTCAutoDefine.h"
 #include "KTCAutoAttrAccess.h"
+#include "KTCAutoDefine.h"
 #include "KtListV.h"
 
 // PNXTemplateFeatureInterfaces Framework
@@ -33,6 +33,7 @@
 #include "CATIDescendants.h"
 #include "CATIInputDescription.h"
 #include "CATISpecAttrAccess.h"
+#include "CATISpecAttrKey.h"
 #include "CATMmrFeatureAttributes.h"
 #include "CATOsmSUHandler.h"
 
@@ -254,6 +255,7 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
 
 #endif
 
+#if 0
     // KEVIN MANUAL CODE START
     // MyStep,
     spListParmName.Append("MyStep");
@@ -269,13 +271,12 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
         if (FAILED(hr)) {
             cout << ERROR_TITLE_CreateTemplateFeature
                  << " QueryInterface(IID_CATISpecAttrAccess)!  hr = " << hr << endl;
-            ;
             return hr;
         }
 
         CATISpecAttrKey* pISpecAttrKey = NULL; // Key
         // put on tree initial
-        for (KtUint i = 0; i < spListParm.size(); i++) {
+        for (size_t i = 0; i < spListParm.size(); i++) {
             pISpecAttrKey = pISpecAttrAccess->GetAttrKey(spListParmName[ i ].ConvertToChar());
             if (!pISpecAttrKey) {
                 cout << "GetKey Error" << spListParmName[ i ] << endl;
@@ -304,7 +305,7 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
             return hr;
         }
 
-        for (KtUint i = 0; i < spListParm.size(); i++) {
+        for (size_t i = 0; i < spListParm.size(); i++) {
             if (!spListParm[ i ] || !ListOnTree[ i ]) continue; // not on  tree
 
             pIDescendants->Append((spListParm[ i ])); // on tree
@@ -324,6 +325,8 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
              << endl;
         return hr;
     }
+
+#endif
 
 #if 0 // FeatureType is not overload for voiceTransm
 	//===============================================================================================
@@ -367,9 +370,9 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
 
     pITemplateFeature->SetParams(ioParam); // Set default value
 
-    pITemplateFeature->SetVersion(
-        PNXTemplateFeatureParam::GetSoftwareVersion()); // initial software
-                                                        // version
+    // initial software version
+    pITemplateFeature->SetVersion(PNXTemplateFeatureParam::GetSoftwareVersion());
+
     KTCRelease(pITemplateFeature);
     return S_OK;
 }

@@ -102,6 +102,14 @@ public:
      * @id -4
      */
     int previewCode;
+
+    /**
+     * @brief My Feature
+     * @author Phoenix
+     * @date 2026/01/12
+     * @id -5
+     */
+    CATISpecObject_var feature;
 };
 
 #endif

@@ -112,11 +112,11 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
     dialog->Build();
-    _catFrmEditor = CATFrmEditor::GetCurrentEditor();
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
     // core set
     core                = new PNXCurveDivisionCore(); // Core
     core->parameter     = parameter;                  // pass value
-    core->_catFrmEditor = _catFrmEditor;              // pass value
+    core->catFrmEditor_ = catFrmEditor_;              // pass value
 }
 //-----------------------------------------------------------------------------
 PNXCurveDivisionCmd::~PNXCurveDivisionCmd() {
@@ -125,11 +125,11 @@ PNXCurveDivisionCmd::~PNXCurveDivisionCmd() {
     //.............................................................................
     // KEVIN MANUAL CODE: delete pointer before auto code
     //.............................................................................
-    _featurePrevious = NULL_var;
+    featurePrevious_ = NULL_var;
 
     KTCRequestDelayedDestruction(_pBaseCurveAgent);
     KTCRequestDelayedDestruction(_pBaseCurveFieldAgent);
-    _catFrmEditor = NULL;
+    catFrmEditor_ = NULL;
     if (core) delete core;
     if (parameter) delete parameter;
 }
@@ -152,8 +152,8 @@ void PNXCurveDivisionCmd::BuildGraph() {
     //.............................................................................
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
-    if (_code) {
-        KTCAutoDialog::ShowMessageBox(_code, msg, dialog);
+    if (code_) {
+        KTCAutoDialog::ShowMessageBox(code_, msg, dialog);
         RequestDelayedDestruction();
         return;
     }
@@ -248,7 +248,7 @@ CATStatusChangeRC PNXCurveDivisionCmd::Cancel(CATCommand* iCmd, CATNotification*
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::CancelAction(void*) {
     // Unset Repeat mode  when cancel or close is clicked
-    if (_catFrmEditor) _catFrmEditor->UnsetRepeatedCommand();
+    if (catFrmEditor_) catFrmEditor_->UnsetRepeatedCommand();
     return TRUE;
 }
 //-----------------------------------------------------------------------------
@@ -372,13 +372,13 @@ CATBoolean PNXCurveDivisionCmd::PreviewAction(void*) {
     //
     dialog->UpdateInfos(); // refresh information
 
-    _code = core->pretreat();
-    if (0 == _code) _code = core->calculate();
+    code_ = core->pretreat();
+    if (0 == code_) code_ = core->calculate();
 
     dialog->UpdateDialog(); // updates all the param to the panel
 
     // Show error if any
-    KTCAutoDialog::ShowMessageBox(_code, parameter->message, dialog);
+    KTCAutoDialog::ShowMessageBox(code_, parameter->message, dialog);
     return TRUE;
 }
 
@@ -466,8 +466,8 @@ HRESULT PNXCurveDivisionCmd::CreateElement() {
     if (NULL_var != _MyFeature) return 100003; // do not create when exist
     if (NULL == core) return 100001;
 
-    _code = core->create(); // create
-    if (_code) return E_FAIL;
+    code_ = core->create(); // create
+    if (code_) return E_FAIL;
 
     return S_OK;
 }

@@ -32,7 +32,7 @@ KTCAutoDialog::KTCAutoDialog(CATDialog* iParent, CATMMUIPanelStateCmd* iFatherCm
     : CATDlgDialog(iParent, iFatherCmd, iObjectName, iStyle)
     , _optionDialog(NULL)
     , _activeField(0)
-    , _catHSO(NULL)
+    , catHSO_(NULL)
     , _actionMode(KTC::ValueNormal)
     , _selectorMap(NULL)
     , _valueChangeNtf(NULL) {
@@ -42,7 +42,7 @@ KTCAutoDialog::KTCAutoDialog(CATDialog* iParent, CATMMUIPanelStateCmd* iFatherCm
 //-------------------------------------------------------------------------
 KTCAutoDialog::~KTCAutoDialog() {
     _optionDialog = NULL;
-    _catHSO       = NULL;
+    catHSO_       = NULL;
     // _activeField = 0;
 
     if (_selectorMap) {

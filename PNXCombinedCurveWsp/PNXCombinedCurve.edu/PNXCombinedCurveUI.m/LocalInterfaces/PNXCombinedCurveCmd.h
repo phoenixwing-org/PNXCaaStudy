@@ -8,7 +8,8 @@
 
 class PNXCombinedCurveDlg;
 class PNXICombinedCurve;
-class CATFeatureImportAgent;
+class CATIPrtPart;
+class CATIGSMTool;
 
 /**
  * Class managing the dialog command to edit Combined Curves.
@@ -151,7 +152,7 @@ private:
     CATHSO* _HSO;
 
     int _ActiveField;
-    int _mode;
+    int mode_;
 };
 
 #endif

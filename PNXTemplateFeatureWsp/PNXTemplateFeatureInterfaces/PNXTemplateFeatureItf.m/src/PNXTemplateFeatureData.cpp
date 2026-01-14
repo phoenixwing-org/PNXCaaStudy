@@ -9,35 +9,33 @@
  * @details
  * @date		2025-12-17
  */
+// CAT
+#include "iostream.h"
+
 // KTC Core Framework
 #include "KTCAutoBaseOpt.h"
 #include "KTCAutoBody.h"
 #include "KTCAutoDefine.h"
 #include "KTCAutoGSM.h"
 #include "KTCAutoPartDoc.h"
-#include "iostream.h"
 
 // local Framework
 #include "PNXITemplateFeature.h"
 #include "PNXITemplateFeatureFactory.h"
 #include "PNXTemplateFeatureData.h"
 
-// Kt
-#include "KtDump.h"
-#include "ListKtMathBox.h"
-#include "MatrixKtByteKit.h"
-
 //-----------------------------------------------------------------------------
 PNXTemplateFeatureData::PNXTemplateFeatureData()
-    : _code(KT_S_OK)
+    : code_(0)
     // START KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataPublic PARAM CONSTRUCTOR
 
     // clang-format off
-    , _featureCurrent(NULL_var) // 100
+    , featureCurrent_(NULL_var) // 100
     , feature(NULL_var) // 101
     , parameter(NULL) // 102
-    , _catFrmEditor(NULL) // 103
-    , _catISO(NULL) // 104
+    , catFrmEditor_(NULL) // 103
+    , catISO_(NULL) // 104
+    , list3DRep_(NULL) // 105
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataPublic PARAM CONSTRUCTOR
@@ -45,25 +43,26 @@ PNXTemplateFeatureData::PNXTemplateFeatureData()
     // START KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataProtected PARAM CONSTRUCTOR
 
     // clang-format off
-    , _myData(0) // 200
+    , myData_(0) // 200
 
 // clang-format on
 // END KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataProtected PARAM CONSTRUCTOR
 {
-    _list3DRep = new KtListP<CAT3DRep>(); // new
+    list3DRep_ = new KtListP<CAT3DRep>(); // new
 }
 //-----------------------------------------------------------------------------
 PNXTemplateFeatureData::~PNXTemplateFeatureData() {
-    KTDelete(_list3DRep);
+    KTDelete(list3DRep_);
 
     // START KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataPublic PARAM DESTRUCTOR
 
     // clang-format off
-    _featureCurrent = NULL_var; // 100
+    featureCurrent_ = NULL_var; // 100
     feature = NULL_var; // 101
     parameter = NULL; // 102
-    _catFrmEditor = NULL; // 103
-    _catISO = NULL; // 104
+    catFrmEditor_ = NULL; // 103
+    catISO_ = NULL; // 104
+    list3DRep_ = NULL; // 105
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataPublic PARAM DESTRUCTOR
@@ -71,7 +70,7 @@ PNXTemplateFeatureData::~PNXTemplateFeatureData() {
     // START KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataProtected PARAM DESTRUCTOR
 
     // clang-format off
-    // _myData = 0; // 200
+    // myData_ = 0; // 200
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeatureDataProtected PARAM DESTRUCTOR

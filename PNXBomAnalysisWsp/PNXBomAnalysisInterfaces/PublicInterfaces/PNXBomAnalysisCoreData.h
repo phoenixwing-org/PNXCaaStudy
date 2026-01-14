@@ -75,13 +75,13 @@ public:
      * @date 2021/10/28
      * @id 103
      */
-    CATFrmEditor* _catFrmEditor;
+    CATFrmEditor* catFrmEditor_;
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXBomAnalysisCoreDataPublic PARAM DECLARATION
 
 protected:
-    int _code; // CODE
+    int code_; // CODE
 };
 
 #endif

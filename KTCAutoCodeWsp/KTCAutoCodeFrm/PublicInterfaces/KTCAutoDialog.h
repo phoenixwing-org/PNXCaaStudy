@@ -153,7 +153,7 @@ public:
 protected:
 public:
     CATDlgDialog* _optionDialog; // sub dialog
-    CATHSO*       _catHSO;       // catia HSO
+    CATHSO*       catHSO_;       // catia HSO
 
 private:
     int                     _activeField;    // current field
