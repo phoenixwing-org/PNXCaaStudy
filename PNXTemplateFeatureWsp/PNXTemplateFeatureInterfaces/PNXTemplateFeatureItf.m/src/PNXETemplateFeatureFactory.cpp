@@ -277,7 +277,7 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
         CATISpecAttrKey* pISpecAttrKey = NULL; // Key
         // put on tree initial
         for (size_t i = 0; i < spListParm.size(); i++) {
-            pISpecAttrKey = pISpecAttrAccess->GetAttrKey(spListParmName[ i ].ConvertToChar());
+            pISpecAttrKey = pISpecAttrAccess->get_CATISpecAttrKey(spListParmName[ i ].ConvertToChar());
             if (!pISpecAttrKey) {
                 cout << "GetKey Error" << spListParmName[ i ] << endl;
                 continue;

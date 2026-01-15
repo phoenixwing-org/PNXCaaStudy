@@ -69,7 +69,7 @@ HRESULT PNXETemplateFeature::SetErrMsg(const CATUnicodeString& value) // 0
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXETemplateFeature::GetParams(PNXTemplateFeatureParam& value) const {
-    if (!ktcSpecRW.IsAvailable()) return E_INVALIDARG;
+    if (!ktcSpecRW.available()) return E_INVALIDARG;
 
     // KEVIN_SYSTEM_CODE START
     value.FeatureVersion = this->GetVersion(); // 0A
@@ -92,7 +92,7 @@ HRESULT PNXETemplateFeature::GetParams(PNXTemplateFeatureParam& value) const {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXETemplateFeature::SetParams(const PNXTemplateFeatureParam& value) {
-    if (!ktcSpecRW.IsAvailable()) return E_INVALIDARG;
+    if (!ktcSpecRW.available()) return E_INVALIDARG;
 
     HRESULT hr = S_OK; // default ok
 

@@ -14,6 +14,10 @@
 #define KTCAutoAttrAccess_H
 
 // CAT
+#include "CATICkeInst.h"
+#include "CATICkeParm.h"
+#include "CATISpecAttrAccess.h"
+#include "CATISpecAttrKey.h"
 #include "CATISpecObject.h"
 #include "CATLISTV_CATISpecObject.h"
 #include "CATListOfCATUnicodeString.h"
@@ -38,17 +42,48 @@ private:
 
 public:
     /**
-     * @brief initial
-     * @param name attribute name
-     * @return bool
-     */
-    HRESULT initial(CATISpecObject_var value);
-
-    /**
      * @brief Is Available
      * @return bool
      */
-    bool IsAvailable() const;
+    inline bool available() const {
+        return NULL != attrAccess_;
+    }
+
+    /**
+     * @brief get CATISpecAttrKey pointer
+     * @param name attribute name
+     * @return CATISpecAttrKey*, Need release by user
+     */
+    CATISpecAttrKey* get_CATISpecAttrKey(const char* name) const;
+
+    /**
+     * @brief get CATICkeParm pointer
+     * @param name attribute name
+     * @return CATICkeParm*, Need release by user
+     */
+    CATICkeParm* get_CATICkeParm(const char* name) const;
+
+    /**
+     * @brief get CATICkeInst_var
+     * @param name attribute name
+     * @return CATICkeInst_var
+     */
+    CATICkeInst_var get_CATICkeInst(const char* name) const;
+
+    /**
+     * @brief initial CATISpecAttrAccess
+     * @param baseUnkonwn base Unkonwn object
+     * @return bool
+     */
+    HRESULT initial(CATBaseUnknown* baseUnkonwn);
+
+    /**
+     * @brief set CATISpecAttrAccess
+     * @param attrAcess out side CATISpecAttrAccess
+     */
+    inline void set_CATISpecAttrAccess(CATISpecAttrAccess* attrAcess) {
+        attrAccess_ = attrAcess;
+    }
 
 public:
     /**
@@ -57,7 +92,8 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetListValue(const CATUnicodeString& name, CATListValCATISpecObject_var& value) const;
+    HRESULT
+    GetListValue(const char* name, CATListValCATISpecObject_var& value) const;
 
     /**
      * @brief Get Value of specobject
@@ -65,7 +101,7 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetSpecValue(const CATUnicodeString& name, CATISpecObject_var& value) const;
+    HRESULT GetSpecValue(const char* name, CATISpecObject_var& value) const;
 
     /**
      * @brief Get Value of CATBoolean
@@ -73,7 +109,7 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetSpecValue(const CATUnicodeString& name, CATBoolean& value) const;
+    HRESULT GetSpecValue(const char* name, CATBoolean& value) const;
 
     /**
      * @brief Get Value of int
@@ -81,7 +117,7 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetSpecValue(const CATUnicodeString& name, int& value) const;
+    HRESULT GetSpecValue(const char* name, int& value) const;
 
     /**
      * @brief Get Value of double
@@ -89,30 +125,7 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetSpecValue(const CATUnicodeString& name, double& value) const;
-
-    /**
-     * @brief Get Value of CATBoolean
-     * @param name attribute name
-     * @param value output value
-     * @return HRESULT
-     */
-    HRESULT GetValue(const CATUnicodeString& name, CATBoolean& value) const;
-
-    /**
-     * @brief Get Value of int
-     * @param name attribute name
-     * @param value output value
-     * @return HRESULT
-     */
-    HRESULT GetValue(const CATUnicodeString& name, int& value) const;
-    /**
-     * @brief Get Value of double
-     * @param name attribute name
-     * @param value output value
-     * @return HRESULT
-     */
-    HRESULT GetValue(const CATUnicodeString& name, double& value) const;
+    HRESULT GetSpecValue(const char* name, double& value) const;
 
     /**
      * @brief Get Value of CATUnicodeString
@@ -120,7 +133,38 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetValue(const CATUnicodeString& name, CATUnicodeString& value) const;
+    HRESULT GetSpecValue(const char* name, CATUnicodeString& value) const;
+
+    /**
+     * @brief Get Value of CATBoolean
+     * @param name attribute name
+     * @param value output value
+     * @return HRESULT
+     */
+    HRESULT GetValue(const char* name, CATBoolean& value) const;
+
+    /**
+     * @brief Get Value of int
+     * @param name attribute name
+     * @param value output value
+     * @return HRESULT
+     */
+    HRESULT GetValue(const char* name, int& value) const;
+    /**
+     * @brief Get Value of double
+     * @param name attribute name
+     * @param value output value
+     * @return HRESULT
+     */
+    HRESULT GetValue(const char* name, double& value) const;
+
+    /**
+     * @brief Get Value of CATUnicodeString
+     * @param name attribute name
+     * @param value output value
+     * @return HRESULT
+     */
+    HRESULT GetValue(const char* name, CATUnicodeString& value) const;
 
     /**
      * @brief Get Value of KtString
@@ -128,7 +172,7 @@ public:
      * @param value output value
      * @return HRESULT
      */
-    HRESULT GetValue(const CATUnicodeString& name, KtString& value) const;
+    HRESULT GetValue(const char* name, KtString& value) const;
 
 public: // Set
     /**
@@ -139,7 +183,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetListValue(const CATUnicodeString& name, const CATListValCATISpecObject_var& value,
+    HRESULT SetListValue(const char* name, const CATListValCATISpecObject_var& value,
                          CATBoolean checkExist = CATTrue);
 
     /**
@@ -150,7 +194,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetSpecValue(const CATUnicodeString& name, const CATISpecObject_var& value,
+    HRESULT SetSpecValue(const char* name, CATISpecObject_var value,
                          CATBoolean checkExist = CATTrue);
 
     /**
@@ -161,8 +205,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetSpecValue(const CATUnicodeString& name, CATBoolean value,
-                         CATBoolean checkExist = CATTrue);
+    HRESULT SetSpecValue(const char* name, CATBoolean value, CATBoolean checkExist = CATTrue);
 
     /**
      * @brief Set Spec Value
@@ -172,7 +215,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetSpecValue(const CATUnicodeString& name, int value, CATBoolean checkExist = CATTrue);
+    HRESULT SetSpecValue(const char* name, int value, CATBoolean checkExist = CATTrue);
 
     /**
      * @brief Set Spec Value
@@ -182,7 +225,17 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetSpecValue(const CATUnicodeString& name, double value,
+    HRESULT SetSpecValue(const char* name, double value, CATBoolean checkExist = CATTrue);
+
+    /**
+     * @brief Set Spec Value
+     * @param name attribute name
+     * @param[in] value CATUnicodeString
+     * @param[in] checkExist whether check exist
+     * @return HRESULT
+     * @author Phoenix
+     */
+    HRESULT SetSpecValue(const char* name, const CATUnicodeString& value,
                          CATBoolean checkExist = CATTrue);
 
     /**
@@ -192,7 +245,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetValue(const CATUnicodeString& name, double value, CATBoolean checkExist = CATTrue);
+    HRESULT SetValue(const char* name, double value, CATBoolean checkExist = CATTrue);
 
     /**
      * @brief Set Value
@@ -201,7 +254,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetValue(const CATUnicodeString& name, int value, CATBoolean checkExist = CATTrue);
+    HRESULT SetValue(const char* name, int value, CATBoolean checkExist = CATTrue);
 
     /**
      * @brief Set Value
@@ -210,8 +263,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetValue(const CATUnicodeString& name, CATBoolean value,
-                     CATBoolean checkExist = CATTrue);
+    HRESULT SetValue(const char* name, CATBoolean value, CATBoolean checkExist = CATTrue);
 
     /**
      * @brief Set Value
@@ -220,7 +272,7 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetValue(const CATUnicodeString& name, const CATUnicodeString& value,
+    HRESULT SetValue(const char* name, const CATUnicodeString& value,
                      CATBoolean checkExist = CATTrue);
 
     /**
@@ -230,11 +282,10 @@ public: // Set
      * @return HRESULT
      * @author Phoenix
      */
-    HRESULT SetValue(const CATUnicodeString& name, const KtString& value,
-                     CATBoolean checkExist = CATTrue);
+    HRESULT SetValue(const char* name, const KtString& value, CATBoolean checkExist = CATTrue);
 
 private:
-    bool available_; // is available
+    CATISpecAttrAccess* attrAccess_; ///< attribute access
 };
 
 #endif
