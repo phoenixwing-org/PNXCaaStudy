@@ -30,7 +30,7 @@
 #include "CATIContainer.h" // needed to create a GS (Geometrical Set)
 
 // ObjectSpecsModeler Framework
-#include "CATIDescendants.h" // needed to aggregate the newly created Sound Hole
+#include "CATIDescendants.h" // needed to aggregate the newly created User Feature
 #include "CATISpecObject.h"  // needed to manage feature
 
 // InteractiveInterfaces
@@ -54,7 +54,7 @@
 // Visualization Framework
 #include "CATHSO.h" // needed to highlight objects
 #include "CATISO.h"
-#include "CATIVisProperties.h" // needed to change Sound Hole's graphical appearance
+#include "CATIVisProperties.h" // needed to change User Feature's graphical appearance
 #include "CATPathElement.h"    // needed to highlight objects
 #include "CATVisPropertiesValues.h"
 #include "iostream.h"
@@ -297,10 +297,10 @@ void PNXCurveDivisionCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
 //-----------------------------------------------------------------------------
 int PNXCurveDivisionCmd::GetMode() {
     // This very simple methods checks if the user is creating or editing the
-    // Sound Hole. This data is used by father command CATMMUIPanelStateCommand
+    // User Feature. This data is used by father command CATMMUIPanelStateCommand
     // and by CATPrtUpdateCom. They both provide standard edition command
-    // behaviour : for example, it is not possible to create a sick Sound Hole ( a
-    // Sound Hole generating an error )
+    // behaviour : for example, it is not possible to create a sick User Feature ( a
+    // User Feature generating an error )
 
     // CATModeCreation 1	:Creation mode
     // CATModeEdit 0		: edit mode
@@ -510,7 +510,7 @@ void PNXCurveDivisionCmd::SetActiveField(PNXCurveDivisionField field) {
     // this method main goal is to show the user that the acquisition
     // is now dedicated to the input field
     // dialog->SetActiveField(field); // puts the focus on the Active Field is the
-    //                                // Sound Hole edition dialog box
+    //                                // User Feature edition dialog box
     // dialog->SetActiveFieldFocus(); // Focus
 
     // START KEVIN CAA WIZARD SECTION PNXCurveDivision CMD SET ACTIVE FIELD

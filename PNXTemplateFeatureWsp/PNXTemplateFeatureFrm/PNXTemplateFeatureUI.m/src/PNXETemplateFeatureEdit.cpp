@@ -11,11 +11,11 @@
 #include "CATCommand.h"
 
 // PNXTemplateFeatureFrm Framework
-#include "PNXITemplateFeature.h" // needed to build the command from the Sound Hole to edit
+#include "PNXITemplateFeature.h" // needed to build the command from the User Feature to edit
 
 // Local FrameWork
 #include "PNXETemplateFeatureEdit.h"
-#include "PNXTemplateFeatureCmd.h" // needed to return the Sound Hole edition command
+#include "PNXTemplateFeatureCmd.h" // needed to return the User Feature edition command
 
 CATImplementClass(PNXETemplateFeatureEdit, DataExtension, CATIEdit, PNXTemplateFeature);
 

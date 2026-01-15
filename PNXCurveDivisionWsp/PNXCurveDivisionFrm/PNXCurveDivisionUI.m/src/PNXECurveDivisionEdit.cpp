@@ -11,7 +11,7 @@
 #include "CATCommand.h"
 
 // Local FrameWork
-#include "PNXCurveDivisionCmd.h" // needed to return the Sound Hole edition command
+#include "PNXCurveDivisionCmd.h" // needed to return the User Feature edition command
 #include "PNXECurveDivisionEdit.h"
 
 CATImplementClass(PNXECurveDivisionEdit, DataExtension, CATIEdit, PNXCurveDivision);

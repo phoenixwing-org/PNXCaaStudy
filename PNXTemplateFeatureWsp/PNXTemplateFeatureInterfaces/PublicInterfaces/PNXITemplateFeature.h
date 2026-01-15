@@ -26,12 +26,12 @@
 extern ExportedByPNXTemplateFeatureItf IID IID_PNXITemplateFeature;
 
 /**
- * Interface to manage Sound Holes.
+ * Interface to manage User Features.
  *
- *  Role : use this interface to get / set the input of a Sound Hole.
- *         A Sound Hole is the intersection of two extruded surfaces.
+ *  Role : use this interface to get / set the input of a User Feature.
+ *         A User Feature is the intersection of two extruded surfaces.
  *         Each of the two surfaces is buildt using a curve (profile) and a direction (of
- * extrusion). Consequently, a Sound Hole has two input curves and two input directions.
+ * extrusion). Consequently, a User Feature has two input curves and two input directions.
  */
 
 class ExportedByPNXTemplateFeatureItf PNXITemplateFeature : public CATBaseUnknown {

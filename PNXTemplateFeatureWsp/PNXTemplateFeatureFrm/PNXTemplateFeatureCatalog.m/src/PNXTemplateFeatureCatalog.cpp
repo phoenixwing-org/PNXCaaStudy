@@ -15,13 +15,13 @@
 //  Abstract:
 //  ---------
 //
-//  Batch program which generates a catalog for a new mechanical feature : Sound Hole.
+//  Batch program which generates a catalog for a new mechanical feature : feature.
 //
 //  Illustrates:
 //     o -1- Creating a path to the catalog.
 //     o -2- Creating the catalog.
 //     o -3- Adding a client identification to the catalog.
-//     o -4- Creating the new Sound Hole startup in the catalog.
+//     o -4- Creating the new feature startup in the catalog.
 //     o -5- Adding attributes to this startup.
 //     o -6- Saving the catalog.
 //
@@ -56,9 +56,9 @@
 // ObjectSpecsModeler Framework
 #include "CATCatalogFactoryServices.h" // needed to create a catalog
 #include "CATICatalog.h"               // needed to manage catalogs
-#include "CATISpecAttribute.h"         // needed to add attributes to the Sound Hole startup
-#include "CATISpecObject.h"            // needed to manage features such as the Sound Hole startup
-#include "CATOsmSUFactory.h"           // needed to create the Sound Hole startup
+#include "CATISpecAttribute.h"         // needed to add attributes to the Phoenix Feature startup
+#include "CATISpecObject.h"  // needed to manage features such as the Phoenix Feature startup
+#include "CATOsmSUFactory.h" // needed to create the Phoenix Feature startup
 
 // System Framework
 #include "CATBoolean.h"
@@ -71,9 +71,12 @@
 #include "CATIContainer.h"
 #include "iostream.h" // needed for cout traces
 
-// local Framework
-#include "KTCAutoCatalogParam.h" // inlie class,header only
-#include <vector>                // list
+// auto code
+#include "KTCAutoCatalogParam.h"
+#include "KTCAutoDefine.h"
+
+// std
+#include <vector> // list
 
 int main(int argc, char* argv[]) {
 
@@ -98,20 +101,19 @@ int main(int argc, char* argv[]) {
     //===============================================================================================
 
     cout << "-1- Creating a path to the catalog." << endl << flush;
-
     if (argc < 2) {
         cout << "    ERROR  : no directory path given." << endl;
         return 0;
     }
 
-    const char* pDirName  = argv[ 1 ];
-    const char* pFileName = "PNXTemplateFeatureFeature.CATfct"; // argv[2];
-    char        StorageName[ 200 ];
+    const char* dirName  = argv[ 1 ];
+    const char* fileName = "PNXTemplateFeatureFeature.CATfct"; // argv[2];
+    char        storageName[ 200 ];
     // cout << "argv[0]:" <<argv[0]<< endl << flush;
     // cout << "argv[1]:" <<argv[1]<< endl << flush;
 
-    CATMakePath(pDirName, pFileName, StorageName);
-    cout << "Catalog whole path:" << StorageName << endl << flush;
+    CATMakePath(dirName, fileName, storageName);
+    cout << "Catalog whole path:" << storageName << endl << flush;
 
     //===============================================================================================
     // Creating a session.
@@ -138,10 +140,9 @@ int main(int argc, char* argv[]) {
     //     The ".CATfct" suffix is automatically added by CreateCatalog.
     //
     //===============================================================================================
-    CATUnicodeString ClientId = "PNXTemplateFeatureID";
-
-    CATUnicodeString TemplateFeatureCatalogStorageName = StorageName;
-    CATICatalog*     piTemplateFeatureCatalog          = NULL;
+    const CATUnicodeString clientId           = "PNXTemplateFeatureID";
+    CATUnicodeString       catalogStorageName = storageName;
+    CATICatalog*           featureCatalog     = NULL;
 
     // try to open first
 
@@ -153,23 +154,21 @@ int main(int argc, char* argv[]) {
 
     //===============================================================================================
     //
-    // -2- Opens the Sound Hole catalog
+    // -2- Opens the Phoenix Feature catalog
     //
     //===============================================================================================
-
-    CATUnicodeString StorageName1 = StorageName;
-    hr = ::UpgradeCatalog(&TemplateFeatureCatalogStorageName, &piTemplateFeatureCatalog, &ClientId);
+    hr = ::UpgradeCatalog(&catalogStorageName, &featureCatalog, &clientId);
     if (SUCCEEDED(hr)) {
         cout << "-2- The catalog exist. Opened OK." << endl << flush;
     }
     else {
         cout << "-2- Catalog not exist ,Creating the catalog." << endl << flush;
-        hr = ::CreateCatalog(&TemplateFeatureCatalogStorageName, &piTemplateFeatureCatalog);
+        hr = ::CreateCatalog(&catalogStorageName, &featureCatalog);
 
         if (SUCCEEDED(hr))
-            cout << "    Sound Hole Catalog created OK." << endl << flush;
+            cout << "    Phoenix Feature Catalog created OK." << endl << flush;
         else {
-            cout << "    ERROR in creating Sound Hole Catalog." << endl << flush;
+            cout << "    ERROR in creating Phoenix Feature Catalog." << endl << flush;
             return 1;
         }
 
@@ -183,7 +182,7 @@ int main(int argc, char* argv[]) {
 
         cout << "-3- Adding a client identification to the catalog." << endl << flush;
 
-        hr = piTemplateFeatureCatalog->SetClientId(&ClientId);
+        hr = featureCatalog->SetClientId(&clientId);
 
         if (SUCCEEDED(hr))
             cout << "    Client Id set OK." << endl << flush;
@@ -195,47 +194,44 @@ int main(int argc, char* argv[]) {
 
     //===============================================================================================
     //
-    // -3- Retrieves Sound Hole's startup
+    // -3- Retrieves Phoenix Feature's startup
     //
     //===============================================================================================
 
-    CATBaseUnknown*  pTemplateFeatureStartup        = NULL;
-    CATUnicodeString StartupType                    = "PNXTemplateFeature";
-    CATISpecObject*  piSpecOnTemplateFeatureStartUp = NULL;
+    CATBaseUnknown*  startupUnknown = NULL;
+    CATUnicodeString startupType    = "PNXTemplateFeature";
+    CATISpecObject*  startupObject  = NULL;
 
-    hr = piTemplateFeatureCatalog->RetrieveSU(&pTemplateFeatureStartup, &StartupType,
-                                              "CATISpecObject");
+    hr = featureCatalog->RetrieveSU(&startupUnknown, &startupType, "CATISpecObject");
     if (SUCCEEDED(hr)) {
 
-        hr = pTemplateFeatureStartup->QueryInterface(IID_CATISpecObject,
-                                                     (void**)&piSpecOnTemplateFeatureStartUp);
-        pTemplateFeatureStartup->Release();
-        pTemplateFeatureStartup = NULL;
+        hr = startupUnknown->QueryInterface(IID_CATISpecObject, (void**)&startupObject);
+        startupUnknown->Release();
+        startupUnknown = NULL;
     }
     // check
-    if (NULL == piSpecOnTemplateFeatureStartUp) {
+    if (NULL == startupObject) {
 
         //===============================================================================================
         //
-        // -4- Creating the new Sound Hole startup in the catalog.
+        // -4- Creating the new Phoenix Feature startup in the catalog.
         //
-        //     A Sound Hole is a kind of MfGeom3D, its StartUp derives from MfGeom3D's Startup.
-        //     The generic factory is used to create a new Sound Hole
+        //     A feature is a kind of MfGeom3D, its StartUp derives from MfGeom3D's Startup.
+        //     The generic factory is used to create a new feature
         //     StartUp deriving from MfGeom3D.
         //
         //===============================================================================================
 
-        cout << "-4- Creating the new Sound Hole startup in the catalog." << endl << flush;
+        cout << "-4- Creating the new feature startup in the catalog." << endl << flush;
 
-        CATUnicodeString TemplateFeatureStartUpType = "PNXTemplateFeature";
-        CATUnicodeString CatalogName                = "CATHybridShape";
-        CATUnicodeString SuperTypeName              = "GSMGeom";
-        CATBoolean       publicSU                   = TRUE;
-        CATBoolean       derivableSU                = TRUE;
+        CATUnicodeString featureTypeName = "PNXTemplateFeature";
+        CATUnicodeString catalogName     = "CATHybridShape";
+        CATUnicodeString superTypeName   = "GSMGeom";
+        CATBoolean       publicSU        = TRUE;
+        CATBoolean       derivableSU     = TRUE;
 
-        hr = ::CATOsmSUFactory(&piSpecOnTemplateFeatureStartUp, &TemplateFeatureStartUpType,
-                               piTemplateFeatureCatalog, &SuperTypeName, &CatalogName, publicSU,
-                               derivableSU);
+        hr = ::CATOsmSUFactory(&startupObject, &featureTypeName, featureCatalog, &superTypeName,
+                               &catalogName, publicSU, derivableSU);
 
         if (SUCCEEDED(hr))
             cout << "    PNXTemplateFeature StartUp created using CATOsmSUFactory Factory OK."
@@ -287,7 +283,7 @@ int main(int argc, char* argv[]) {
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeature CATALOG PARAMS
 
-    hr = KTCAutoCatalogParam::CatalogAddAttribute(piSpecOnTemplateFeatureStartUp, itemList);
+    hr = KTCAutoCatalogParam::add_Attributes(startupObject, itemList);
     if (FAILED(hr)) {
         cout << "    ERROR in adding params" << endl;
         return 1;
@@ -296,8 +292,8 @@ int main(int argc, char* argv[]) {
     // Releasing no longer used pointer on CATISpecObject.
     //----------------------------------------------------
 
-    piSpecOnTemplateFeatureStartUp->Release();
-    piSpecOnTemplateFeatureStartUp = NULL;
+    startupObject->Release();
+    startupObject = NULL;
 
     //===============================================================================================
     //
@@ -306,17 +302,17 @@ int main(int argc, char* argv[]) {
     //===============================================================================================
 
     cout << "-6- Saving the catalog." << endl << flush;
-    // TemplateFeatureCatalogStorageName = "E:/PNXTemplateFeatureFeature.CATfct";
-    cout << TemplateFeatureCatalogStorageName << endl;
-    hr = ::SaveCatalog(&piTemplateFeatureCatalog, &TemplateFeatureCatalogStorageName);
+    // catalogStorageName = "E:/PNXTemplateFeatureFeature.CATfct";
+    cout << catalogStorageName << endl;
+    hr = ::SaveCatalog(&featureCatalog, &catalogStorageName);
 
     if (FAILED(hr)) {
-        cout << "    ERROR in saving Sound Hole Catalog." << endl << flush;
+        cout << "    ERROR in saving feature Catalog." << endl << flush;
         return 1;
     }
 
-    piTemplateFeatureCatalog->Release();
-    piTemplateFeatureCatalog = NULL;
+    featureCatalog->Release();
+    featureCatalog = NULL;
 
     // Deleting session
     //------------------
@@ -330,4 +326,3 @@ int main(int argc, char* argv[]) {
     return 0;
 #endif // end of high catia version
 }
-//---------------------------------------------------------

@@ -12,7 +12,7 @@
 
 // Local FrameWork
 #include "PNXETemplateBaseEdit.h"
-#include "PNXTemplateBaseCmd.h" // needed to return the Sound Hole edition command
+#include "PNXTemplateBaseCmd.h" // needed to return the User Feature edition command
 
 CATImplementClass(PNXETemplateBaseEdit, DataExtension, CATIEdit, PNXTemplateBase);
 

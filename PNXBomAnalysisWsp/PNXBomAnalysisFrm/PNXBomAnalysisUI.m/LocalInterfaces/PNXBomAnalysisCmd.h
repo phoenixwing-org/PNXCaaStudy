@@ -29,7 +29,7 @@
 #include "KTCAutoHSO.h"
 
 /**
- * Class managing the dialog command to edit Sound Holes.
+ * Class managing the dialog command to edit User Features.
  *
  * refer to programming resources of MechanicalModelerUI framework.
  * (consult base class description).

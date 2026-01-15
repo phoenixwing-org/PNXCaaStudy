@@ -171,9 +171,9 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
     //  What does the factory do ?
     //
     //     o -1- Retrieves a CATICkeParmFactory interface on this.
-    //     o -2- Opens the Sound Hole catalog
-    //     o -3- Retrieves Sound Hole's startup
-    //     o -4- Creates a Sound Hole instance
+    //     o -2- Opens the User Feature catalog
+    //     o -3- Retrieves User Feature's startup
+    //     o -4- Creates a User Feature instance
     //     o -5- Subscribes to repository for Configuration Data Storage
     //     o -6- Gets Feature Type Information for BackUp / StartUp management
     //     o -7- Sets default values for the attributes of the instance

@@ -12,7 +12,7 @@
 
 // Local FrameWork
 #include "PNXEV5V6AdapterEdit.h"
-#include "PNXV5V6AdapterCmd.h" // needed to return the Sound Hole edition command
+#include "PNXV5V6AdapterCmd.h" // needed to return the User Feature edition command
 
 CATImplementClass(PNXEV5V6AdapterEdit, DataExtension, CATIEdit, PNXV5V6Adapter);
 

@@ -15,7 +15,7 @@
 
 // START KEVIN CAA WIZARD SECTION PNXITemplateFeatureFactory IID_INTERFACE_CPP
 IID IID_PNXITemplateFeatureFactory = {
-    0x9e622979, 0xfcb6, 0x4a85, {0x8a, 0xb8, 0xbd, 0x4a, 0x35, 0xd0, 0xaf, 0x59}};
+    0x204aa121, 0x833d, 0x45b6, {0x95, 0xcb, 0x4d, 0x42, 0x44, 0xa9, 0x90, 0xbd}};
 // END KEVIN CAA WIZARD SECTION PNXITemplateFeatureFactory IID_INTERFACE_CPP
 
 CATImplementInterface(PNXITemplateFeatureFactory, CATBaseUnknown);

@@ -4,10 +4,14 @@
 // COPYRIGHT DASSAULT SYSTEMES 2000
 
 // MechanicalModelerUI Framework
-#include "CATMMUIPanelStateCmd.h" // Needed to derive from CATMMUIPanelStateCmd
+#include "CATMMUIPanelStateCmd.h"
+
+// auto code
+#include "KTCAutoCommand.h"
 
 class PNXCombinedCurveDlg;
 class PNXICombinedCurve;
+class CATFeatureImportAgent;
 class CATIPrtPart;
 class CATIGSMTool;
 

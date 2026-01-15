@@ -20,8 +20,8 @@
  * Class extending the object "PNXTemplateBase".
  * It implements the interfaces :
  *      ApplicationFrame.CATIEdit
- *         This interface is called when editing a Sound Hole.
- *         It associates a dialog panel and fill in the contextual menu of the Sound Hole.
+ *         This interface is called when editing a User Feature.
+ *         It associates a dialog panel and fill in the contextual menu of the User Feature.
  */
 
 class PNXETemplateBaseEdit : public CATExtIEdit {

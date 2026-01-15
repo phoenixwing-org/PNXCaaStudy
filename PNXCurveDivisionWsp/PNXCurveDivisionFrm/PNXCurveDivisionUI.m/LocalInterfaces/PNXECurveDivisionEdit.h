@@ -23,9 +23,9 @@
  * Class extending the object "PNXCurveDivision".
  * It implements the interfaces :
  *      ApplicationFrame.CATIEdit
- *         This interface is called when editing a Sound Hole.
+ *         This interface is called when editing a User Feature.
  *         It associates a dialog panel and fill in the contextual menu of the
- * Sound Hole.
+ * User Feature.
  */
 
 class PNXECurveDivisionEdit : public CATExtIEdit {
