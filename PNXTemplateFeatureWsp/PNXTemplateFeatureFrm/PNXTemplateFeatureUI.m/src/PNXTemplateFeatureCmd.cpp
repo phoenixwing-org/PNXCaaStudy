@@ -198,8 +198,8 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     // KEVIN MANUAL CODE: check Error for conductor
     //.............................................................................
     if (code_ > 0) {
-        msg = " Error conductor. Exit!";
-        hr  = E_FAIL;
+        parameter->message = " Error conductor. Exit!";
+        hr                 = E_FAIL;
     }
 
     //.............................................................................
@@ -210,21 +210,21 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     if (SUCCEEDED(hr)) {
         if (KTC::FeatureModeCreation == mode_) {
             hr = CreateElement(); // create one
-            if (FAILED(hr)) msg = "Create element error!";
 
             // feature
             feature = NULL;
             if (SUCCEEDED(hr)) {
                 hr = _MyFeature->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
-                if (FAILED(hr)) msg = "QueryInterface of PNXITemplateFeature error!";
+                if (FAILED(hr)) parameter->message = "QueryInterface of PNXITemplateFeature error!";
             }
         }
         else {
             // for update mode
             hr = feature->UpdateVersion(); // update version
             if (FAILED(hr)) {
-                msg = feature->GetErrMsg();
-                if (msg.GetLengthInChar() == 0) msg = "Unknown error for UpdateVersion!";
+                parameter->message = feature->GetErrMsg().ConvertToChar();
+                if (parameter->message.size() == 0)
+                    parameter->message = "Unknown error for UpdateVersion!";
             }
         }
     }
@@ -233,7 +233,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     // KEVIN MANUAL CODE: check feature or hr. Exit if error.
     //.............................................................................
     if (code_ || NULL_var == feature) {
-        KTCAutoDialog::ShowMessageBox(code_, msg, dialog);
+        KTCAutoDialog::ShowMessageBox(code_, parameter->message, dialog);
         RequestDelayedDestruction();
         return;
     }

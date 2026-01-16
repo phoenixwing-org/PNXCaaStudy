@@ -34,6 +34,14 @@ public:
 
 public:
     /**
+     * @brief initial checktout interface from document
+     * @param iIID input IID
+     * @param oPPV out interface pointer
+     * @return HRESULT
+     */
+    HRESULT checkout_from_GSMTool(const IID& iIID, void** oPPV);
+
+    /**
      * @brief checkout path element
      * @param object CATISpecObject_var
      * @param pathElement CATPathElement**

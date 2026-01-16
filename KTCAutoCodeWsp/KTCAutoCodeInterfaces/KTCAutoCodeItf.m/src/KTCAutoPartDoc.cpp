@@ -12,10 +12,14 @@
 // cat
 #include "CATFrmEditor.h"
 #include "CATIBuildPath.h"
+#include "CATIGSMTool.h"
+#include "CATIMmiNonOrderedGeometricalSet.h"
+#include "CATIPrtPart.h"
 #include "CATPathElement.h"
 
-// Local
+// auto code
 #include "KTCAutoDefine.h"
+#include "KTCAutoGSM.h"
 #include "KTCAutoPartDoc.h"
 
 //-----------------------------------------------------------------------------
@@ -36,6 +40,35 @@ KTCAutoPartDoc::KTCAutoPartDoc(const KTCAutoPartDoc& iOriginal)
 KTCAutoPartDoc& KTCAutoPartDoc::operator=(const KTCAutoPartDoc& iOriginal) {
     catFrmEditor_ = iOriginal.catFrmEditor_;
     return *this;
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoPartDoc::checkout_from_GSMTool(const IID& iIID, void** oPPV) {
+    // CATIGSMTool is implemented by the HybridBody and GSMTool StartUp
+    // it is a valid pointer to handle the body which will contain the new
+    // Combined Curve
+    //
+
+    CATIGSMTool* piGSMTool = NULL;
+    HRESULT      rc        = KTCAutoGSM::LookingForGeomSet(catFrmEditor_, &piGSMTool);
+    if (FAILED(rc)) return rc;
+
+    rc = E_FAIL; // set fail
+
+    //
+    // 获得CATIContainer_var
+    //
+    CATISpecObject_var piSpecObjOnTool = piGSMTool;
+    if (NULL_var != piSpecObjOnTool) {
+        // GetFeatContainer for a mechanical feature
+        // is CATPrtCont, the specification container
+        CATIContainer_var spContainer = piSpecObjOnTool->GetFeatContainer();
+
+        // checkout feature by iid
+        if (NULL_var != spContainer) rc = spContainer->QueryInterface(iIID, oPPV);
+    }
+
+    KTCRelease(piGSMTool); // 手动释放
+    return rc;
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoPartDoc::checkout_pathelement(CATISpecObject_var object,

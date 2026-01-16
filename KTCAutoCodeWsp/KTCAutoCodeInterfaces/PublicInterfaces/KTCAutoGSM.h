@@ -13,6 +13,7 @@
 #ifndef KTCAutoGSM_H
 #define KTCAutoGSM_H
 
+#include "CATIGSMTool.h"
 #include "CATISpecObject.h"
 #include "CATListOfCATUnicodeString.h"
 #include "CATUnicodeString.h"
@@ -20,6 +21,9 @@
 // KTC
 #include "KTCAutoCodeItf.h"
 #include "KTCAutoGSM.h"
+
+class CATFrmEditor;
+class CATIPrtPart;
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoGSM {
@@ -34,7 +38,11 @@ private:
     KTCAutoGSM& operator=(const KTCAutoGSM&);
 
 public:
+    static HRESULT CreateTool(CATIPrtPart* pIPrtPart, CATIGSMTool** pIGsmTool);
+
     static bool IsInsideOrderedBody(CATISpecObject_var feature);
+
+    static HRESULT LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** piGsmtool);
 };
 
 #endif

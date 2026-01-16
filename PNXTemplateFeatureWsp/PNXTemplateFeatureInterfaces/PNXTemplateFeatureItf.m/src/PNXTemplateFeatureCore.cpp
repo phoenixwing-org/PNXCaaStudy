@@ -160,10 +160,10 @@ int PNXTemplateFeatureCore::create() {
     KTCAutoPartDoc partDocument;                // initial
     partDocument.initial_editor(catFrmEditor_); // set editor
 
-    // query PNXITemplateFeatureFactory factory under the part container
+    // query PNXITemplateFeatureFactory factory under the part GSMTool
     PNXITemplateFeatureFactory* factory = NULL; // Need release.
-    // TODO  hr = partDocument.che(IID_PNXITemplateFeatureFactory, (void**)&factory);
-    if (FAILED(hr)) KTC_MESSAGE_RETURN_CODE("Query PNXITemplateFeatureFactory failed.", 100004);
+    hr = partDocument.checkout_from_GSMTool(IID_PNXITemplateFeatureFactory, (void**)&factory);
+    if (FAILED(hr)) KTC_MESSAGE_RETURN_CODE("Query checkout_from_GSMTool failed.", 100004);
 
     //
     // 2- Creating the element
@@ -172,7 +172,8 @@ int PNXTemplateFeatureCore::create() {
     hr = factory->create(parameter, feature);
     KTCRelease(factory);
     if (FAILED(hr)) { // already print warning
-        return 100005;
+        cout << parameter->message.str();
+        return parameter->code;
     }
     parameter->feature = feature; // record self Spec
 
