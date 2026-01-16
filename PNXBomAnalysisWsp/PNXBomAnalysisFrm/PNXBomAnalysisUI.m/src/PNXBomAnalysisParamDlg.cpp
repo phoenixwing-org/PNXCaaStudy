@@ -66,7 +66,7 @@ PNXBomAnalysisParamDlg::~PNXBomAnalysisParamDlg() {
 }
 //---------------------------------------------------------
 void PNXBomAnalysisParamDlg::Build() {
-    //  TODO: This call builds your dialog from the layout declaration file
+    // This call builds your dialog from the layout declaration file
     //  -------------------------------------------------------------------
 
     // clang-format off

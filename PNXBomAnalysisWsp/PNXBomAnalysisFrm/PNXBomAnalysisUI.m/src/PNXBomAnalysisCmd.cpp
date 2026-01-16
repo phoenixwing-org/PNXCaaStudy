@@ -157,7 +157,7 @@ void PNXBomAnalysisCmd::BuildGraph() {
     // They make it possible for you not to worry about transition to OK and
     // Cancel States.
     //.............................................................................
-    _catDialogState = GetInitialPanelState("InitialPanelState");
+    catDialogState_ = GetInitialPanelState("InitialPanelState");
 
     //.............................................................................
     // KEVIN MANUAL CODE: User CATFeatureImportAgent set your code here
@@ -174,9 +174,9 @@ void PNXBomAnalysisCmd::BuildGraph() {
                                     CATDlgEngWithPSOHSO | // 设置代理行为
                                     CATDlgEngWithTooltip | CATDlgEngOneShot);
 
-    _catDialogState->AddDialogAgent(_pfiaElementSelect); // 添加对话框代理
+    catDialogState_->AddDialogAgent(_pfiaElementSelect); // 添加对话框代理
 
-    AddTransition(_catDialogState, _catDialogState,                                 // 添加状态转换
+    AddTransition(catDialogState_, catDialogState_,                                 // 添加状态转换
                   IsOutputSetCondition(_pfiaElementSelect),                         // 设置输出条件
                   Action((ActionMethod)&PNXBomAnalysisCmd::ActionSelectorListFia)); // 设置动作方法
 
@@ -397,7 +397,7 @@ CATBoolean PNXBomAnalysisCmd::ActionSelectorListPda(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::ActionValueChange(void*) {
     // gets ready for next acquisition
-    _daValueChange->InitializeAcquisition();
+    daValueChange_->InitializeAcquisition();
 
     AfterValueChange(); // action after value change
     return TRUE;

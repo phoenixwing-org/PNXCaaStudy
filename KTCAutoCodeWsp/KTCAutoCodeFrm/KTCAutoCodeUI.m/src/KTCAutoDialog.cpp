@@ -30,31 +30,31 @@ KTCAutoDialog::KTCAutoDialog(CATDialog* iParent, CATMMUIPanelStateCmd* iFatherCm
     // CATDialog *iParent, CATCommand *iEventMgr, const CATString& iObjectName, CATDlgStyle
     // iStyle=NULL
     : CATDlgDialog(iParent, iFatherCmd, iObjectName, iStyle)
-    , _optionDialog(NULL)
-    , _activeField(0)
+    , optionDialog_(NULL)
+    , activeField_(0)
     , catHSO_(NULL)
-    , _actionMode(KTC::ValueNormal)
-    , _selectorMap(NULL)
-    , _valueChangeNtf(NULL) {
-    _selectorMap    = new std::map<int, KTCAutoSelectorCtx*>();
-    _valueChangeNtf = new KTCAutoValueChangedNtf();
+    , actionMode_(KTC::ValueNormal)
+    , selectorMap_(NULL)
+    , valueChangeNtf_(NULL) {
+    selectorMap_    = new std::map<int, KTCAutoSelectorCtx*>();
+    valueChangeNtf_ = new KTCAutoValueChangedNtf();
 }
 //-------------------------------------------------------------------------
 KTCAutoDialog::~KTCAutoDialog() {
-    _optionDialog = NULL;
+    optionDialog_ = NULL;
     catHSO_       = NULL;
-    // _activeField = 0;
+    // activeField_ = 0;
 
-    if (_selectorMap) {
+    if (selectorMap_) {
         KTCAutoSelectorCtx* ctx;
-        for (size_t i = 0; i < _selectorMap->size(); i++) {
-            ctx = (*_selectorMap)[ i ]; // get
+        for (size_t i = 0; i < selectorMap_->size(); i++) {
+            ctx = (*selectorMap_)[ i ]; // get
             delete ctx;                 // delete
         }
-        delete _selectorMap, _selectorMap = NULL;
+        delete selectorMap_, selectorMap_ = NULL; // 手动释放
     }
 
-    // TODO: delete _valueChangeNtf?
+    delete valueChangeNtf_, valueChangeNtf_ = NULL; // 手动释放
 }
 //-----------------------------------------------------------------------------
 CATUnicodeString KTCAutoDialog::checkout_title(CATISpecObject_var object) {
@@ -69,26 +69,26 @@ CATUnicodeString KTCAutoDialog::checkout_title(CATISpecObject_var object) {
 }
 //-------------------------------------------------------------------------
 int KTCAutoDialog::InitialMenuRightClick() {
-    // TODO initial
+    // TODO 实现代码
     return 0;
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::on_show_option_dialog(CATCommand*, CATNotification*, CATCommandClientData) {
-    if (!_optionDialog) return;
+    if (!optionDialog_) return;
 
     // change state
-    CATULong state = (_optionDialog->GetVisibility() == CATDlgShow) ? CATDlgHide : CATDlgShow;
-    _optionDialog->SetVisibility(state);
+    CATULong state = (optionDialog_->GetVisibility() == CATDlgShow) ? CATDlgHide : CATDlgShow;
+    optionDialog_->SetVisibility(state);
 }
 //-------------------------------------------------------------------------
 KTCAutoSelectorCtx* KTCAutoDialog::regitster_field(int field, CATDlgSelectorList* selector,
                                                    const KtString& name) {
     if (!selector) return NULL;
-    if (!_selectorMap) _selectorMap = new KTCAutoSelectorCtxMap(); // 第一次注册时，创建map
+    if (!selectorMap_) selectorMap_ = new KTCAutoSelectorCtxMap(); // 第一次注册时，创建map
 
     // C++98 需要显式指定迭代器类型
-    KTCAutoSelectorCtxMap::iterator it = _selectorMap->find(field);
-    if (it != _selectorMap->end()) {
+    KTCAutoSelectorCtxMap::iterator it = selectorMap_->find(field);
+    if (it != selectorMap_->end()) {
         cout << "- [ERROR] Field " << field << " already registered!" << endl;
         return NULL; // 找到元素,已经注册过了
     }
@@ -98,16 +98,16 @@ KTCAutoSelectorCtx* KTCAutoDialog::regitster_field(int field, CATDlgSelectorList
     // ctx->selector        = selector;
     ctx->fieldName = name;
 
-    (*_selectorMap)[ field ] = ctx;
+    (*selectorMap_)[ field ] = ctx;
     return ctx;
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::register_option_dialog(CATDlgDialog* dlg) {
-    _optionDialog = dlg;
+    optionDialog_ = dlg;
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::register_option_dialog(CATDlgDialog* dlg, CATDlgPushButton* optionBtn) {
-    _optionDialog = dlg;
+    optionDialog_ = dlg;
     // option dialog
     if (!optionBtn) return;
 
@@ -115,23 +115,24 @@ void KTCAutoDialog::register_option_dialog(CATDlgDialog* dlg, CATDlgPushButton* 
                              (CATCommandMethod)&KTCAutoDialog::on_show_option_dialog, NULL);
 
     // close
-    AddAnalyseNotificationCB(_optionDialog, _optionDialog->GetDiaCLOSENotification(),
+    AddAnalyseNotificationCB(optionDialog_, optionDialog_->GetDiaCLOSENotification(),
                              (CATCommandMethod)&KTCAutoDialog::on_show_option_dialog, NULL);
 }
 //-------------------------------------------------------------------------
 int KTCAutoDialog::ActionSubCommandReturn() {
-    cout << "TODO " << __FUNCTION__ << endl;
+    // TODO 实现代码
+    cout << " - 没有实现 " << __FUNCTION__ << endl;
     return 0;
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::SetActiveField(int feild) {
-    if (_selectorMap == NULL) return;
-    _activeField = feild;
+    if (selectorMap_ == NULL) return;
+    activeField_ = feild;
 
     // clear other field select
-    for (KTCAutoSelectorCtxMap::iterator it = _selectorMap->begin(); it != _selectorMap->end();
+    for (KTCAutoSelectorCtxMap::iterator it = selectorMap_->begin(); it != selectorMap_->end();
          it++) {
-        if (it->second == NULL || it->second->fieldKey == _activeField)
+        if (it->second == NULL || it->second->fieldKey == activeField_)
             continue; // 当前字段不处理，跳过
 
         it->second->ClearSelect(); // 清除其他字段的选择
@@ -139,9 +140,9 @@ void KTCAutoDialog::SetActiveField(int feild) {
 }
 //-------------------------------------------------------------------------
 void KTCAutoDialog::SetActiveFieldFocus() {
-    if (_selectorMap == NULL) return;
-    KTCAutoSelectorCtxMap::iterator it = _selectorMap->find(_activeField);
-    if (it != _selectorMap->end()) it->second->SetSelect();
+    if (selectorMap_ == NULL) return;
+    KTCAutoSelectorCtxMap::iterator it = selectorMap_->find(activeField_);
+    if (it != selectorMap_->end()) it->second->SetSelect();
 }
 
 //-----------------------------------------------------------------------------
@@ -194,7 +195,7 @@ int KTCAutoDialog::selectorlist_setline(CATDlgSelectorList*                 sele
 } //-----------------------------------------------------------------------------
 void KTCAutoDialog::SendValueCHangeNotification() {
     CATCommand* cmd = GetFather();                   // get command
-    if (cmd) SendNotification(cmd, _valueChangeNtf); // set notification
+    if (cmd) SendNotification(cmd, valueChangeNtf_); // set notification
 }
 //-----------------------------------------------------------------------------
 void KTCAutoDialog::ShowMessageBox(const CATUnicodeString& msg, CATDialog* dialog) {

@@ -116,10 +116,10 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
 
     // To manage the highlight of the Combined Curve and the UI active object that
     // is used to agregate the Combined Curve at the right place.
-    _editor = CATFrmEditor::GetCurrentEditor();
-    _HSO    = NULL;
-    if (NULL != _editor) {
-        _HSO = _editor->GetHSO();
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
+    _HSO          = NULL;
+    if (NULL != catFrmEditor_) {
+        _HSO = catFrmEditor_->GetHSO();
     }
 
     // Fills in the dialog panel fields.
@@ -151,8 +151,8 @@ PNXCombinedCurveCmd::~PNXCombinedCurveCmd() {
     MyRequestDelayedDestruction(_pPushButtonSaveJsonAgent);
     MyRequestDelayedDestruction(_pMainDirFieldAgent);
     MyRequestDelayedDestruction(_panel);
-    _editor = NULL;
-    _HSO    = NULL;
+    catFrmEditor_ = NULL;
+    _HSO          = NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -273,7 +273,7 @@ CATDlgDialog* PNXCombinedCurveCmd::GiveMyPanel() {
 //-----------------------------------------------------------------------------
 CATBoolean PNXCombinedCurveCmd::CancelAction(void*) {
     // Unset Repeat mode  when cancel or close is clicked
-    if (_editor) _editor->UnsetRepeatedCommand();
+    if (catFrmEditor_) catFrmEditor_->UnsetRepeatedCommand();
     return TRUE;
 }
 
@@ -443,8 +443,8 @@ CATBoolean PNXCombinedCurveCmd::OnPushButtonSaveJsonAgent(void* data) {
 
     cout << " data = " << data << " to long :" << mode << endl;
 
-    // TODO save the a file
-    cout << "Action from Command Agent" << endl;
+    // save to a file
+    cout << "- Your code : save json to a file" << endl;
 
     // gets ready for next acquisition
     _pPushButtonSaveJsonAgent->InitializeAcquisition();
@@ -498,12 +498,12 @@ void PNXCombinedCurveCmd::SetActiveField(int ActiveField) {
     if (PNXCopyStudyFieldFirstPoint == ActiveField) piSpecOnGeomElem = _piSpecOnFirstPoint;
     if (PNXCopyStudyFieldMainDir == ActiveField) piSpecOnGeomElem = _piSpecOnMainDir;
 
-    if ((piSpecOnGeomElem != NULL) && (NULL != _HSO) && (NULL != _editor)) {
+    if ((piSpecOnGeomElem != NULL) && (NULL != _HSO) && (NULL != catFrmEditor_)) {
         // uses this pointer to build a path element
         CATIBuildPath* piBuildPath = NULL;
         HRESULT rc = piSpecOnGeomElem->QueryInterface(IID_CATIBuildPath, (void**)&piBuildPath);
         if (SUCCEEDED(rc)) {
-            CATPathElement  Context      = _editor->GetUIActiveObject();
+            CATPathElement  Context      = catFrmEditor_->GetUIActiveObject();
             CATPathElement* pPathElement = NULL;
             rc                           = piBuildPath->ExtractPathElement(&Context, &pPathElement);
 
@@ -788,7 +788,7 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
 //-----------------------------------------------------------------------------
 
 HRESULT PNXCombinedCurveCmd::LookingForGeomSet(CATIGSMTool** piGsmtool) {
-    if ((NULL == piGsmtool) || (NULL == _editor)) return E_FAIL;
+    if ((NULL == piGsmtool) || (NULL == catFrmEditor_)) return E_FAIL;
 
     HRESULT rc = E_FAIL;
 
@@ -797,7 +797,7 @@ HRESULT PNXCombinedCurveCmd::LookingForGeomSet(CATIGSMTool** piGsmtool) {
     // Retrieves the Part feature which holds the current tool
     //
     CATIPrtPart*   pIPrtPart = NULL;
-    CATPathElement PathAct   = _editor->GetUIActiveObject();
+    CATPathElement PathAct   = catFrmEditor_->GetUIActiveObject();
     rc                       = PathAct.Search(IID_CATIPrtPart, (void**)&pIPrtPart);
 
     if (SUCCEEDED(rc) && (NULL != pIPrtPart)) {
@@ -838,14 +838,14 @@ HRESULT PNXCombinedCurveCmd::LookingForGeomSet(CATIGSMTool** piGsmtool) {
 //-----------------------------------------------------------------------------
 
 HRESULT PNXCombinedCurveCmd::LookingForGeomSetOrOrderedGeomSet(CATIGSMTool** piGsmtool) {
-    if ((NULL == piGsmtool) || (NULL == _editor)) return E_FAIL;
+    if ((NULL == piGsmtool) || (NULL == catFrmEditor_)) return E_FAIL;
 
     HRESULT rc = E_FAIL;
 
     *piGsmtool = NULL;
 
     CATIPrtPart*   pIPrtPart = NULL;
-    CATPathElement PathAct   = _editor->GetUIActiveObject();
+    CATPathElement PathAct   = catFrmEditor_->GetUIActiveObject();
 
     rc = PathAct.Search(IID_CATIPrtPart, (void**)&pIPrtPart);
 
@@ -887,14 +887,14 @@ HRESULT PNXCombinedCurveCmd::LookingForGeomSetOrOrderedGeomSet(CATIGSMTool** piG
 //-----------------------------------------------------------------------------
 
 HRESULT PNXCombinedCurveCmd::LookingForAnyTypeOfBody(CATIGSMTool** piGsmtool) {
-    if ((NULL == piGsmtool) || (NULL == _editor)) return E_FAIL;
+    if ((NULL == piGsmtool) || (NULL == catFrmEditor_)) return E_FAIL;
 
     HRESULT rc = E_FAIL;
 
     *piGsmtool = NULL;
 
     CATIPrtPart*   pIPrtPart = NULL;
-    CATPathElement PathAct   = _editor->GetUIActiveObject();
+    CATPathElement PathAct   = catFrmEditor_->GetUIActiveObject();
 
     rc = PathAct.Search(IID_CATIPrtPart, (void**)&pIPrtPart);
 

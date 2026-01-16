@@ -48,7 +48,7 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_HSO_ADD(NAME) _ktcHSO.AddElement(parameter->NAME)
+#define KT_AUTO_HSO_ADD(NAME) ktcHSO_.AddElement(parameter->NAME)
 
 /**
  * @brief CMD ACTION PDA
@@ -57,7 +57,7 @@ class CATDialogState;
  */
 #define KT_AUTO_CMD_ACTION_PDA(NAME)    \
     _da##NAME->InitializeAcquisition(); \
-    if (fieldChange) _ktcHSO.AddElement(parameter->NAME)
+    if (fieldChange) ktcHSO_.AddElement(parameter->NAME)
 
 /**
  * @brief CMD ACTION FIA
@@ -65,7 +65,7 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_ACTION_FIA(NAME)                                           \
-    count = _ktcHSO.after_element_selected(_fia##NAME, parameter->NAME, mode); \
+    count = ktcHSO_.after_element_selected(_fia##NAME, parameter->NAME, mode); \
     if (0 == count) cout << "Error to Select " << #NAME << "!" << endl;        \
     _fia##NAME->InitializeAcquisition();
 
@@ -74,7 +74,7 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_CMD_ACTION_FIA_CLEAR(NAME) _catDialogState->RemoveDialogAgent(_fia##NAME)
+#define KT_AUTO_CMD_ACTION_FIA_CLEAR(NAME) catDialogState_->RemoveDialogAgent(_fia##NAME)
 
 /**
  * @brief CMD AGENT BUILD GRAPH, Start Part
@@ -82,7 +82,7 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_BUILD_START(PREFIX)      \
-    _ktcHSO.initial(catFrmEditor_, catHSO_); \
+    ktcHSO_.initial(catFrmEditor_, catHSO_); \
     dialog->catHSO_              = catHSO_;  \
     CATDlgSelectorList* selector = NULL
 
@@ -92,13 +92,13 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_BUILD_END(PREFIX)                                                     \
-    _daValueChange = new CATDialogAgent("ValueChangeAgent");                              \
+    daValueChange_ = new CATDialogAgent("ValueChangeAgent");                              \
     dialog->InitialMenuRightClick();                                                      \
-    dialog->SetAcceptOnNotifyOfValueChange(_daValueChange);                               \
-    _catDialogState->AddDialogAgent(_daValueChange);                                      \
-    AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_daValueChange), \
+    dialog->SetAcceptOnNotifyOfValueChange(daValueChange_);                               \
+    catDialogState_->AddDialogAgent(daValueChange_);                                      \
+    AddTransition(catDialogState_, catDialogState_, IsOutputSetCondition(daValueChange_), \
                   Action((ActionMethod) & PREFIX##Cmd::ActionValueChange));               \
-    _daValueChange->AcceptOnNotify(NULL, KTCAutoValueChangedNtf::ClassName())
+    daValueChange_->AcceptOnNotify(NULL, KTCAutoValueChangedNtf::ClassName())
 
 /**
  * @brief CMD AGENT BUILD GRAPH, field part
@@ -120,11 +120,11 @@ class CATDialogState;
     _fia##NAME->SetBehavior(CATDlgEngWithPrevaluation | CATDlgEngWithCSO | CATDlgEngOneShot); \
     _da##NAME = new CATDialogAgent("Pda" #NAME);                                              \
     _da##NAME->AcceptOnNotify(selector, selector->GetListSelectNotification());               \
-    _catDialogState->AddDialogAgent(_da##NAME);                                               \
-    AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_fia##NAME),         \
+    catDialogState_->AddDialogAgent(_da##NAME);                                               \
+    AddTransition(catDialogState_, catDialogState_, IsOutputSetCondition(_fia##NAME),         \
                   Action((ActionMethod) & PREFIX##Cmd::ActionSelectorListFia, NULL, NULL,     \
                          (void*)Field_##PREFIX##_##NAME));                                    \
-    AddTransition(_catDialogState, _catDialogState, IsOutputSetCondition(_da##NAME),          \
+    AddTransition(catDialogState_, catDialogState_, IsOutputSetCondition(_da##NAME),          \
                   Action((ActionMethod) & PREFIX##Cmd::ActionSelectorListPda, NULL, NULL,     \
                          (void*)Field_##PREFIX##_##NAME));
 
@@ -132,7 +132,6 @@ class CATDialogState;
  * @brief CMD AGENT BUILD GRAPH FIA, field axis line only
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
- * TODO: set filter
  */
 #define KT_AUTO_CMD_BUILD_FIA_AXIS(NAME) KT_AUTO_CMD_BUILD_FIA_LINE(NAME)
 
@@ -167,7 +166,6 @@ class CATDialogState;
  * @brief CMD AGENT BUILD GRAPH FIA, field direction
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
- * TODO: set filter
  */
 #define KT_AUTO_CMD_BUILD_FIA_DIRECTION KT_AUTO_CMD_BUILD_FIA_LINE
 
@@ -223,7 +221,6 @@ class CATDialogState;
  * @brief CMD AGENT BUILD GRAPH FIA, field plane
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
- * TODO: set filter
  */
 #define KT_AUTO_CMD_BUILD_FIA_PLANE(NAME) \
     KT_AUTO_CMD_BUILD_FIA_NEW(NAME);      \
@@ -246,7 +243,7 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_AGENT_CONSTRUCTOR_COMMON()                                                 \
-    _catDialogState(NULL), _daValueChange(NULL), catFrmEditor_(NULL), catHSO_(NULL), mode_(1), \
+    catDialogState_(NULL), daValueChange_(NULL), catFrmEditor_(NULL), catHSO_(NULL), mode_(1), \
         code_(0), parameter(NULL), core(NULL), dialog(NULL), feature(NULL_var)
 
 /**
@@ -263,11 +260,11 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_AGENT_DECLARE_COMMON() \
-    CATDialogState* _catDialogState;       \
-    CATDialogAgent* _daValueChange;        \
+    CATDialogState* catDialogState_;       \
+    CATDialogAgent* daValueChange_;        \
     CATFrmEditor*   catFrmEditor_;         \
     CATHSO*         catHSO_;               \
-    KTCAutoHSO      _ktcHSO;               \
+    KTCAutoHSO      ktcHSO_;               \
     int             mode_;                 \
     int             code_
 
@@ -300,11 +297,11 @@ class CATDialogState;
 #define KT_AUTO_CMD_AGENT_DESTRUCTOR_COMMON()     \
     catFrmEditor_   = NULL;                       \
     catHSO_         = NULL;                       \
-    _catDialogState = NULL;                       \
+    catDialogState_ = NULL;                       \
     feature         = NULL_var;                   \
     KTDelete(core);                               \
     KTDelete(parameter);                          \
-    KTCRequestDelayedDestruction(_daValueChange); \
+    KTCRequestDelayedDestruction(daValueChange_); \
     KTCRequestDelayedDestruction(dialog)
 
 /**
@@ -323,8 +320,8 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_AGENT_UPDATE_STATE(NAME)     \
-    _catDialogState->AddDialogAgent(_fia##NAME); \
-    _catDialogState->SetMessage("Select the " #NAME)
+    catDialogState_->AddDialogAgent(_fia##NAME); \
+    catDialogState_->SetMessage("Select the " #NAME)
 
 /**
  * @brief CMD AGENT UPDATE STATE ERROR
@@ -332,6 +329,6 @@ class CATDialogState;
  * @note Kt Auto Code Macro.
  */
 #define KT_AUTO_CMD_AGENT_UPDATE_STATE_ERROR() \
-    _catDialogState->SetMessage("None Element can select. Please click a Field.")
+    catDialogState_->SetMessage("None Element can select. Please click a Field.")
 
 #endif //_KTCAutoCode_H_

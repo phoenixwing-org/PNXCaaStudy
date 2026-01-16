@@ -147,11 +147,65 @@ HRESULT KTCAutoAttrAccess::initial(CATBaseUnknown* baseUnkonwn) {
     return baseUnkonwn->QueryInterface(IID_CATISpecAttrAccess, (void**)&attrAccess_);
 }
 //-----------------------------------------------------------------------------
+CATListValCATBaseUnknown_var*
+    KTCAutoAttrAccess::ListSpecObjects(const CATISpecAttrKey* attrKey) const {
+    if (NULL == attrKey || NULL == attrAccess_) return NULL; // 检查
+    return attrAccess_->ListSpecObjects(attrKey);
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
+                                        CATListValCATBaseUnknown_var& value) const {
+    // 获得 attrKey
+    CATISpecAttrKey* attrKey = get_CATISpecAttrKey(name);
+    if (NULL == attrKey) {
+        value.RemoveAll();
+        return E_INVALIDARG;
+    }
+
+    // 获得未知类型列表
+    CATListValCATBaseUnknown_var* unkonwnList = ListSpecObjects(attrKey);
+    if (NULL == unkonwnList) {
+        value.RemoveAll();
+        return E_FAIL;
+    }
+
+    value = *unkonwnList; // 拷贝
+
+    delete unkonwnList, unkonwnList = NULL; // 手动释放
+    return S_OK;                            // 正确
+}
+//-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
                                         CATListValCATISpecObject_var& value) const {
-    value.RemoveAll();
-    cout << "- [ERROR] his function is NOT IMPL" << endl;
-    return E_NOTIMPL;
+    // 获得 attrKey
+    CATISpecAttrKey* attrKey = get_CATISpecAttrKey(name);
+    if (NULL == attrKey) {
+        value.RemoveAll();
+        return E_INVALIDARG;
+    }
+
+    // 获得未知类型列表
+    CATListValCATBaseUnknown_var* unkonwnList = ListSpecObjects(attrKey);
+    if (NULL == unkonwnList) {
+        value.RemoveAll();
+        return E_FAIL;
+    }
+
+    // 申请空间，检查
+    HRESULT   hr    = S_OK;
+    const int count = unkonwnList->Size(); // get size
+    value.Size(count, NULL);               // 改变空间
+    if (value.Size() != count) hr = E_OUTOFMEMORY;
+
+    // 拷贝
+    if (SUCCEEDED(hr)) {
+        for (int i = 1; i <= count; i++) {
+            value[ i ] = (*unkonwnList)[ i ];
+        }
+    }
+
+    delete unkonwnList, unkonwnList = NULL; // 手动释放
+    return S_OK;                            // 正确
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetSpecValue(const char* name, CATISpecObject_var& value) const {
@@ -184,35 +238,35 @@ HRESULT KTCAutoAttrAccess::GetSpecValue(const char* name, CATUnicodeString& valu
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetValue(const char* name, CATBoolean& value) const {
-    GET_CATISpecAttrKey_DEFAULT(0);           // 检出 ckeInst
+    GET_CATISpecAttrKey_DEFAULT(0);           // 检出 attrKey
     value = attrAccess_->GetBoolean(attrKey); // 得到值
     KTCRelease(attrKey);                      // 手动释放
     return S_OK;                              // 正确
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetValue(const char* name, int& value) const {
-    GET_CATISpecAttrKey_DEFAULT(0);           // 检出 ckeInst
+    GET_CATISpecAttrKey_DEFAULT(0);           // 检出 attrKey
     value = attrAccess_->GetInteger(attrKey); // 得到值
     KTCRelease(attrKey);                      // 手动释放
     return S_OK;                              // 正确
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetValue(const char* name, double& value) const {
-    GET_CATISpecAttrKey_DEFAULT(0.0);        // 检出 ckeInst
+    GET_CATISpecAttrKey_DEFAULT(0.0);        // 检出 attrKey
     value = attrAccess_->GetDouble(attrKey); // 得到值
     KTCRelease(attrKey);                     // 手动释放
     return S_OK;                             // 正确
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetValue(const char* name, CATUnicodeString& value) const {
-    GET_CATISpecAttrKey_DEFAULT("");         // 检出 ckeInst
+    GET_CATISpecAttrKey_DEFAULT("");         // 检出 attrKey
     value = attrAccess_->GetString(attrKey); // 得到值
     KTCRelease(attrKey);                     // 手动释放
     return S_OK;                             // 正确
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetValue(const char* name, KtString& value) const {
-    GET_CATISpecAttrKey_DEFAULT("");                         // 检出 ckeInst
+    GET_CATISpecAttrKey_DEFAULT("");                         // 检出 attrKey
     value = attrAccess_->GetString(attrKey).ConvertToChar(); // 得到值
     KTCRelease(attrKey);                                     // 手动释放
     return S_OK;                                             // 正确

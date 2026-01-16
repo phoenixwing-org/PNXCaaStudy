@@ -65,7 +65,7 @@ private:
     KTCAutoPartDoc& operator=(const KTCAutoPartDoc&);
 
 public:
-    CATFrmEditor* _editor; // catia frame editor
+    CATFrmEditor* catFrmEditor_; // catia frame editor
 };
 
 #endif

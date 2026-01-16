@@ -22,15 +22,15 @@
 
 //-----------------------------------------------------------------------------
 KTCAutoHSO::KTCAutoHSO()
-    : _editor(NULL)
-    , _hso(NULL)
-    , _partDoc() {
+    : catFrmEditor_(NULL)
+    , hso_(NULL)
+    , partDoc_() {
 }
 //-----------------------------------------------------------------------------
 KTCAutoHSO::~KTCAutoHSO() {
-    _editor = NULL; // outside
-    _hso    = NULL; // outside
-    //_partDoc
+    catFrmEditor_ = NULL; // outside
+    hso_          = NULL; // outside
+    // partDoc_
 }
 //-----------------------------------------------------------------------------
 KTCAutoHSO::KTCAutoHSO(const KTCAutoHSO& iOriginal) {
@@ -38,20 +38,20 @@ KTCAutoHSO::KTCAutoHSO(const KTCAutoHSO& iOriginal) {
 }
 //-----------------------------------------------------------------------------
 KTCAutoHSO& KTCAutoHSO::operator=(const KTCAutoHSO& iOriginal) {
-    _editor = iOriginal._editor;
-    _hso    = iOriginal._hso;
-    _partDoc.initial_editor(iOriginal._editor);
+    catFrmEditor_ = iOriginal.catFrmEditor_;
+    hso_          = iOriginal.hso_;
+    partDoc_.initial_editor(iOriginal.catFrmEditor_);
 
     return *this;
 }
 //-----------------------------------------------------------------------------
 int KTCAutoHSO::AddElement(CATISpecObject_var object) {
-    if (!_hso) return 0;
+    if (!hso_) return 0;
     if (!object) return 0;
 
     // initialize part doc
     KTCAutoPartDoc doc;
-    doc._editor = _editor;
+    doc.catFrmEditor_ = catFrmEditor_;
 
     // checkout path element
     CATPathElement* pathElement = NULL;
@@ -59,18 +59,18 @@ int KTCAutoHSO::AddElement(CATISpecObject_var object) {
     if (!pathElement) return 0;
 
     // add to hso
-    _hso->AddElement(pathElement);
+    hso_->AddElement(pathElement);
     KTCRelease(pathElement);
     cout << "- [Debug] OK hso AddElement = 1" << endl;
     return 1;
 } //-----------------------------------------------------------------------------
 int KTCAutoHSO::AddElement(const CATListValCATISpecObject_var& list) {
-    if (!_hso) return 0;
+    if (!hso_) return 0;
     if (list.Size() == 0) return 0;
 
     // initialize part doc
     KTCAutoPartDoc doc;
-    doc._editor = _editor;
+    doc.catFrmEditor_ = catFrmEditor_;
 
     // checkout path element
     CATPathElement*          pathElement = NULL;
@@ -85,11 +85,11 @@ int KTCAutoHSO::AddElement(const CATListValCATISpecObject_var& list) {
         if (!pathElement) continue;
 
         // add to hso
-        _hso->AddElements(pathElement);
+        hso_->AddElements(pathElement);
         count++;
         KTCRelease(pathElement);
     }
-    _hso->EndAddElements(); // end add elements  发信号
+    hso_->EndAddElements(); // end add elements  发信号
 
     cout << "- [Debug] OK hso AddElements = " << count << endl;
     return count;
@@ -195,34 +195,34 @@ int KTCAutoHSO::after_element_selected(CATPathElementAgent*          agent,
 }
 //-----------------------------------------------------------------------------
 void KTCAutoHSO::initial(CATFrmEditor* editor, CATHSO* hso) {
-    _editor = editor;
-    _hso    = hso;
+    catFrmEditor_ = editor;
+    hso_          = hso;
 }
 //-----------------------------------------------------------------------------
 int KTCAutoHSO::RemoveElement(CATISpecObject_var object) {
-    if (!_editor || !_hso) return 0;
+    if (!catFrmEditor_ || !hso_) return 0;
 
     // set editor to part doc
-    _partDoc._editor = _editor;
+    partDoc_.catFrmEditor_ = catFrmEditor_;
 
     // checkout path element
     CATPathElement* pathElement = NULL;
-    HRESULT         hr          = _partDoc.checkout_pathelement(object, &pathElement);
+    HRESULT         hr          = partDoc_.checkout_pathelement(object, &pathElement);
     if (!pathElement) return 0;
 
     // remove from hso
     cout << "- [Debug] OK hso RemoveElement(...) = 1" << pathElement << endl;
-    _hso->RemoveElement(pathElement);
+    hso_->RemoveElement(pathElement);
     KTCRelease(pathElement);
 
     return 1;
 }
 //-----------------------------------------------------------------------------
 int KTCAutoHSO::RemoveElement(const CATListValCATISpecObject_var& list) {
-    if (!_editor || !_hso) return 0;
+    if (!catFrmEditor_ || !hso_) return 0;
 
     // set editor to part doc
-    _partDoc._editor = _editor;
+    partDoc_.catFrmEditor_ = catFrmEditor_;
 
     // parameters
     int                      count       = 0; // remove count
@@ -230,7 +230,7 @@ int KTCAutoHSO::RemoveElement(const CATListValCATISpecObject_var& list) {
     CATListPtrCATPathElement pathElementList;
 
     // checkout path element
-    HRESULT hr = _partDoc.checkout_pathelement(list, pathElementList);
+    HRESULT hr = partDoc_.checkout_pathelement(list, pathElementList);
     if (FAILED(hr)) return 0;
 
     // remove from hso by RemoveElements() ,最后发信号
@@ -239,11 +239,11 @@ int KTCAutoHSO::RemoveElement(const CATListValCATISpecObject_var& list) {
         if (!pathElement) continue;
 
         // remove from hso
-        _hso->RemoveElements(pathElement);
+        hso_->RemoveElements(pathElement);
         KTCRelease(pathElement);
         count++;
     }
-    _hso->EndRemoveElements(); // end remove elements  发信号
+    hso_->EndRemoveElements(); // end remove elements  发信号
 
     cout << "- [Debug] OK hso RemoveElements(...) = " << count << endl;
     return count;

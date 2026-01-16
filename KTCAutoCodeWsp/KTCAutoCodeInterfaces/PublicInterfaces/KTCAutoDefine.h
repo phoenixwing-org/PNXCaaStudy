@@ -16,9 +16,7 @@
 /** @brief CAA min pixel value, 0.001mm */
 #define KTC_MIN_LENGTH_VALUE_MM 0.001
 
-/** TODO: MAX LENGTH in CAA?
- * FLT_MAX          3.402823466e+38F
- */
+/** MAX LENGTH in CAA */
 #define KTC_FLT_MAX_LENGTH 1e38F
 
 #pragma region functions

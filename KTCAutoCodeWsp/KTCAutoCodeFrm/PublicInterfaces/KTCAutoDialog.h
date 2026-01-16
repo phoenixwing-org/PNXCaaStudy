@@ -50,12 +50,12 @@ public:
 
     /** @brief Get Active Field */
     inline int GetActiveField() const {
-        return _activeField;
+        return activeField_;
     };
 
     /** @brief Get Active Field */
     inline KTC::ValueActionMode GetValueMode() const {
-        return _actionMode;
+        return actionMode_;
     };
 
     /**
@@ -152,14 +152,14 @@ public:
 
 protected:
 public:
-    CATDlgDialog* _optionDialog; // sub dialog
+    CATDlgDialog* optionDialog_; // sub dialog
     CATHSO*       catHSO_;       // catia HSO
 
 private:
-    int                     _activeField;    // current field
-    KTC::ValueActionMode    _actionMode;     // action mode
-    KTCAutoSelectorCtxMap*  _selectorMap;    // selector map
-    KTCAutoValueChangedNtf* _valueChangeNtf; // value change notification
+    int                     activeField_;    // current field
+    KTC::ValueActionMode    actionMode_;     // action mode
+    KTCAutoSelectorCtxMap*  selectorMap_;    // selector map
+    KTCAutoValueChangedNtf* valueChangeNtf_; // value change notification
 };
 
 #endif

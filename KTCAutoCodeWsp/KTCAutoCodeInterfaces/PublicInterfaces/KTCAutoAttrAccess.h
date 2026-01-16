@@ -78,6 +78,15 @@ public:
     HRESULT initial(CATBaseUnknown* baseUnkonwn);
 
     /**
+     * @brief Lists SpecObjects referred to by the attribute.
+     * @param attrKey access key to attribute.
+     * @return   list of SpecObjects refered by the attribute. it is a list of
+     * CATISpecObject. please delete pointer after use
+     * @note Do not use.
+     */
+    CATListValCATBaseUnknown_var* ListSpecObjects(const CATISpecAttrKey* attrKey) const;
+
+    /**
      * @brief set CATISpecAttrAccess
      * @param attrAcess out side CATISpecAttrAccess
      */
@@ -86,6 +95,15 @@ public:
     }
 
 public:
+    /**
+     * @brief Get List Value of CATBaseUnknown_var
+     * @param name attribute name
+     * @param value output value
+     * @return HRESULT
+     */
+    HRESULT
+    GetListValue(const char* name, CATListValCATBaseUnknown_var& value) const;
+
     /**
      * @brief Get List Value of specobject
      * @param name attribute name

@@ -20,21 +20,21 @@
 
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc::KTCAutoPartDoc()
-    : _editor(NULL) {
+    : catFrmEditor_(NULL) {
 
     // your code here:
 }
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc::~KTCAutoPartDoc() {
-    _editor = NULL;
+    catFrmEditor_ = NULL;
 }
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc::KTCAutoPartDoc(const KTCAutoPartDoc& iOriginal)
-    : _editor(iOriginal._editor) {
+    : catFrmEditor_(iOriginal.catFrmEditor_) {
 }
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc& KTCAutoPartDoc::operator=(const KTCAutoPartDoc& iOriginal) {
-    _editor = iOriginal._editor;
+    catFrmEditor_ = iOriginal.catFrmEditor_;
     return *this;
 }
 //-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ HRESULT KTCAutoPartDoc::checkout_pathelement(CATISpecObject_var object,
     HRESULT        hr;
 
     // check editor
-    if (!_editor) {
+    if (!catFrmEditor_) {
         hr = initial_editor(NULL);
         if (FAILED(hr)) return hr;
     }
@@ -63,7 +63,7 @@ HRESULT KTCAutoPartDoc::checkout_pathelement(CATISpecObject_var object,
     if (FAILED(hr)) return hr;
 
     // check out path element
-    CATPathElement context = _editor->GetUIActiveObject();
+    CATPathElement context = catFrmEditor_->GetUIActiveObject();
     hr                     = buildPath->ExtractPathElement(&context, pathElement);
     KTCRelease(buildPath);
     return hr;
@@ -92,16 +92,16 @@ HRESULT KTCAutoPartDoc::checkout_pathelement(const CATListValCATISpecObject_var&
 HRESULT KTCAutoPartDoc::initial_editor(CATFrmEditor* iEditor) {
     // 1. set to input editor
     if (iEditor) {
-        _editor = iEditor;
+        catFrmEditor_ = iEditor;
         return S_OK;
     };
 
     // 2.already initialized
-    if (_editor) return S_OK;
+    if (catFrmEditor_) return S_OK;
 
     // 3. check and get current editor
-    _editor = CATFrmEditor::GetCurrentEditor();
-    if (!_editor) return E_POINTER; // failed
+    catFrmEditor_ = CATFrmEditor::GetCurrentEditor();
+    if (!catFrmEditor_) return E_POINTER; // failed
 
     return S_OK; // ok
 }

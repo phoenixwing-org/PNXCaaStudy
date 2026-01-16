@@ -99,8 +99,6 @@ int PNXTemplateFeatureCore::pretreat() {
 
     if (NULL != catISO_) catISO_->Empty();
 
-    // TODO _ktc3DRep.ISOSet(catISO_);
-
     // list3DRep_->release(); // release first
 
     return 0;
@@ -178,8 +176,6 @@ int PNXTemplateFeatureCore::show_rep() {
     if (NULL == parameter) return 100001; // param check
 
     CAT3DRep* pRep = NULL;
-
-    //   KTC::RepShowCurve(&_ktc3DRep, curve); // show origin curve
 
     return 0;
 }

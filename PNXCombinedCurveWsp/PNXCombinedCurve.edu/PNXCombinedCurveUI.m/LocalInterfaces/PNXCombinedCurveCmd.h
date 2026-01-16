@@ -151,7 +151,7 @@ private:
 
     PNXCombinedCurveDlg* _panel;
 
-    CATFrmEditor* _editor;
+    CATFrmEditor* catFrmEditor_;
 
     CATHSO* _HSO;
 

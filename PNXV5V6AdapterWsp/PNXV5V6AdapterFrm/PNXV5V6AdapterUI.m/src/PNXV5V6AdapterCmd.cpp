@@ -327,10 +327,7 @@ CATBoolean PNXV5V6AdapterCmd::OkAction(void*) {
     EmptySO();                         // 0. Empty SO
     if (dialog) dialog->UpdateInfos(); // 1. update param
 
-    if (parameter) {
-        // parameter->dump();
-        // cout << "TODO : create divided point objects" << endl;
-    }
+    cout << "- Your code here" << endl;
 
     return TRUE;
 }
@@ -441,7 +438,7 @@ CATBoolean PNXV5V6AdapterCmd::ActionSelectorListPda(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::ActionValueChange(void*) {
     // gets ready for next acquisition
-    _daValueChange->InitializeAcquisition();
+    daValueChange_->InitializeAcquisition();
 
     AfterValueChange(); // action after value change
     return TRUE;

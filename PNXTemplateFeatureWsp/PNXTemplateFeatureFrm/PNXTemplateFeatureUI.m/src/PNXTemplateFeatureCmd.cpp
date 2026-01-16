@@ -81,7 +81,6 @@
 #include "KTCAutoDefine.h"
 #include "KTCAutoGSM.h"
 #include "KTCAutoObject.h"
-// #include "KTCVisualizationTools.h" TODO
 
 CATCreateClass(PNXTemplateFeatureCmd);
 
@@ -249,7 +248,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     // They make it possible for you not to worry about transition to OK and
     // Cancel States.
     //.............................................................................
-    _catDialogState = GetInitialPanelState("InitialPanelState");
+    catDialogState_ = GetInitialPanelState("InitialPanelState");
 
     // START KEVIN CAA WIZARD SECTION PNXTemplateFeature CMD AGENT BUILD GRAPH
 
@@ -309,13 +308,6 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     //---------------------------------------------------
     // Setting an ID to be able to read the created import
     //---------------------------------------------------
-    GUID guid = {// {795D00E4-5187-4c4f-89F0-8FD2FAD6CB3D}
-                 0x795d00e4,
-                 0x5187,
-                 0x4c4f,
-                 {0x89, 0xf0, 0x8f, 0xd2, 0xfa, 0xd6, 0xcb, 0x3d}};
-
-    // TODO _fiaMyFaces->SetImportApplicativeId(guid);
 
     //.............................................................................
     // KEVIN MANUAL CODE: Dialog show
@@ -573,7 +565,7 @@ CATBoolean PNXTemplateFeatureCmd::ActionSelectorListPda(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::ActionValueChange(void*) {
     // gets ready for next acquisition
-    _daValueChange->InitializeAcquisition();
+    daValueChange_->InitializeAcquisition();
 
     AfterValueChange(); // action after value change
     return TRUE;

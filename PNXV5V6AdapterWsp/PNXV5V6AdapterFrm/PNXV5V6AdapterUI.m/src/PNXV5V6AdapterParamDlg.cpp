@@ -60,7 +60,7 @@ PNXV5V6AdapterParamDlg::~PNXV5V6AdapterParamDlg() {
 }
 //---------------------------------------------------------
 void PNXV5V6AdapterParamDlg::Build() {
-    //  TODO: This call builds your dialog from the layout declaration file
+    // This call builds your dialog from the layout declaration file
     //  -------------------------------------------------------------------
 
     // clang-format off
@@ -83,22 +83,22 @@ _EditorFeatureVersion -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 
     // CAA2 WIZARD CALLBACK DECLARATION SECTION
     // END CAA2 WIZARD CALLBACK DECLARATION SECTION
-    AddAnalyseNotificationCB(this, GetWindCloseNotification(),
-                             (CATCommandMethod)&PNXV5V6AdapterParamDlg::
-                                 OnPNXV5V6AdapterParamDlgWindCloseNotification,
-                             NULL);
-    AddAnalyseNotificationCB(this, GetDiaCANCELNotification(),
-                             (CATCommandMethod)&PNXV5V6AdapterParamDlg::
-                                 OnPNXV5V6AdapterParamDlgDiaCANCELNotification,
-                             NULL);
+    AddAnalyseNotificationCB(
+        this, GetWindCloseNotification(),
+        (CATCommandMethod)&PNXV5V6AdapterParamDlg::OnPNXV5V6AdapterParamDlgWindCloseNotification,
+        NULL);
+    AddAnalyseNotificationCB(
+        this, GetDiaCANCELNotification(),
+        (CATCommandMethod)&PNXV5V6AdapterParamDlg::OnPNXV5V6AdapterParamDlgDiaCANCELNotification,
+        NULL);
     AddAnalyseNotificationCB(
         this, GetDiaOKNotification(),
-        (CATCommandMethod)&PNXV5V6AdapterParamDlg::OnPNXV5V6AdapterParamDlgDiaOKNotification,
-        NULL);
+        (CATCommandMethod)&PNXV5V6AdapterParamDlg::OnPNXV5V6AdapterParamDlgDiaOKNotification, NULL);
 }
 //-------------------------------------------------------------------------
-void PNXV5V6AdapterParamDlg::OnPNXV5V6AdapterParamDlgDiaOKNotification(
-    CATCommand* cmd, CATNotification* evt, CATCommandClientData data) {
+void PNXV5V6AdapterParamDlg::OnPNXV5V6AdapterParamDlgDiaOKNotification(CATCommand*          cmd,
+                                                                       CATNotification*     evt,
+                                                                       CATCommandClientData data) {
     // Add your code here
     SetVisibility(CATDlgHide);
 }

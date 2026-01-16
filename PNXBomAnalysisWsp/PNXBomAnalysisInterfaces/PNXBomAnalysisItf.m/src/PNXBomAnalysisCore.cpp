@@ -77,7 +77,7 @@ int PNXBomAnalysisCore::calculate() {
     if (parameter->previewCode) return parameter->code = parameter->previewCode;
 
     // clear
-    parameter->FirstPartNumber = ""; // TODO delete
+    parameter->FirstPartNumber = "";
 
     int count = bomAnalysis(parameter->FirstProduct, "");
     cout << "- total pruduct count = " << count << endl;

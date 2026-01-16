@@ -203,7 +203,7 @@ void PNXTemplateBaseCmd::BuildGraph() {
     // They make it possible for you not to worry about transition to OK and
     // Cancel States.
     //.............................................................................
-    _catDialogState = GetInitialPanelState("InitialPanelState");
+    catDialogState_ = GetInitialPanelState("InitialPanelState");
 
     // START KEVIN CAA WIZARD SECTION PNXTemplateBase CMD AGENT BUILD GRAPH
 
@@ -506,7 +506,7 @@ CATBoolean PNXTemplateBaseCmd::ActionSelectorListPda(void* data) {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::ActionValueChange(void*) {
     // gets ready for next acquisition
-    _daValueChange->InitializeAcquisition();
+    daValueChange_->InitializeAcquisition();
 
     AfterValueChange(); // action after value change
     return TRUE;

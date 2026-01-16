@@ -43,7 +43,7 @@ public:
      * @brief add element to hso
      * @param object CATISpecObject_var
      * @return add count
-     * @note call _hso->AddElement
+     * @note call hso_->AddElement
      */
     int AddElement(CATISpecObject_var object);
 
@@ -51,7 +51,7 @@ public:
      * @brief add elements to hso
      * @param object CATISpecObject_var
      * @return add count
-     * @note call _hso->AddElements
+     * @note call hso_->AddElements
      */
     int AddElement(const CATListValCATISpecObject_var& list);
 
@@ -78,7 +78,7 @@ public:
      * @brief initial editor and hso
      * @param editor CATFrmEditor*
      * @param hso CATHSO*
-     * @note set _editor and _hso
+     * @note set catFrmEditor_ and hso_
      */
     void initial(CATFrmEditor* editor, CATHSO* hso);
 
@@ -86,7 +86,7 @@ public:
      * @brief remove element from hso
      * @param object CATISpecObject_var
      * @return remove count
-     * @note call _hso->RemoveElement
+     * @note call hso_->RemoveElement
      */
     int RemoveElement(CATISpecObject_var object);
 
@@ -94,14 +94,14 @@ public:
      * @brief add elements to hso
      * @param object CATISpecObject_var
      * @return remove count
-     * @note call _hso->RemoveElements
+     * @note call hso_->RemoveElements
      */
     int RemoveElement(const CATListValCATISpecObject_var& list);
 
 public:
-    CATFrmEditor*  _editor;  // catia frame editor
-    CATHSO*        _hso;     // catia hso
-    KTCAutoPartDoc _partDoc; // catia part doc
+    CATFrmEditor*  catFrmEditor_; // catia frame editor
+    CATHSO*        hso_;          // catia hso
+    KTCAutoPartDoc partDoc_;      // catia part doc
 };
 
 #endif
