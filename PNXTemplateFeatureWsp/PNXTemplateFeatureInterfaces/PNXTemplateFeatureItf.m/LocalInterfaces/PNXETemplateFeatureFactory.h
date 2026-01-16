@@ -41,12 +41,11 @@ public:
 public:
     /**
      * @brief Create PNXITemplateFeature Instance
-     * @param[in] ioParam Param value
-     * @param[out] ospObjectOnTemplateFeature Out Instance pointer
+     * @param[in] parameter parameter pointer
+     * @param[out] ospFeature Out Instance pointer
      * @return HRESULT
      */
-    HRESULT CreateTemplateFeature(PNXTemplateFeatureParam& ioParam,
-                                  CATISpecObject_var&      ospObjectOnTemplateFeature);
+    HRESULT create(PNXTemplateFeatureParam* parameter, CATISpecObject_var& ospFeature);
 
 private:
     // The copy constructor and the equal operator must not be implemented

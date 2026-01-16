@@ -45,8 +45,6 @@
 
 #include <time.h>
 
-// Error title
-#define ERROR_TITLE_Create "Error : PNXV5V6AdapterCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------

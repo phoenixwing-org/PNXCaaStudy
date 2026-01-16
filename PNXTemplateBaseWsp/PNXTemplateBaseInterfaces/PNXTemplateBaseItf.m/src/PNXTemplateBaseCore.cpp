@@ -78,8 +78,6 @@
 
 #include <time.h>
 
-// Error title
-#define ERROR_TITLE_Create "Error : PNXTemplateBaseCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------
@@ -113,7 +111,7 @@ int PNXTemplateBaseCore::pretreat() {
 
     if (previewCode) return previewCode; // if error return
 
-    return S_OK;
+    return 0;
 }
 //-----------------------------------------------------------------------------
 int PNXTemplateBaseCore::calculate() {
@@ -138,8 +136,6 @@ int PNXTemplateBaseCore::create() {
     if (NULL == parameter) return 100001;                       // param check
     if (NULL == catFrmEditor_) return parameter->code = 100002; // editor pointer check
     if (parameter->previewCode) return parameter->code = parameter->previewCode; // no pretreat
-
-    feature = NULL_var; // clear first
 
     //=====================================================
     // 不用再查检查“结果列表”中所有草图对象都能匹配,Pretreat里面检查过了

@@ -79,9 +79,6 @@
 #include "PNXTemplateFeatureCore.h"
 
 // Kt
-
-// Error title
-#define ERROR_TITLE_Create "Error : PNXTemplateFeatureCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------
@@ -96,7 +93,29 @@ int PNXTemplateFeatureCore::pretreat() {
     // cout << "### " << __FUNCTION__ << endl;
     if (NULL == parameter) return 100001; // param check
     parameter->MyTime.clear();            // clear time string
+    // cout << "### " << __FUNCTION__ << endl;
+    if (NULL == parameter) return 100001;
+    int&      previewCode = parameter->previewCode; // 引用预处理Code
+    KtString& message     = parameter->message;     // 引用message
+    message.clear();
+    parameter->code        = 100010; // 没有计算
+    parameter->previewCode = 0;      // 初始化为0（无错误）
 
+    // if (NULL != catISO_) catISO_->Empty();
+
+    // 检查输入，set previewCode
+    if (!parameter->MyCurve) {
+        parameter->set_message(100102, "Please select MyCurve");
+        return previewCode = parameter->code;
+    }
+    if (!parameter->MyFaces.Size() == 0) {
+        parameter->set_message(100103, "Please select MyFaces");
+        return previewCode = parameter->code;
+    }
+
+    if (previewCode) return previewCode; // if error return
+
+    return S_OK;
     if (NULL != catISO_) catISO_->Empty();
 
     // list3DRep_->release(); // release first
@@ -106,13 +125,21 @@ int PNXTemplateFeatureCore::pretreat() {
 //-----------------------------------------------------------------------------
 int PNXTemplateFeatureCore::calculate() {
     // cout << "### " << __FUNCTION__ << endl;
-    if (NULL == parameter) return 100001; // param check
-
-    //.............................need calculate time
-
     parameter->FinishCalc = 0;
-    HRESULT hr            = S_OK;
+    if (NULL == parameter) return 100001; // param check
+    // if (NULL == catFrmEditor_) return parameter->code = 100002; // editor pointer check
+    if (parameter->previewCode) return parameter->code = parameter->previewCode; // no pretreat
 
+    //=====================================================
+    // 不用再查检查“结果列表”中所有草图对象都能匹配,Pretreat里面检查过了
+    // do not check sketches.size again
+    //=====================================================
+
+    // 变量设定======
+    KtString msg; // 临时信息
+    int&     code = parameter->code;
+    parameter->clear_error(); // 设置为无错误
+    HRESULT hr = S_OK;
     return 0;
 }
 //-----------------------------------------------------------------------------
@@ -122,33 +149,28 @@ int PNXTemplateFeatureCore::create() {
     if (NULL == catFrmEditor_) return 100001; // editor pointer check
     feature = NULL_var;                       // clear first
 
-    HRESULT hr = E_FAIL;
+    HRESULT  hr = E_FAIL;
+    KtString msg; // 收集錯誤
 
     //
     // 1- Looking for a factory to create the element
     //
 
     // Factory control, class for partDocument unities. initial from editor.
-    KTCAutoPartDoc partDocument1;                // initial
-    partDocument1.initial_editor(catFrmEditor_); // set editor
+    KTCAutoPartDoc partDocument;                // initial
+    partDocument.initial_editor(catFrmEditor_); // set editor
 
     // query PNXITemplateFeatureFactory factory under the part container
-    PNXITemplateFeatureFactory* piTemplateFeatureFactory = NULL; // Need release.
-    // hr = partDocument1.che(IID_PNXITemplateFeatureFactory,
-    //                                    (void**)&piTemplateFeatureFactory);
-    // if (FAILED(hr)) {
-    //     cout << ERROR_TITLE_Create << " QueryInterface(IID_PNXITemplateFeatureFactory). hr = " <<
-    //     hr
-    //          << endl;
-    //     return 100004;
-    // }
+    PNXITemplateFeatureFactory* factory = NULL; // Need release.
+    // TODO  hr = partDocument.che(IID_PNXITemplateFeatureFactory, (void**)&factory);
+    if (FAILED(hr)) KTC_MESSAGE_RETURN_CODE("Query PNXITemplateFeatureFactory failed.", 100004);
 
     //
     // 2- Creating the element
     //
 
-    hr = piTemplateFeatureFactory->CreateTemplateFeature(*parameter, feature);
-    KTCRelease(piTemplateFeatureFactory);
+    hr = factory->create(parameter, feature);
+    KTCRelease(factory);
     if (FAILED(hr)) { // already print warning
         return 100005;
     }
@@ -159,11 +181,8 @@ int PNXTemplateFeatureCore::create() {
     //
 
     CATIGSMProceduralView_var spProceduralView = feature; // get interface for GSMProceduralView
-    if (NULL_var == spProceduralView) {                   // error
-        hr = E_POINTER;
-        cout << ERROR_TITLE_Create << " get CATIGSMProceduralView_var.  " << hr << endl;
-        return 100006;
-    }
+    if (NULL_var == spProceduralView)
+        KTC_MESSAGE_RETURN_CODE("get CATIGSMProceduralView_var failed", 100006);
 
     // inset in view
     spProceduralView->InsertInProceduralView();

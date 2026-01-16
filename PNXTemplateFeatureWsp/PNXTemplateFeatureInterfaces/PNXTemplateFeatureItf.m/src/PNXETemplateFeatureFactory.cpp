@@ -56,10 +56,6 @@
 #include "CATICatalog.h"
 #endif
 
-// Error title
-#define ERROR_TITLE_CreateTemplateFeature \
-    "     {NG}. PNXETemplateFeatureFactory::CreateTemplateFeature(...) ..."
-
 CATImplementClass(PNXETemplateFeatureFactory, DataExtension, CATBaseUnknown, CATPrtCont);
 
 //---------------------------------------------------------------------------------------------------
@@ -85,86 +81,73 @@ PNXETemplateFeatureFactory::~PNXETemplateFeatureFactory() {
 TIE_PNXITemplateFeatureFactory(PNXETemplateFeatureFactory);
 
 //---------------------------------------------------------------------------------------------------
-HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
-    PNXTemplateFeatureParam& ioParam, CATISpecObject_var& ospObjectOnTemplateFeature) {
-    ospObjectOnTemplateFeature             = NULL_var; // set NULL_var first
-    PNXITemplateFeature* pITemplateFeature = NULL;     // your feature
-    HRESULT              hr                = S_OK;
+HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
+                                           CATISpecObject_var&      ospFeature) {
+    ospFeature = NULL_var; // set NULL_var first
+    if (NULL == parameter) return E_INVALIDARG;
+
+    PNXITemplateFeature* feature            = NULL; // your feature
+    HRESULT              hr                 = S_OK;
+    KtString             msg                = "";
+    CATUnicodeString     catalogStorageName = "PNXTemplateFeatureFeature";
+    CATUnicodeString     clientId           = "PNXTemplateFeatureID";
+    CATUnicodeString     partnerID          = "PNXTemplateFeature"; // for V25 or later
+    CATUnicodeString     startupType        = "PNXTemplateFeature"; // for V24 or erlier
 
     //===============================================================================================
     //
     // -1- Retrieves a CATICkeParmFactory interface on this.
     //
     //===============================================================================================
+    CATICkeParmFactory* parmFactory = NULL;
+    hr = this->QueryInterface(IID_CATICkeParmFactory, (void**)&parmFactory); // query
+    if (FAILED(hr) || !parmFactory)
+        KTC_MESSAGE_CODE_RETURN_HR("Query CATICkeParmFactory failed.", hr, 100105);
 
-    // Get parm factory
-    CATICkeParmFactory* piParmFactory = NULL;
-    hr = this->QueryInterface(IID_CATICkeParmFactory, (void**)&piParmFactory); // query
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature
-             << " QueryInterface(IID_CATICkeParmFactory)! hr = " << hr << endl;
-        return hr; // error
-    }
-
-// fit for high version catia catalog
+    // 根据版本来写代码
 #if defined CATIAV5R25
+    //===============================
+    // TODO 验证 Catia V25和后面的版本
+    //===============================
 
     // -1- Opening the Catalog
-    CATIContainer_var spiSpecContainer(this);
-    if (NULL_var == spiSpecContainer) {
-        hr = E_POINTER;
-        cout << ERROR_TITLE_CreateTemplateFeature << " CATIContainer_var  is NULL_var!  hr = " << hr
-             << endl;
-        return hr;
-    }
+    CATIContainer_var container(this);
+    if (NULL_var == container)
+        KTC_MESSAGE_CODE_RETURN_HR("CATIContainer_var  is NULL_var! ", E_POINTER, 100106);
 
-    CATUnicodeString uCatalogStorageName = "PNXTemplateFeatureFeature";
-    CATUnicodeString ClientId            = "PNXTemplateFeatureID";
-    CATUnicodeString PartnerID           = "PNXTemplateFeature";
+    CATUnicodeString catalogStorageName = "PNXTemplateFeatureFeature";
+    CATUnicodeString partnerID          = "PNXTemplateFeature";
     CATFmCredentials myCredentials;
-    hr = myCredentials.RegisterAsApplicationBasedOn(CATFmFeatureModelerID, PartnerID);
+    hr = myCredentials.RegisterAsApplicationBasedOn(CATFmFeatureModelerID, partnerID);
     if (SUCCEEDED(hr)) {
-        hr = myCredentials.RegisterAsCatalogOwner(uCatalogStorageName, ClientId);
+        hr = myCredentials.RegisterAsCatalogOwner(catalogStorageName, clientId);
     }
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature << " Register catalog error!  hr = " << hr
-             << endl;
-        return hr;
-    }
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Register catalog failed.", hr, 100107);
 
     // 2. Get Container Facade
     CATFmContainerFacade myContainerFacade(myCredentials, this);
 
     // 3. Get StartUp Facade
-    CATUnicodeString   StartupType = "`PNXTemplateFeature`@`PNXTemplateFeatureFeature.CATfct`";
-    CATFmStartUpFacade myStartUpFacade(myCredentials, StartupType);
+    CATUnicodeString   startupType = "`PNXTemplateFeature`@`PNXTemplateFeatureFeature.CATfct`";
+    CATFmStartUpFacade myStartUpFacade(myCredentials, startupType);
 
     // 4. Instance StartUp
     CATFmFeatureFacade myFeatureFacade;
     hr = myStartUpFacade.InstantiateIn(myContainerFacade, myFeatureFacade);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature << " InstantiateIn() error!  hr = " << hr << endl;
-        return hr;
-    }
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("InstantiateIn() failed.", hr, 100108);
 
     // get PNXITemplateFeature pointer
-    hr = myFeatureFacade.QueryInterfaceOnFeature(IID_PNXITemplateFeature,
-                                                 (void**)&pITemplateFeature);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature
-             << " QueryInterface(IID_PNXITemplateFeature)!  hr = " << hr << endl;
-        return hr;
-    }
+    hr = myFeatureFacade.QueryInterfaceOnFeature(IID_PNXITemplateFeature, (void**)&feature);
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query PNXITemplateFeature failed.", hr, 100109);
 
-    ospObjectOnTemplateFeature = pITemplateFeature; // convert to CATISpecObject_var
-    if (NULL_var == ospObjectOnTemplateFeature) {
-        hr = E_POINTER;
-        cout << ERROR_TITLE_CreateTemplateFeature << " Get CATISpecObject_var Error! hr = " << hr
-             << endl;
-        return hr;
-    }
+    ospFeature = feature; // convert to CATISpecObject_var
+    if (NULL_var == ospFeature)
+        KTC_MESSAGE_CODE_RETURN_HR("Get CATISpecObject_var failed.", E_POINTER, 100110);
 
-#else // low version catia before 25
+#else
+    //===============================
+    // Catia V24 和前面的版本
+    //===============================
 
     //===============================================================================================
     //
@@ -186,193 +169,154 @@ HRESULT PNXETemplateFeatureFactory::CreateTemplateFeature(
     // -2- Opens the catalog
     //
     //===============================================================================================
-
-    CATUnicodeString StartupType = "PNXTemplateFeature";
-    CATUnicodeString ClientId    = "PNXTemplateFeatureID";
-    CATUnicodeString StorageName = "PNXTemplateFeatureFeature.CATfct";
+    CATISpecObject_var startupObject = NULL_var;
+    CATUnicodeString   storageName   = catalogStorageName + ".CATfct";
 
     // Initial a CATOsmSUHandler to access the catalog
     // Provides access to a startup stored in catalogs.
-    CATOsmSUHandler addOpSUHandler(StartupType, ClientId, StorageName);
+    CATOsmSUHandler addOpSUHandler(startupType, clientId, storageName);
 
     //===============================================================================================
     //
     // -3- Retrieves startup
     //
     //===============================================================================================
-
-    CATISpecObject_var spSpecOnStartUp = NULL_var;
-    hr                                 = addOpSUHandler.RetrieveSU(spSpecOnStartUp);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature << " RetrieveSU(...)! hr = " << hr << endl;
-        return hr;
-    }
+    hr = addOpSUHandler.RetrieveSU(startupObject);
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("RetrieveSU(...) failed.", hr, 100111);
 
     //===============================================================================================
     //
-    // -4- Creates a Object instance to ospObjectOnTemplateFeature
+    // -4- Creates a Object instance to ospFeature
     //
     //===============================================================================================
-
     CATIContainer_var spContainer = this; // get current factory containers
     // instanciate by CATOsmSUHandler
-    hr = addOpSUHandler.Instanciate(ospObjectOnTemplateFeature, spContainer, NULL_string);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature << " Instanciate(...)!  hr = " << hr << endl;
-        return hr;
-    }
+    hr = addOpSUHandler.Instanciate(ospFeature, spContainer, NULL_string);
+    if (FAILED(hr) || !ospFeature)
+        KTC_MESSAGE_CODE_RETURN_HR("Instanciate(...) failed.", hr, 100112);
 
-    hr = ospObjectOnTemplateFeature->QueryInterface(IID_PNXITemplateFeature,
-                                                    (void**)&pITemplateFeature);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature
-             << " QueryInterface(IID_PNXITemplateFeature)!  hr = " << hr << endl;
-        return hr;
-    }
+    hr = ospFeature->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query PNXITemplateFeature failed.", hr, 100113);
 
 #endif // end of high version catia catalog
 
     // used for auto append param on tree. kevin.
-    KtListV<CATUnicodeString> spListParmName;
-    KtListV<bool>             ListOnTree;
-    KtListV<CATICkeParm_var>  spListParm;
-    PNXTemplateFeatureParam*  parameter = &ioParam;
+    // spListParmName，ListOnTree，spListParm等变量在自动代码里面使用，不能改名
+    KtListV<CATUnicodeString> spListParmName; // 参数显示名
+    KtListV<int>              ListOnTree;     // 是否放到树上
+    KtListV<CATICkeParm_var>  spListParm;     // parm 列表
 
-#if 0
-	//4.1 On Tree
-	//DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
-	// START KEVIN CAA WIZARD SECTION PNXTemplateFeature FACTRY ON TREE
+    // 4.1 On Tree
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    //  START KEVIN CAA WIZARD SECTION PNXTemplateFeature FACTRY ON TREE
 
-	// clang-format off
+    // clang-format off
 
 	// 4, MyStep,
 	spListParmName.Append("MyStep");
-	spListParm.Append(piParmFactory->CreateReal("My Step", parameter->MyStep));
+	spListParm.Append(parmFactory->CreateReal("My Step", parameter->MyStep));
 	ListOnTree.Append(true);
 
-	// clang-format on
-	// END KEVIN CAA WIZARD SECTION PNXTemplateFeature FACTRY ON TREE
-
-#endif
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXTemplateFeature FACTRY ON TREE
 
 #if 0
     // KEVIN MANUAL CODE START
+    // 前面的自动代码如果不满意，这里写手动代码，但是要把前面的代码屏蔽
+
     // MyStep,
     spListParmName.Append("MyStep");
-    spListParm.Append(piParmFactory->CreateReal("Step", parameter->MyStep));
-    ListOnTree.Append(true);
+    spListParm.Append(parmFactory->CreateReal("Step", parameter->MyStep));
+    ListOnTree.Append(1);
 
     // KEVIN MANUAL CODE END
+#endif
 
+    // 如果有结构树的参数
     if (spListParm.size() > 0) {
-        CATISpecAttrAccess* pISpecAttrAccess = NULL; //
-        hr = ospObjectOnTemplateFeature->QueryInterface(IID_CATISpecAttrAccess,
-                                                        (void**)&pISpecAttrAccess);
-        if (FAILED(hr)) {
-            cout << ERROR_TITLE_CreateTemplateFeature
-                 << " QueryInterface(IID_CATISpecAttrAccess)!  hr = " << hr << endl;
-            return hr;
-        }
+        CATISpecAttrAccess* attrAccess = NULL; //
+        hr = ospFeature->QueryInterface(IID_CATISpecAttrAccess, (void**)&attrAccess);
+        if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query CATISpecAttrAccess failed", hr, 100114);
 
-        CATISpecAttrKey* pISpecAttrKey = NULL; // Key
+        CATISpecAttrKey* attrKey = NULL; // Key
+
         // put on tree initial
         for (size_t i = 0; i < spListParm.size(); i++) {
-            pISpecAttrKey = pISpecAttrAccess->get_CATISpecAttrKey(spListParmName[ i ].ConvertToChar());
-            if (!pISpecAttrKey) {
-                cout << "GetKey Error" << spListParmName[ i ] << endl;
+            attrKey = attrAccess->GetAttrKey(spListParmName[ i ].ConvertToChar());
+            if (!attrKey) {
+                (msg = " - GetKey Error ") << spListParmName[ i ].ConvertToChar();
+                cout << msg.str() << endl;
+                parameter->append_message(msg);
                 continue;
             }
 
-            // your code here
+            //=====================
+            // 您的自定义代码写到这里
+            //=====================
 
             // set all read only
             spListParm[ i ]->SetUserAccess(CATICkeParm::ReadOnly);
+            attrAccess->SetSpecObject(attrKey, spListParm[ i ]); // set;
 
-            pISpecAttrAccess->SetSpecObject(pISpecAttrKey, spListParm[ i ]); // set;
-
-            KTCRelease(pISpecAttrKey); // release
+            KTCRelease(attrKey); // 手动释放
         }
-        KTCRelease(pISpecAttrAccess); // release
+        KTCRelease(attrAccess); // 手动释放
 
         // Show On tree
         CATIDescendants* pIDescendants = NULL; // des
-        hr =
-            ospObjectOnTemplateFeature->QueryInterface(IID_CATIDescendants, (void**)&pIDescendants);
-        if (FAILED(hr)) {
-            cout << ERROR_TITLE_CreateTemplateFeature
-                 << " QueryInterface(IID_CATIDescendants)!  hr = " << hr << endl;
-            ;
-            return hr;
-        }
+        hr = ospFeature->QueryInterface(IID_CATIDescendants, (void**)&pIDescendants);
+        if (FAILED(hr))
+            KTC_MESSAGE_CODE_RETURN_HR("QueryInterface(IID_CATIDescendants) faild ", hr, 100115);
 
         for (size_t i = 0; i < spListParm.size(); i++) {
             if (!spListParm[ i ] || !ListOnTree[ i ]) continue; // not on  tree
 
             pIDescendants->Append((spListParm[ i ])); // on tree
         }
-        KTCRelease(pIDescendants); // release
+        KTCRelease(pIDescendants); // 手动释放
     }
-
     //===============================================================================================
     //
     // -5- Subscribes to repository for Configuration Data Storage
     //
     //===============================================================================================
 
-    hr = CATMmrAlgoConfigServices::CreateConfigurationData(ospObjectOnTemplateFeature);
-    if (FAILED(hr)) {
-        cout << ERROR_TITLE_CreateTemplateFeature << " CreateConfigurationData(...)!  hr = " << hr
-             << endl;
-        return hr;
-    }
+    hr = CATMmrAlgoConfigServices::CreateConfigurationData(ospFeature);
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("CreateConfigurationData(...) failed.", hr, 100116);
 
-#endif
+    // FeatureType is not overload for voiceTransm
+    //===============================================================================================
+    //
+    // -6- Gets Feature Type Information for BackUp / StartUp management
+    //
+    //===============================================================================================
 
-#if 0 // FeatureType is not overload for voiceTransm
-	//===============================================================================================
-	//
-	// -6- Gets Feature Type Information for BackUp / StartUp management
-	//
-	//===============================================================================================
+    CATIInputDescription*             inputDescription = NULL;
+    CATIInputDescription::FeatureType featureType      = CATIInputDescription::FeatureType_Unset;
 
-	CATIInputDescription *pInputDescriptionOnTemplateFeature = NULL;
-	hr = ospObjectOnTemplateFeature->QueryInterface(IID_CATIInputDescription, (void **)&pInputDescriptionOnTemplateFeature);
-	if (FAILED(hr))
-	{
-		cout << ERROR_TITLE_CreateTemplateFeature << " QueryInterface(IID_CATIInputDescription)!  hr = " << hr << endl;
-		return hr;
-	}
+    // 检出 InputDescription
+    hr = ospFeature->QueryInterface(IID_CATIInputDescription, (void**)&inputDescription);
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query CATIInputDescription failed", hr, 100117);
 
-	CATIInputDescription::FeatureType Feature_type = CATIInputDescription::FeatureType_Unset;
+    // 检出 FeatureType
+    hr = inputDescription->GetFeatureType(featureType);
+    KTCRelease(inputDescription); // 手动释放
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("GetFeatureType(...) failed.", hr, 100118);
 
-	hr = pInputDescriptionOnTemplateFeature->GetFeatureType(Feature_type);
-	KTCRelease(pInputDescriptionOnTemplateFeature); //Release
-	if (FAILED(hr))
-	{
-		cout << ERROR_TITLE_CreateTemplateFeature << " GetFeatureType(...)!  hr = " << hr << endl;
-		return hr;
-	}
-
-	hr = CATMmrFeatureAttributes::SetFeatureType(ospObjectOnTemplateFeature, Feature_type);
-	KTCRelease(pInputDescriptionOnTemplateFeature); //Release
-	if (FAILED(hr))
-	{
-		cout << ERROR_TITLE_CreateTemplateFeature << " SetFeatureType(...)!  hr = " << hr << endl;
-		return hr;
-	}
-#endif
+    // 设置 FeatureType
+    hr = CATMmrFeatureAttributes::SetFeatureType(ospFeature, featureType);
+    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("SetFeatureType(...) failed.", hr, 100119);
 
     //===============================================================================================
     //
     // -7- Sets default values for the attributes of the instance
     //
     //===============================================================================================
-
-    pITemplateFeature->SetParams(ioParam); // Set default value
+    feature->SetParams(*parameter); // Set default value
 
     // initial software version
-    pITemplateFeature->SetVersion(PNXTemplateFeatureParam::GetSoftwareVersion());
+    feature->SetVersion(PNXTemplateFeatureParam::GetSoftwareVersion());
 
-    KTCRelease(pITemplateFeature);
+    KTCRelease(feature); // 手动释放
     return S_OK;
 }

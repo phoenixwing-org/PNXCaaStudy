@@ -108,15 +108,15 @@ PNXETemplateFeatureBuild::~PNXETemplateFeatureBuild() {
 HRESULT PNXETemplateFeatureBuild::Build() {
     cout << "### " << __FUNCTION__ << endl;
 
-    PNXITemplateFeature* piTemplateFeature = NULL;
-    this->QueryInterface(IID_PNXITemplateFeature, (void**)&piTemplateFeature);
-    if (NULL == piTemplateFeature) return E_FAIL;
+    PNXITemplateFeature* feature = NULL;
+    this->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
+    if (NULL == feature) return E_FAIL;
 
-    CATBoolean finish = piTemplateFeature->GetFinishCalc();
+    CATBoolean finish = feature->GetFinishCalc();
 
     // finish only used once
-    if (finish) piTemplateFeature->SetFinishCalc(0);
+    if (finish) feature->SetFinishCalc(0);
 
-    KTCRelease(piTemplateFeature); // must release
+    KTCRelease(feature); // must release
     return finish ? S_OK : E_FAIL;
 }

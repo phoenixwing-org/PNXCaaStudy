@@ -36,13 +36,12 @@ class ExportedByPNXTemplateFeatureItf PNXITemplateFeatureFactory : public CATBas
 public:
     /**
      * @brief Create PNXITemplateFeature Instance
-     * @param[in] ioParam Param value
-     * @param[out] ospObjectOnTemplateFeature Out Instance pointer
+     * @param[in] parameter parameter pointer
+     * @param[out] ospFeature Out Instance smart pointer
      * @return HRESULT
-     * @note Implements the method CreateTemplateFeature of the interface PNXITemplateFeatureFactory
+     * @note Implements the method create of the interface PNXITemplateFeatureFactory
      */
-    virtual HRESULT CreateTemplateFeature(PNXTemplateFeatureParam& ioParam,
-                                          CATISpecObject_var&      ospObjectOnTemplateFeature) = 0;
+    virtual HRESULT create(PNXTemplateFeatureParam* parameter, CATISpecObject_var& ospFeature) = 0;
 };
 
 /** @brief Macro for Handlers  */

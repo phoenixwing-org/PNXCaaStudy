@@ -46,8 +46,6 @@
 
 #include <time.h>
 
-// Error title
-#define ERROR_TITLE_Create "Error : PNXCurveDivisionCore::create(...) ..."
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------

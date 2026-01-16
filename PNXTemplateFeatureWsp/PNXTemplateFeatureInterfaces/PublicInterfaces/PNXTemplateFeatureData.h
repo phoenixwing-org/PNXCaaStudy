@@ -22,11 +22,14 @@
 #include "CATMathTransformation.h"
 
 // Kt
+#include "KtListP.h"
 #include "KtListV.h"
 
 // Local Framework
 #include "PNXTemplateFeatureItf.h"
 #include "PNXTemplateFeatureParam.h"
+
+class CAT3DRep;
 
 /** @brief Core of Line create */
 class ExportedByPNXTemplateFeatureItf PNXTemplateFeatureData {

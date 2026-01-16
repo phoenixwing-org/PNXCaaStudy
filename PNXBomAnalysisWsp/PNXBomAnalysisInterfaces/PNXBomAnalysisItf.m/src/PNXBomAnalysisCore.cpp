@@ -51,7 +51,6 @@
 #include <map>
 #include <time.h>
 
-// Error title
 #define KTC_DEBUG_COUT
 
 //-----------------------------------------------------------------------------

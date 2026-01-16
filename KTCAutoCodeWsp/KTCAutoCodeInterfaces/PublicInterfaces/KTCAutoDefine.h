@@ -104,4 +104,47 @@ typedef CATULONG64 CtxMenuDef;
 
 } // namespace KTC
 
+/**
+ * @brief set message
+ * @param MESSAGE append message
+ */
+#define KTC_MESSAGE_LINE(MESSAGE) (msg = MESSAGE)
+
+/**
+ * @brief set new message with prifix Funcion
+ * @param MESSAGE append message
+ * like:KT_MESSAGE_FUN_HR("Query CATICkeParmFactory error.",hr);
+ */
+#define KTC_MESSAGE_FUN(MESSAGE) (msg = __FUNCTION__) << " : " << MESSAGE
+
+/**
+ * @brief set new message with prifix Funcion and hr
+ * @param MESSAGE append message
+ * @param HR append hr
+ * like:KT_MESSAGE_FUN_HR("Query CATICkeParmFactory error.",hr);
+ */
+#define KTC_MESSAGE_FUN_HR(MESSAGE, HR) \
+    (msg = __FUNCTION__) << " : " << MESSAGE << " hr = " << (int)HR
+
+#define KTC_MESSAGE_CODE_RETURN_HR(MESSAGE, HR, CODE)  \
+    {                                                  \
+        msg.clear() << MESSAGE << " hr = " << (int)HR; \
+        parameter->set_message(CODE, msg);             \
+        return hr;                                     \
+    }
+
+#define KTC_MESSAGE_RETURN_CODE(MESSAGE, CODE) \
+    {                                          \
+        msg.clear() << MESSAGE;                \
+        parameter->set_message(CODE, msg);     \
+        return CODE;                           \
+    }
+
+#define KTC_MESSAGE_FUN_CODE_RETURN_HR(MESSAGE, HR, CODE)                       \
+    {                                                                           \
+        msg.clear() << __FUNCTION__ << " : " << MESSAGE << " hr = " << (int)HR; \
+        parameter->set_message(CODE, msg);                                      \
+        return hr;                                                              \
+    }
+
 #endif // KTCAutoDefine_H_
