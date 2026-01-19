@@ -70,6 +70,7 @@
 
 // KTC Core
 #include "KTCAutoBody.h"
+#include "KTCAutoBuildGSM.h"
 #include "KTCAutoErrors.h"
 #include "KTCAutoPartDoc.h"
 
@@ -134,8 +135,6 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
     CATISpecObject_var featureSpec = feature;
     if (!featureSpec) return E_INVALIDARG;
 
-    cout << "- " << __LINE__ << endl;
-
     //========================================================================================
     //
     // The build method takes place as follows :
@@ -155,7 +154,7 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
     //   o  -4-2 Retrieving the topological journal
     //   o  -4-3 Retrieving the Algorithm Configuration
     //   o  -4-4 Running the topological operator - extruding curves
-    //   o  -4-5 Running the topological operator - computing combined curve
+    //   o  -4-5 Running the topological operator - computing feature
     //   o -5- Storing the procedural report
     //   o -6- Storing the Algorithm Configuration
     //   o -6- Cleaning useless data
@@ -166,81 +165,73 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
     //========================================================================================
 
     // You declare here the pointers :
-    //  - used in the CATTry and CATThrow sections, like piUpdateErrorOnThis
+    //  - used in the CATTry and CATThrow sections
     //  - initialized in the CATTry section, and not released before a
     //    method which can throw an error.
     //
-    CATIUpdateError*          piUpdateErrorOnThis        = NULL;
-    CATIGeometricalElement*   pIGeometricalElementOnThis = NULL;
-    CATIMfProcReport*         piProcReport               = NULL;
-    CATGeoFactory*            piGeomFactory              = NULL;
-    CATSoftwareConfiguration* pSoftConfig                = NULL;
-    int                       IsConfigToStore            = NULL;
-    HRESULT                   rc;
+    // buildGSM 会收集一些变量，进行释放Release
+    KTCAutoBuildGSM buildGSM;
+    int             IsConfigToStore = NULL;
+    HRESULT         rc;
 
     CATTry {
 
         //========================================================================================
-        //
-        // -0- Checking the deactivation
-        //
+        // -0 准备工作
+        // -0.1- Checking the Report
         //========================================================================================
+        rc = QueryInterface(IID_CATIMfProcReport, (void**)&buildGSM.procReport);
+        if (FAILED(rc)) {
+            cout << " - [ERROR] QueryInterface(IID_CATIMfProcReport) error" << endl;
+            return rc;
+        }
 
+        // -0.2- Checking the DeactivateState
         int                       DeactivateState = 0;
         CATIMechanicalProperties* pMechProp       = NULL;
         rc = QueryInterface(IID_CATIMechanicalProperties, (void**)&pMechProp);
         if (SUCCEEDED(rc)) {
             DeactivateState = pMechProp->IsInactive();
-
             KTCRelease(pMechProp); // 手动释放
 
+            // 禁用操作
             if (1 == DeactivateState) {
-                QueryInterface(IID_CATIMfProcReport, (void**)&piProcReport);
-                if (SUCCEEDED(rc)) {
-                    rc = piProcReport->InactivateResult();
-
-                    // if an error is sent by InactivateResult,
-                    // piProcReport is deleted in CATCatch sections
-
-                    KTCRelease(piProcReport); // 手动释放
+                if (buildGSM.procReport) {
+                    rc = buildGSM.procReport->InactivateResult();
                 }
             }
         }
 
         //========================================================================================
-        //
-        // -1- Cleaning last update error
-        //
+        // 激活状态处理
         //========================================================================================
         if (DeactivateState == 0) {
 
-            rc = QueryInterface(IID_CATIUpdateError, (void**)&piUpdateErrorOnThis);
+            //========================================================================================
+            // -1- Cleaning 工作
+            //========================================================================================
+            rc = QueryInterface(IID_CATIUpdateError, (void**)&buildGSM.updateError);
             if (SUCCEEDED(rc)) {
-                piUpdateErrorOnThis->UnsetUpdateError();
-            }
+                // -1.1- 清理错误
+                buildGSM.updateError->UnsetUpdateError();
 
-            // This step will be useless in R12
-            if (SUCCEEDED(rc)) {
-                rc =
-                    QueryInterface(IID_CATIGeometricalElement, (void**)&pIGeometricalElementOnThis);
+                // -1.2- 检出geometricalElement
+                rc = QueryInterface(IID_CATIGeometricalElement,
+                                    (void**)&buildGSM.geometricalElement);
                 if (SUCCEEDED(rc)) {
                     // Deletes the last result - method which can throw an error
-                    pIGeometricalElementOnThis->DeleteScope();
-
-                    // Useless pointer
-                    KTCRelease(pIGeometricalElementOnThis); // 手动释放
+                    buildGSM.geometricalElement->DeleteScope();
+                    KTCRelease(buildGSM.geometricalElement); // 手动释放
                 }
+            }
 
+            if (SUCCEEDED(rc)) {
                 //========================================================================================
-                //
                 // -2- Retrieving Data for the procedural report
-                //
                 //========================================================================================
 
                 //=====================================================================================
-                //
-                // -2-1 Retrieving the two input curves and the two input directions
-                //
+                // -2-1 Retrieving the input
                 //=====================================================================================
                 // Retrieves curves and directions
                 CATISpecObject_var myCurve = feature->GetMyCurve();
@@ -250,17 +241,12 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                 CATMathPoint endPoint(0, 0, 100 * step * 1000);
 
                 //========================================================================================
-                //
                 // -3- Creating the procedural report
-                //
                 //========================================================================================
 
                 //======================================================================================
-                // -3-1 Filling the lists of the specifications to follow by the procedural
-                // report
-                //
+                // -3-1 Filling the lists of the specifications to follow by the procedural report
                 //======================================================================================
-
                 CATLISTV(CATBaseUnknown_var) ListSpec;
                 CATListOfCATUnicodeString ListKeys;
                 if (SUCCEEDED(rc)) {
@@ -272,119 +258,64 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
 
                 //======================================================================================
                 // -3-2 Creating the procedural report with the list
-                //
                 //======================================================================================
 
                 if (SUCCEEDED(rc)) {
-                    rc = QueryInterface(IID_CATIMfProcReport, (void**)&piProcReport);
-                    if (SUCCEEDED(rc)) {
+                    if (buildGSM.procReport) {
                         // Creates the procedural report- the result is associated with the
                         // feature itself - so BoolOper is 0
                         // This method can throw an error
                         //
                         int BoolOper = 0;
-                        piProcReport->CreateProcReport(ListSpec, ListKeys, BoolOper);
+                        buildGSM.procReport->CreateProcReport(ListSpec, ListKeys, BoolOper);
                     }
                 }
 
                 //========================================================================================
-                //
                 // -4- Running the procedural report
-                //
                 //========================================================================================
 
-                //=====================================================================================
-                //
                 // -4-1 Retrieving the geometrical factory
-                //
-                //=====================================================================================
+                rc = buildGSM.query_factory(featureSpec);
 
-                if (SUCCEEDED(rc)) {
-                    // Gets a pointer on CATISpecObject.
-                    CATILinkableObject* piLinkableObjectOnTemplateFeature = NULL;
-                    rc = QueryInterface(IID_CATILinkableObject,
-                                        (void**)&piLinkableObjectOnTemplateFeature);
-
-                    if (SUCCEEDED(rc)) {
-                        // Do not release this pointer
-                        CATDocument* pDocument = NULL;
-                        pDocument              = piLinkableObjectOnTemplateFeature->GetDocument();
-
-                        if (NULL != pDocument) {
-                            CATIContainerOfDocument* pIContainerOfDocument = NULL;
-                            rc = pDocument->QueryInterface(IID_CATIContainerOfDocument,
-                                                           (void**)&pIContainerOfDocument);
-                            if (SUCCEEDED(rc)) {
-                                CATIContainer* pIContainerOnGeomContainer = NULL;
-                                rc = pIContainerOfDocument->GetResultContainer(
-                                    pIContainerOnGeomContainer);
-                                if (SUCCEEDED(rc)) {
-
-                                    rc = pIContainerOnGeomContainer->QueryInterface(
-                                        IID_CATGeoFactory, (void**)&piGeomFactory);
-                                    KTCRelease(pIContainerOnGeomContainer); // 手动释放
-                                }
-
-                                KTCRelease(pIContainerOfDocument); // 手动释放
-                            }
-                        }
-                        KTCRelease(piLinkableObjectOnTemplateFeature); // 手动释放
-                    }
-                }
-
-                //=====================================================================================
-                //
                 // -4-2 Retrieving the topological journal which contains the description
                 //      of all basic topological operations.
-                //
-                //=====================================================================================
-
                 CATTopData TopData;
-                if (SUCCEEDED(rc) && (NULL != piProcReport)) {
+                if (SUCCEEDED(rc)) {
                     // do not release this pointer
                     // This method can throw an error
-                    CATCGMJournalList* pCGMJournalList = piProcReport->GetCGMJournalList();
+                    CATCGMJournalList* pCGMJournalList = buildGSM.procReport->GetCGMJournalList();
                     TopData.SetJournal(pCGMJournalList);
 
-                    //=====================================================================================
-                    //
                     // -4-3 Retrieving the Algorithm Configuration which contains datas used to
                     //      version features
-                    //
-                    //=====================================================================================
-                    rc = CATMmrAlgoConfigServices::GetConfiguration(featureSpec, pSoftConfig,
-                                                                    IsConfigToStore);
+                    rc = CATMmrAlgoConfigServices::GetConfiguration(
+                        featureSpec, buildGSM.softConfig, IsConfigToStore);
                     if (SUCCEEDED(rc)) {
                         // SetSoftwareConfig
-                        TopData.SetSoftwareConfiguration(pSoftConfig);
-                        // release pSoftConfig after the procedural report ending
+                        TopData.SetSoftwareConfiguration(buildGSM.softConfig);
+                    }
+                    else {
+                        cout << " - [ERROR] failed to get buildGSM.softConfig" << endl;
                     }
                 }
 
-                //=====================================================================================
-                //
                 // -4-4 Running the topological operator extruding the two curves in both senses
                 //      defined by each direction
-                //
-                //=====================================================================================
-
                 CATBody* startPointBody = NULL;
                 CATBody* endPointBody   = NULL;
                 if (SUCCEEDED(rc)) {
                     // Create First Body
-                    startPointBody = ::CATCreateTopPointXYZ(
-                        piGeomFactory, &TopData, endPoint.GetX(), endPoint.GetY(), endPoint.GetZ());
+                    startPointBody =
+                        ::CATCreateTopPointXYZ(buildGSM.geomFactory, &TopData, endPoint.GetX(),
+                                               endPoint.GetY(), endPoint.GetZ());
 
                     if (NULL == startPointBody) {
                         cout << " - ERROR when ::CATCreateTopPointXYZ() return NULL" << endl;
                     }
                 }
 
-                //=====================================================================================
-                //
                 // -4-5 get Result Body
-                //
-                //=====================================================================================
                 CATBody* pResultBody = NULL;
 
                 if (startPointBody) pResultBody = startPointBody;
@@ -392,25 +323,22 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                 startPointBody = NULL; // 不用了，不删除传递给了pResultBody
 
                 //========================================================================================
-                //
                 // -5- Storing the procedural report
-                //
                 //========================================================================================
 
-                if (SUCCEEDED(rc) && (NULL != piProcReport)) {
+                if (SUCCEEDED(rc)) {
                     if (NULL != pResultBody) {
                         // This method can throw an error
                         int BoolOper = 0; // same as CreateProcReport
-                        piProcReport->StoreProcReport(pResultBody, NoCopy, BoolOper);
+                        buildGSM.procReport->StoreProcReport(pResultBody, NoCopy, BoolOper);
 
                         //===============================================================================
-                        //
                         // -6- Storing the Algorithm Configuration
-                        //
                         //===============================================================================
 
-                        if (IsConfigToStore == 1) {
-                            CATMmrAlgoConfigServices::StoreConfiguration(featureSpec, pSoftConfig);
+                        if (IsConfigToStore == 1 && buildGSM.softConfig) {
+                            CATMmrAlgoConfigServices::StoreConfiguration(featureSpec,
+                                                                         buildGSM.softConfig);
                         }
                     }
                     else {
@@ -424,26 +352,14 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                 }
 
                 //========================================================================================
-                //
                 // -7- Cleaning Useless Data, the possible solutions are:
-                //
                 //========================================================================================
 
-                // Removes the intermediates bodies from the geometric container
-                // if ((NULL != piGeomFactory) && (NULL != someBody)) {
-                //     piGeomFactory->Remove(someBody);
-                //     someBody = NULL;
-                // }
-
-                KTCRelease(piUpdateErrorOnThis); // 手动释放
-                KTCRelease(piProcReport);        // 手动释放 the procedural report
-                KTCRelease(pSoftConfig);         // 手动释放 the software configuration
-                KTCRelease(piGeomFactory);       // 手动释放
+                // Remove Body and set NULL
+                // buildGSM.remove(someBody);
 
                 //========================================================================================
-                //
                 // -7- Managing errors
-                //
                 //========================================================================================
 
                 CATCatch(CATMfErrUpdate, pUpdateError) {
@@ -451,34 +367,14 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                     // Catches CATMfErrUpdate errors
                     //------------------------------------------------------------------------------
 
-                    // Associates the error with the Combined Curve
-                    if (NULL != piUpdateErrorOnThis) {
-                        piUpdateErrorOnThis->SetUpdateError(pUpdateError);
-                        KTCRelease(piUpdateErrorOnThis); // 手动释放
+                    // Associates the error with the feature
+                    if (NULL != buildGSM.updateError) {
+                        buildGSM.updateError->SetUpdateError(pUpdateError);
                     }
-
-                    // Releases or deletes the pointer which can be valuated
-                    // but not released before an error
-                    //
-                    KTCRelease(pIGeometricalElementOnThis); // 手动释放
                 }
 
-                // Removes the intermediate CATBody
-                // if ((NULL != piGeomFactory) && (NULL != someBody)) {
-                //     piGeomFactory->Remove(someBody);
-                //     someBody = NULL;
-                // }
-
-                // Deletes the pointer on the geometric container
-                if (NULL != piGeomFactory) {
-                    KTCRelease(piGeomFactory); // 手动释放lease(piGeomFactory); // 手动释放
-                    KTCRelease(pSoftConfig);   // 手动释放
-
-                    // Re-dispatches the error.
-                    // In interactive mode, this errror will be caught by CATPrtUpdateCom that
-                    // knows how to handle such errors.
-                    CATRethrow;
-                }
+                // Remove Body and set NULL
+                // buildGSM.remove(someBody);
             }
         }
         cout << "- " << __LINE__ << endl;
@@ -493,35 +389,26 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
 
         ::Flush(pError);
 
-        // Associates the error with the Combined Curve
-        if (NULL != piUpdateErrorOnThis) {
-            piUpdateErrorOnThis->SetUpdateError(pErrorToThrow);
-            KTCRelease(piUpdateErrorOnThis); // 手动释放
+        // Associates the error with the feature
+        if (NULL != buildGSM.updateError) {
+            buildGSM.updateError->SetUpdateError(pErrorToThrow);
+            KTCRelease(buildGSM.updateError); // 手动释放
         }
-
-        // Releases or Deletes the pointer which can be valuated
-        // ant not released due to a throw
-        KTCRelease(pIGeometricalElementOnThis); // 手动释放
 
         // Deletes the result ( proc report + pResultBody )
-        if (NULL != piProcReport) {
-            piProcReport->DeleteProcReport();
-            KTCRelease(piProcReport); // 手动释放
+        if (NULL != buildGSM.procReport) {
+            buildGSM.procReport->DeleteProcReport();
         }
 
-        // Removes the intermediate CATBody
-        // if ((NULL != piGeomFactory) && (NULL != someBody)) {
-        //     piGeomFactory->Remove(someBody);
-        //     someBody = NULL;
-        // }
+        // Remove Body and set NULL
+        // buildGSM.remove(someBody);
 
         // Deletes the pointer on the geometric container
-        KTCRelease(piGeomFactory); // 手动释放
-        KTCRelease(pSoftConfig);   // 手动释放 software configuration
         CATThrow(pErrorToThrow);
     }
 
     CATEndTry;
+
     cout << "- " << __LINE__ << endl;
     return rc;
 }
