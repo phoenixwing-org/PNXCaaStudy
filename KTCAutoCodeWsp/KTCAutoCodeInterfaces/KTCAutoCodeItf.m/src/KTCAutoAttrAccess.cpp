@@ -164,6 +164,7 @@ HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
 
     // 获得未知类型列表
     CATListValCATBaseUnknown_var* unknownList = ListSpecObjects(attrKey);
+    KTCRelease(attrKey); // 手动释放
     if (NULL == unknownList) {
         value.RemoveAll();
         return E_FAIL;
@@ -186,6 +187,7 @@ HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
 
     // 获得未知类型列表
     CATListValCATBaseUnknown_var* unknownList = ListSpecObjects(attrKey);
+    KTCRelease(attrKey); // 手动释放
     if (NULL == unknownList) {
         value.RemoveAll();
         return E_FAIL;
@@ -296,10 +298,11 @@ HRESULT KTCAutoAttrAccess::SetListValue(const char* name, const CATListValCATISp
         }
         delete unknownList; // 手动释放
         if (SUCCEEDED(hr)) {
-            delete attrKey; // 手动释放
+            KTCRelease(attrKey); // 手动释放
             return hr;
         }
     }
+
     // 清空值
     hr = attrAccess_->UnsetAttributeValue(attrKey);
     if (FAILED(hr)) {
@@ -319,6 +322,7 @@ HRESULT KTCAutoAttrAccess::SetListValue(const char* name, const CATListValCATISp
         }
     }
 
+    KTCRelease(attrKey); // 手动释放
     return S_OK;
 }
 //-----------------------------------------------------------------------------
