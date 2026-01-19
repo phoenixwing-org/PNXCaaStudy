@@ -163,15 +163,15 @@ HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
     }
 
     // 获得未知类型列表
-    CATListValCATBaseUnknown_var* unkonwnList = ListSpecObjects(attrKey);
-    if (NULL == unkonwnList) {
+    CATListValCATBaseUnknown_var* unknownList = ListSpecObjects(attrKey);
+    if (NULL == unknownList) {
         value.RemoveAll();
         return E_FAIL;
     }
 
-    value = *unkonwnList; // 拷贝
+    value = *unknownList; // 拷贝
 
-    delete unkonwnList, unkonwnList = NULL; // 手动释放
+    delete unknownList, unknownList = NULL; // 手动释放
     return S_OK;                            // 正确
 }
 //-----------------------------------------------------------------------------
@@ -185,27 +185,27 @@ HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
     }
 
     // 获得未知类型列表
-    CATListValCATBaseUnknown_var* unkonwnList = ListSpecObjects(attrKey);
-    if (NULL == unkonwnList) {
+    CATListValCATBaseUnknown_var* unknownList = ListSpecObjects(attrKey);
+    if (NULL == unknownList) {
         value.RemoveAll();
         return E_FAIL;
     }
 
     // 申请空间，检查
     HRESULT   hr    = S_OK;
-    const int count = unkonwnList->Size(); // get size
+    const int count = unknownList->Size(); // get size
     value.Size(count, NULL);               // 改变空间
     if (value.Size() != count) hr = E_OUTOFMEMORY;
 
     // 拷贝
     if (SUCCEEDED(hr)) {
         for (int i = 1; i <= count; i++) {
-            value[ i ] = (*unkonwnList)[ i ];
+            value[ i ] = (*unknownList)[ i ];
         }
     }
 
-    delete unkonwnList, unkonwnList = NULL; // 手动释放
-    return S_OK;                            // 正确
+    delete unknownList; // 手动释放, unknownList = NULL
+    return S_OK;        // 正确
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetSpecValue(const char* name, CATISpecObject_var& value) const {
@@ -274,8 +274,52 @@ HRESULT KTCAutoAttrAccess::GetValue(const char* name, KtString& value) const {
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::SetListValue(const char* name, const CATListValCATISpecObject_var& value,
                                         CATBoolean checkExist) {
-    cout << "- [ERROR] his function is NOT IMPL" << endl;
-    return E_NOTIMPL;
+    // 检出 attrKey
+    CATISpecAttrKey* attrKey = get_CATISpecAttrKey(name);
+    if (NULL == attrKey) return E_INVALIDARG;
+
+    HRESULT hr = E_FAIL;
+    // check exist
+    if (checkExist) {
+
+        CATListValCATBaseUnknown_var* unknownList = attrAccess_->ListSpecObjects(attrKey);
+
+        if (unknownList && unknownList->Size() == value.Size()) {
+            // start from 1
+            for (int i = 1; i <= value.Size(); i++) {
+                if ((*unknownList)[ i ] != value[ i ]) {
+                    // 是否可以判断出一致，有待校验 不检查 hr
+                    attrAccess_->SetSpecObject(attrKey, value[ i ], i); // set no. i.
+                }
+            }
+            hr = S_OK;
+        }
+        delete unknownList; // 手动释放
+        if (SUCCEEDED(hr)) {
+            delete attrKey; // 手动释放
+            return hr;
+        }
+    }
+    // 清空值
+    hr = attrAccess_->UnsetAttributeValue(attrKey);
+    if (FAILED(hr)) {
+        cout << " -[ERROR] when UnsetAttributeValue `" << name << endl;
+        // return hr;
+    }
+
+    cout << " - add list value `" << name << "`: count =" << value.Size() << endl;
+    // 逐个添加  start from 1
+    for (int i = 1; i <= value.Size(); i++) {
+        // 是否可以判断出一致，有待校验 不检查 hr
+        hr = attrAccess_->SetSpecObject(attrKey, value[ i ], i); // set no. i.
+        cout << "    - add No." << i << endl;
+        if (FAILED(hr)) {
+            cout << " -[ERROR] when SetSpecObject() for No. `" << i << endl;
+            // return hr;
+        }
+    }
+
+    return S_OK;
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::SetSpecValue(const char* name, CATISpecObject_var value,
