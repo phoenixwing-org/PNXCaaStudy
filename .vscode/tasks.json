@@ -95,7 +95,7 @@
         {
             "label": "Run Cnext",
             "type": "shell",
-            "command": "${workspaceFolder}/tools/run.ps1",
+            "command": "${workspaceFolder}/PNXTemplateBaseWsp/run.ps1",
             "args": [
                 "-w",
                 "${workspaceFolder}"

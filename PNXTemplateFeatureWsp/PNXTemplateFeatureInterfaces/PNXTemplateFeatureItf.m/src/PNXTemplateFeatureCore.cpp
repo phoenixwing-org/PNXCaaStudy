@@ -108,7 +108,7 @@ int PNXTemplateFeatureCore::pretreat() {
         parameter->set_message(100102, "Please select MyCurve");
         return previewCode = parameter->code;
     }
-    if (!parameter->MyFaces.Size() == 0) {
+    if (parameter->MyFaces.Size() == 0) {
         parameter->set_message(100103, "Please select MyFaces");
         return previewCode = parameter->code;
     }

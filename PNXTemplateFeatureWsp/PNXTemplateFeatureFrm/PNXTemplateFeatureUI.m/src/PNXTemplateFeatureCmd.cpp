@@ -441,16 +441,22 @@ CATISpecObject_var PNXTemplateFeatureCmd::GiveMyFeature() {
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::OkAction(void*) {
     // cout << "### " << __FUNCTION__ << endl;
-
+    if (!feature) return FALSE;
     //
     // Get infors and set to feature
     // do not use AfterValueChange()
     //
 
-    EmptySO();                                // 0. Empty SO
-    dialog->UpdateInfos();                    // 1. update param
-    feature->SetParams(*parameter);           // 2. save param
-    KTCAutoObject::update(_MyFeature, false); // 3. Updates, do not warning
+    EmptySO();                                   // 0. Empty SO
+    dialog->UpdateInfos();                       // 1. update param
+    HRESULT hr = feature->SetParams(*parameter); // 2. save param
+    KTCAutoObject::update(_MyFeature, false);    // 3. Updates, do not warning
+
+    // message
+    if (FAILED(hr)) {
+        CATUnicodeString msg = feature->GetErrMsg();
+        cout << " - find error when SetParams(): " << msg << endl; // debug
+    }
 
     return TRUE;
 }

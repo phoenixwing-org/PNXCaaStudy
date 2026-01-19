@@ -206,6 +206,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     KtListV<int>              ListOnTree;     // 是否放到树上
     KtListV<CATICkeParm_var>  spListParm;     // parm 列表
 
+#if 0 // 自动代码
     // 4.1 On Tree
     // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
     //  START KEVIN CAA WIZARD SECTION PNXTemplateFeature FACTRY ON TREE
@@ -220,7 +221,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXTemplateFeature FACTRY ON TREE
 
-#if 0
+#else // 手动
     // KEVIN MANUAL CODE START
     // 前面的自动代码如果不满意，这里写手动代码，但是要把前面的代码屏蔽
 
@@ -242,6 +243,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
 
         // put on tree initial
         for (size_t i = 0; i < spListParm.size(); i++) {
+            // (1) 得到attrkey
             attrKey = attrAccess->GetAttrKey(spListParmName[ i ].ConvertToChar());
             if (!attrKey) {
                 (msg = " - GetKey Error ") << spListParmName[ i ].ConvertToChar();
@@ -250,13 +252,17 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
                 continue;
             }
 
-            //=====================
-            // 您的自定义代码写到这里
+            // (2) start=====================
+            // (2.1)您的自定义代码写到这里
             //=====================
 
-            // set all read only
+            // 或者(2.2) set all read only
             spListParm[ i ]->SetUserAccess(CATICkeParm::ReadOnly);
-            attrAccess->SetSpecObject(attrKey, spListParm[ i ]); // set;
+
+            // (2) end=====================
+
+            // (3) set to access
+            attrAccess->SetSpecObject(attrKey, spListParm[ i ]);
 
             KTCRelease(attrKey); // 手动释放
         }
@@ -298,14 +304,15 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     hr = ospFeature->QueryInterface(IID_CATIInputDescription, (void**)&inputDescription);
     if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query CATIInputDescription failed", hr, 100117);
 
+    // TODO
     // 检出 FeatureType
-    hr = inputDescription->GetFeatureType(featureType);
-    KTCRelease(inputDescription); // 手动释放
-    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("GetFeatureType(...) failed.", hr, 100118);
+    // hr = inputDescription->GetFeatureType(featureType);
+    // KTCRelease(inputDescription); // 手动释放
+    // if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("GetFeatureType(...) failed.", hr, 100118);
 
-    // 设置 FeatureType
-    hr = CATMmrFeatureAttributes::SetFeatureType(ospFeature, featureType);
-    if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("SetFeatureType(...) failed.", hr, 100119);
+    // // 设置 FeatureType
+    // hr = CATMmrFeatureAttributes::SetFeatureType(ospFeature, featureType);
+    // if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("SetFeatureType(...) failed.", hr, 100119);
 
     //===============================================================================================
     //
