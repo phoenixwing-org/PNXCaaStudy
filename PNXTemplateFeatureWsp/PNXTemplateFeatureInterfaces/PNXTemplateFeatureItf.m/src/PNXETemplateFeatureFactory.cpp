@@ -257,7 +257,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
             //=====================
 
             // Лђеп(2.2) set all read only
-            spListParm[ i ]->SetUserAccess(CATICkeParm::ReadOnly);
+            // spListParm[ i ]->SetUserAccess(CATICkeParm::ReadOnly);
 
             // (2) end=====================
 

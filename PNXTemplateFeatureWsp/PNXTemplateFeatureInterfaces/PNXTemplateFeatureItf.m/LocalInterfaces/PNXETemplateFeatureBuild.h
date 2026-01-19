@@ -41,6 +41,14 @@ public:
      */
     HRESULT Build();
 
+protected:
+    /**
+     * @brief build feature
+     * @param[in] feature target version. Start from 0.
+     * @return HRESULT.
+     */
+    HRESULT build_feature(PNXITemplateFeature_var feature);
+
 private:
     // The copy constructor and the equal operator must not be implemented
     // -------------------------------------------------------------------

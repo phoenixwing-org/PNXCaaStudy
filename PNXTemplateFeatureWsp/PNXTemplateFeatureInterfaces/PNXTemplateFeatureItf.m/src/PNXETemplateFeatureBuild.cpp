@@ -54,19 +54,16 @@
 
 // TopologicalOperators Framework
 #include "CATCreateTopIntersect.h" // Needed to intersect extruded surfaces
-#include "CATHybIntersect.h"       // The result of the extruded surfaces's intersection
+#include "CATDataType.h"
+#include "CATHybIntersect.h" // The result of the extruded surfaces's intersection
 #include "CATHybOperator.h"
-#include "CATTopPrism.h" // Needed to extrude curves
-
+#include "CATIUpdateError.h"
+#include "CATSoftwareConfiguration.h"
 #include "CATTopLineOperator.h"
 #include "CATTopPointOperator.h"
-
-// Mathematics Framework
-#include "CATSoftwareConfiguration.h" // Needed to create topological data
+#include "CATTopPrism.h" // Needed to extrude curves
 
 #include <iostream.h>
-
-#include "CATDataType.h"
 
 // Kt
 #include "KtString.h"
@@ -108,15 +105,423 @@ PNXETemplateFeatureBuild::~PNXETemplateFeatureBuild() {
 HRESULT PNXETemplateFeatureBuild::Build() {
     cout << "### " << __FUNCTION__ << endl;
 
-    PNXITemplateFeature* feature = NULL;
+    PNXITemplateFeature_var feature;
     this->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
-    if (NULL == feature) return E_FAIL;
+    if (NULL_var == feature) return E_FAIL;
+
+    HRESULT hr = build_feature(feature);
+    if (FAILED(hr))
+        cout << __FUNCTION__ << " FAILED." << hr << endl;
+    else
+        cout << __FUNCTION__ << " OK." << hr << endl;
 
     CATBoolean finish = feature->GetFinishCalc();
+
+    cout << "- " << __LINE__ << endl;
 
     // finish only used once
     if (finish) feature->SetFinishCalc(0);
 
-    KTCRelease(feature); // must release
-    return finish ? S_OK : E_FAIL;
+    cout << "- " << __LINE__ << endl;
+
+    return hr;
+}
+//-----------------------------------------------------------------------------
+HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature) {
+    cout << "### " << __FUNCTION__ << endl;
+
+    if (!feature) return E_INVALIDARG;
+    CATISpecObject_var featureSpec = feature;
+    if (!featureSpec) return E_INVALIDARG;
+
+    cout << "- " << __LINE__ << endl;
+
+    //========================================================================================
+    //
+    // The build method takes place as follows :
+    //
+    // CATTry
+    //   o -0- Checking the deactivation status
+    //   o -1- Cleaning last update error
+    //   o -2- Retrieving data for the procedural report
+    //   o  -2-1 Retrieving the two input curves and the two input directions
+    //   o  -2-2 Retrieving the two CATMathDirections corresponding to the two input directions
+    //   o  -2-3 Retrieving the two bodies corresponding to the two input curves
+    //   o -3- Creating the procedural report
+    //   o  -3-1 Filling the list of specifications to follow
+    //   o  -3-2 Creating the procedural report
+    //   o -4- Running the topological operators
+    //   o  -4-1 Retrieving the geometrical factory
+    //   o  -4-2 Retrieving the topological journal
+    //   o  -4-3 Retrieving the Algorithm Configuration
+    //   o  -4-4 Running the topological operator - extruding curves
+    //   o  -4-5 Running the topological operator - computing combined curve
+    //   o -5- Storing the procedural report
+    //   o -6- Storing the Algorithm Configuration
+    //   o -6- Cleaning useless data
+    // CATCatch
+    //     o -7-1 Managing CATMfErrUpdate Error
+    //     o -7-2 Managing other Error's types
+    //
+    //========================================================================================
+
+    // You declare here the pointers :
+    //  - used in the CATTry and CATThrow sections, like piUpdateErrorOnThis
+    //  - initialized in the CATTry section, and not released before a
+    //    method which can throw an error.
+    //
+    CATIUpdateError*          piUpdateErrorOnThis        = NULL;
+    CATIGeometricalElement*   pIGeometricalElementOnThis = NULL;
+    CATIMfProcReport*         piProcReport               = NULL;
+    CATGeoFactory*            piGeomFactory              = NULL;
+    CATSoftwareConfiguration* pSoftConfig                = NULL;
+    int                       IsConfigToStore            = NULL;
+    HRESULT                   rc;
+
+    CATTry {
+
+        //========================================================================================
+        //
+        // -0- Checking the deactivation
+        //
+        //========================================================================================
+
+        int                       DeactivateState = 0;
+        CATIMechanicalProperties* pMechProp       = NULL;
+        rc = QueryInterface(IID_CATIMechanicalProperties, (void**)&pMechProp);
+        if (SUCCEEDED(rc)) {
+            DeactivateState = pMechProp->IsInactive();
+
+            KTCRelease(pMechProp); // 手动释放
+
+            if (1 == DeactivateState) {
+                QueryInterface(IID_CATIMfProcReport, (void**)&piProcReport);
+                if (SUCCEEDED(rc)) {
+                    rc = piProcReport->InactivateResult();
+
+                    // if an error is sent by InactivateResult,
+                    // piProcReport is deleted in CATCatch sections
+
+                    KTCRelease(piProcReport); // 手动释放
+                }
+            }
+        }
+
+        //========================================================================================
+        //
+        // -1- Cleaning last update error
+        //
+        //========================================================================================
+        if (DeactivateState == 0) {
+
+            rc = QueryInterface(IID_CATIUpdateError, (void**)&piUpdateErrorOnThis);
+            if (SUCCEEDED(rc)) {
+                piUpdateErrorOnThis->UnsetUpdateError();
+            }
+
+            // This step will be useless in R12
+            if (SUCCEEDED(rc)) {
+                rc =
+                    QueryInterface(IID_CATIGeometricalElement, (void**)&pIGeometricalElementOnThis);
+                if (SUCCEEDED(rc)) {
+                    // Deletes the last result - method which can throw an error
+                    pIGeometricalElementOnThis->DeleteScope();
+
+                    // Useless pointer
+                    KTCRelease(pIGeometricalElementOnThis); // 手动释放
+                }
+
+                //========================================================================================
+                //
+                // -2- Retrieving Data for the procedural report
+                //
+                //========================================================================================
+
+                //=====================================================================================
+                //
+                // -2-1 Retrieving the two input curves and the two input directions
+                //
+                //=====================================================================================
+                // Retrieves curves and directions
+                CATISpecObject_var myCurve = feature->GetMyCurve();
+                double             step    = feature->GetMyStep();
+
+                CATMathPoint startPoint(0, 0, 0);
+                CATMathPoint endPoint(0, 0, 100 * step * 1000);
+
+                //========================================================================================
+                //
+                // -3- Creating the procedural report
+                //
+                //========================================================================================
+
+                //======================================================================================
+                // -3-1 Filling the lists of the specifications to follow by the procedural
+                // report
+                //
+                //======================================================================================
+
+                CATLISTV(CATBaseUnknown_var) ListSpec;
+                CATListOfCATUnicodeString ListKeys;
+                if (SUCCEEDED(rc)) {
+                    ListSpec.Append(myCurve);
+                    ListKeys.Append(MfKeyNone);
+                }
+
+                // No more need of those pointers
+
+                //======================================================================================
+                // -3-2 Creating the procedural report with the list
+                //
+                //======================================================================================
+
+                if (SUCCEEDED(rc)) {
+                    rc = QueryInterface(IID_CATIMfProcReport, (void**)&piProcReport);
+                    if (SUCCEEDED(rc)) {
+                        // Creates the procedural report- the result is associated with the
+                        // feature itself - so BoolOper is 0
+                        // This method can throw an error
+                        //
+                        int BoolOper = 0;
+                        piProcReport->CreateProcReport(ListSpec, ListKeys, BoolOper);
+                    }
+                }
+
+                //========================================================================================
+                //
+                // -4- Running the procedural report
+                //
+                //========================================================================================
+
+                //=====================================================================================
+                //
+                // -4-1 Retrieving the geometrical factory
+                //
+                //=====================================================================================
+
+                if (SUCCEEDED(rc)) {
+                    // Gets a pointer on CATISpecObject.
+                    CATILinkableObject* piLinkableObjectOnTemplateFeature = NULL;
+                    rc = QueryInterface(IID_CATILinkableObject,
+                                        (void**)&piLinkableObjectOnTemplateFeature);
+
+                    if (SUCCEEDED(rc)) {
+                        // Do not release this pointer
+                        CATDocument* pDocument = NULL;
+                        pDocument              = piLinkableObjectOnTemplateFeature->GetDocument();
+
+                        if (NULL != pDocument) {
+                            CATIContainerOfDocument* pIContainerOfDocument = NULL;
+                            rc = pDocument->QueryInterface(IID_CATIContainerOfDocument,
+                                                           (void**)&pIContainerOfDocument);
+                            if (SUCCEEDED(rc)) {
+                                CATIContainer* pIContainerOnGeomContainer = NULL;
+                                rc = pIContainerOfDocument->GetResultContainer(
+                                    pIContainerOnGeomContainer);
+                                if (SUCCEEDED(rc)) {
+
+                                    rc = pIContainerOnGeomContainer->QueryInterface(
+                                        IID_CATGeoFactory, (void**)&piGeomFactory);
+                                    KTCRelease(pIContainerOnGeomContainer); // 手动释放
+                                }
+
+                                KTCRelease(pIContainerOfDocument); // 手动释放
+                            }
+                        }
+                        KTCRelease(piLinkableObjectOnTemplateFeature); // 手动释放
+                    }
+                }
+
+                //=====================================================================================
+                //
+                // -4-2 Retrieving the topological journal which contains the description
+                //      of all basic topological operations.
+                //
+                //=====================================================================================
+
+                CATTopData TopData;
+                if (SUCCEEDED(rc) && (NULL != piProcReport)) {
+                    // do not release this pointer
+                    // This method can throw an error
+                    CATCGMJournalList* pCGMJournalList = piProcReport->GetCGMJournalList();
+                    TopData.SetJournal(pCGMJournalList);
+
+                    //=====================================================================================
+                    //
+                    // -4-3 Retrieving the Algorithm Configuration which contains datas used to
+                    //      version features
+                    //
+                    //=====================================================================================
+                    rc = CATMmrAlgoConfigServices::GetConfiguration(featureSpec, pSoftConfig,
+                                                                    IsConfigToStore);
+                    if (SUCCEEDED(rc)) {
+                        // SetSoftwareConfig
+                        TopData.SetSoftwareConfiguration(pSoftConfig);
+                        // release pSoftConfig after the procedural report ending
+                    }
+                }
+
+                //=====================================================================================
+                //
+                // -4-4 Running the topological operator extruding the two curves in both senses
+                //      defined by each direction
+                //
+                //=====================================================================================
+
+                CATBody* startPointBody = NULL;
+                CATBody* endPointBody   = NULL;
+                if (SUCCEEDED(rc)) {
+                    // Create First Body
+                    startPointBody = ::CATCreateTopPointXYZ(
+                        piGeomFactory, &TopData, endPoint.GetX(), endPoint.GetY(), endPoint.GetZ());
+
+                    if (NULL == startPointBody) {
+                        cout << " - ERROR when ::CATCreateTopPointXYZ() return NULL" << endl;
+                    }
+                }
+
+                //=====================================================================================
+                //
+                // -4-5 get Result Body
+                //
+                //=====================================================================================
+                CATBody* pResultBody = NULL;
+
+                if (startPointBody) pResultBody = startPointBody;
+
+                startPointBody = NULL; // 不用了，不删除传递给了pResultBody
+
+                //========================================================================================
+                //
+                // -5- Storing the procedural report
+                //
+                //========================================================================================
+
+                if (SUCCEEDED(rc) && (NULL != piProcReport)) {
+                    if (NULL != pResultBody) {
+                        // This method can throw an error
+                        int BoolOper = 0; // same as CreateProcReport
+                        piProcReport->StoreProcReport(pResultBody, NoCopy, BoolOper);
+
+                        //===============================================================================
+                        //
+                        // -6- Storing the Algorithm Configuration
+                        //
+                        //===============================================================================
+
+                        if (IsConfigToStore == 1) {
+                            CATMmrAlgoConfigServices::StoreConfiguration(featureSpec, pSoftConfig);
+                        }
+                    }
+                    else {
+                        // creates an error if the intersection failed
+                        CATMfErrUpdate*  pErrorNoIntersection = new CATMfErrUpdate();
+                        CATUnicodeString Diagnostic("Reult Body is NULL. code = 100120.");
+                        pErrorNoIntersection->SetDiagnostic(1, Diagnostic);
+
+                        CATThrow(pErrorNoIntersection);
+                    }
+                }
+
+                //========================================================================================
+                //
+                // -7- Cleaning Useless Data, the possible solutions are:
+                //
+                //========================================================================================
+
+                // Removes the intermediates bodies from the geometric container
+                // if ((NULL != piGeomFactory) && (NULL != someBody)) {
+                //     piGeomFactory->Remove(someBody);
+                //     someBody = NULL;
+                // }
+
+                KTCRelease(piUpdateErrorOnThis); // 手动释放
+                KTCRelease(piProcReport);        // 手动释放 the procedural report
+                KTCRelease(pSoftConfig);         // 手动释放 the software configuration
+                KTCRelease(piGeomFactory);       // 手动释放
+
+                //========================================================================================
+                //
+                // -7- Managing errors
+                //
+                //========================================================================================
+
+                CATCatch(CATMfErrUpdate, pUpdateError) {
+                    //------------------------------------------------------------------------------
+                    // Catches CATMfErrUpdate errors
+                    //------------------------------------------------------------------------------
+
+                    // Associates the error with the Combined Curve
+                    if (NULL != piUpdateErrorOnThis) {
+                        piUpdateErrorOnThis->SetUpdateError(pUpdateError);
+                        KTCRelease(piUpdateErrorOnThis); // 手动释放
+                    }
+
+                    // Releases or deletes the pointer which can be valuated
+                    // but not released before an error
+                    //
+                    KTCRelease(pIGeometricalElementOnThis); // 手动释放
+                }
+
+                // Removes the intermediate CATBody
+                // if ((NULL != piGeomFactory) && (NULL != someBody)) {
+                //     piGeomFactory->Remove(someBody);
+                //     someBody = NULL;
+                // }
+
+                // Deletes the pointer on the geometric container
+                if (NULL != piGeomFactory) {
+                    KTCRelease(piGeomFactory); // 手动释放lease(piGeomFactory); // 手动释放
+                    KTCRelease(pSoftConfig);   // 手动释放
+
+                    // Re-dispatches the error.
+                    // In interactive mode, this errror will be caught by CATPrtUpdateCom that
+                    // knows how to handle such errors.
+                    CATRethrow;
+                }
+            }
+        }
+        cout << "- " << __LINE__ << endl;
+    }
+    CATCatch(CATError, pError) {
+        //------------------------------------------------------------------------------
+        // Catches other CATError errors
+        //------------------------------------------------------------------------------
+
+        CATMfErrUpdate* pErrorToThrow = new CATMfErrUpdate();
+        pErrorToThrow->SetDiagnostic(1, pError->GetNLSMessage());
+
+        ::Flush(pError);
+
+        // Associates the error with the Combined Curve
+        if (NULL != piUpdateErrorOnThis) {
+            piUpdateErrorOnThis->SetUpdateError(pErrorToThrow);
+            KTCRelease(piUpdateErrorOnThis); // 手动释放
+        }
+
+        // Releases or Deletes the pointer which can be valuated
+        // ant not released due to a throw
+        KTCRelease(pIGeometricalElementOnThis); // 手动释放
+
+        // Deletes the result ( proc report + pResultBody )
+        if (NULL != piProcReport) {
+            piProcReport->DeleteProcReport();
+            KTCRelease(piProcReport); // 手动释放
+        }
+
+        // Removes the intermediate CATBody
+        // if ((NULL != piGeomFactory) && (NULL != someBody)) {
+        //     piGeomFactory->Remove(someBody);
+        //     someBody = NULL;
+        // }
+
+        // Deletes the pointer on the geometric container
+        KTCRelease(piGeomFactory); // 手动释放
+        KTCRelease(pSoftConfig);   // 手动释放 software configuration
+        CATThrow(pErrorToThrow);
+    }
+
+    CATEndTry;
+    cout << "- " << __LINE__ << endl;
+    return rc;
 }

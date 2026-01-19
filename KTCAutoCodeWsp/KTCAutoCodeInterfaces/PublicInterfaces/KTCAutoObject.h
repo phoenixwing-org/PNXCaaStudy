@@ -37,7 +37,7 @@ public:
     /**
      * @brief update spec object
      */
-    static HRESULT update(CATISpecObject_var object, bool check);
+    static HRESULT update(CATISpecObject_var object, bool isCout);
 };
 
 #endif

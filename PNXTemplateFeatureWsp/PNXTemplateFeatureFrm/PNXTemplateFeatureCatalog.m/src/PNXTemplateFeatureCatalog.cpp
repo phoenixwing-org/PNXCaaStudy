@@ -206,8 +206,7 @@ int main(int argc, char* argv[]) {
     if (SUCCEEDED(hr)) {
 
         hr = startupUnknown->QueryInterface(IID_CATISpecObject, (void**)&startupObject);
-        startupUnknown->Release();
-        startupUnknown = NULL;
+        KTCRelease(startupUnknown); // 手动释放
     }
     // check
     if (NULL == startupObject) {
@@ -292,8 +291,7 @@ int main(int argc, char* argv[]) {
     // Releasing no longer used pointer on CATISpecObject.
     //----------------------------------------------------
 
-    startupObject->Release();
-    startupObject = NULL;
+    KTCRelease(startupObject); // 手动释放
 
     //===============================================================================================
     //
@@ -311,8 +309,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    featureCatalog->Release();
-    featureCatalog = NULL;
+KTCRelease(    featureCatalog ); // 手动释放
 
     // Deleting session
     //------------------

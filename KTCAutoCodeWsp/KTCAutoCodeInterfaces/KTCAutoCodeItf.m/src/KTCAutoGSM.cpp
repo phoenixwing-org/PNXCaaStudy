@@ -19,6 +19,7 @@
 #include "iostream.h"
 
 // Local
+#include "KTCAutoDefine.h"
 #include "KTCAutoGSM.h"
 
 //-----------------------------------------------------------------------------
@@ -84,10 +85,7 @@ HRESULT KTCAutoGSM::LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** 
         }
     }
 
-    if (NULL != pIPrtPart) {
-        pIPrtPart->Release();
-        pIPrtPart = NULL;
-    }
+    KTCRelease(pIPrtPart); //  ÷∂Ø Õ∑≈
 
     return rc;
 }

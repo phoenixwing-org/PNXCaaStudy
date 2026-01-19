@@ -55,10 +55,7 @@ CATCommand* PNXECombinedCurveEdit::Activate(CATPathElement* ipPath) {
     CATCommand* pCommand = new PNXCombinedCurveCmd(piCombinedCurve);
 
     // releases useless pointer
-    if (NULL != piCombinedCurve) {
-        piCombinedCurve->Release();
-        piCombinedCurve = NULL;
-    }
+    KTCRelease(piCombinedCurve); //  ÷∂Ø Õ∑≈
 
     return pCommand;
 }

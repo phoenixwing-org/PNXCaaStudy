@@ -61,12 +61,8 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass(PNXCombinedCurveCmd);
 
-// CAA的延时析构的宏函数，传入指针pCAA
-#define MyRequestDelayedDestruction(pCAA)  \
-    if (pCAA) {                            \
-        pCAA->RequestDelayedDestruction(); \
-        pCAA = NULL;                       \
-    }
+// auto code
+#include "KTCAutoDefine.h"
 
 //-----------------------------------------------------------------------------
 // PNXCombinedCurveCmd : constructor
@@ -136,21 +132,15 @@ PNXCombinedCurveCmd::~PNXCombinedCurveCmd() {
     cout << "### " << __FUNCTION__ << endl;
 
     // Releases member data pointers before leaving.
-    if (_piCombinedCurve != NULL) _piCombinedCurve->Release();
-    _piCombinedCurve = NULL;
-
-    if (_piSpecOnFirstPoint != NULL) _piSpecOnFirstPoint->Release();
-    _piSpecOnFirstPoint = NULL;
-
-    if (_piSpecOnMainDir != NULL) _piSpecOnMainDir->Release();
-    _piSpecOnMainDir = NULL;
-
-    MyRequestDelayedDestruction(_pFirstPointAgent);
-    MyRequestDelayedDestruction(_pMainDirAgent);
-    MyRequestDelayedDestruction(_pFirstPointFieldAgent);
-    MyRequestDelayedDestruction(_pPushButtonSaveJsonAgent);
-    MyRequestDelayedDestruction(_pMainDirFieldAgent);
-    MyRequestDelayedDestruction(_panel);
+    KTCRelease(_piCombinedCurve);    // 手动释放
+    KTCRelease(_piSpecOnFirstPoint); // 手动释放
+    KTCRelease(_piSpecOnMainDir);    // 手动释放
+    KTCRequestDelayedDestruction(_pFirstPointAgent);
+    KTCRequestDelayedDestruction(_pMainDirAgent);
+    KTCRequestDelayedDestruction(_pFirstPointFieldAgent);
+    KTCRequestDelayedDestruction(_pPushButtonSaveJsonAgent);
+    KTCRequestDelayedDestruction(_pMainDirFieldAgent);
+    KTCRequestDelayedDestruction(_panel);
     catFrmEditor_ = NULL;
     _HSO          = NULL;
 }
@@ -358,10 +348,7 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
         }
     }
 
-    if (NULL != piSpecOnCombinedCurve) {
-        piSpecOnCombinedCurve->Release();
-        piSpecOnCombinedCurve = NULL;
-    }
+    KTCRelease(piSpecOnCombinedCurve); // 手动释放
 
     if (SUCCEEDED(rc))
         return TRUE;
@@ -772,15 +759,9 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
         }
     }
 
-    if (NULL != piGSMTool) {
-        piGSMTool->Release();
-        piGSMTool = NULL;
-    }
+    KTCRelease(piGSMTool); // 手动释放
 
-    if (NULL != piSpecOnCombinedCurve) {
-        piSpecOnCombinedCurve->Release();
-        piSpecOnCombinedCurve = NULL;
-    }
+    KTCRelease(piSpecOnCombinedCurve); // 手动释放
 
     return rc;
 }
@@ -827,10 +808,7 @@ HRESULT PNXCombinedCurveCmd::LookingForGeomSet(CATIGSMTool** piGsmtool) {
         }
     }
 
-    if (NULL != pIPrtPart) {
-        pIPrtPart->Release();
-        pIPrtPart = NULL;
-    }
+    KTCRelease(pIPrtPart); // 手动释放
 
     return rc;
 }
@@ -876,10 +854,7 @@ HRESULT PNXCombinedCurveCmd::LookingForGeomSetOrOrderedGeomSet(CATIGSMTool** piG
         }
     }
 
-    if (NULL != pIPrtPart) {
-        pIPrtPart->Release();
-        pIPrtPart = NULL;
-    }
+    KTCRelease(pIPrtPart); // 手动释放
 
     return rc;
 }
@@ -921,10 +896,7 @@ HRESULT PNXCombinedCurveCmd::LookingForAnyTypeOfBody(CATIGSMTool** piGsmtool) {
         }
     }
 
-    if (NULL != pIPrtPart) {
-        pIPrtPart->Release();
-        pIPrtPart = NULL;
-    }
+    KTCRelease(pIPrtPart); // 手动释放
 
     return rc;
 }
