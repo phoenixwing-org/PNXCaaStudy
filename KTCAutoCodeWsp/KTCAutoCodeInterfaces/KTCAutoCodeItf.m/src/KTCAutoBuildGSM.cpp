@@ -9,8 +9,11 @@
 
 #include "CATDocument.h"
 #include "CATGeoFactory.h"
+#include "CATGeometry.h"
+#include "CATICGMObject.h"
 #include "CATIContainer.h"
 #include "CATIContainerOfDocument.h"
+#include "CATIGeometricalElement.h" // Needed for DeleteScope and GetBodyResult
 #include "CATILinkableObject.h"
 #include "iostream.h"
 

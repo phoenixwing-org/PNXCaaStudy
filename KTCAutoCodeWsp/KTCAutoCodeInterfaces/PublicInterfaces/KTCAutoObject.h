@@ -19,7 +19,6 @@
 
 // KTC
 #include "KTCAutoCodeItf.h"
-#include "KTCAutoObject.h"
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoObject {

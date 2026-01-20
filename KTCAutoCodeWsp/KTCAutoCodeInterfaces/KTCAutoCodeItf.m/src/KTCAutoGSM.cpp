@@ -13,6 +13,7 @@
 #include "CATFrmEditor.h"
 #include "CATIGSMTool.h"
 #include "CATIMechanicalRootFactory.h"
+#include "CATIMmiGeometricalSet.h"
 #include "CATIMmiNonOrderedGeometricalSet.h"
 #include "CATIPrtPart.h"
 #include "CATPathElement.h"
@@ -39,6 +40,44 @@ KTCAutoGSM& KTCAutoGSM::operator=(const KTCAutoGSM& iOriginal) {
     return *this;
 }
 //-----------------------------------------------------------------------------
+HRESULT KTCAutoGSM::CreateTool(CATIPrtPart* ipIPrtPart, CATIGSMTool** pIGsmTool) {
+    if ((pIGsmTool == NULL) || (NULL == ipIPrtPart)) {
+        return E_FAIL;
+    }
+
+    *pIGsmTool                   = NULL;
+    HRESULT         rc           = E_FAIL;
+    CATISpecObject* pISpecOnPart = NULL;
+    rc = ipIPrtPart->QueryInterface(IID_CATISpecObject, (void**)&pISpecOnPart);
+    if (SUCCEEDED(rc)) {
+
+        // GetFeatContainer for a mechanical feature
+        // is CATPrtCont, the specification container
+        CATIContainer_var spContainer = pISpecOnPart->GetFeatContainer();
+        if (NULL_var != spContainer) {
+            //
+            CATIMechanicalRootFactory* pMechanicalRootFactory = NULL;
+            rc = spContainer->QueryInterface(IID_CATIMechanicalRootFactory,
+                                             (void**)&pMechanicalRootFactory);
+            if (SUCCEEDED(rc)) {
+                // creates a new GS aggregated by the Part feature
+                CATISpecObject_var spiSpecOnGSMTool;
+                rc = pMechanicalRootFactory->CreateGeometricalSet("", ipIPrtPart, spiSpecOnGSMTool);
+
+                KTCRelease(pMechanicalRootFactory); // 手动释放
+
+                if (NULL_var != spiSpecOnGSMTool) {
+                    spiSpecOnGSMTool->QueryInterface(IID_CATIGSMTool, (void**)&(*pIGsmTool));
+                }
+            }
+        }
+
+        KTCRelease(pISpecOnPart); // 手动释放
+    }
+
+    return rc;
+}
+//-----------------------------------------------------------------------------
 bool KTCAutoGSM::IsInsideOrderedBody(CATISpecObject_var feature) {
     //===============================================================
     // 代码参考 CAA百科全书的 CombinedCurve Command里面的示例
@@ -63,9 +102,7 @@ bool KTCAutoGSM::IsInsideOrderedBody(CATISpecObject_var feature) {
             // The father can be a ordered or not
             int IsAnOrderedBody = -1;
             piGSMToolFatherCC->GetType(IsAnOrderedBody);
-            if (1 == IsAnOrderedBody) {
-                oIsInsideOrderedBody = true;
-            }
+            if (1 == IsAnOrderedBody) oIsInsideOrderedBody = true;
 
             KTCRelease(piGSMToolFatherCC); // 手动释放
         }
@@ -76,21 +113,62 @@ bool KTCAutoGSM::IsInsideOrderedBody(CATISpecObject_var feature) {
     return oIsInsideOrderedBody;
 }
 //-----------------------------------------------------------------------------
-HRESULT KTCAutoGSM::LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** piGsmtool) {
-    if ((NULL == piGsmtool) || (NULL == catFrmEditor)) return E_FAIL;
+HRESULT KTCAutoGSM::LookingForAnyTypeOfBody(CATFrmEditor* iCatFrmEditor,
+                                            CATIGSMTool** oppiGsmtool) {
+    //===============================================================
+    // 代码参考 CAA百科全书的 CombinedCurve Command里面的示例
+    //===============================================================
+    if (NULL == oppiGsmtool || NULL == iCatFrmEditor) return E_INVALIDARG;
+
+    *oppiGsmtool             = NULL;
+    HRESULT        rc        = E_FAIL;
+    CATIPrtPart*   pIPrtPart = NULL;
+    CATPathElement PathAct   = iCatFrmEditor->GetUIActiveObject();
+
+    rc = PathAct.Search(IID_CATIPrtPart, (void**)&pIPrtPart);
+    if (SUCCEEDED(rc) && (NULL != pIPrtPart)) {
+        bool              ToolToCreate = true;
+        CATIBasicTool_var CurrentTool;
+        CurrentTool = pIPrtPart->GetCurrentTool();
+
+        if (NULL_var != CurrentTool) {
+            // is it a GSMTool or an hybrid body ?
+            CATIGSMTool* pIGSMToolOnCurrentTool = NULL;
+            rc = CurrentTool->QueryInterface(IID_CATIGSMTool, (void**)&pIGSMToolOnCurrentTool);
+            if (SUCCEEDED(rc)) {
+                // Ok we have found a valid body
+                ToolToCreate = false;
+                *oppiGsmtool = pIGSMToolOnCurrentTool;
+            }
+        }
+
+        // 沒有检索出，进行创建
+        if (ToolToCreate) rc = CreateTool(pIPrtPart, oppiGsmtool);
+    }
+
+    KTCRelease(pIPrtPart); // 手动释放
+
+    return rc;
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoGSM::LookingForGeomSet(CATFrmEditor* iCatFrmEditor, CATIGSMTool** oppiGsmtool) {
+    //===============================================================
+    // 代码参考 CAA百科全书的 CombinedCurve Command里面的示例
+    //===============================================================
+    if (NULL == oppiGsmtool || NULL == iCatFrmEditor) return E_INVALIDARG;
 
     HRESULT rc = E_FAIL;
 
-    *piGsmtool = NULL;
+    *oppiGsmtool = NULL;
 
     // Retrieves the Part feature which holds the current tool
     //
     CATIPrtPart*   pIPrtPart = NULL;
-    CATPathElement PathAct   = catFrmEditor->GetUIActiveObject();
+    CATPathElement PathAct   = iCatFrmEditor->GetUIActiveObject();
     rc                       = PathAct.Search(IID_CATIPrtPart, (void**)&pIPrtPart);
 
     if (SUCCEEDED(rc) && (NULL != pIPrtPart)) {
-        CATBoolean ToolToCreate = TRUE;
+        bool ToolToCreate = true;
 
         CATIBasicTool_var CurrentTool;
         CurrentTool = pIPrtPart->GetCurrentTool();
@@ -102,18 +180,14 @@ HRESULT KTCAutoGSM::LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** 
                                              (void**)&pIGSOnCurrentTool);
             if (SUCCEEDED(rc)) {
                 // Ok we have found a valid geometrical set
-                ToolToCreate = FALSE;
-
-                rc = pIGSOnCurrentTool->QueryInterface(IID_CATIGSMTool, (void**)piGsmtool);
-
-                pIGSOnCurrentTool->Release();
-                pIGSOnCurrentTool = NULL;
+                ToolToCreate = false;
+                rc = pIGSOnCurrentTool->QueryInterface(IID_CATIGSMTool, (void**)oppiGsmtool);
+                KTCRelease(pIGSOnCurrentTool); // 手动释放
             }
         }
 
-        if (TRUE == ToolToCreate) {
-            rc = CreateTool(pIPrtPart, piGsmtool);
-        }
+        // 沒有检索出，进行创建
+        if (ToolToCreate) rc = CreateTool(pIPrtPart, oppiGsmtool);
     }
 
     KTCRelease(pIPrtPart); // 手动释放
@@ -121,44 +195,43 @@ HRESULT KTCAutoGSM::LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** 
     return rc;
 }
 //-----------------------------------------------------------------------------
-HRESULT KTCAutoGSM::CreateTool(CATIPrtPart* pIPrtPart, CATIGSMTool** pIGsmTool) {
-    if ((pIGsmTool == NULL) || (NULL == pIPrtPart)) {
-        return E_FAIL;
-    }
+HRESULT KTCAutoGSM::LookingForGeomSetOrOrderedGeomSet(CATFrmEditor* iCatFrmEditor,
+                                                      CATIGSMTool** oppiGsmtool) {
+    //===============================================================
+    // 代码参考 CAA百科全书的 CombinedCurve Command里面的示例
+    //===============================================================
+    if (NULL == oppiGsmtool || NULL == iCatFrmEditor) return E_INVALIDARG;
 
-    *pIGsmTool = NULL;
+    *oppiGsmtool             = NULL;
+    HRESULT        rc        = E_FAIL;
+    CATIPrtPart*   pIPrtPart = NULL;
+    CATPathElement PathAct   = iCatFrmEditor->GetUIActiveObject();
 
-    HRESULT rc = E_FAIL;
+    rc = PathAct.Search(IID_CATIPrtPart, (void**)&pIPrtPart);
 
-    CATISpecObject* pISpecOnPart = NULL;
-    rc = pIPrtPart->QueryInterface(IID_CATISpecObject, (void**)&pISpecOnPart);
-    if (SUCCEEDED(rc)) {
+    if (SUCCEEDED(rc) && (NULL != pIPrtPart)) {
+        bool              ToolToCreate = true;
+        CATIBasicTool_var CurrentTool;
+        CurrentTool = pIPrtPart->GetCurrentTool();
 
-        // GetFeatContainer for a mechanical feature
-        // is CATPrtCont, the specification container
-        CATIContainer_var spContainer = pISpecOnPart->GetFeatContainer();
-        if (NULL_var != spContainer) {
-            //
-            CATIMechanicalRootFactory* pMechanicalRootFactory = NULL;
-            rc = spContainer->QueryInterface(IID_CATIMechanicalRootFactory,
-                                             (void**)&pMechanicalRootFactory);
+        if (NULL_var != CurrentTool) {
+            // is it a GSMTool ?
+            CATIMmiGeometricalSet* pIGSMToolOnCurrentTool = NULL;
+            rc = CurrentTool->QueryInterface(IID_CATIMmiGeometricalSet,
+                                             (void**)&pIGSMToolOnCurrentTool);
             if (SUCCEEDED(rc)) {
-                // creates a new GS aggregated by the Part feature
-                CATISpecObject_var spiSpecOnGSMTool;
-                rc = pMechanicalRootFactory->CreateGeometricalSet("", pIPrtPart, spiSpecOnGSMTool);
-
-                pMechanicalRootFactory->Release();
-                pMechanicalRootFactory = NULL;
-
-                if (NULL_var != spiSpecOnGSMTool) {
-                    spiSpecOnGSMTool->QueryInterface(IID_CATIGSMTool, (void**)&(*pIGsmTool));
-                }
+                // Ok we have found a valid geometrical set ( ordered or not )
+                ToolToCreate = false;
+                rc = pIGSMToolOnCurrentTool->QueryInterface(IID_CATIGSMTool, (void**)oppiGsmtool);
+                KTCRelease(pIGSMToolOnCurrentTool); // 手动释放
             }
         }
 
-        pISpecOnPart->Release();
-        pISpecOnPart = NULL;
+        // 沒有检索出，进行创建
+        if (ToolToCreate) rc = CreateTool(pIPrtPart, oppiGsmtool);
     }
+
+    KTCRelease(pIPrtPart); // 手动释放
 
     return rc;
 }
