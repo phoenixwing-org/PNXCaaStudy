@@ -9,8 +9,10 @@
 // auto code
 #include "KTCAutoCommand.h"
 
+// local
+#include "PNXICombinedCurve.h"
+
 class PNXCombinedCurveDlg;
-class PNXICombinedCurve;
 class CATFeatureImportAgent;
 class CATIPrtPart;
 class CATIGSMTool;
@@ -118,18 +120,10 @@ private:
     PNXCombinedCurveCmd(PNXCombinedCurveCmd&);
     PNXCombinedCurveCmd& operator=(PNXCombinedCurveCmd&);
 
+private:
     // Manage the combined curve creation
     //
     HRESULT CreateCombinedCurve();
-    HRESULT CreateTool(CATIPrtPart* pIPrtPart, CATIGSMTool** pIGsmtool);
-
-    HRESULT LookingForAnyTypeOfBody(CATIGSMTool** piGsmtool);
-    HRESULT LookingForGeomSetOrOrderedGeomSet(CATIGSMTool** piGsmtool);
-    HRESULT LookingForGeomSet(CATIGSMTool** piGsmtool);
-
-    // Checks if the combined curved is inside an Ordered Geometrical Set
-    HRESULT IsCombCrvInsideOrderedBody(CATBoolean& oIsInsideOrderedBody);
-
     // Manage the current feature in case of ordered and linear body
     //
     CATStatusChangeRC Activate(CATCommand* iCmd, CATNotification* iNotif);
@@ -137,9 +131,8 @@ private:
     CATStatusChangeRC Cancel(CATCommand* iCmd, CATNotification* iNotif);
 
 private:
-    PNXICombinedCurve* _piCombinedCurve;
-
-    CATISpecObject_var _spSpecObjOnPreviousCurrentFeat;
+    PNXICombinedCurve_var feature;          // this feature
+    CATISpecObject_var    featurePrevious_; // previous feature
 
     CATFeatureImportAgent* _pFirstPointAgent;
     CATFeatureImportAgent* _pMainDirAgent;

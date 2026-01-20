@@ -38,11 +38,54 @@ private:
     KTCAutoGSM& operator=(const KTCAutoGSM&);
 
 public:
-    static HRESULT CreateTool(CATIPrtPart* pIPrtPart, CATIGSMTool** pIGsmTool);
+    /**
+     * @brief Looking For Any Type Of Body
+     * @param ipIPrtPart input CATIPrtPart* pointer
+     * @param oppiGsmtool output CATIGSMTool** pointer
+     * @return HRESULT
+     */
+    static HRESULT CreateTool(CATIPrtPart* ipIPrtPart, CATIGSMTool** oppiGsmtool);
 
+    /**
+     * @brief Looking For Any Type Of Body
+     * @param iCatFrmEditor input CATFrmEditor* pointer
+     * @param oppiGsmtool output CATIGSMTool** pointer
+     * @return HRESULT
+     */
+    static HRESULT LookingForAnyTypeOfBody(CATFrmEditor* iCatFrmEditor, CATIGSMTool** oppiGsmtool);
+
+    /**
+     * @brief Looking For GeomSet
+     * @param iCatFrmEditor input CATFrmEditor* pointer
+     * @param oppiGsmtool output CATIGSMTool** pointer
+     * @return HRESULT
+     */
+    static HRESULT LookingForGeomSet(CATFrmEditor* iCatFrmEditor, CATIGSMTool** oppiGsmtool);
+
+    /**
+     * @brief Looking For GeomSet Or Ordered GeomSet
+     * @param iCatFrmEditor input CATFrmEditor* pointer
+     * @param oppiGsmtool output CATIGSMTool** pointer
+     * @return HRESULT
+     */
+    static HRESULT LookingForGeomSetOrOrderedGeomSet(CATFrmEditor* iCatFrmEditor,
+                                                     CATIGSMTool** oppiGsmtool);
+
+    /**
+     * @brief Checks if thefeature is inside an Ordered Geometrical Set
+     * @param feature CATISpecObject
+     * @return bool
+     */
     static bool IsInsideOrderedBody(CATISpecObject_var feature);
 
-    static HRESULT LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** piGsmtool);
+    /**
+     * @brief checktout interface from GSMTool
+     * @param ipiGSMTool input GSMTool
+     * @param iIID input IID
+     * @param oPPV out interface pointer
+     * @return HRESULT
+     */
+    static HRESULT QueryInterface(CATIGSMTool* ipiGSMTool, const IID& iIID, void** oPPV);
 };
 
 #endif

@@ -51,8 +51,7 @@ int KTCAutoHSO::AddElement(CATISpecObject_var object) {
 
     // initialize part doc
     KTCAutoPartDoc doc;
-    doc.catFrmEditor_ = catFrmEditor_;
-
+    doc.initial_editor(catFrmEditor_); // initial
     // checkout path element
     CATPathElement* pathElement = NULL;
     doc.checkout_pathelement(object, &pathElement);
@@ -70,7 +69,7 @@ int KTCAutoHSO::AddElement(const CATListValCATISpecObject_var& list) {
 
     // initialize part doc
     KTCAutoPartDoc doc;
-    doc.catFrmEditor_ = catFrmEditor_;
+    doc.initial_editor(catFrmEditor_); // initial
 
     // checkout path element
     CATPathElement*          pathElement = NULL;
@@ -203,7 +202,7 @@ int KTCAutoHSO::RemoveElement(CATISpecObject_var object) {
     if (!catFrmEditor_ || !hso_) return 0;
 
     // set editor to part doc
-    partDoc_.catFrmEditor_ = catFrmEditor_;
+    partDoc_.initial_editor(catFrmEditor_); // inital
 
     // checkout path element
     CATPathElement* pathElement = NULL;
@@ -222,7 +221,7 @@ int KTCAutoHSO::RemoveElement(const CATListValCATISpecObject_var& list) {
     if (!catFrmEditor_ || !hso_) return 0;
 
     // set editor to part doc
-    partDoc_.catFrmEditor_ = catFrmEditor_;
+    partDoc_.initial_editor(catFrmEditor_); // initial
 
     // parameters
     int                      count       = 0; // remove count

@@ -305,8 +305,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification
     // only in edition mode and if the CC is inside an ordered body
     //
     if ((NULL != iNotif) && (0 == GetMode())) {
-        bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
-        if (isOrdered) {
+        if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
             // In case of first activation, SetTemplateBaseAsCurrentFeature will
             // keep the feature to restore at the end of the command
 
@@ -325,21 +324,20 @@ CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateBaseCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
     // cout << "### " << __FUNCTION__ << endl;
-
-    bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
-
-    // Restores the old current feature in edition mode
-    // and if the CC is inside an ordered body
-    if ((0 == GetMode()) && isOrdered) {
-        // method of CATMMUIStateCommand
-        SetCurrentFeature(featurePrevious_);
-    }
-
-    // Set the newly CC as the current feature in creation mode
-    // and if the CC is inside an ordered body
-    if ((1 == GetMode()) && isOrdered && (NULL_var != _MyFeature)) {
-        // Sets the CC as current - method of CATMMUIStateCommand
-        SetCurrentFeature(_MyFeature);
+    // Check if the CC is inside an ordered body
+    if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
+        // Restores the old current feature in edition mode
+        // and if the CC is inside an ordered body
+        if ((0 == GetMode())) {
+            // method of CATMMUIStateCommand
+            SetCurrentFeature(featurePrevious_);
+        }
+        // Set the newly CC as the current feature in creation mode
+        // and if the CC is inside an ordered body
+        else { // if ((1 == GetMode()))
+            // Sets the CC as current - method of CATMMUIStateCommand
+            if (!!_MyFeature) SetCurrentFeature(_MyFeature);
+        }
     }
 
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
@@ -358,9 +356,7 @@ CATStatusChangeRC PNXTemplateBaseCmd::Deactivate(CATCommand* iCmd, CATNotificati
     // only in edition mode and if the CC is inside an ordered body
     //
     if (0 == GetMode()) {
-
-        bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(_MyFeature);
-        if (isOrdered) {
+        if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
             // method of CATMMUIStateCommand
             SetCurrentFeature(featurePrevious_);
         }
