@@ -77,6 +77,15 @@ public:
      * @return bool
      */
     static bool IsInsideOrderedBody(CATISpecObject_var feature);
+
+    /**
+     * @brief checktout interface from GSMTool
+     * @param ipiGSMTool input GSMTool
+     * @param iIID input IID
+     * @param oPPV out interface pointer
+     * @return HRESULT
+     */
+    static HRESULT QueryInterface(CATIGSMTool* ipiGSMTool, const IID& iIID, void** oPPV);
 };
 
 #endif

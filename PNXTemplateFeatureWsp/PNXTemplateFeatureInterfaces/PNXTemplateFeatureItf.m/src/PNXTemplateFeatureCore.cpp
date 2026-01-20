@@ -157,18 +157,19 @@ int PNXTemplateFeatureCore::create() {
     //
 
     // Factory control, class for partDocument unities. initial from editor.
-    KTCAutoPartDoc partDocument;                // initial
-    partDocument.initial_editor(catFrmEditor_); // set editor
+    KTCAutoPartDoc partDoc;                // initial
+    partDoc.initial_editor(catFrmEditor_); // set editor
+    hr = partDoc.initial_GSMTool_From_GeomSet();
+    if (FAILED(hr)) KTC_MESSAGE_RETURN_CODE("initial GSMTool From GeomSet failed.", 100121);
 
     // query PNXITemplateFeatureFactory factory under the part GSMTool
     PNXITemplateFeatureFactory* factory = NULL; // Need release.
-    hr = partDocument.checkout_from_GSMTool(IID_PNXITemplateFeatureFactory, (void**)&factory);
-    if (FAILED(hr)) KTC_MESSAGE_RETURN_CODE("Query checkout_from_GSMTool failed.", 100004);
+    hr = partDoc.QueryInterface(IID_PNXITemplateFeatureFactory, (void**)&factory);
+    if (FAILED(hr)) KTC_MESSAGE_RETURN_CODE("Query PNXITemplateFeatureFactor failed.", 100122);
 
     //
-    // 2- Creating the element
+    // 2- Creating the feature
     //
-
     hr = factory->create(parameter, feature);
     KTCRelease(factory);
     if (FAILED(hr)) { // already print warning

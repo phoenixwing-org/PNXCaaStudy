@@ -235,3 +235,24 @@ HRESULT KTCAutoGSM::LookingForGeomSetOrOrderedGeomSet(CATFrmEditor* iCatFrmEdito
 
     return rc;
 }
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoGSM::QueryInterface(CATIGSMTool* ipiGSMTool, const IID& iIID, void** oPPV) {
+    if (NULL == oPPV) return E_INVALIDARG;
+    *oPPV = NULL;
+    if (NULL == ipiGSMTool) return E_INVALIDARG;
+
+    HRESULT rc = E_FAIL; // set fail
+
+    // »ñµÃCATIContainer_var
+    CATISpecObject_var piSpecObjOnTool = ipiGSMTool;
+    if (NULL_var != piSpecObjOnTool) {
+        // GetFeatContainer for a mechanical feature
+        // is CATPrtCont, the specification container
+        CATIContainer_var spContainer = piSpecObjOnTool->GetFeatContainer();
+
+        // checkout feature by iid
+        if (NULL_var != spContainer) rc = spContainer->QueryInterface(iIID, oPPV);
+    }
+
+    return rc;
+}

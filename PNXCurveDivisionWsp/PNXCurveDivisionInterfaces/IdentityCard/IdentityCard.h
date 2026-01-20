@@ -20,3 +20,7 @@ AddPrereqComponent("Mathematics", Public);
 // bypass link forte 6.1
 AddPrereqComponent("ProductStructure", Public);
 AddPrereqComponent("ProductStructureUI", Public);
+
+// KTC
+AddPrereqComponent("KTCAutoCodeInterfaces", Public);
+AddPrereqComponent("KTCAutoCodeFrm", Public);

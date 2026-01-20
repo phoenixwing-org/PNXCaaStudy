@@ -24,51 +24,26 @@
 
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc::KTCAutoPartDoc()
-    : catFrmEditor_(NULL) {
+    : catFrmEditor_(NULL)
+    , gsmTool_(NULL) {
 
     // your code here:
 }
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc::~KTCAutoPartDoc() {
-    catFrmEditor_ = NULL;
+    catFrmEditor_ = NULL; // 不能释放
+    KTCRelease(gsmTool_); // 手动释放
 }
 //-----------------------------------------------------------------------------
-KTCAutoPartDoc::KTCAutoPartDoc(const KTCAutoPartDoc& iOriginal)
-    : catFrmEditor_(iOriginal.catFrmEditor_) {
+HRESULT KTCAutoPartDoc::QueryInterface(const IID& iIID, void** oPPV) {
+    return KTCAutoGSM::QueryInterface(gsmTool_, iIID, oPPV);
+}
+//-----------------------------------------------------------------------------
+KTCAutoPartDoc::KTCAutoPartDoc(const KTCAutoPartDoc& iOriginal) {
 }
 //-----------------------------------------------------------------------------
 KTCAutoPartDoc& KTCAutoPartDoc::operator=(const KTCAutoPartDoc& iOriginal) {
-    catFrmEditor_ = iOriginal.catFrmEditor_;
     return *this;
-}
-//-----------------------------------------------------------------------------
-HRESULT KTCAutoPartDoc::checkout_from_GSMTool(const IID& iIID, void** oPPV) {
-    // CATIGSMTool is implemented by the HybridBody and GSMTool StartUp
-    // it is a valid pointer to handle the body which will contain the new
-    // Combined Curve
-    //
-
-    CATIGSMTool* piGSMTool = NULL;
-    HRESULT      rc        = KTCAutoGSM::LookingForGeomSet(catFrmEditor_, &piGSMTool);
-    if (FAILED(rc)) return rc;
-
-    rc = E_FAIL; // set fail
-
-    //
-    // 获得CATIContainer_var
-    //
-    CATISpecObject_var piSpecObjOnTool = piGSMTool;
-    if (NULL_var != piSpecObjOnTool) {
-        // GetFeatContainer for a mechanical feature
-        // is CATPrtCont, the specification container
-        CATIContainer_var spContainer = piSpecObjOnTool->GetFeatContainer();
-
-        // checkout feature by iid
-        if (NULL_var != spContainer) rc = spContainer->QueryInterface(iIID, oPPV);
-    }
-
-    KTCRelease(piGSMTool); // 手动释放
-    return rc;
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoPartDoc::checkout_pathelement(CATISpecObject_var object,
@@ -137,4 +112,10 @@ HRESULT KTCAutoPartDoc::initial_editor(CATFrmEditor* iEditor) {
     if (!catFrmEditor_) return E_POINTER; // failed
 
     return S_OK; // ok
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoPartDoc::initial_GSMTool_From_GeomSet() {
+    if (gsmTool_) return S_OK;
+
+    return KTCAutoGSM::LookingForGeomSet(catFrmEditor_, &gsmTool_);
 }

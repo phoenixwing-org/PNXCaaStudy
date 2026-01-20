@@ -13,6 +13,7 @@
 #ifndef KTCAutoPartDoc_H
 #define KTCAutoPartDoc_H
 
+#include "CATIGSMTool.h"
 #include "CATISpecObject.h"
 #include "CATLISTV_CATISpecObject.h"
 #include "CATListOfCATPathElement.h"
@@ -34,14 +35,6 @@ public:
 
 public:
     /**
-     * @brief initial checktout interface from document
-     * @param iIID input IID
-     * @param oPPV out interface pointer
-     * @return HRESULT
-     */
-    HRESULT checkout_from_GSMTool(const IID& iIID, void** oPPV);
-
-    /**
      * @brief checkout path element
      * @param object CATISpecObject_var
      * @param pathElement CATPathElement**
@@ -51,6 +44,7 @@ public:
 
     HRESULT checkout_pathelement(const CATListValCATISpecObject_var& list,
                                  CATPathElement**                    pathElement);
+
     /**
      * @brief checkout path element
      * @param iList CATListValCATISpecObject_var
@@ -61,19 +55,52 @@ public:
                                  CATLISTP(CATPathElement) & oList);
 
     /**
+     * @brief Get GSMTool
+     * @return  CATIGSMTool*, DONOT release outside
+     */
+    inline CATIGSMTool* GetGSMTool() const {
+        return gsmTool_;
+    };
+
+    /**
+     * @brief Get FrmEditor
+     * @return  CATFrmEditor*, DONOT release outside
+     * <br><b>Lifecycle rules deviation</b>: No AddRef is performed
+     */
+    inline CATFrmEditor* GetFrmEditor() const {
+        return catFrmEditor_;
+    };
+
+    /**
      * @brief initial editor
      * @param editor CATFrmEditor*
      * @return HRESULT
      */
     HRESULT initial_editor(CATFrmEditor* editor);
 
+    /**
+     * @brief initial editor from GeomSet and catFrmEditor_
+     * @return HRESULT, set GSMTool in gsmTool_
+     * get from GetGSMTool()
+     */
+    HRESULT initial_GSMTool_From_GeomSet();
+
+    /**
+     * @brief checktout interface from GSMTool
+     * @param iIID input IID
+     * @param oPPV out interface pointer
+     * @return HRESULT
+     */
+    HRESULT QueryInterface(const IID& iIID, void** oPPV);
+
 private:
     /** @brief Copy constructor and equal operator */
     KTCAutoPartDoc(const KTCAutoPartDoc&);
     KTCAutoPartDoc& operator=(const KTCAutoPartDoc&);
 
-public:
+private:
     CATFrmEditor* catFrmEditor_; // catia frame editor
+    CATIGSMTool*  gsmTool_;      // GSM Tool, do not release gsmTool_ outside
 };
 
 #endif
