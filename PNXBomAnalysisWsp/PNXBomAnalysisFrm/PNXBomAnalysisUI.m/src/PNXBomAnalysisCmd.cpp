@@ -102,7 +102,7 @@ PNXBomAnalysisCmd::PNXBomAnalysisCmd()
 
     // creates the dialog box
     dialog            = new PNXBomAnalysisDlg();
-    dialog->parameter = (parameter); // Pass Value
+    dialog->parameter = parameter; // Pass Value
 
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
@@ -206,20 +206,10 @@ void PNXBomAnalysisCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    //  cout  << "### " << __FUNCTION__ << endl;
-
-    if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
-    _MyFeature;
-    // Sets the CC as the current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    //  cout  << "### " << __FUNCTION__ << endl;
-
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
 //-----------------------------------------------------------------------------
@@ -230,14 +220,6 @@ CATBoolean PNXBomAnalysisCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXBomAnalysisCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    //  cout  << "### " << __FUNCTION__ << endl;
-
-    // Restores the old current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-    if (0 == GetMode()) {
-    }
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
@@ -256,11 +238,7 @@ int PNXBomAnalysisCmd::GetMode() {
 CATDlgDialog* PNXBomAnalysisCmd::GiveMyPanel() {
     // Used by father class CATMMUiPanelStateCommand to be notified of events
     // sent by the OK and CANCEl press button.
-    return (dialog);
-}
-//-----------------------------------------------------------------------------
-CATISpecObject_var PNXBomAnalysisCmd::GiveMyFeature() {
-    return _MyFeature;
+    return dialog;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXBomAnalysisCmd::OkAction(void*) {
@@ -410,15 +388,6 @@ void PNXBomAnalysisCmd::AfterValueChange(bool isUpdateObj) {
 
     // your other code here
     dialog->UpdateDialog(); // updates all the param to the panel
-}
-//-----------------------------------------------------------------------------
-HRESULT PNXBomAnalysisCmd::CreateElement() {
-    if (NULL_var != _MyFeature) // do not create when exist
-        return S_OK;
-
-    if (NULL == core) return E_INVALIDARG;
-
-    return S_OK;
 }
 //-----------------------------------------------------------------------------
 void PNXBomAnalysisCmd::fiaAgentClear() {

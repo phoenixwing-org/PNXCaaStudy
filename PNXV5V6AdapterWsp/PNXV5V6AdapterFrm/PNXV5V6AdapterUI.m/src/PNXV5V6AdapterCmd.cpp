@@ -106,7 +106,7 @@ PNXV5V6AdapterCmd::PNXV5V6AdapterCmd()
 
     // creates the dialog box
     dialog            = new PNXV5V6AdapterDlg();
-    dialog->parameter = (parameter); // Pass Value
+    dialog->parameter = parameter; // Pass Value
 
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
@@ -228,20 +228,10 @@ void PNXV5V6AdapterCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXV5V6AdapterCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
-    if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
-
-    // Sets the CC as the current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXV5V6AdapterCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
 //-----------------------------------------------------------------------------
@@ -252,14 +242,6 @@ CATBoolean PNXV5V6AdapterCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXV5V6AdapterCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
-    // Restores the old current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-    if (0 == GetMode()) {
-    }
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
@@ -309,11 +291,7 @@ int PNXV5V6AdapterCmd::GetMode() {
 CATDlgDialog* PNXV5V6AdapterCmd::GiveMyPanel() {
     // Used by father class CATMMUiPanelStateCommand to be notified of events
     // sent by the OK and CANCEl press button.
-    return (dialog);
-}
-//-----------------------------------------------------------------------------
-CATISpecObject_var PNXV5V6AdapterCmd::GiveMyFeature() {
-    return _MyFeature;
+    return dialog;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXV5V6AdapterCmd::OkAction(void*) {

@@ -106,18 +106,12 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
 {
     // cout <<"### " << __FUNCTION__ << endl;
 
-    _MyFeature = NULL_var;
-
     // create parameter
     parameter = new PNXTemplateBaseParam(); // create Default value Instance
 
-    if (!!feature) {
-        // mode_      = 0; // Edition mode.
-        _MyFeature = feature;
-    }
     // creates the dialog box
     dialog            = new PNXTemplateBaseDlg(this);
-    dialog->parameter = (parameter); // Pass Value
+    dialog->parameter = parameter; // Pass Value
 
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
@@ -143,7 +137,6 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
     core->catFrmEditor_   = catFrmEditor_;             // pass value
     core->catISO_         = catISO_;                   // pass value
     core->featureCurrent_ = GetCurrentFeature();       // pass value
-    core->feature         = _MyFeature;                // pass value
 }
 //-----------------------------------------------------------------------------
 PNXTemplateBaseCmd::~PNXTemplateBaseCmd() {
@@ -282,8 +275,6 @@ void PNXTemplateBaseCmd::BuildGraph() {
 CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
     // cout << "### " << __FUNCTION__ << endl;
 
-    if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
-
     // if exist dialog
     if (dialog) {
         // teat returned sub command, 0 for no Sub Command
@@ -301,45 +292,10 @@ CATStatusChangeRC PNXTemplateBaseCmd::Activate(CATCommand* iCmd, CATNotification
         // if out == 0 , go on the following steps
     }
 
-    // Sets the CC as the current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-    if ((NULL != iNotif) && (0 == GetMode())) {
-        if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
-            // In case of first activation, SetTemplateBaseAsCurrentFeature will
-            // keep the feature to restore at the end of the command
-
-            if (((CATStateActivateNotification*)iNotif)->GetType() ==
-                CATStateActivateNotification::Begin) {
-                // GetCurrentFeature is a method of CATMMUIStateCommand
-                featurePrevious_ = GetCurrentFeature();
-            }
-
-            // Sets the CC as current - method of CATMMUIStateCommand
-            SetCurrentFeature(_MyFeature);
-        }
-    }
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateBaseCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-    // Check if the CC is inside an ordered body
-    if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
-        // Restores the old current feature in edition mode
-        // and if the CC is inside an ordered body
-        if ((0 == GetMode())) {
-            // method of CATMMUIStateCommand
-            SetCurrentFeature(featurePrevious_);
-        }
-        // Set the newly CC as the current feature in creation mode
-        // and if the CC is inside an ordered body
-        else { // if ((1 == GetMode()))
-            // Sets the CC as current - method of CATMMUIStateCommand
-            if (!!_MyFeature) SetCurrentFeature(_MyFeature);
-        }
-    }
-
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
 //-----------------------------------------------------------------------------
@@ -350,18 +306,6 @@ CATBoolean PNXTemplateBaseCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateBaseCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
-    // Restores the old current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-    if (0 == GetMode()) {
-        if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
-            // method of CATMMUIStateCommand
-            SetCurrentFeature(featurePrevious_);
-        }
-    }
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
@@ -380,11 +324,7 @@ int PNXTemplateBaseCmd::GetMode() {
 CATDlgDialog* PNXTemplateBaseCmd::GiveMyPanel() {
     // Used by father class CATMMUiPanelStateCommand to be notified of events
     // sent by the OK and CANCEl press button.
-    return (dialog);
-}
-//-----------------------------------------------------------------------------
-CATISpecObject_var PNXTemplateBaseCmd::GiveMyFeature() {
-    return _MyFeature;
+    return dialog;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateBaseCmd::OkAction(void*) {
@@ -397,7 +337,6 @@ CATBoolean PNXTemplateBaseCmd::OkAction(void*) {
 
     EmptySO();             // 0. Empty SO
     dialog->UpdateInfos(); // 1. update param
-    // KTCAutoObject::update(_MyFeature, false); // 3. Updates, do not warning
 
     return TRUE;
 }
@@ -520,20 +459,6 @@ void PNXTemplateBaseCmd::AfterValueChange(bool isUpdateObj) {
     // your other code here
     core->show_rep();       // show rep
     dialog->UpdateDialog(); // updates all the param to the panel
-}
-//-----------------------------------------------------------------------------
-HRESULT PNXTemplateBaseCmd::CreateElement() {
-    if (NULL_var != _MyFeature) return S_OK; // do not create when exist
-
-    if (NULL == core) return E_INVALIDARG;
-
-    code_ = core->create(); // create
-    if (code_) return E_FAIL;
-
-    if (NULL_var == core->feature) return E_FAIL;
-
-    _MyFeature = core->feature; // get my feature;
-    return S_OK;
 }
 //-----------------------------------------------------------------------------
 void PNXTemplateBaseCmd::fiaAgentClear() {

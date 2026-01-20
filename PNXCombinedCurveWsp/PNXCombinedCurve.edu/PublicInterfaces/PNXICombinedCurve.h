@@ -63,7 +63,7 @@ public:
      */
     virtual HRESULT GetMainDir(CATISpecObject** opValue) = 0;
 };
-
+// TODO ”–Œ Ã‚
 /** @brief Macro for Handlers  */
-CATDeclareHandler(PNXICombinedCurve, CATBaseUnknown);
+// CATDeclareHandler(PNXICombinedCurve, CATBaseUnknown);
 #endif

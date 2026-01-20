@@ -58,12 +58,6 @@ public: // system function
     int GetMode();
 
     /**
-     * @brief Returns the feature being created or edited
-     * This parameter is used by CATMMUIStateCmd services.
-     */
-    CATISpecObject_var GiveMyFeature();
-
-    /**
      * @brief Returns a pointer to the dialog panel.
      * This pointer is used by CATMMUIPanelStateCmd services.
      */
@@ -114,9 +108,6 @@ private: // system function
     CATStatusChangeRC Deactivate(CATCommand* iCmd, CATNotification* iNotif);
 
 private:
-    /** @brief Manage the Element creation */
-    HRESULT CreateElement();
-
     /**
      * Method called when a curve is selected.
      */

@@ -52,12 +52,6 @@ public:
     int GetMode();
 
     /**
-     * Returns the featurebeing created or edited
-     * This parameter is used by CATMMUIStateCmd services.
-     */
-    CATISpecObject_var GiveMyFeature();
-
-    /**
      * Returns a pointer to the dialog panel.
      * This pointer is used by CATMMUIPanelStateCmd services.
      */
@@ -131,8 +125,8 @@ private:
     CATStatusChangeRC Cancel(CATCommand* iCmd, CATNotification* iNotif);
 
 private:
-    PNXICombinedCurve_var feature;          // this feature
-    CATISpecObject_var    featurePrevious_; // previous feature
+    PNXICombinedCurve* feature;          // this feature
+    CATISpecObject_var featurePrevious_; // previous feature
 
     CATFeatureImportAgent* _pFirstPointAgent;
     CATFeatureImportAgent* _pMainDirAgent;

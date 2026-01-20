@@ -107,7 +107,7 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
 
     // creates the dialog box
     dialog            = new PNXCurveDivisionDlg();
-    dialog->parameter = (parameter); // Pass Value
+    dialog->parameter = parameter; // Pass Value
 
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
@@ -229,20 +229,10 @@ void PNXCurveDivisionCmd::BuildGraph() {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCurveDivisionCmd::Activate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
-    if (NULL_var == _MyFeature) return (CATStatusChangeRCCompleted);
-
-    // Sets the CC as the current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCurveDivisionCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
 }
 //-----------------------------------------------------------------------------
@@ -253,14 +243,6 @@ CATBoolean PNXCurveDivisionCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCurveDivisionCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
-    // Restores the old current feature
-    // only in edition mode and if the CC is inside an ordered body
-    //
-    if (0 == GetMode()) {
-    }
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
@@ -310,11 +292,7 @@ int PNXCurveDivisionCmd::GetMode() {
 CATDlgDialog* PNXCurveDivisionCmd::GiveMyPanel() {
     // Used by father class CATMMUiPanelStateCommand to be notified of events
     // sent by the OK and CANCEl press button.
-    return (dialog);
-}
-//-----------------------------------------------------------------------------
-CATISpecObject_var PNXCurveDivisionCmd::GiveMyFeature() {
-    return _MyFeature;
+    return dialog;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXCurveDivisionCmd::OkAction(void*) {
@@ -457,16 +435,6 @@ void PNXCurveDivisionCmd::AfterValueChange(bool isUpdateObj) {
 
     // your other code here
     dialog->UpdateDialog(); // updates all the param to the panel
-}
-//-----------------------------------------------------------------------------
-HRESULT PNXCurveDivisionCmd::CreateElement() {
-    if (NULL_var != _MyFeature) return 100003; // do not create when exist
-    if (NULL == core) return 100001;
-
-    code_ = core->create(); // create
-    if (code_) return E_FAIL;
-
-    return S_OK;
 }
 //-----------------------------------------------------------------------------
 void PNXCurveDivisionCmd::fiaAgentClear() {

@@ -80,25 +80,28 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
     , _pMainDirFieldAgent(NULL)
     , _piSpecOnFirstPoint(NULL)
     , _piSpecOnMainDir(NULL)
-    , feature(NULL_var)
+    , feature(NULL)
     , _panel(NULL)
     , _ActiveField(0) {
-    cout << "### " << __FUNCTION__ << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
-    mode_ = 1; // creation mode
+    HRESULT rc = E_FAIL;
+    mode_      = 1; // creation mode
 
     if (ipiCombinedCurve != NULL) {
         // Edition mode.
         mode_ = 0;
 
-        // Memorises what curve is being edited.
-        feature = ipiCombinedCurve;
+        // 检出到feature
+        if (!!_MyFeature) {
+            rc = ipiCombinedCurve->QueryInterface(IID_PNXICombinedCurve, (void**)&feature);
+            rc = ipiCombinedCurve->QueryInterface(IID_PNXICombinedCurve, (void**)&_MyFeature);
+        }
 
         // Reads the inputs of the Combined Curve.
     }
 
-    HRESULT rc = E_FAIL;
-    if (!!feature) {
+    if (feature) {
         rc = feature->GetFirstPoint(&_piSpecOnFirstPoint);
         if (FAILED(rc)) return;
 
@@ -135,7 +138,7 @@ PNXCombinedCurveCmd::~PNXCombinedCurveCmd() {
 
     // Releases member data pointers before leaving.
 
-    // feature = NULL_var
+    KTCRelease(feature);             // 手动释放
     KTCRelease(_piSpecOnFirstPoint); // 手动释放
     KTCRelease(_piSpecOnMainDir);    // 手动释放
     KTCRequestDelayedDestruction(_pFirstPointAgent);
@@ -298,15 +301,15 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
     // 2- Updates
     //
 
-    KTCAutoObject::update(_MyFeature, false); // 3. Updates, do not warning
+    KTCAutoObject::update(GiveMyFeature(), false); // 3. Updates, do not warning
 
     //
     // 3- Inserts if necessary ( if inside an ordered (and linear) body )
     //
     if (SUCCEEDED(rc)) {
-        if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
+        if (KTCAutoGSM::IsInsideOrderedBody(GiveMyFeature())) {
             // Invoke the Insert method is mandatory
-            CATBaseUnknown_var spBUOnCC = _MyFeature;
+            CATBaseUnknown_var spBUOnCC = GiveMyFeature();
             if (!!spBUOnCC) rc = CATMmrLinearBodyServices::Insert(spBUOnCC);
         }
     }
@@ -332,10 +335,6 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
         return TRUE;
     else
         return FALSE;
-}
-//-----------------------------------------------------------------------------
-CATISpecObject_var PNXCombinedCurveCmd::GiveMyFeature() {
-    return _MyFeature;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXCombinedCurveCmd::PointSelected(void*) {
@@ -579,8 +578,8 @@ int PNXCombinedCurveCmd::GetMode() {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
-    if (!!feature) return S_OK; // 只能创建一次
-    cout << "### " << __FUNCTION__ << endl;
+    if (feature) return S_OK; // 只能创建一次
+    // cout << "### " << __FUNCTION__ << endl;
 
     //
     // 1- Looking for a body to create the Combined Curve
@@ -627,8 +626,7 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
     //
     // 2- Creating the Combined Curve
     //
-    CATISpecObject* piSpecOnCombinedCurve = NULL;
-
+    _MyFeature = NULL_var;
     if (SUCCEEDED(rc) && (NULL != piGSMTool)) {
         //
         // Uses PNXICombinedCurveFactory implemented by CATPrtCont
@@ -640,23 +638,19 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
             CATIContainer_var spContainer = piSpecObjOnTool->GetFeatContainer();
 
             if (NULL_var != spContainer) {
-                PNXICombinedCurveFactory* piCombinedCurveFactory = NULL;
-                rc = spContainer->QueryInterface(IID_PNXICombinedCurveFactory,
-                                                 (void**)&piCombinedCurveFactory);
+                PNXICombinedCurveFactory* factory = NULL;
+                rc = spContainer->QueryInterface(IID_PNXICombinedCurveFactory, (void**)&factory);
                 if (SUCCEEDED(rc)) {
                     // creates the Combined Curve
-
-                    rc = piCombinedCurveFactory->CreateCombinedCurve(
-                        _piSpecOnFirstPoint, _piSpecOnMainDir, &piSpecOnCombinedCurve);
+                    rc = factory->CreateCombinedCurve(_piSpecOnFirstPoint, _piSpecOnMainDir,
+                                                      (CATISpecObject**)&_MyFeature);
 
                     // 检出到feature
-                    if (SUCCEEDED(rc)) {
-                        rc = piSpecOnCombinedCurve->QueryInterface(IID_PNXICombinedCurve,
-                                                                   (void**)&feature);
+                    if (!!_MyFeature) {
+                        rc = _MyFeature->QueryInterface(IID_PNXICombinedCurve, (void**)&feature);
                     }
 
-                    piCombinedCurveFactory->Release();
-                    piCombinedCurveFactory = NULL;
+                    KTCRelease(factory); // 手动释放
                 }
             }
             else
@@ -666,12 +660,10 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
             rc = E_FAIL;
     }
 
-    _MyFeature = feature; // set to My Feature
-
     //
     // 3- Aggregating the newly Combined Curve in the Geometrical Set
     //
-    if (SUCCEEDED(rc) && (NULL != piGSMTool) && (NULL != piSpecOnCombinedCurve)) {
+    if (SUCCEEDED(rc) && (NULL != piGSMTool) && !!_MyFeature) {
         CATIDescendants* pIDescendantsOnGSMTool = NULL;
         rc = piGSMTool->QueryInterface(IID_CATIDescendants, (void**)&pIDescendantsOnGSMTool);
         if (SUCCEEDED(rc)) {
@@ -741,16 +733,12 @@ CATStatusChangeRC PNXCombinedCurveCmd::Activate(CATCommand* iCmd, CATNotificatio
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCombinedCurveCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
-    //
-    if (0 == GetMode() && KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
+    if (0 == GetMode() && KTCAutoGSM::IsInsideOrderedBody(GiveMyFeature())) {
         // method of CATMMUIStateCommand
         SetCurrentFeature(featurePrevious_);
     }
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
@@ -758,7 +746,7 @@ CATStatusChangeRC PNXCombinedCurveCmd::Cancel(CATCommand* iCmd, CATNotification*
     // cout << "### " << __FUNCTION__ << endl;
 
     // Check if the CC is inside an ordered body
-    if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
+    if (KTCAutoGSM::IsInsideOrderedBody(GiveMyFeature())) {
         // Restores the old current feature in edition mode
         // and if the CC is inside an ordered body
         if ((0 == GetMode())) {
@@ -769,7 +757,7 @@ CATStatusChangeRC PNXCombinedCurveCmd::Cancel(CATCommand* iCmd, CATNotification*
         // and if the CC is inside an ordered body
         else { // if ((1 == GetMode()))
             // Sets the CC as current - method of CATMMUIStateCommand
-            if (!!_MyFeature) SetCurrentFeature(_MyFeature);
+            if (!!GiveMyFeature()) SetCurrentFeature(GiveMyFeature());
         }
     }
 

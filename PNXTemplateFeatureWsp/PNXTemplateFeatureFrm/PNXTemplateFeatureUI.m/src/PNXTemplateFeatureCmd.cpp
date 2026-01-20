@@ -131,7 +131,7 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
     }
     // creates the dialog box
     dialog            = new PNXTemplateFeatureDlg(this);
-    dialog->parameter = (parameter); // Pass Value
+    dialog->parameter = parameter; // Pass Value
 
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
@@ -210,13 +210,6 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     if (SUCCEEDED(hr)) {
         if (KTC::FeatureModeCreation == mode_) {
             hr = CreateElement(); // create one
-
-            // feature
-            feature = NULL;
-            if (SUCCEEDED(hr)) {
-                hr = _MyFeature->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
-                if (FAILED(hr)) parameter->message = "QueryInterface of PNXITemplateFeature error!";
-            }
         }
         else {
             // for update mode
@@ -238,8 +231,8 @@ void PNXTemplateFeatureCmd::BuildGraph() {
         return;
     }
 
-    feature->GetParams(*parameter);  // get
-    parameter->feature = _MyFeature; // record self Spec
+    feature->GetParams(*parameter); // get
+    parameter->feature = feature;   // record self Spec
 
     //.............................................................................
     // KEVIN MANUAL CODE: Initial your PanelState use GetInitialPanelState()
@@ -398,18 +391,12 @@ CATBoolean PNXTemplateFeatureCmd::CancelAction(void*) {
 }
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXTemplateFeatureCmd::Deactivate(CATCommand* iCmd, CATNotification* iNotif) {
-    // cout << "### " << __FUNCTION__ << endl;
-
     // Restores the old current feature
     // only in edition mode and if the CC is inside an ordered body
-    //
-    if (0 == GetMode()) {
-        if (KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
-            // method of CATMMUIStateCommand
-            SetCurrentFeature(featurePrevious_);
-        }
+    if (0 == GetMode() && KTCAutoGSM::IsInsideOrderedBody(_MyFeature)) {
+        // method of CATMMUIStateCommand
+        SetCurrentFeature(featurePrevious_);
     }
-
     return (CATStatusChangeRCCompleted);
 }
 //-----------------------------------------------------------------------------
@@ -428,11 +415,7 @@ int PNXTemplateFeatureCmd::GetMode() {
 CATDlgDialog* PNXTemplateFeatureCmd::GiveMyPanel() {
     // Used by father class CATMMUiPanelStateCommand to be notified of events
     // sent by the OK and CANCEl press button.
-    return (dialog);
-}
-//-----------------------------------------------------------------------------
-CATISpecObject_var PNXTemplateFeatureCmd::GiveMyFeature() {
-    return _MyFeature;
+    return dialog;
 }
 //-----------------------------------------------------------------------------
 CATBoolean PNXTemplateFeatureCmd::OkAction(void*) {
@@ -443,10 +426,10 @@ CATBoolean PNXTemplateFeatureCmd::OkAction(void*) {
     // do not use AfterValueChange()
     //
 
-    EmptySO();                                   // 0. Empty SO
-    dialog->UpdateInfos();                       // 1. update param
-    HRESULT hr = feature->SetParams(*parameter); // 2. save param
-    KTCAutoObject::update(_MyFeature, false);    // 3. Updates, do not warning
+    EmptySO();                                     // 0. Empty SO
+    dialog->UpdateInfos();                         // 1. update param
+    HRESULT hr = feature->SetParams(*parameter);   // 2. save param
+    KTCAutoObject::update(GiveMyFeature(), false); // 3. Updates, do not warning
 
     // message
     if (FAILED(hr)) {
@@ -609,15 +592,16 @@ void PNXTemplateFeatureCmd::AfterValueChange(bool isUpdateObj) {
 //-----------------------------------------------------------------------------
 HRESULT PNXTemplateFeatureCmd::CreateElement() {
     if (NULL_var != _MyFeature) return S_OK; // do not create when exist
-
     if (NULL == core) return E_INVALIDARG;
 
     code_ = core->create(); // create
-    if (code_) return E_FAIL;
 
-    if (NULL_var == core->feature) return E_FAIL;
+    feature    = core->feature;
+    _MyFeature = feature; // get my feature;
 
-    _MyFeature = core->feature; // get my feature;
+    cout << __FUNCTION__ << " !!GiveMyFeature() = " << !!GiveMyFeature() << endl;
+
+    if (code_ || !feature) return E_FAIL;
     return S_OK;
 }
 //-----------------------------------------------------------------------------
