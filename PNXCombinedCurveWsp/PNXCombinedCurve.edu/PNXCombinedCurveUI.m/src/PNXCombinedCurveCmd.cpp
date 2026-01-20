@@ -91,6 +91,7 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
 
         // Memorises what curve is being edited.
         _piCombinedCurve = ipiCombinedCurve;
+        feature          = (PNXICombinedCurve_var)_piCombinedCurve;
         _piCombinedCurve->AddRef();
 
         // Reads the inputs of the Combined Curve.
@@ -304,6 +305,7 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
     // 2- Updates
     //
     if (SUCCEEDED(rc) && (NULL != piSpecOnCombinedCurve)) {
+
         // Uses CATPrtUpdateCom to update the Combined Curve ( manual update mode )
         // or the whole part ( automatic update mode ).
         // CATPrtUpdateCom also encapsulates interactive error management ( edit / delete, etc...)
@@ -319,12 +321,9 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
     //
     // 3- Inserts if necessary ( if inside an ordered (and linear) body )
     //
-    if (SUCCEEDED(rc) && (NULL != piSpecOnCombinedCurve)) {
-        CATBoolean IsInsideOrderedBody = FALSE;
-        rc                             = IsCombCrvInsideOrderedBody(IsInsideOrderedBody);
-        if (SUCCEEDED(rc) && (TRUE == IsInsideOrderedBody)) {
+    if (SUCCEEDED(rc)) {
+        if (KTCAutoGSM::IsInsideOrderedBody(GiveMyFeature())) {
             // Invoke the Insert method is mandatory
-            //
             CATBaseUnknown_var spBUOnCC = piSpecOnCombinedCurve;
             rc                          = CATMmrLinearBodyServices::Insert(spBUOnCC);
         }
@@ -954,20 +953,18 @@ CATStatusChangeRC PNXCombinedCurveCmd::Activate(CATCommand* iCmd, CATNotificatio
     // only in edition mode and if the CC is inside an ordered body
     //
     if ((NULL != iNotif) && (0 == GetMode()) && (NULL != _piCombinedCurve)) {
-        CATBoolean IsInsideOrderedBody = FALSE;
-        HRESULT    rc                  = IsCombCrvInsideOrderedBody(IsInsideOrderedBody);
-        if (SUCCEEDED(rc) && (TRUE == IsInsideOrderedBody)) {
+        if (KTCAutoGSM::IsInsideOrderedBody(GiveMyFeature())) {
             // In case of first activation, SetCombCrvAsCurrentFeature will
             // keep the feature to restore at the end of the command
 
             if (((CATStateActivateNotification*)iNotif)->GetType() ==
                 CATStateActivateNotification::Begin) {
                 // GetCurrentFeature is a method of CATMMUIStateCommand
-                _spSpecObjOnPreviousCurrentFeat = GetCurrentFeature();
+                featurePrevious_ = GetCurrentFeature();
             }
 
             CATISpecObject* pSpecObjectOnCombCrv = NULL;
-            rc =
+            HRESULT         rc =
                 _piCombinedCurve->QueryInterface(IID_CATISpecObject, (void**)&pSpecObjectOnCombCrv);
             if (SUCCEEDED(rc)) {
                 // Sets the CC as current - method of CATMMUIStateCommand
@@ -989,11 +986,9 @@ CATStatusChangeRC PNXCombinedCurveCmd::Deactivate(CATCommand* iCmd, CATNotificat
     // only in edition mode and if the CC is inside an ordered body
     //
     if (0 == GetMode()) {
-        CATBoolean IsInsideOrderedBody = FALSE;
-        HRESULT    rc                  = IsCombCrvInsideOrderedBody(IsInsideOrderedBody);
-        if (SUCCEEDED(rc) && (TRUE == IsInsideOrderedBody)) {
+        if (KTCAutoGSM::IsInsideOrderedBody(GiveMyFeature())) {
             // method of CATMMUIStateCommand
-            SetCurrentFeature(_spSpecObjOnPreviousCurrentFeat);
+            SetCurrentFeature(featurePrevious_);
         }
     }
 
@@ -1002,80 +997,26 @@ CATStatusChangeRC PNXCombinedCurveCmd::Deactivate(CATCommand* iCmd, CATNotificat
 
 //-----------------------------------------------------------------------------
 CATStatusChangeRC PNXCombinedCurveCmd::Cancel(CATCommand* iCmd, CATNotification* iNotif) {
-    cout << "### " << __FUNCTION__ << endl;
+    // cout << "### " << __FUNCTION__ << endl;
 
+    CATISpecObject_var object = GiveMyFeature();
     // Check if the CC is inside an ordered body
-    CATBoolean IsInsideOrderedBody = FALSE;
-    HRESULT    rc                  = IsCombCrvInsideOrderedBody(IsInsideOrderedBody);
+    bool isOrdered = KTCAutoGSM::IsInsideOrderedBody(object);
 
-    // Restores the old current feature in edition mode
-    // and if the CC is inside an ordered body
-    if ((0 == GetMode()) && SUCCEEDED(rc) && (TRUE == IsInsideOrderedBody)) {
-        // method of CATMMUIStateCommand
-        SetCurrentFeature(_spSpecObjOnPreviousCurrentFeat);
-    }
-
-    // Set the newly CC as the current feature in creation mode
-    // and if the CC is inside an ordered body
-    if ((1 == GetMode()) && SUCCEEDED(rc) && (NULL != _piCombinedCurve) &&
-        (TRUE == IsInsideOrderedBody)) {
-        CATISpecObject* pSpecObjectOnCombCrv = NULL;
-        rc = _piCombinedCurve->QueryInterface(IID_CATISpecObject, (void**)&pSpecObjectOnCombCrv);
-        if (SUCCEEDED(rc)) {
+    if (isOrdered) {
+        // Restores the old current feature in edition mode
+        // and if the CC is inside an ordered body
+        if ((0 == GetMode())) {
+            // method of CATMMUIStateCommand
+            SetCurrentFeature(featurePrevious_);
+        }
+        // Set the newly CC as the current feature in creation mode
+        // and if the CC is inside an ordered body
+        else { // if ((1 == GetMode()))
             // Sets the CC as current - method of CATMMUIStateCommand
-            SetCurrentFeature(pSpecObjectOnCombCrv);
-
-            pSpecObjectOnCombCrv->Release();
-            pSpecObjectOnCombCrv = NULL;
+            if (!!object) SetCurrentFeature(object);
         }
     }
 
     return CATMMUIPanelStateCmd::Cancel(iCmd, iNotif);
-}
-
-//-----------------------------------------------------------------------------
-HRESULT PNXCombinedCurveCmd::IsCombCrvInsideOrderedBody(CATBoolean& oIsInsideOrderedBody) {
-    //
-    // returns TRUE if the CC is inside an ordered body
-    // otherwise FALSE
-    //
-    HRESULT rc = E_FAIL;
-
-    oIsInsideOrderedBody = FALSE;
-
-    if (NULL != _piCombinedCurve) {
-        CATISpecObject* pSpecObjectOnCombCrv = NULL;
-        rc = _piCombinedCurve->QueryInterface(IID_CATISpecObject, (void**)&pSpecObjectOnCombCrv);
-        if (SUCCEEDED(rc)) {
-            // Retrieve the father of the CC
-            CATISpecObject* pFatherCC = NULL;
-            pFatherCC                 = pSpecObjectOnCombCrv->GetFather();
-            if (NULL != pFatherCC) {
-                // The father must be a GSMTool or an HybridBody
-                CATIGSMTool* piGSMToolFatherCC = NULL;
-                rc = pFatherCC->QueryInterface(IID_CATIGSMTool, (void**)&piGSMToolFatherCC);
-                if (SUCCEEDED(rc)) {
-                    // The father can be a ordered or not
-                    int IsAnOrderedBody = -1;
-                    piGSMToolFatherCC->GetType(IsAnOrderedBody);
-                    if (1 == IsAnOrderedBody) {
-                        oIsInsideOrderedBody = TRUE;
-                    }
-
-                    piGSMToolFatherCC->Release();
-                    piGSMToolFatherCC = NULL;
-                }
-
-                pFatherCC->Release();
-                pFatherCC = NULL;
-            }
-            else
-                rc = E_FAIL;
-
-            pSpecObjectOnCombCrv->Release();
-            pSpecObjectOnCombCrv = NULL;
-        }
-    }
-
-    return rc;
 }

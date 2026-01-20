@@ -40,9 +40,40 @@ KTCAutoGSM& KTCAutoGSM::operator=(const KTCAutoGSM& iOriginal) {
 }
 //-----------------------------------------------------------------------------
 bool KTCAutoGSM::IsInsideOrderedBody(CATISpecObject_var feature) {
-    // TODO 实现代码
-    cout << " - 没有实现 " << __FUNCTION__ << endl;
-    return false;
+    //===============================================================
+    // 代码参考 CAA百科全书的 CombinedCurve Command里面的示例
+    //===============================================================
+    if (!feature) return false;
+
+    //
+    // returns true if the CC is inside an ordered body
+    // otherwise false
+    //
+    HRESULT rc = E_FAIL;
+
+    bool oIsInsideOrderedBody = false;
+
+    // Retrieve the father of the CC
+    CATISpecObject* pFatherCC = feature->GetFather();
+    if (NULL != pFatherCC) {
+        // The father must be a GSMTool or an HybridBody
+        CATIGSMTool* piGSMToolFatherCC = NULL;
+        rc = pFatherCC->QueryInterface(IID_CATIGSMTool, (void**)&piGSMToolFatherCC);
+        if (SUCCEEDED(rc)) {
+            // The father can be a ordered or not
+            int IsAnOrderedBody = -1;
+            piGSMToolFatherCC->GetType(IsAnOrderedBody);
+            if (1 == IsAnOrderedBody) {
+                oIsInsideOrderedBody = true;
+            }
+
+            KTCRelease(piGSMToolFatherCC); // 手动释放
+        }
+
+        KTCRelease(pFatherCC); // 手动释放
+    }
+
+    return oIsInsideOrderedBody;
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoGSM::LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** piGsmtool) {

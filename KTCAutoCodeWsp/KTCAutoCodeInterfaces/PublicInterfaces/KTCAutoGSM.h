@@ -40,8 +40,18 @@ private:
 public:
     static HRESULT CreateTool(CATIPrtPart* pIPrtPart, CATIGSMTool** pIGsmTool);
 
+    /**
+     * @brief Checks if thefeature is inside an Ordered Geometrical Set
+     * @param feature CATISpecObject
+     * @return bool
+     */
     static bool IsInsideOrderedBody(CATISpecObject_var feature);
 
+    /**
+     * @brief Checks if thefeature is inside an Ordered Geometrical Set
+     * @param feature CATISpecObject
+     * @return bool
+     */
     static HRESULT LookingForGeomSet(CATFrmEditor* catFrmEditor, CATIGSMTool** piGsmtool);
 };
 

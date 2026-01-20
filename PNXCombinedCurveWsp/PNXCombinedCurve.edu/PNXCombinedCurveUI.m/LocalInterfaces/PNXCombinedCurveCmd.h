@@ -127,9 +127,6 @@ private:
     HRESULT LookingForGeomSetOrOrderedGeomSet(CATIGSMTool** piGsmtool);
     HRESULT LookingForGeomSet(CATIGSMTool** piGsmtool);
 
-    // Checks if the combined curved is inside an Ordered Geometrical Set
-    HRESULT IsCombCrvInsideOrderedBody(CATBoolean& oIsInsideOrderedBody);
-
     // Manage the current feature in case of ordered and linear body
     //
     CATStatusChangeRC Activate(CATCommand* iCmd, CATNotification* iNotif);
@@ -138,8 +135,9 @@ private:
 
 private:
     PNXICombinedCurve* _piCombinedCurve;
+    CATISpecObject_var feature;
 
-    CATISpecObject_var _spSpecObjOnPreviousCurrentFeat;
+    CATISpecObject_var featurePrevious_;
 
     CATFeatureImportAgent* _pFirstPointAgent;
     CATFeatureImportAgent* _pMainDirAgent;
