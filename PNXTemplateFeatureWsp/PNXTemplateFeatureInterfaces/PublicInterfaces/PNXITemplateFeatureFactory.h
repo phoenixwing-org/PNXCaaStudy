@@ -41,7 +41,8 @@ public:
      * @return HRESULT
      * @note Implements the method create of the interface PNXITemplateFeatureFactory
      */
-    virtual HRESULT create(PNXTemplateFeatureParam* parameter, CATISpecObject_var& ospFeature) = 0;
+    virtual HRESULT create(PNXTemplateFeatureParam* parameter,
+                           PNXITemplateFeature_var& ospFeature) = 0;
 };
 
 /** @brief Macro for Handlers  */

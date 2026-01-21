@@ -78,7 +78,8 @@
 #include "PNXETemplateFeatureBuild.h"
 
 // PNXTemplateFeatureInterfaces Framework
-#include "PNXITemplateFeature.h" // To ask inputs curves and directions
+#include "PNXITemplateFeature.h"
+#include "PNXTemplateFeatureParam.h"
 
 //-----------------------------------------------------------------------------
 
@@ -170,9 +171,10 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
     //    method which can throw an error.
     //
     // buildGSM 会收集一些变量，进行释放Release
-    KTCAutoBuildGSM buildGSM;
-    int             IsConfigToStore = NULL;
-    HRESULT         rc;
+    KTCAutoBuildGSM         buildGSM;
+    int                     IsConfigToStore = NULL;
+    HRESULT                 rc;
+    PNXTemplateFeatureParam parameter;
 
     CATTry {
 
@@ -207,6 +209,10 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
         //========================================================================================
         if (DeactivateState == 0) {
 
+            // -0.3- 检出参数
+            feature->GetParams(parameter);               // do not check rc
+            const double step = parameter.MyStep * 1000; // 转为mm
+
             //========================================================================================
             // -1- Cleaning 工作
             //========================================================================================
@@ -233,12 +239,8 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                 //=====================================================================================
                 // -2-1 Retrieving the input
                 //=====================================================================================
-                // Retrieves curves and directions
-                CATISpecObject_var myCurve = feature->GetMyCurve();
-                double             step    = feature->GetMyStep();
-
                 CATMathPoint startPoint(0, 0, 0);
-                CATMathPoint endPoint(0, 0, 100 * step * 1000);
+                CATMathPoint endPoint(0, 0, 100 * step);
 
                 //========================================================================================
                 // -3- Creating the procedural report
@@ -250,7 +252,7 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                 CATLISTV(CATBaseUnknown_var) ListSpec;
                 CATListOfCATUnicodeString ListKeys;
                 if (SUCCEEDED(rc)) {
-                    ListSpec.Append(myCurve);
+                    ListSpec.Append(parameter.MyCurve);
                     ListKeys.Append(MfKeyNone);
                 }
 

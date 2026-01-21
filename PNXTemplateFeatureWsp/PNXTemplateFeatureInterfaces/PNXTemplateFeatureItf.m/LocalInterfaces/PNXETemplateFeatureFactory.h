@@ -45,7 +45,7 @@ public:
      * @param[out] ospFeature Out Instance pointer
      * @return HRESULT
      */
-    HRESULT create(PNXTemplateFeatureParam* parameter, CATISpecObject_var& ospFeature);
+    HRESULT create(PNXTemplateFeatureParam* parameter, PNXITemplateFeature_var& ospFeature);
 
 private:
     // The copy constructor and the equal operator must not be implemented

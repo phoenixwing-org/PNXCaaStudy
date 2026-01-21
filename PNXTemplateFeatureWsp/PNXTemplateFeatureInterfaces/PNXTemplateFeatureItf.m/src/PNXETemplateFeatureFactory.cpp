@@ -82,17 +82,17 @@ TIE_PNXITemplateFeatureFactory(PNXETemplateFeatureFactory);
 
 //---------------------------------------------------------------------------------------------------
 HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
-                                           CATISpecObject_var&      ospFeature) {
-    ospFeature = NULL_var; // set NULL_var first
+                                           PNXITemplateFeature_var& feature) {
+    feature = NULL_var; // set NULL_var first
     if (NULL == parameter) return E_INVALIDARG;
 
-    PNXITemplateFeature* feature            = NULL; // your feature
-    HRESULT              hr                 = S_OK;
-    KtString             msg                = "";
-    CATUnicodeString     catalogStorageName = "PNXTemplateFeatureFeature";
-    CATUnicodeString     clientId           = "PNXTemplateFeatureID";
-    CATUnicodeString     partnerID          = "PNXTemplateFeature"; // for V25 or later
-    CATUnicodeString     startupType        = "PNXTemplateFeature"; // for V24 or erlier
+    CATISpecObject_var featureInstance; // 要创建的实例
+    HRESULT            hr                 = S_OK;
+    KtString           msg                = "";
+    CATUnicodeString   catalogStorageName = "PNXTemplateFeatureFeature";
+    CATUnicodeString   clientId           = "PNXTemplateFeatureID";
+    CATUnicodeString   partnerID          = "PNXTemplateFeature"; // for V25 or later
+    CATUnicodeString   startupType        = "PNXTemplateFeature"; // for V24 or erlier
 
     //===============================================================================================
     //
@@ -140,8 +140,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     hr = myFeatureFacade.QueryInterfaceOnFeature(IID_PNXITemplateFeature, (void**)&feature);
     if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query PNXITemplateFeature failed.", hr, 100109);
 
-    ospFeature = feature; // convert to CATISpecObject_var
-    if (NULL_var == ospFeature)
+    if (NULL_var == feature)
         KTC_MESSAGE_CODE_RETURN_HR("Get CATISpecObject_var failed.", E_POINTER, 100110);
 
 #else
@@ -186,16 +185,17 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
 
     //===============================================================================================
     //
-    // -4- Creates a Object instance to ospFeature
+    // -4- Creates a Object instance to feature
     //
     //===============================================================================================
     CATIContainer_var spContainer = this; // get current factory containers
+
     // instanciate by CATOsmSUHandler
-    hr = addOpSUHandler.Instanciate(ospFeature, spContainer, NULL_string);
-    if (FAILED(hr) || !ospFeature)
+    hr = addOpSUHandler.Instanciate(featureInstance, spContainer, NULL_string);
+    if (FAILED(hr) || !featureInstance)
         KTC_MESSAGE_CODE_RETURN_HR("Instanciate(...) failed.", hr, 100112);
 
-    hr = ospFeature->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
+    hr = featureInstance->QueryInterface(IID_PNXITemplateFeature, (void**)&feature);
     if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query PNXITemplateFeature failed.", hr, 100113);
 
 #endif // end of high version catia catalog
@@ -236,7 +236,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     // 如果有结构树的参数
     if (spListParm.size() > 0) {
         CATISpecAttrAccess* attrAccess = NULL; //
-        hr = ospFeature->QueryInterface(IID_CATISpecAttrAccess, (void**)&attrAccess);
+        hr = feature->QueryInterface(IID_CATISpecAttrAccess, (void**)&attrAccess);
         if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query CATISpecAttrAccess failed", hr, 100114);
 
         CATISpecAttrKey* attrKey = NULL; // Key
@@ -270,7 +270,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
 
         // Show On tree
         CATIDescendants* pIDescendants = NULL; // des
-        hr = ospFeature->QueryInterface(IID_CATIDescendants, (void**)&pIDescendants);
+        hr = feature->QueryInterface(IID_CATIDescendants, (void**)&pIDescendants);
         if (FAILED(hr))
             KTC_MESSAGE_CODE_RETURN_HR("QueryInterface(IID_CATIDescendants) faild ", hr, 100115);
 
@@ -287,7 +287,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     //
     //===============================================================================================
 
-    hr = CATMmrAlgoConfigServices::CreateConfigurationData(ospFeature);
+    hr = CATMmrAlgoConfigServices::CreateConfigurationData(featureInstance);
     if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("CreateConfigurationData(...) failed.", hr, 100116);
 
     // FeatureType is not overload for voiceTransm
@@ -301,7 +301,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     CATIInputDescription::FeatureType featureType      = CATIInputDescription::FeatureType_Unset;
 
     // 检出 InputDescription
-    hr = ospFeature->QueryInterface(IID_CATIInputDescription, (void**)&inputDescription);
+    hr = feature->QueryInterface(IID_CATIInputDescription, (void**)&inputDescription);
     if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("Query CATIInputDescription failed", hr, 100117);
 
     // TODO
@@ -311,12 +311,12 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     // if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("GetFeatureType(...) failed.", hr, 100118);
 
     // // 设置 FeatureType
-    // hr = CATMmrFeatureAttributes::SetFeatureType(ospFeature, featureType);
+    // hr = CATMmrFeatureAttributes::SetFeatureType(feature, featureType);
     // if (FAILED(hr)) KTC_MESSAGE_CODE_RETURN_HR("SetFeatureType(...) failed.", hr, 100119);
 
     //===============================================================================================
     //
-    // -7- Sets default values for the attributes of the instance
+    // -7- Sets default values for the attributes of the featureInstance
     //
     //===============================================================================================
     feature->SetParams(*parameter); // Set default value
@@ -324,6 +324,5 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     // initial software version
     feature->SetVersion(PNXTemplateFeatureParam::GetSoftwareVersion());
 
-    KTCRelease(feature); // 手动释放
     return S_OK;
 }

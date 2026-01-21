@@ -26,6 +26,7 @@
 #include "KtListV.h"
 
 // Local Framework
+#include "PNXITemplateFeature.h"
 #include "PNXTemplateFeatureItf.h"
 #include "PNXTemplateFeatureParam.h"
 
@@ -72,7 +73,7 @@ public:
      * @date 2025/12/17
      * @id 101
      */
-    CATISpecObject_var feature;
+    PNXITemplateFeature_var feature;
 
     /**
      * @brief Param pointer
