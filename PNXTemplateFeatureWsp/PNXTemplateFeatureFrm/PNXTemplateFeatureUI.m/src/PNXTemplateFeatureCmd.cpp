@@ -157,7 +157,7 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
     core->catFrmEditor_   = catFrmEditor_;                // pass value
     core->catISO_         = catISO_;                      // pass value
     core->featureCurrent_ = GetCurrentFeature();          // pass value
-    core->feature         = _MyFeature;                   // pass value
+    core->feature         = feature;                      // pass value
 }
 //-----------------------------------------------------------------------------
 PNXTemplateFeatureCmd::~PNXTemplateFeatureCmd() {

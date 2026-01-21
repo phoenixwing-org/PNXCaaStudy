@@ -359,28 +359,35 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
 
                 // Remove Body and set NULL
                 // buildGSM.remove(someBody);
-
-                //========================================================================================
-                // -7- Managing errors
-                //========================================================================================
-
-                CATCatch(CATMfErrUpdate, pUpdateError) {
-                    //------------------------------------------------------------------------------
-                    // Catches CATMfErrUpdate errors
-                    //------------------------------------------------------------------------------
-
-                    // Associates the error with the feature
-                    if (NULL != buildGSM.updateError) {
-                        buildGSM.updateError->SetUpdateError(pUpdateError);
-                    }
-                }
-
-                // Remove Body and set NULL
-                // buildGSM.remove(someBody);
             }
         }
         cout << "- " << __LINE__ << endl;
     }
+    //========================================================================================
+    // -7- Managing errors
+    //========================================================================================
+
+    CATCatch(CATMfErrUpdate, pUpdateError) {
+        //------------------------------------------------------------------------------
+        // Catches CATMfErrUpdate errors
+        //------------------------------------------------------------------------------
+
+        // Associates the error with the feature
+        if (NULL != buildGSM.updateError) {
+            buildGSM.updateError->SetUpdateError(pUpdateError);
+        }
+
+        // Deletes the result ( proc report + pResultBody )
+        if (NULL != buildGSM.procReport) {
+            buildGSM.procReport->DeleteProcReport();
+        }
+
+        // Re-dispatches the error.
+        // In interactive mode, this error will be caught by CATPrtUpdateCom that
+        // knows how to handle such errors.
+        CATRethrow;
+    }
+
     CATCatch(CATError, pError) {
         //------------------------------------------------------------------------------
         // Catches other CATError errors
@@ -394,7 +401,6 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
         // Associates the error with the feature
         if (NULL != buildGSM.updateError) {
             buildGSM.updateError->SetUpdateError(pErrorToThrow);
-            KTCRelease(buildGSM.updateError); //  ÷∂Ø Õ∑≈
         }
 
         // Deletes the result ( proc report + pResultBody )
@@ -405,7 +411,6 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
         // Remove Body and set NULL
         // buildGSM.remove(someBody);
 
-        // Deletes the pointer on the geometric container
         CATThrow(pErrorToThrow);
     }
 
