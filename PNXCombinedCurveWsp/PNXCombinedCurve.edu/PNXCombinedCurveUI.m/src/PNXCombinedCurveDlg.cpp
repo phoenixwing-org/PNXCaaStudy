@@ -19,12 +19,13 @@ PNXCombinedCurveDlg::PNXCombinedCurveDlg()
     : KTCAutoDialog((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(), NULL,
                     "CombinedCurve",
                     CATDlgGridLayout | CATDlgWndOK | CATDlgWndCANCEL | CATDlgWndNoResize)
-    , _selectorListFirstPoint(NULL)
-    , _selectorListMainDir(NULL)
+    , _SelectorListFirstPoint(NULL)
+    , _SelectorListMainDir(NULL)
     , _pushButtonSaveJson(NULL)
     , _pushButtonDirectCallback(NULL)
     , _pushButtonSubDialog(NULL)
-    , _subPanel(NULL) {
+    , _subPanel(NULL)
+    , parameter(NULL) {
     // never call the Build method of the panel from the constructor
     // it is much better to call it from the same method that created (new) the panel
 }
@@ -34,12 +35,13 @@ PNXCombinedCurveDlg::~PNXCombinedCurveDlg() {
     //     this is done automatically
     //  --------------------------------------------------
 
-    _selectorListFirstPoint   = NULL;
-    _selectorListMainDir      = NULL;
+    _SelectorListFirstPoint   = NULL;
+    _SelectorListMainDir      = NULL;
     _pushButtonSaveJson       = NULL;
     _pushButtonDirectCallback = NULL;
     _pushButtonSubDialog      = NULL;
     _subPanel                 = NULL;
+    parameter                 = NULL;
 }
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::Build() {
@@ -52,14 +54,14 @@ void PNXCombinedCurveDlg::Build() {
     // Creates the four input fields .
     CATUnicodeString Prompt_nosel = "no selection";
 
-    _selectorListFirstPoint =
+    _SelectorListFirstPoint =
         new CATDlgSelectorList(this, CATString("selFirstPoint"), CATDlgDataModify);
-    _selectorListFirstPoint->SetVisibleTextHeight(1);
-    _selectorListFirstPoint->SetLine(Prompt_nosel, 0, CATDlgDataModify);
+    _SelectorListFirstPoint->SetVisibleTextHeight(1);
+    _SelectorListFirstPoint->SetLine(Prompt_nosel, 0, CATDlgDataModify);
 
-    _selectorListMainDir = new CATDlgSelectorList(this, CATString("selMainDir"), CATDlgDataModify);
-    _selectorListMainDir->SetVisibleTextHeight(1);
-    _selectorListMainDir->SetLine(Prompt_nosel, 0, CATDlgDataModify);
+    _SelectorListMainDir = new CATDlgSelectorList(this, CATString("selMainDir"), CATDlgDataModify);
+    _SelectorListMainDir->SetVisibleTextHeight(1);
+    _SelectorListMainDir->SetLine(Prompt_nosel, 0, CATDlgDataModify);
 
     // Creates the save json button.
     _pushButtonSaveJson = new CATDlgPushButton(this, CATString("pushButtonSaveJson"));
@@ -90,9 +92,9 @@ void PNXCombinedCurveDlg::Build() {
     cst.Column = 1;
 
     cst.Row = 0;
-    _selectorListFirstPoint->SetGridConstraints(cst);
+    _SelectorListFirstPoint->SetGridConstraints(cst);
     cst.Row = 1;
-    _selectorListMainDir->SetGridConstraints(cst);
+    _SelectorListMainDir->SetGridConstraints(cst);
     cst.Row = 2;
     _pushButtonSaveJson->SetGridConstraints(cst);
     cst.Row = 3;
@@ -110,8 +112,8 @@ void PNXCombinedCurveDlg::Build() {
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::SetActiveField(int iFieldNumber) {
     //  Deselects all others field when changing of active field ( by clicking in another one ).
-    if (PNXCopyStudyFieldFirstPoint != iFieldNumber) _selectorListFirstPoint->ClearSelect();
-    if (PNXCopyStudyFieldMainDir != iFieldNumber) _selectorListMainDir->ClearSelect();
+    if (PNXCopyStudyFieldFirstPoint != iFieldNumber) _SelectorListFirstPoint->ClearSelect();
+    if (PNXCopyStudyFieldMainDir != iFieldNumber) _SelectorListMainDir->ClearSelect();
     return;
 }
 //-------------------------------------------------------------------------
@@ -121,11 +123,11 @@ void PNXCombinedCurveDlg::SetName(int iFieldNumber, CATUnicodeString iName) {
 
     switch (iFieldNumber) {
     case PNXCopyStudyFieldFirstPoint: {
-        _selectorListFirstPoint->SetLine(iName, 0, CATDlgDataModify);
+        _SelectorListFirstPoint->SetLine(iName, 0, CATDlgDataModify);
         return;
     }
     case PNXCopyStudyFieldMainDir: {
-        _selectorListMainDir->SetLine(iName, 0, CATDlgDataModify);
+        _SelectorListMainDir->SetLine(iName, 0, CATDlgDataModify);
         return;
     }
     }
@@ -136,9 +138,9 @@ CATDlgSelectorList* PNXCombinedCurveDlg::GetField(int iFieldNumber) {
     // returns the active field ( used by the state command ).
     switch (iFieldNumber) {
     case PNXCopyStudyFieldFirstPoint:
-        return _selectorListFirstPoint;
+        return _SelectorListFirstPoint;
     case PNXCopyStudyFieldMainDir:
-        return _selectorListMainDir;
+        return _SelectorListMainDir;
     }
     return NULL;
 }
@@ -150,12 +152,16 @@ void PNXCombinedCurveDlg::SetAcceptOnNotifyOfValueChange(CATDialogAgent* ipDialo
 
     // clang-format off
 
+    // 2, FirstPoint, NOT SUPPORT, SelectorList, 1
+
+    // 3, MainDir, NOT SUPPORT, SelectorList, 1
+
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCombinedCurve DIALOG NOTIFY
 }
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::UpdateDialog() {
-    // if (!parameter) return; // check pointer
+    if (!parameter) return; // check pointer
 
     // KEVIN_SYSTEM_CODE START
     // KEVIN_SYSTEM_CODE END
@@ -164,6 +170,12 @@ void PNXCombinedCurveDlg::UpdateDialog() {
     // START KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE DIALOG
 
     // clang-format off
+
+    // 2,FirstPoint,
+    KT_AUTO_FIELD_SET_LINE(_SelectorListFirstPoint, parameter->FirstPoint);
+
+    // 3,MainDir,
+    KT_AUTO_FIELD_SET_LINE(_SelectorListMainDir, parameter->MainDir);
 
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE DIALOG
@@ -175,18 +187,23 @@ void PNXCombinedCurveDlg::UpdateDialog() {
 }
 //-----------------------------------------------------------------
 void PNXCombinedCurveDlg::UpdateInfos() {
-    // if (!parameter) return; // check pointer
+    if (!parameter) return; // check pointer
 
     // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
     // START KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE INFORS
 
     // clang-format off
 
+    // 2,FirstPoint,,NO ACTION,SelectorList,1
+
+    // 3,MainDir,,NO ACTION,SelectorList,1
+
     // clang-format on
     // END KEVIN CAA WIZARD SECTION PNXCombinedCurve UPDATE INFORS
 }
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::UpdateSensitivity() {
+    if (!parameter) return; // check pointer
     //_PushButtonMore->SetVisibility(CATDlgHide);//hide the param dialog now
     // check OK Sensitivity
     // this is Feature mode, Do not check OK sensitivity. always can press

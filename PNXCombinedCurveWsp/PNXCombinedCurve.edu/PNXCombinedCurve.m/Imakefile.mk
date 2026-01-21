@@ -18,3 +18,12 @@ LINK_WITH=CATGeometricObjects          \
           CATInteractiveInterfaces      \
           CATVisualization      \
           JS0GROUP KnowledgeItf
+
+#Link with with external libraries
+LOCAL_LDFLAGS =/LIBPATH:"$(ROOT_DIR_CORE)\bin"
+
+#Link with include file
+LOCAL_CCFLAGS = /I"$(ROOT_DIR_CORE)\include" 
+
+#Name of the libraries
+SYS_LIBS = KtCore.lib

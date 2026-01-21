@@ -2,13 +2,12 @@
 #ifndef PNXICombinedCurve_H
 #define PNXICombinedCurve_H
 
-// Local Framework
-#include "PNXCombinedCurve.h"
-
-// System Framework
+// CAA
 #include "CATBaseUnknown.h"
+#include "CATISpecObject.h"
 
-class CATISpecObject;
+// Local Framework
+#include "PNXCombinedCurveParam.h"
 
 extern ExportedByPNXCombinedCurve IID IID_PNXICombinedCurve;
 
@@ -23,47 +22,60 @@ class ExportedByPNXCombinedCurve PNXICombinedCurve : public CATBaseUnknown {
     CATDeclareInterface;
 
 public:
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve INTERFACES HEAD GET
+
+    // clang-format off
+public: // Get
     /**
-     * Sets one of the input FirstPoint of the Combined Curve.
-     *
-     * param ipValue : the FirstPoint
-     *
-     * returns       : S_OK  the call succeeded.
-     *               : E_FAIL  the call failed.
+     * @brief First Point
+     * @return CATISpecObject_var
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 2
      */
-    virtual HRESULT SetFirstPoint(CATISpecObject* ipValue) = 0;
+    virtual CATISpecObject_var GetFirstPoint() const = 0;
 
     /**
-     * Gets one of the FirstPoint of the Combined Curve.
-     *
-     * param opValue : the FirstPoint
-     *
-     * returns       : S_OK  the call succeeded.
-     *               : E_FAIL  the call failed.
+     * @brief Main Dir
+     * @return CATISpecObject_var
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 3
      */
-    virtual HRESULT GetFirstPoint(CATISpecObject** opValue) = 0;
+    virtual CATISpecObject_var GetMainDir() const = 0;
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve INTERFACES HEAD GET
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve INTERFACES HEAD SET
+
+    // clang-format off
+public: // Set
+    /**
+     * @brief First Point
+     * @param[in] value CATISpecObject_var
+     * @return HRESULT
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 2
+     */
+    virtual HRESULT SetFirstPoint(const CATISpecObject_var& value, const CATBoolean& checkExist = CATTrue) = 0;
 
     /**
-     * Sets MainDir of the Combined Curve.
-     *
-     * param ipValue : the MainDir
-     *
-     * returns           : S_OK  the call succeeded.
-     *                   : E_FAIL  the call failed.
+     * @brief Main Dir
+     * @param[in] value CATISpecObject_var
+     * @return HRESULT
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 3
      */
-    virtual HRESULT SetMainDir(CATISpecObject* ipValue) = 0;
+    virtual HRESULT SetMainDir(const CATISpecObject_var& value, const CATBoolean& checkExist = CATTrue) = 0;
 
-    /**
-     * Gets one of the MainDir of the Combined Curve.
-     *
-     * param oppValue : the MainDir
-     *
-     * returns           : S_OK  the call succeeded.
-     *                   : E_FAIL  the call failed.
-     */
-    virtual HRESULT GetMainDir(CATISpecObject** opValue) = 0;
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve INTERFACES HEAD SET
 };
-// TODO ”–Œ Ã‚
 /** @brief Macro for Handlers  */
-// CATDeclareHandler(PNXICombinedCurve, CATBaseUnknown);
+CATDeclareHandler(PNXICombinedCurve, CATBaseUnknown);
 #endif

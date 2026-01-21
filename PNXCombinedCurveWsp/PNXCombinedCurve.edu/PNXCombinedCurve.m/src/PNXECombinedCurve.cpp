@@ -26,7 +26,9 @@ CATImplementClass(PNXECombinedCurve, DataExtension, CATBaseUnknown, CombinedCurv
 // PNXECombinedCurve : constructor
 //-------------------------------------------------------------------------------------
 PNXECombinedCurve::PNXECombinedCurve()
-    : CATBaseUnknown() {
+    : CATBaseUnknown()
+    , ktcSpecRW() {
+    ktcSpecRW.initial(this); // initial{
 }
 
 //-------------------------------------------------------------------------------------
@@ -46,197 +48,44 @@ TIE_PNXICombinedCurve(PNXECombinedCurve);
 //
 // CombinedCurve  PNXICombinedCurve  libPNXCombinedCurve
 
-//-------------------------------------------------------------------------------------
-HRESULT PNXECombinedCurve::SetFirstPoint(CATISpecObject* ipiSpecOnCurve) {
-    // Gets a pointer on CATISpecAttrAccess
-    CATISpecAttrAccess* piSpecAttrAccessOnCC = NULL;
-    HRESULT             rc = QueryInterface(IID_CATISpecAttrAccess, (void**)&piSpecAttrAccessOnCC);
-    if (SUCCEEDED(rc)) {
-        // Gets a pointer on the curve attribute
-        CATISpecAttrKey* piSpecAttrKey = piSpecAttrAccessOnCC->GetAttrKey("FirstPoint");
-        if (NULL == piSpecAttrKey) {
-            rc = E_FAIL;
-        }
-        else {
-            CATISpecObject_var spiSpecOnCurve(ipiSpecOnCurve);
+// DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+// START KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS CPP GET
 
-            if (NULL_var != spiSpecOnCurve) {
-                // If the feature is a Feature BRep it must be aggregated by the CC
-                CATIMfBRep* pIMfBRep = NULL;
-                rc = spiSpecOnCurve->QueryInterface(IID_CATIMfBRep, (void**)&pIMfBRep);
-                if (SUCCEEDED(rc)) {
-                    CATISpecObject* pFather = spiSpecOnCurve->GetFather();
-                    if (NULL == pFather) {
-                        CATIDescendants* pIDescendantsOnCC = NULL;
-                        rc = QueryInterface(IID_CATIDescendants, (void**)&pIDescendantsOnCC);
+// clang-format off
 
-                        if (SUCCEEDED(rc)) {
-                            pIDescendantsOnCC->Append(spiSpecOnCurve);
-
-                            pIDescendantsOnCC->Release();
-                            pIDescendantsOnCC = NULL;
-                        }
-                    }
-                    else {
-                        pFather->Release();
-                        pFather = NULL;
-                        rc      = E_FAIL;
-                    }
-
-                    pIMfBRep->Release();
-                    pIMfBRep = NULL;
-                }
-                else
-                    rc = S_OK; // it's not an error
-
-                // Sets the curve as input of the CC
-                if (SUCCEEDED(rc)) {
-                    piSpecAttrAccessOnCC->SetSpecObject(piSpecAttrKey, spiSpecOnCurve);
-                }
-            }
-            else {
-                // The input curve pointer is null
-                piSpecAttrAccessOnCC->UnsetAttributeValue(piSpecAttrKey);
-            }
-
-            piSpecAttrKey->Release();
-            piSpecAttrKey = NULL;
-        }
-
-        piSpecAttrAccessOnCC->Release();
-        piSpecAttrAccessOnCC = NULL;
-    }
-
-    return rc;
+//-----------------------------------------------
+CATISpecObject_var PNXECombinedCurve::GetFirstPoint() const // 2
+{
+    CATISpecObject_var value(NULL_var);
+    ktcSpecRW.GetSpecValue("FirstPoint", value);
+    return value;
 }
-//-------------------------------------------------------------------------------------
-HRESULT PNXECombinedCurve::GetFirstPoint(CATISpecObject** opiSpecOnCurve) {
-    HRESULT rc = E_FAIL;
-
-    if (NULL == opiSpecOnCurve) return E_FAIL;
-
-    // Gets a pointer on CATISpecObject
-    CATISpecAttrAccess* piSpecAttrAccessOnCC = NULL;
-    rc = QueryInterface(IID_CATISpecAttrAccess, (void**)&piSpecAttrAccessOnCC);
-    if (SUCCEEDED(rc)) {
-        CATISpecAttrKey* piSpecAttrKey = NULL;
-        piSpecAttrKey                  = piSpecAttrAccessOnCC->GetAttrKey("FirstPoint");
-
-        rc = E_FAIL;
-
-        if (NULL != piSpecAttrKey) {
-            // Gets the curve
-            *opiSpecOnCurve = piSpecAttrAccessOnCC->GetSpecObject(piSpecAttrKey);
-
-            if (NULL != *opiSpecOnCurve) {
-                rc = S_OK;
-            }
-
-            piSpecAttrKey->Release();
-            piSpecAttrKey = NULL;
-        }
-
-        piSpecAttrAccessOnCC->Release();
-        piSpecAttrAccessOnCC = NULL;
-    }
-
-    return rc;
+//-----------------------------------------------
+CATISpecObject_var PNXECombinedCurve::GetMainDir() const // 3
+{
+    CATISpecObject_var value;
+    ktcSpecRW.GetSpecValue("MainDir", value);
+    return value;
 }
-//-------------------------------------------------------------------------------------
-HRESULT PNXECombinedCurve::SetMainDir(CATISpecObject* ipValue) {
-    // Gets a pointer on CATISpecAttrAccess
-    CATISpecAttrAccess* piSpecAttrAccessOnCC = NULL;
-    HRESULT             rc = QueryInterface(IID_CATISpecAttrAccess, (void**)&piSpecAttrAccessOnCC);
-    if (SUCCEEDED(rc)) {
-        // Gets a pointer on the curve attribute
-        CATISpecAttrKey* piSpecAttrKey = piSpecAttrAccessOnCC->GetAttrKey("MainDir");
 
-        if (NULL == piSpecAttrKey) {
-            rc = E_FAIL;
-        }
-        else {
+// clang-format on
+// END KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS CPP GET
 
-            CATISpecObject_var spiSpecOnMainDir(ipValue);
+// DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+// START KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS CPP SET
 
-            if (NULL_var != spiSpecOnMainDir) {
-                // If the feature is a Feature BRep it must be aggregated by the CC
-                CATIMfBRep* pIMfBRep = NULL;
-                rc = spiSpecOnMainDir->QueryInterface(IID_CATIMfBRep, (void**)&pIMfBRep);
-                if (SUCCEEDED(rc)) {
-                    CATISpecObject* pFather = spiSpecOnMainDir->GetFather();
-                    if (NULL == pFather) {
-                        CATIDescendants* pIDescendantsOnCC = NULL;
-                        rc = QueryInterface(IID_CATIDescendants, (void**)&pIDescendantsOnCC);
+// clang-format off
 
-                        if (SUCCEEDED(rc)) {
-                            pIDescendantsOnCC->Append(spiSpecOnMainDir);
-
-                            pIDescendantsOnCC->Release();
-                            pIDescendantsOnCC = NULL;
-                        }
-                    }
-                    else {
-                        pFather->Release();
-                        pFather = NULL;
-                        rc      = E_FAIL;
-                    }
-
-                    pIMfBRep->Release();
-                    pIMfBRep = NULL;
-                }
-                else
-                    rc = S_OK; // it's not an error
-
-                // Sets the curve as input of the CC
-                if (SUCCEEDED(rc)) {
-                    piSpecAttrAccessOnCC->SetSpecObject(piSpecAttrKey, spiSpecOnMainDir);
-                }
-            }
-            else {
-                // The input curve pointer is null
-                piSpecAttrAccessOnCC->UnsetAttributeValue(piSpecAttrKey);
-            }
-
-            piSpecAttrKey->Release();
-            piSpecAttrKey = NULL;
-        }
-
-        piSpecAttrAccessOnCC->Release();
-        piSpecAttrAccessOnCC = NULL;
-    }
-
-    return rc;
+//-----------------------------------------------
+HRESULT PNXECombinedCurve::SetFirstPoint(const CATISpecObject_var& value, const CATBoolean& checkExist) // 2
+{
+    return ktcSpecRW.SetSpecValue("FirstPoint", value, checkExist);
 }
-//-------------------------------------------------------------------------------------
-HRESULT PNXECombinedCurve::GetMainDir(CATISpecObject** opiValue) {
-
-    HRESULT rc = E_FAIL;
-
-    if (NULL == opiValue) return E_FAIL;
-
-    // Gets a pointer on CATISpecObject
-    CATISpecAttrAccess* piSpecAttrAccessOnCC = NULL;
-    rc = QueryInterface(IID_CATISpecAttrAccess, (void**)&piSpecAttrAccessOnCC);
-    if (SUCCEEDED(rc)) {
-        CATISpecAttrKey* piSpecAttrKey = NULL;
-        piSpecAttrKey                  = piSpecAttrAccessOnCC->GetAttrKey("MainDir");
-        rc                             = E_FAIL;
-
-        if (NULL != piSpecAttrKey) {
-            // Gets the curve
-            *opiValue = piSpecAttrAccessOnCC->GetSpecObject(piSpecAttrKey);
-
-            if (NULL != *opiValue) {
-                rc = S_OK;
-            }
-
-            piSpecAttrKey->Release();
-            piSpecAttrKey = NULL;
-        }
-
-        piSpecAttrAccessOnCC->Release();
-        piSpecAttrAccessOnCC = NULL;
-    }
-
-    return rc;
+//-----------------------------------------------
+HRESULT PNXECombinedCurve::SetMainDir(const CATISpecObject_var& value, const CATBoolean& checkExist) // 3
+{
+    return ktcSpecRW.SetSpecValue("MainDir", value, checkExist);
 }
+
+// clang-format on
+// END KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS CPP SET

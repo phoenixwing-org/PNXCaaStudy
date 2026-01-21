@@ -71,16 +71,15 @@ CATCreateClass(PNXCombinedCurveCmd);
 // Deriving from CATMMUIPanelStateCmd provides an association between
 // the states of the command and the Ok/Cancel button.
 //-----------------------------------------------------------------------------
-PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
+PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* iInstance)
     : CATMMUIPanelStateCmd("CombinedCurveCommand")
     , _pFirstPointAgent(NULL)
     , _pMainDirAgent(NULL)
     , _pFirstPointFieldAgent(NULL)
     , _pPushButtonSaveJsonAgent(NULL)
     , _pMainDirFieldAgent(NULL)
-    , _piSpecOnFirstPoint(NULL)
-    , _piSpecOnMainDir(NULL)
-    , feature(NULL)
+    , feature(NULL_var)
+    , parameter(NULL)
     , _panel(NULL)
     , _ActiveField(0) {
     // cout << "### " << __FUNCTION__ << endl;
@@ -88,28 +87,29 @@ PNXCombinedCurveCmd::PNXCombinedCurveCmd(PNXICombinedCurve* ipiCombinedCurve)
     HRESULT rc = E_FAIL;
     mode_      = 1; // creation mode
 
-    if (ipiCombinedCurve != NULL) {
+    parameter = new PNXCombinedCurveParam(); // new param
+
+    if (iInstance != NULL) {
         // Edition mode.
         mode_ = 0;
 
         // 检出到feature
-        if (!!_MyFeature) {
-            rc = ipiCombinedCurve->QueryInterface(IID_PNXICombinedCurve, (void**)&feature);
-            rc = ipiCombinedCurve->QueryInterface(IID_PNXICombinedCurve, (void**)&_MyFeature);
+        if (iInstance) {
+            rc = iInstance->QueryInterface(IID_PNXICombinedCurve, (void**)&feature);
         }
+        _MyFeature = feature;
 
         // Reads the inputs of the Combined Curve.
     }
 
-    if (feature) {
-        rc = feature->GetFirstPoint(&_piSpecOnFirstPoint);
-        if (FAILED(rc)) return;
-
-        rc = feature->GetMainDir(&_piSpecOnMainDir);
-        if (FAILED(rc)) return;
+    if (!!feature) {
+        parameter->FirstPoint = feature->GetFirstPoint();
+        parameter->MainDir    = feature->GetMainDir();
     }
+
     // creates the dialog box
-    _panel = new PNXCombinedCurveDlg();
+    _panel            = new PNXCombinedCurveDlg();
+    _panel->parameter = parameter;
 
     // builds the dialog box
     // ! do not call panel->Build from the panel constructor
@@ -137,10 +137,8 @@ PNXCombinedCurveCmd::~PNXCombinedCurveCmd() {
     cout << "### " << __FUNCTION__ << endl;
 
     // Releases member data pointers before leaving.
-
-    KTCRelease(feature);             // 手动释放
-    KTCRelease(_piSpecOnFirstPoint); // 手动释放
-    KTCRelease(_piSpecOnMainDir);    // 手动释放
+    delete parameter, parameter = NULL;
+    // feature = NULL_var;
     KTCRequestDelayedDestruction(_pFirstPointAgent);
     KTCRequestDelayedDestruction(_pMainDirAgent);
     KTCRequestDelayedDestruction(_pFirstPointFieldAgent);
@@ -287,10 +285,10 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
     //
     if (0 == GetMode() && !!feature) {
         // Updates the combine with its new curves inputs.
-        rc = feature->SetFirstPoint(_piSpecOnFirstPoint);
+        rc = feature->SetFirstPoint(parameter->FirstPoint);
         if (FAILED(rc)) return FALSE;
 
-        rc = feature->SetMainDir(_piSpecOnMainDir);
+        rc = feature->SetMainDir(parameter->MainDir);
         if (FAILED(rc)) return FALSE;
     }
     else {
@@ -443,8 +441,8 @@ void PNXCombinedCurveCmd::SetActiveField(int ActiveField) {
 
     // Gets a pointer on CATISpecObject on the geometrical element to highlight
     CATISpecObject* piSpecOnGeomElem = NULL;
-    if (PNXCopyStudyFieldFirstPoint == ActiveField) piSpecOnGeomElem = _piSpecOnFirstPoint;
-    if (PNXCopyStudyFieldMainDir == ActiveField) piSpecOnGeomElem = _piSpecOnMainDir;
+    if (PNXCopyStudyFieldFirstPoint == ActiveField) piSpecOnGeomElem = parameter->FirstPoint;
+    if (PNXCopyStudyFieldMainDir == ActiveField) piSpecOnGeomElem = parameter->MainDir;
 
     if ((piSpecOnGeomElem != NULL) && (NULL != _HSO) && (NULL != catFrmEditor_)) {
         // uses this pointer to build a path element
@@ -485,8 +483,8 @@ void PNXCombinedCurveCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
 
     if (NULL != pSelection) {
         // gets a pointer on CATISpecObject for this element
-        CATISpecObject* piSpecOnSelection = NULL;
-        HRESULT rc = pSelection->QueryInterface(IID_CATISpecObject, (void**)&piSpecOnSelection);
+        CATISpecObject_var specOnSelection;
+        HRESULT rc = pSelection->QueryInterface(IID_CATISpecObject, (void**)&specOnSelection);
         if (FAILED(rc)) {
             return;
         }
@@ -496,35 +494,16 @@ void PNXCombinedCurveCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
         // o otherwise, the user wants to replace the old selected element by the new one.
         switch (_ActiveField) {
         case PNXCopyStudyFieldFirstPoint: {
-            if (_piSpecOnFirstPoint == piSpecOnSelection) // same one
-            {
-                _piSpecOnFirstPoint->Release(); // this pointeur is not null
-                _piSpecOnFirstPoint = NULL;     // erases the selection
-            }
-            else {
-                if (NULL != _piSpecOnFirstPoint) _piSpecOnFirstPoint->Release();
-                _piSpecOnFirstPoint = piSpecOnSelection; // other one, replaces the selection
-                _piSpecOnFirstPoint->AddRef();
-            }
-
+            // replaces the selection
+            if (parameter->FirstPoint != specOnSelection) parameter->FirstPoint = specOnSelection;
             break;
         }
         case PNXCopyStudyFieldMainDir: {
-            if (_piSpecOnMainDir == piSpecOnSelection) {
-                _piSpecOnMainDir->Release(); // this pointeur is not null
-                _piSpecOnMainDir = NULL;
-            }
-            else {
-                if (NULL != _piSpecOnMainDir) _piSpecOnMainDir->Release();
-                _piSpecOnMainDir = piSpecOnSelection;
-                _piSpecOnMainDir->AddRef();
-            }
+            // replaces the selection
+            if (parameter->MainDir != specOnSelection) parameter->MainDir = specOnSelection;
             break;
         }
         }
-
-        piSpecOnSelection->Release();
-        piSpecOnSelection = NULL;
 
         // updates the text corresponding to the feature names in the panel fields
         UpdatePanelFields();
@@ -541,7 +520,7 @@ void PNXCombinedCurveCmd::ElementSelected(CATFeatureImportAgent* pAgent) {
 }
 //-----------------------------------------------------------------------------
 void PNXCombinedCurveCmd::CheckOKSensitivity() {
-    if (_piSpecOnFirstPoint != NULL && _piSpecOnMainDir != NULL)
+    if (parameter->FirstPoint != NULL && parameter->MainDir != NULL)
         _panel->SetOKSensitivity(CATDlgEnable);
     else
         _panel->SetOKSensitivity(CATDlgDisable);
@@ -553,13 +532,13 @@ void PNXCombinedCurveCmd::UpdatePanelFields() {
     // gets the name of the selected elements and put these names into the Combined Curve edition
     // dialog box relevant text fields
 
-    if (_piSpecOnFirstPoint != NULL)
-        _panel->SetName(PNXCopyStudyFieldFirstPoint, _piSpecOnFirstPoint->GetDisplayName());
+    if (parameter->FirstPoint != NULL_var)
+        _panel->SetName(PNXCopyStudyFieldFirstPoint, parameter->FirstPoint->GetDisplayName());
     else
         _panel->SetName(PNXCopyStudyFieldFirstPoint, CATUnicodeString("no selection"));
 
-    if (_piSpecOnMainDir != NULL)
-        _panel->SetName(PNXCopyStudyFieldMainDir, _piSpecOnMainDir->GetDisplayName());
+    if (parameter->MainDir != NULL_var)
+        _panel->SetName(PNXCopyStudyFieldMainDir, parameter->MainDir->GetDisplayName());
     else
         _panel->SetName(PNXCopyStudyFieldMainDir, CATUnicodeString("no selection"));
 
@@ -578,7 +557,7 @@ int PNXCombinedCurveCmd::GetMode() {
 }
 //-----------------------------------------------------------------------------
 HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
-    if (feature) return S_OK; // 只能创建一次
+    if (!!feature) return S_OK; // 只能创建一次
     // cout << "### " << __FUNCTION__ << endl;
 
     //
@@ -642,7 +621,7 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
                 rc = spContainer->QueryInterface(IID_PNXICombinedCurveFactory, (void**)&factory);
                 if (SUCCEEDED(rc)) {
                     // creates the Combined Curve
-                    rc = factory->CreateCombinedCurve(_piSpecOnFirstPoint, _piSpecOnMainDir,
+                    rc = factory->CreateCombinedCurve(parameter->FirstPoint, parameter->MainDir,
                                                       (CATISpecObject**)&_MyFeature);
 
                     // 检出到feature

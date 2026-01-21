@@ -275,16 +275,15 @@ int main(int    iArgc, // Number of arguments (0)
     pDescendantsOnGSMTool->Append(Line2);
 
     // creates Combined Curve factory- piPrtCont is the container of specifications
-    PNXICombinedCurveFactory* pCombinedCurveFactory = NULL;
-    rc = piPrtCont->QueryInterface(IID_PNXICombinedCurveFactory, (void**)&pCombinedCurveFactory);
+    PNXICombinedCurveFactory* factory = NULL;
+    rc = piPrtCont->QueryInterface(IID_PNXICombinedCurveFactory, (void**)&factory);
     if (FAILED(rc)) {
         cout << "ERROR in querying PNXICombinedCurveFactory interface on CATPrtCont" << endl;
         return 12;
     }
 
     // The root container is unuseless
-    piPrtCont->Release();
-    piPrtCont = NULL;
+    piPrtCont->Release(), piPrtCont = NULL;
 
     // Updates the MechanicalPart
     int PartUpdate = spSpecOnPart->Update();
@@ -297,12 +296,11 @@ int main(int    iArgc, // Number of arguments (0)
     CATISpecObject* pSpecOnCombinedCurve = NULL;
 
     cout << "   Creates the combined curve" << endl;
-    rc = pCombinedCurveFactory->CreateCombinedCurve(Spline1, Line1, &pSpecOnCombinedCurve);
+    rc = factory->CreateCombinedCurve(Spline1, Line1, &pSpecOnCombinedCurve);
 
     pDescendantsOnGSMTool->Append(pSpecOnCombinedCurve);
 
-    pCombinedCurveFactory->Release();
-    pCombinedCurveFactory = NULL;
+    factory->Release(), factory = NULL;
 
     if (FAILED(rc)) {
         cout << "ERROR in creating Combined Curve " << endl;
@@ -317,58 +315,37 @@ int main(int    iArgc, // Number of arguments (0)
         cout << "   Combined Curve instance's update KO " << endl;
 
     // Queries PNXICombinedCurve interface on Combined Curve instance
-    PNXICombinedCurve* pCombinedCurve = NULL;
-    rc = pSpecOnCombinedCurve->QueryInterface(IID_PNXICombinedCurve, (void**)&pCombinedCurve);
+    PNXICombinedCurve_var feature;
+    rc = pSpecOnCombinedCurve->QueryInterface(IID_PNXICombinedCurve, (void**)&feature);
     if (FAILED(rc)) {
         cout << "ERROR in querying PNXICombinedCurve on Combined Curve " << endl;
         return 14;
     }
-    pSpecOnCombinedCurve->Release();
-    pSpecOnCombinedCurve = NULL;
+    pSpecOnCombinedCurve->Release(), pSpecOnCombinedCurve = NULL;
 
     // Retrieves first input curve
-    CATISpecObject* pSpecOnInputFirstPoint = NULL;
-    rc                                     = pCombinedCurve->GetFirstPoint(&pSpecOnInputFirstPoint);
-    if (FAILED(rc)) {
-        cout << "ERROR in retrieving input curve #1" << endl;
+    CATISpecObject_var spFirstPoint = feature->GetFirstPoint();
+    if (!spFirstPoint) {
+        cout << "ERROR in retrieving FirstPoint" << endl;
         return 15;
     }
 
     // Retrieves first input direction
-    CATISpecObject* pSpecOnInputMainDir = NULL;
-    rc                                  = pCombinedCurve->GetMainDir(&pSpecOnInputMainDir);
-    if (FAILED(rc)) {
-        cout << "ERROR in retrieving input direction #1" << endl;
+    CATISpecObject_var spMainDir = feature->GetMainDir();
+    if (!spMainDir) {
+        cout << "ERROR in retrieving input MainDir" << endl;
         return 16;
-    }
-
-    pCombinedCurve->Release();
-    pCombinedCurve = NULL;
-
-    if (FAILED(rc)) {
-        cout << "ERROR in retrieving input direction #2" << endl;
-        return 18;
     }
 
     // displays names of Combined Curve's input curves and directions
     cout << endl;
     cout << "   CombinedCurve instance's inputs : " << endl;
-    cout << "     FirstPoint     : " << pSpecOnInputFirstPoint->GetDisplayName().ConvertToChar()
-         << endl;
-    cout << "     MainDir : " << pSpecOnInputMainDir->GetDisplayName().ConvertToChar() << endl;
+    cout << "     FirstPoint     : " << spFirstPoint->GetDisplayName().ConvertToChar() << endl;
+    cout << "     MainDir : " << spMainDir->GetDisplayName().ConvertToChar() << endl;
     cout << endl;
 
-    pSpecOnInputFirstPoint->Release();
-    pSpecOnInputFirstPoint = NULL;
-
-    pSpecOnInputMainDir->Release();
-    pSpecOnInputMainDir = NULL;
-
-    pDescendantsOnGSMTool->Release();
-    pDescendantsOnGSMTool = NULL;
-
-    piGSMFactOnPrtCont->Release();
-    piGSMFactOnPrtCont = NULL;
+    pDescendantsOnGSMTool->Release(), pDescendantsOnGSMTool = NULL;
+    piGSMFactOnPrtCont->Release(), piGSMFactOnPrtCont       = NULL;
 
     // Saves the Part document
 

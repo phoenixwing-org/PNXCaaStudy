@@ -7,6 +7,8 @@
 // Auto Code
 #include "KTCAutoDialog.h"
 
+#include "PNXCombinedCurveParam.h"
+
 /**
  * Field enum for input field
  */
@@ -78,12 +80,14 @@ protected:
     void UpdateSensitivity();
 
 public:
-    CATDlgSelectorList *_selectorListFirstPoint, *_selectorListMainDir;
+    CATDlgSelectorList *_SelectorListFirstPoint, *_SelectorListMainDir;
 
     CATDlgPushButton* _pushButtonSaveJson;       ///< save json button
     CATDlgPushButton* _pushButtonDirectCallback; ///< Direct callback button
     CATDlgPushButton* _pushButtonSubDialog;      ///< sample
     PNXSubCurveDlg*   _subPanel;                 // sub pannel
+
+    PNXCombinedCurveParam* parameter; // this parameter
 };
 
 #endif
