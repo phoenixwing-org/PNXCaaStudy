@@ -26,6 +26,14 @@
 // Kt
 #include "KtString.h"
 
+/**
+ * Action enum
+ */
+enum PNXCombinedCurveAction {
+    PNXCombinedCurveActionDirectCallback = 0,
+    PNXCombinedCurveActionSubDialog      = 1
+};
+
 /** @brief Field Type */
 enum PNXCombinedCurveField {
     // START KEVIN CAA WIZARD SECTION PNXCombinedCurve DLG DEFINE FIELD TYPE

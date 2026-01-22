@@ -53,8 +53,8 @@ void PNXECombinedCurveAdn::CreateCommands() {
     // Instantiation of the header class created by the macro MacDeclareHeader -
     // commands are always available and are represented by a push button
 
-    new PNXECombinedCurveAdnHeader("PNXCopyStudyHdr", "PNXCombinedCurveUI", "PNXCombinedCurveCmd",
-                                   (void*)NULL);
+    new PNXECombinedCurveAdnHeader("PNXCombinedCurveHdr", "PNXCombinedCurveUI",
+                                   "PNXCombinedCurveCmd", (void*)NULL);
 }
 
 //-----------------------------------------------------------------------------
@@ -64,10 +64,10 @@ void PNXECombinedCurveAdn::CreateCommands() {
 CATCmdContainer* PNXECombinedCurveAdn::CreateToolbars() {
 
     // CombinedCurve Toolbar
-    NewAccess(CATCmdContainer, pCombinedCurveWkb, PNXCopyStudyTlb);
+    NewAccess(CATCmdContainer, pCombinedCurveWkb, PNXCombinedCurveTlb);
 
-    NewAccess(CATCmdStarter, pCombinedCurve, PNXCopyStudyStr);
-    SetAccessCommand(pCombinedCurve, "PNXCopyStudyHdr");
+    NewAccess(CATCmdStarter, pCombinedCurve, PNXCombinedCurveStr);
+    SetAccessCommand(pCombinedCurve, "PNXCombinedCurveHdr");
     SetAccessChild(pCombinedCurveWkb, pCombinedCurve);
 
     AddToolbarView(pCombinedCurveWkb, -1, Top); // Unvisible toolbar

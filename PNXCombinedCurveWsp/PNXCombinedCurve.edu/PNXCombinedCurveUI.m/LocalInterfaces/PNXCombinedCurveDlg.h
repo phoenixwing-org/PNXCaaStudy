@@ -9,23 +9,6 @@
 
 #include "PNXCombinedCurveParam.h"
 
-/**
- * Field enum for input field
- */
-enum PNXCopyStudyField {
-    PNXCopyStudyFieldUnkown     = 0,
-    PNXCopyStudyFieldFirstPoint = 1,
-    PNXCopyStudyFieldMainDir    = 2
-};
-
-/**
- * Action enum
- */
-enum PNXCopyStudyAction {
-    PNXCopyStudyActionDirectCallback = 0,
-    PNXCopyStudyActionSubDialog      = 1
-};
-
 class PNXSubCurveDlg;
 
 /**
@@ -63,7 +46,7 @@ public:
      */
     void SetName(int iFieldNumber, CATUnicodeString iName);
 
-protected:
+public:
     /**
      * @brief Set Accept On Notify Of Value Change
      * @param[in] ipDialogAgent Value Change Agent

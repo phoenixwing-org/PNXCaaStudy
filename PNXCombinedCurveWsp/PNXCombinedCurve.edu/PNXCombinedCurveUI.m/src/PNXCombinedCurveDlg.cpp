@@ -112,8 +112,8 @@ void PNXCombinedCurveDlg::Build() {
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::SetActiveField(int iFieldNumber) {
     //  Deselects all others field when changing of active field ( by clicking in another one ).
-    if (PNXCopyStudyFieldFirstPoint != iFieldNumber) _SelectorListFirstPoint->ClearSelect();
-    if (PNXCopyStudyFieldMainDir != iFieldNumber) _SelectorListMainDir->ClearSelect();
+    if (Field_PNXCombinedCurve_FirstPoint != iFieldNumber) _SelectorListFirstPoint->ClearSelect();
+    if (Field_PNXCombinedCurve_MainDir != iFieldNumber) _SelectorListMainDir->ClearSelect();
     return;
 }
 //-------------------------------------------------------------------------
@@ -122,11 +122,11 @@ void PNXCombinedCurveDlg::SetName(int iFieldNumber, CATUnicodeString iName) {
     // Replaces it if the object was already selected.
 
     switch (iFieldNumber) {
-    case PNXCopyStudyFieldFirstPoint: {
+    case Field_PNXCombinedCurve_FirstPoint: {
         _SelectorListFirstPoint->SetLine(iName, 0, CATDlgDataModify);
         return;
     }
-    case PNXCopyStudyFieldMainDir: {
+    case Field_PNXCombinedCurve_MainDir: {
         _SelectorListMainDir->SetLine(iName, 0, CATDlgDataModify);
         return;
     }
@@ -137,9 +137,9 @@ void PNXCombinedCurveDlg::SetName(int iFieldNumber, CATUnicodeString iName) {
 CATDlgSelectorList* PNXCombinedCurveDlg::GetField(int iFieldNumber) {
     // returns the active field ( used by the state command ).
     switch (iFieldNumber) {
-    case PNXCopyStudyFieldFirstPoint:
+    case Field_PNXCombinedCurve_FirstPoint:
         return _SelectorListFirstPoint;
-    case PNXCopyStudyFieldMainDir:
+    case Field_PNXCombinedCurve_MainDir:
         return _SelectorListMainDir;
     }
     return NULL;
@@ -204,9 +204,10 @@ void PNXCombinedCurveDlg::UpdateInfos() {
 //-------------------------------------------------------------------------
 void PNXCombinedCurveDlg::UpdateSensitivity() {
     if (!parameter) return; // check pointer
-    //_PushButtonMore->SetVisibility(CATDlgHide);//hide the param dialog now
+
     // check OK Sensitivity
-    // this is Feature mode, Do not check OK sensitivity. always can press
-    // this->SetOKSensitivity(dlgState); //set state
-    // CATULong dlgState;
+    CATULong dlgState = (parameter->FirstPoint != NULL_var && parameter->MainDir != NULL_var)
+                            ? CATDlgEnable
+                            : CATDlgDisable;
+    this->SetOKSensitivity(dlgState); // set state
 }
