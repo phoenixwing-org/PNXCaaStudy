@@ -5,7 +5,9 @@
 // System Framework
 #include "CATBaseUnknown.h" // needed to derive from CATBaseUnknown
 
-class CATISpecObject;
+// auto code
+#include "KTCAutoAttrAccess.h"
+#include "PNXCombinedCurveParam.h"
 
 /**
  * Class extending the object "CombinedCurve".
@@ -23,35 +25,69 @@ public:
     PNXECombinedCurve();
     virtual ~PNXECombinedCurve();
 
+public:
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS HEAD GET
+
+    // clang-format off
+public: // Get
     /**
-     * Implements the method SetFirstPoint of the interface PNXCombinedCurve.
-     * see PNXCombinedCurve.edu.PNXICombinedCurve.SetFirstPoint
+     * @brief First Point
+     * @return CATISpecObject_var
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 2
      */
-    HRESULT SetFirstPoint(CATISpecObject* ipiValue);
+    CATISpecObject_var GetFirstPoint() const;
 
     /**
-     * Implements the method GetFirstPoint of the interface PNXCombinedCurve.
-     * see PNXCombinedCurve.edu.PNXICombinedCurve.GetFirstPoint
+     * @brief Main Dir
+     * @return CATISpecObject_var
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 3
      */
-    HRESULT GetFirstPoint(CATISpecObject** opiValue);
+    CATISpecObject_var GetMainDir() const;
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS HEAD GET
+
+    // DO NOT EDIT IN THE CONTROL CODE OF "KEVIN CAA WIZARD SECTION"
+    // START KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS HEAD SET
+
+    // clang-format off
+public: // Set
+    /**
+     * @brief First Point
+     * @param[in] value CATISpecObject_var
+     * @return HRESULT
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 2
+     */
+    HRESULT SetFirstPoint(const CATISpecObject_var& value, const CATBoolean& checkExist = CATTrue);
 
     /**
-     * Implements the method SetMainDir of the interface PNXCombinedCurve.
-     * see PNXCombinedCurve.edu.PNXICombinedCurve.SetMainDir
+     * @brief Main Dir
+     * @param[in] value CATISpecObject_var
+     * @return HRESULT
+     * @author Phoenix
+     * @date 2025/12/17
+     * @id 3
      */
-    HRESULT SetMainDir(CATISpecObject* ipiValue);
+    HRESULT SetMainDir(const CATISpecObject_var& value, const CATBoolean& checkExist = CATTrue);
 
-    /**
-     * Implements the method GetMainDir of the interface PNXCombinedCurve.
-     * see PNXCombinedCurve.edu.PNXICombinedCurve.GetMainDir
-     */
-    HRESULT GetMainDir(CATISpecObject** opiValue);
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCombinedCurve IMPLEMENTS HEAD SET
 
 private:
     // The copy constructor and the equal operator must not be implemented
     // -------------------------------------------------------------------
     PNXECombinedCurve(PNXECombinedCurve&);
     PNXECombinedCurve& operator=(PNXECombinedCurve&);
+
+private:
+    KTCAutoAttrAccess ktcSpecRW; // for 	KTCAutoAttrAccess
 };
 
 #endif

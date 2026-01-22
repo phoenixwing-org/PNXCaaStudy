@@ -8,8 +8,10 @@
 
 // auto code
 #include "KTCAutoCommand.h"
+#include "KTCAutoHSO.h"
 
 // local
+#include "PNXCombinedCurveParam.h"
 #include "PNXICombinedCurve.h"
 
 class PNXCombinedCurveDlg;
@@ -98,16 +100,6 @@ public:
      */
     void SetActiveField(int ActiveField);
 
-    /**
-     * Ask the panel to update the texts in the fields.
-     */
-    void UpdatePanelFields();
-
-    /**
-     * Prevents the user from clicking the OK button if a entry field is not filled in.
-     */
-    void CheckOKSensitivity();
-
 private:
     // Default Constructor, Copy constructor and equal operator, to prevent reimplementation
     // ----------------------------------------------------------------
@@ -125,25 +117,20 @@ private:
     CATStatusChangeRC Cancel(CATCommand* iCmd, CATNotification* iNotif);
 
 private:
-    PNXICombinedCurve* feature;          // this feature
-    CATISpecObject_var featurePrevious_; // previous feature
-
+    PNXICombinedCurve_var  feature;          // this feature
+    PNXCombinedCurveParam* parameter;        // this parameter
+    CATISpecObject_var     featurePrevious_; // previous feature
+    PNXCombinedCurveDlg*   dialog;
+    CATFrmEditor*          catFrmEditor_;
+    CATHSO*                catHSO_;
+    KTCAutoHSO             ktcHSO_;
+    int                    _ActiveField;
+    int                    mode_;
     CATFeatureImportAgent* _pFirstPointAgent;
     CATFeatureImportAgent* _pMainDirAgent;
-
-    CATDialogAgent *_pFirstPointFieldAgent, *_pMainDirFieldAgent,
-        *_pPushButtonSaveJsonAgent; ///< save button agent
-
-    CATISpecObject *_piSpecOnFirstPoint, *_piSpecOnMainDir;
-
-    PNXCombinedCurveDlg* _panel;
-
-    CATFrmEditor* catFrmEditor_;
-
-    CATHSO* _HSO;
-
-    int _ActiveField;
-    int mode_;
+    CATDialogAgent*        _pFirstPointFieldAgent;
+    CATDialogAgent*        _pMainDirFieldAgent;
+    CATDialogAgent*        _pPushButtonSaveJsonAgent; ///< save button agent
 };
 
 #endif

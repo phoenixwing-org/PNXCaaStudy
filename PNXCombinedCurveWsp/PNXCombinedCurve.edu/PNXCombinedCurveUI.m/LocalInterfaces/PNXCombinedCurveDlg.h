@@ -7,22 +7,7 @@
 // Auto Code
 #include "KTCAutoDialog.h"
 
-/**
- * Field enum for input field
- */
-enum PNXCopyStudyField {
-    PNXCopyStudyFieldUnkown     = 0,
-    PNXCopyStudyFieldFirstPoint = 1,
-    PNXCopyStudyFieldMainDir    = 2
-};
-
-/**
- * Action enum
- */
-enum PNXCopyStudyAction {
-    PNXCopyStudyActionDirectCallback = 0,
-    PNXCopyStudyActionSubDialog      = 1
-};
+#include "PNXCombinedCurveParam.h"
 
 class PNXSubCurveDlg;
 
@@ -61,7 +46,7 @@ public:
      */
     void SetName(int iFieldNumber, CATUnicodeString iName);
 
-protected:
+public:
     /**
      * @brief Set Accept On Notify Of Value Change
      * @param[in] ipDialogAgent Value Change Agent
@@ -78,12 +63,14 @@ protected:
     void UpdateSensitivity();
 
 public:
-    CATDlgSelectorList *_selectorListFirstPoint, *_selectorListMainDir;
+    CATDlgSelectorList *_SelectorListFirstPoint, *_SelectorListMainDir;
 
     CATDlgPushButton* _pushButtonSaveJson;       ///< save json button
     CATDlgPushButton* _pushButtonDirectCallback; ///< Direct callback button
     CATDlgPushButton* _pushButtonSubDialog;      ///< sample
     PNXSubCurveDlg*   _subPanel;                 // sub pannel
+
+    PNXCombinedCurveParam* parameter; // this parameter
 };
 
 #endif
