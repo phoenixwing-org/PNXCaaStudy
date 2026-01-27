@@ -25,3 +25,6 @@
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
 ```
+
+## 关联文档
+[parameter参数定义文件说明](parameter.md)
