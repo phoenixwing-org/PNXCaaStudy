@@ -201,10 +201,9 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_CMD_BUILD_FIA_LINE(NAME)                      \
-    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);                          \
-    _fia##NAME->SetOrderedElementType("CATIMfZeroDimResult"); \
-    _fia##NAME->AddOrderedElementType("CATIMfLine");          \
+#define KT_AUTO_CMD_BUILD_FIA_LINE(NAME)             \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);                 \
+    _fia##NAME->SetOrderedElementType("CATIMfLine"); \
     _fia##NAME->AddOrderedElementType("CATLine")
 
 /**
@@ -222,9 +221,10 @@ class CATDialogState;
  * @param[in] NAME a name string
  * @note Kt Auto Code Macro.
  */
-#define KT_AUTO_CMD_BUILD_FIA_PLANE(NAME) \
-    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);      \
-    _fia##NAME->SetOrderedElementType("CATPlane")
+#define KT_AUTO_CMD_BUILD_FIA_PLANE(NAME)              \
+    KT_AUTO_CMD_BUILD_FIA_NEW(NAME);                   \
+    _fia##NAME->SetOrderedElementType("CATIGSMPlane"); \
+    _fia##NAME->AddOrderedElementType("CATPlane")
 
 /**
  * @brief CMD AGENT BUILD GRAPH FIA, field Point
