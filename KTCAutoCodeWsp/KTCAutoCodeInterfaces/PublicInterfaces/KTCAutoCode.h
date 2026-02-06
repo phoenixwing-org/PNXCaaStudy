@@ -224,7 +224,7 @@ class CATDialogState;
  */
 #define KT_AUTO_CMD_BUILD_FIA_PLANE(NAME) \
     KT_AUTO_CMD_BUILD_FIA_NEW(NAME);      \
-    _fia##NAME->SetOrderedElementType(not finished)
+    _fia##NAME->SetOrderedElementType("CATPlane")
 
 /**
  * @brief CMD AGENT BUILD GRAPH FIA, field Point
