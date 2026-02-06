@@ -34,6 +34,14 @@ private:
 
 public:
     /**
+     * @brief debug print infors in console
+     * @param object caa spec object
+     * @param title output message title
+     * @param type default type print a lot of information
+     */
+    static void print_info(CATISpecObject_var object, const char* title = NULL, int type = 0);
+
+    /**
      * @brief update spec object
      */
     static HRESULT update(CATISpecObject_var object, bool isCout);

@@ -25,6 +25,24 @@ KTCAutoObject::KTCAutoObject() {
 KTCAutoObject::~KTCAutoObject() {
 }
 //-----------------------------------------------------------------------------
+void KTCAutoObject::print_info(CATISpecObject_var object, const char* title, int type) {
+    if (!object) {
+        cout << "    - input object is NULL_var." << endl;
+        return;
+    }
+
+    // with object
+    switch (type) {
+    case 0:
+        cout << "    - " << title << " Object : { Name = `" << object->GetName()
+             << "`, DisplayName = `" << object->GetDisplayName() << "`, Type = `"
+             << object->GetType() << "`, SupperType = `" << object->GetSuperType() << "`}" << endl;
+        break;
+    default:
+        cout << "    - input Type Error: `" << type << "`" << endl;
+    }
+}
+//-----------------------------------------------------------------------------
 HRESULT KTCAutoObject::update(CATISpecObject_var object, bool isCout) {
     if (!object) return E_INVALIDARG;
 
