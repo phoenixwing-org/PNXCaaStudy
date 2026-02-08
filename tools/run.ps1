@@ -29,7 +29,7 @@ $batchPaths = Get-CAA-RunBatchPaths -Version $Version -Workspace $Workspace
 # Build batch commands array
 $batchCommands = @(
     "call `"$($batchPaths.TckInit)`"",
-    "call `"$($batchPaths.TckProfileCmd)`"",
+    "call `"$($batchPaths.TckProfile)`" $($batchPaths.ProfileVer)",
     "call `"$($batchPaths.MkCreateRuntimeView)`"",
     "call `"$($batchPaths.Mkrun)`" -c `"cnext`""
 )

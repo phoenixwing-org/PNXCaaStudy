@@ -51,10 +51,11 @@ function Get-CAA-RunBatchPaths {
         New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
     }
 
+    $TckProfile          = Join-Path $BaseDir "TCK\command\tck_profile.bat"
     $paths = [PSCustomObject]@{
         TckInit             = Join-Path $BaseDir "code\command\tck_init.bat"
-        TckProfile          = Join-Path $BaseDir "TCK\command\tck_profile.bat"
-        TckProfileCmd       = Join-Path $BaseDir "TCK\command\tck_profile.bat `"V5R${Version}_B$Version`""
+        TckProfile          = $TckProfile 
+        ProfileVer          = "V5R${Version}_B$Version"
         MkCreateRuntimeView = Join-Path $BaseDir "code\command\mkCreateRuntimeView.bat"
         Mkrun               = Join-Path $BaseDir "code\command\mkrun.bat"
         TempDir             = $tempDir
@@ -200,8 +201,8 @@ function Invoke-BatchCommands
     }
     $tempBat = [System.IO.Path]::GetTempFileName() + ".bat"
     $cmds | Set-Content -Path $tempBat -Encoding ASCII
-    Write-Host " - Temp bat file: $tempBat" -ForegroundColor Yellow
-    Write-Host " - Batch commands: `n$($cmds -join "`n")" -ForegroundColor Yellow
+    # Write-Host " - Temp bat file: $tempBat" -ForegroundColor Yellow
+    # Write-Host " - Batch commands: `n$($cmds -join "`n")" -ForegroundColor Yellow
 
     try {
         & cmd /c "`"$tempBat`""

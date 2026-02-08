@@ -15,9 +15,9 @@ $sourcePath = ".\PNXTemplateFeatureFrm\CNext\resources\graphic"
 # Build batch commands array
 $batchCommands = @(
     "call `"$($batchPaths.TckInit)`"",
-    "call `"$($batchPaths.TckProfileCmd)`"",
+    "call `"$($batchPaths.TckProfile)`" $($batchPaths.ProfileVer)",
     "call `"$($batchPaths.MkCreateRuntimeView)`"",
-    "PNXTemplateFeatureCatalog $sourcePath",
+    "call PNXTemplateFeatureCatalog $sourcePath",
     "copy $sourcePath\*.CATFct `".\win_b64\resources\graphic\`""
 )
 
