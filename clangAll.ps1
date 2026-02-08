@@ -1,8 +1,8 @@
-# mkAll.ps1 - Build all workspaces in parallel
+# ClangFormat All
 # license     MIT
 
 # Command file name
-$CommandFile = "mk.ps1"
+$CommandFile = "clangfile.ps1"
 
 # Get script root directory
 $RootDir = $PSScriptRoot
@@ -14,11 +14,13 @@ $Workspaces = @(
     "PNXCombinedCurveWsp",
     "PNXCurveDivisionWsp",
     "PNXTemplateBaseWsp",
-    "PNXTemplateFeatureWsp"
+    "PNXTemplateFeatureWsp",
+    "PNXV5V6AdapterWsp"
 )
 
 # Import common functions
 . "$RootDir/tools/common.ps1"
 
 # Run CommandFile in new window per workspace
-Start-WorkspaceTasks -RootDir $RootDir -Workspaces $Workspaces -CommandFile $CommandFile
+$scriptArgs = "-Version " + $Version
+Start-WorkspaceTasks -RootDir $RootDir -Workspaces $Workspaces -CommandFile $CommandFile -ScriptArguments $scriptArgs

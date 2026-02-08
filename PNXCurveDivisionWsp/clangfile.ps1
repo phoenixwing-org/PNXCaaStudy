@@ -1,1 +1,1 @@
-& "../clangfile.ps1" -w $PSScriptRoot
+& "../tools/clangfile.ps1" -w $PSScriptRoot

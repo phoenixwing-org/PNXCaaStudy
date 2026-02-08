@@ -97,7 +97,7 @@ class CATDialogState;
     dialog->SetAcceptOnNotifyOfValueChange(daValueChange_);                               \
     catDialogState_->AddDialogAgent(daValueChange_);                                      \
     AddTransition(catDialogState_, catDialogState_, IsOutputSetCondition(daValueChange_), \
-                  Action((ActionMethod) & PREFIX##Cmd::ActionValueChange));               \
+                  Action((ActionMethod)&PREFIX##Cmd::ActionValueChange));                 \
     daValueChange_->AcceptOnNotify(NULL, KTCAutoValueChangedNtf::ClassName())
 
 /**
@@ -122,10 +122,10 @@ class CATDialogState;
     _da##NAME->AcceptOnNotify(selector, selector->GetListSelectNotification());               \
     catDialogState_->AddDialogAgent(_da##NAME);                                               \
     AddTransition(catDialogState_, catDialogState_, IsOutputSetCondition(_fia##NAME),         \
-                  Action((ActionMethod) & PREFIX##Cmd::ActionSelectorListFia, NULL, NULL,     \
+                  Action((ActionMethod)&PREFIX##Cmd::ActionSelectorListFia, NULL, NULL,       \
                          (void*)Field_##PREFIX##_##NAME));                                    \
     AddTransition(catDialogState_, catDialogState_, IsOutputSetCondition(_da##NAME),          \
-                  Action((ActionMethod) & PREFIX##Cmd::ActionSelectorListPda, NULL, NULL,     \
+                  Action((ActionMethod)&PREFIX##Cmd::ActionSelectorListPda, NULL, NULL,       \
                          (void*)Field_##PREFIX##_##NAME));
 
 /**
