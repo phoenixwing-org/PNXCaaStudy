@@ -1,25 +1,20 @@
-# NOTE: PNXTemplateFeature Start Version is R20
-# Converted from CatalogUpdatePNXTemplateFeature.bat
- 
-$ErrorActionPreference = "Stop"
+# 修正版本
 
-# Import common functions
-$parentPath = Split-Path $PSScriptRoot -Parent
-. "$parentPath/tools/common.ps1"
+$catalogTitle="PNXTemplateFeature"
+$Version = $env:CAA_MK_VERSION
+$destinationDir=".\win_b64\resources\graphic\"
 
-# initialize batch paths
-$Version = Get-CAA-Version # get version
-$batchPaths = Get-CAA-RunBatchPaths -Version $Version -Workspace "$PSScriptRoot"
-$sourcePath = ".\PNXTemplateFeatureFrm\CNext\resources\graphic"
+Write-Host "### Create or upadate $catalogTitle catalog for version $Version" -ForegroundColor Yellow
+cd $PSScriptRoot
 
-# Build batch commands array
-$batchCommands = @(
-    "call `"$($batchPaths.TckInit)`"",
-    "call `"$($batchPaths.TckProfile)`" $($batchPaths.ProfileVer)",
-    "call `"$($batchPaths.MkCreateRuntimeView)`"",
-    "call PNXTemplateFeatureCatalog $sourcePath",
-    "copy $sourcePath\*.CATFct `".\win_b64\resources\graphic\`""
-)
+# 临时设置PATH
+$env:PATH = "C:\DS\B$Version\win_b64\code\bin;$PSScriptRoot\win_b64\code\bin;$env:PATH"
 
- # run batch commands
-$null = Invoke-BatchCommands -BatchCommands $batchCommands -Workspace "$PSScriptRoot"
+Write-Host "- ${catalogTitle}Catalog.\${catalogTitle}Frm\CNext\resources\graphic" -ForegroundColor Yellow
+# 执行程序 - 正确拼接变量
+& "${catalogTitle}Catalog" ".\${catalogTitle}Frm\CNext\resources\graphic"
+
+# 复制文件
+Copy-Item ".\${catalogTitle}Frm\CNext\resources\graphic\*.CATFct" $destinationDir -Force
+
+Write-Host "- Files copied successfully to $destinationDir" -ForegroundColor Green
