@@ -12,14 +12,16 @@ $Version = Get-CAA-Version # get version
 $batchPaths = Get-CAA-RunBatchPaths -Version $Version -Workspace "$PSScriptRoot"
 $sourcePath = ".\PNXTemplateFeatureFrm\CNext\resources\graphic"
 
+# 设置 PATH（临时生效，仅当前会话）
+$env:Path = "C:\DS\B$($batchPaths.Version)\win_b64\code\bin;$PSScriptRoot\win_b64\code\bin;$env:Path"
+
 # Build batch commands array
 $batchCommands = @(
-    "call `"$($batchPaths.TckInit)`"",
-    "call `"$($batchPaths.TckProfile)`" $($batchPaths.ProfileVer)",
-    "call `"$($batchPaths.MkCreateRuntimeView)`"",
-    "call PNXTemplateFeatureCatalog $sourcePath",
-    "copy $sourcePath\*.CATFct `".\win_b64\resources\graphic\`""
+    "PNXTemplateFeatureCatalog $sourcePath",
+    "copy $sourcePath\*.CATFct .\win_b64\resources\graphic\"
 )
 
- # run batch commands
-$null = Invoke-BatchCommands -BatchCommands $batchCommands -Workspace "$PSScriptRoot"
+# run batch commands
+Invoke-BatchCommands -BatchCommands $batchCommands -Workspace "$PSScriptRoot"
+
+

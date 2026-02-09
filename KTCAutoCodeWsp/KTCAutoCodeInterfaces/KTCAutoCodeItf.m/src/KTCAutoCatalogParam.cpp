@@ -71,7 +71,7 @@ HRESULT KTCAutoCatalogParam::add_Attributes(CATISpecObject*                   st
         //  ‰≥ˆ–≈œ¢
         if (specAttribute) {
             cout << " - Attribut `" << item->name << "`"
-                 << " has been successfully added Failed." << endl;
+                 << " has been successfully added." << endl;
         }
         else {
             cout << " - [ERROR] Attribut `" << item->name << "`"
