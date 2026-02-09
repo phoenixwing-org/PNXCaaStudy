@@ -1,11 +1,11 @@
 # 修正版本
 
-$catalogTitle="PNXTemplateFeature"
+$catalogTitle = "PNXTemplateFeature"
 $Version = $env:CAA_MK_VERSION
-$destinationDir=".\win_b64\resources\graphic\"
+$destinationDir = ".\win_b64\resources\graphic\"
 
 Write-Host "### Create or upadate $catalogTitle catalog for version $Version" -ForegroundColor Yellow
-cd $PSScriptRoot
+Set-Location $PSScriptRoot
 
 # 临时设置PATH
 $env:PATH = "C:\DS\B$Version\win_b64\code\bin;$PSScriptRoot\win_b64\code\bin;$env:PATH"
