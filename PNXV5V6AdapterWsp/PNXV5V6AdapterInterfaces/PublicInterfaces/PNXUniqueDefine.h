@@ -4,7 +4,7 @@
 /**
  * @brief define Class Macro to adapt V5 and V6
  */
-#ifdef CATIAR424  
+#ifdef CATIAR424
 #define PNXIMechanicalFeature CATIMmiMechanicalFeature
 #define PNXIMechanicalFeature_var CATIMmiMechanicalFeature_var
 #define IID_PNXIMechanicalFeature IID_CATIMmiMechanicalFeature

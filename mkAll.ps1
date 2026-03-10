@@ -6,16 +6,9 @@ $CommandFile = "mk.ps1"
 
 # Get script root directory
 $RootDir = $PSScriptRoot
-
-# Define all workspaces (just directory names)
-$Workspaces = @(
-    "KTCAutoCodeWsp",
-    "PNXBomAnalysisWsp",
-    "PNXCombinedCurveWsp",
-    "PNXCurveDivisionWsp",
-    "PNXTemplateBaseWsp",
-    "PNXTemplateFeatureWsp"
-)
+ 
+# Import $Workspaces from project.ps1
+. "$RootDir\project.ps1"
 
 # Import common functions
 . "$RootDir/tools/common.ps1"

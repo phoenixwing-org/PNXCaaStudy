@@ -9,5 +9,4 @@
 #ifndef PNXV5V6Adapter_H
 #define PNXV5V6Adapter_H
 
-
 #endif

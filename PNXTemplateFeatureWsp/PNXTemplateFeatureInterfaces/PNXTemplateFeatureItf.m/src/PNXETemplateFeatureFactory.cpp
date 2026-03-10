@@ -104,7 +104,7 @@ HRESULT PNXETemplateFeatureFactory::create(PNXTemplateFeatureParam* parameter,
     if (FAILED(hr) || !parmFactory)
         KTC_MESSAGE_CODE_RETURN_HR("Query CATICkeParmFactory failed.", hr, 100105);
 
-    // 根据版本来写代码
+        // 根据版本来写代码
 #if defined CATIAV5R25
     //===============================
     // TODO 验证 Catia V25和后面的版本

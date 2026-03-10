@@ -309,7 +309,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-KTCRelease(    featureCatalog ); // 手动释放
+    KTCRelease(featureCatalog); // 手动释放
 
     // Deleting session
     //------------------

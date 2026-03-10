@@ -36,8 +36,8 @@ PNXV5V6AdapterDlg::PNXV5V6AdapterDlg()
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
 "PNXV5V6AdapterDlg",CATDlgWndBtnOKApplyClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-                   // clang-format on
-                   )
+                    // clang-format on
+                    )
     , dialogMore(NULL)
     , parameter(NULL) {
 

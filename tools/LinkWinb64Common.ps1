@@ -104,7 +104,7 @@ function Remove-SymbolicLinkList {
     Write-Host "----------------------------------------" -ForegroundColor Yellow
     Write-Host ""
     
-    $index = 0
+    $index = 1
     foreach ($CurrentDir in $DirList) {
         Write-Host "  $index. Processing: " -NoNewline -ForegroundColor White
         Write-Host $CurrentDir -ForegroundColor Cyan
@@ -136,7 +136,7 @@ function New-SymbolicLinkList {
         exit 1
     }
     
-    $index = 0
+    $index = 1
     foreach ($CurrentDir in $DirList) {
         Write-Host "$index. Creating: " -NoNewline -ForegroundColor White
         Write-Host $CurrentDir -ForegroundColor Cyan

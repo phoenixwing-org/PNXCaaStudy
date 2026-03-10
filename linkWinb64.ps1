@@ -13,18 +13,18 @@ if (-not $ScriptDir) {
     $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 }
 
-# Set source directory
-$SourceDir = Join-Path $ScriptDir "win_b64"
+# Import $Workspaces from project.ps1
+. "$ScriptDir\project.ps1"
+
+$DirList = @( ) 
 
 # Define directory array for symbolic links
-$DirList = @(    
-    (Join-Path $ScriptDir "KTCAutoCodeWsp\win_b64"),
-    (Join-Path $ScriptDir "PNXBomAnalysisWsp\win_b64"),
-    (Join-Path $ScriptDir "PNXCombinedCurveWsp\win_b64"),
-    (Join-Path $ScriptDir "PNXCurveDivisionWsp\win_b64"),
-    (Join-Path $ScriptDir "PNXTemplateFeatureWsp\win_b64"),
-    (Join-Path $ScriptDir "PNXTemplateBaseWsp\win_b64")
-)
+foreach ($ws in $Workspaces) {
+    $DirList += Join-Path $ScriptDir "$ws\win_b64"
+}
+
+# Set source directory
+$SourceDir = Join-Path $ScriptDir "win_b64"
 
 # Step 1: Remove existing symbolic links or regular folders
 Remove-SymbolicLinkList -DirList $DirList
