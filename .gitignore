@@ -4,6 +4,8 @@ win_b64
 Install_config_win_b64
 CATIAV5Level.lvl
 build
+build_debug
+build_release
 error.md
 .obsidian
 build_debug
