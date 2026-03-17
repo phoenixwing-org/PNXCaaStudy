@@ -10,11 +10,15 @@ if(MSVC)
     add_compile_options(/utf-8)
 endif()
 
+
 # main variable
 if(EMSCRIPTEN)
-    set(ROOT_DIR_CORE ${ROOT_DIR}/kt/wasm)
+  set(ROOT_DIR_CORE ${ROOT_DIR}/kt/wasm)
 else()
-    set(ROOT_DIR_CORE ${ROOT_DIR}/kt/core)
+  # 判断ROOT_DIR_CORE是否为空，如果为空，则设置为默认值
+  if(NOT ROOT_DIR_CORE)
+      set(ROOT_DIR_CORE ${ROOT_DIR}/kt/core)
+  endif()
 endif()
 
 # set default for output directory
