@@ -25,7 +25,7 @@ LINK_WITH = $(WIZARD_LINK_MODULES) \
     KTCAutoCodeItf
 
 #Link with with external libraries
-LOCAL_LDFLAGS =/LIBPATH:"$(ROOT_DIR_CORE)\bin"
+LOCAL_LDFLAGS =/LIBPATH:"$(ROOT_DIR_CORE)\lib"
 
 #Link with include file
 LOCAL_CCFLAGS = /I"$(ROOT_DIR_CORE)\include" 
