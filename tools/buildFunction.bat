@@ -1,31 +1,36 @@
 @echo off
 setlocal
 
-rem Usage: buildFunction.bat [debug^|release] [work_dir]
+rem Usage: buildFunction.bat [debug^|release] [workDir]
 rem   %1 = Debug or Release (default: Debug)
 rem   %2 = Project root dir (default: script directory)
 
-set "BUILD_TYPE=%~1"
-set "WORK_DIR=%~2"
+set "buildType=%~1"
 
-if "%BUILD_TYPE%"=="" set "BUILD_TYPE=Debug"
-if "%WORK_DIR%"=="" set "WORK_DIR=%~dp0"
-if "%WORK_DIR:~-1%"=="\" set "WORK_DIR=%WORK_DIR:~0,-1%"
+@REM get workspace name and parent directory
+set "workDir=%~2"
+if "%workDir:~-1%"=="\" set "workDir=%workDir:~0,-1%"
+@REM get parent directory and diretory name
+for %%I in ("%workDir%") do set "workspaceName=%%~nxI"
 
-rem build_debug / build_release (or build_<Config> for others)
-set "BUILD_DIR=%WORK_DIR%\build_%BUILD_TYPE%"
-if /i "%BUILD_TYPE%"=="Debug"   set "BUILD_DIR=%WORK_DIR%\build_debug"
-if /i "%BUILD_TYPE%"=="Release" set "BUILD_DIR=%WORK_DIR%\build_release"
+@REM get parent directory
+for %%I in ("%workDir%") do set "parentDir=%%~dpI"
 
-cd /d "%WORK_DIR%"
+set "buildDir=%parentDir%build\%workspaceName%"
 
-echo Building %BUILD_TYPE% in "%BUILD_DIR%"
+if "%buildType%"=="" set "buildType=Debug"
 
-cmake -DCMAKE_BUILD_TYPE:STRING=%BUILD_TYPE% -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE --no-warn-unused-cli^
-  -S "%WORK_DIR%" ^
-  -B "%BUILD_DIR%"
+rem buildDir like E:/workspace/build/KtCoreRelease
+if /i "%buildType%"=="Debug"   set "buildDir=%buildDir%Debug"
+if /i "%buildType%"=="Release" set "buildDir=%buildDir%Release"
 
-cmake --build "%BUILD_DIR%" --config %BUILD_TYPE%
+echo CMake Building %workspaceName% in "%buildDir%"
 
-pause
+cd /d "%workDir%"
+cmake -DCMAKE_BUILD_TYPE:STRING=%buildType% -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE --no-warn-unused-cli^
+  -S "%workDir%" ^
+  -B "%buildDir%"
+
+cmake --build "%buildDir%" --config %buildType%
+
 endlocal
