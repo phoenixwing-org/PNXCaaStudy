@@ -280,7 +280,7 @@ public: // structure
      * @brief check the string if is empty
      * @return bool true:empty false:not empty
      */
-    bool is_empty();
+    bool is_empty() const;
 
     /**
      * @brief get left string by specified length

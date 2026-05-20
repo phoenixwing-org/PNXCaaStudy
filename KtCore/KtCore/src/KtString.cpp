@@ -17,8 +17,8 @@
 #include <string>
 
 // Kt Include file
-#include "KtString.h"
 #include "KtCoreDefine.h"
+#include "KtString.h"
 #include "KtStringStruct.h"
 
 // Instead of always comparing the text pointer if NULL we set to some static data.
@@ -413,7 +413,7 @@ KtString& KtString::insert(unsigned int position, const char* after, unsigned in
     return *this;
 }
 //--------------------------------------------------------------------
-bool KtString::is_empty() {
+bool KtString::is_empty() const {
     return _pData->size == 0;
 }
 //--------------------------------------------------------------------
