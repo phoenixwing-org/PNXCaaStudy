@@ -10,3 +10,4 @@ error.md
 .obsidian
 build_debug
 build_release
+.phoenix/
