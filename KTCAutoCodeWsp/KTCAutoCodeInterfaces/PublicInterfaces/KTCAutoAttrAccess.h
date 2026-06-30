@@ -50,11 +50,11 @@ public:
     }
 
     /**
-     * @brief get CATISpecAttrKey pointer
+     * @brief get CATICkeInst_var
      * @param name attribute name
-     * @return CATISpecAttrKey*, Need release by user
+     * @return CATICkeInst_var
      */
-    CATISpecAttrKey* get_CATISpecAttrKey(const char* name) const;
+    CATICkeInst_var get_CATICkeInst(const char* name) const;
 
     /**
      * @brief get CATICkeParm pointer
@@ -64,11 +64,11 @@ public:
     CATICkeParm* get_CATICkeParm(const char* name) const;
 
     /**
-     * @brief get CATICkeInst_var
+     * @brief get CATISpecAttrKey pointer
      * @param name attribute name
-     * @return CATICkeInst_var
+     * @return CATISpecAttrKey*, Need release by user
      */
-    CATICkeInst_var get_CATICkeInst(const char* name) const;
+    CATISpecAttrKey* get_CATISpecAttrKey(const char* name) const;
 
     /**
      * @brief initial CATISpecAttrAccess
@@ -168,6 +168,7 @@ public:
      * @return HRESULT
      */
     HRESULT GetValue(const char* name, int& value) const;
+
     /**
      * @brief Get Value of double
      * @param name attribute name

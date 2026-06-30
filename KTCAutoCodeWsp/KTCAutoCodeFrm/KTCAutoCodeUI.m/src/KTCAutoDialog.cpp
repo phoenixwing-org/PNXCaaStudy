@@ -56,6 +56,12 @@ KTCAutoDialog::~KTCAutoDialog() {
 
     delete valueChangeNtf_, valueChangeNtf_ = NULL; // 手动释放
 }
+//-------------------------------------------------------------------------
+int KTCAutoDialog::ActionSubCommandReturn() {
+    // TODO 实现代码
+    cout << " - 没有实现 " << __FUNCTION__ << endl;
+    return 0;
+}
 //-----------------------------------------------------------------------------
 CATUnicodeString KTCAutoDialog::checkout_title(CATISpecObject_var object) {
     if (!object) return ""; // 没有特征
@@ -81,7 +87,7 @@ void KTCAutoDialog::on_show_option_dialog(CATCommand*, CATNotification*, CATComm
     optionDialog_->SetVisibility(state);
 }
 //-------------------------------------------------------------------------
-KTCAutoSelectorCtx* KTCAutoDialog::regitster_field(int field, CATDlgSelectorList* selector,
+KTCAutoSelectorCtx* KTCAutoDialog::register_field(int field, CATDlgSelectorList* selector,
                                                    const KtString& name) {
     if (!selector) return NULL;
     if (!selectorMap_) selectorMap_ = new KTCAutoSelectorCtxMap(); // 第一次注册时，创建map
@@ -118,33 +124,6 @@ void KTCAutoDialog::register_option_dialog(CATDlgDialog* dlg, CATDlgPushButton* 
     AddAnalyseNotificationCB(optionDialog_, optionDialog_->GetDiaCLOSENotification(),
                              (CATCommandMethod)&KTCAutoDialog::on_show_option_dialog, NULL);
 }
-//-------------------------------------------------------------------------
-int KTCAutoDialog::ActionSubCommandReturn() {
-    // TODO 实现代码
-    cout << " - 没有实现 " << __FUNCTION__ << endl;
-    return 0;
-}
-//-------------------------------------------------------------------------
-void KTCAutoDialog::SetActiveField(int feild) {
-    if (selectorMap_ == NULL) return;
-    activeField_ = feild;
-
-    // clear other field select
-    for (KTCAutoSelectorCtxMap::iterator it = selectorMap_->begin(); it != selectorMap_->end();
-         it++) {
-        if (it->second == NULL || it->second->fieldKey == activeField_)
-            continue; // 当前字段不处理，跳过
-
-        it->second->ClearSelect(); // 清除其他字段的选择
-    }
-}
-//-------------------------------------------------------------------------
-void KTCAutoDialog::SetActiveFieldFocus() {
-    if (selectorMap_ == NULL) return;
-    KTCAutoSelectorCtxMap::iterator it = selectorMap_->find(activeField_);
-    if (it != selectorMap_->end()) it->second->SetSelect();
-}
-
 //-----------------------------------------------------------------------------
 int KTCAutoDialog::selectorlist_setline(CATDlgSelectorList*     selectorList,
                                         CATISpecObject_var      inputObject,
@@ -193,9 +172,30 @@ int KTCAutoDialog::selectorlist_setline(CATDlgSelectorList*                 sele
     return iList.Size();
 
 } //-----------------------------------------------------------------------------
+//----------------------------------------
 void KTCAutoDialog::SendValueCHangeNotification() {
     CATCommand* cmd = GetFather();                   // get command
     if (cmd) SendNotification(cmd, valueChangeNtf_); // set notification
+}
+//-------------------------------------------------------------------------
+void KTCAutoDialog::SetActiveField(int feild) {
+    if (selectorMap_ == NULL) return;
+    activeField_ = feild;
+
+    // clear other field select
+    for (KTCAutoSelectorCtxMap::iterator it = selectorMap_->begin(); it != selectorMap_->end();
+         it++) {
+        if (it->second == NULL || it->second->fieldKey == activeField_)
+            continue; // 当前字段不处理，跳过
+
+        it->second->ClearSelect(); // 清除其他字段的选择
+    }
+}
+//-------------------------------------------------------------------------
+void KTCAutoDialog::SetActiveFieldFocus() {
+    if (selectorMap_ == NULL) return;
+    KTCAutoSelectorCtxMap::iterator it = selectorMap_->find(activeField_);
+    if (it != selectorMap_->end()) it->second->SetSelect();
 }
 //-----------------------------------------------------------------------------
 void KTCAutoDialog::ShowMessageBox(const CATUnicodeString& msg, CATDialog* dialog) {

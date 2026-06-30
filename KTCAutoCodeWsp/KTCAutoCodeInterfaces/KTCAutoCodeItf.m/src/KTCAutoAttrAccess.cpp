@@ -102,12 +102,15 @@ KTCAutoAttrAccess& KTCAutoAttrAccess::operator=(const KTCAutoAttrAccess& iOrigin
     return *this;
 }
 //-----------------------------------------------------------------------------
-CATISpecAttrKey* KTCAutoAttrAccess::get_CATISpecAttrKey(const char* name) const {
-    // 输入检查
-    if (NULL == attrAccess_) return NULL; // check access
-    if (NULL == name) return NULL;        // check check null
-    if (0 == *name) return NULL;          // check empty
-    return attrAccess_->GetAttrKey(name);
+CATICkeInst_var KTCAutoAttrAccess::get_CATICkeInst(const char* name) const {
+    // get ckeParm  (内部包含输入检查)
+    CATICkeParm* ckeParm = get_CATICkeParm(name);
+    if (NULL == ckeParm) return NULL_var;
+
+    // get ckeInst
+    CATICkeInst_var ckeInst = ckeParm->Value();
+    KTCRelease(ckeParm); // 手动释放
+    return ckeInst;
 }
 //-----------------------------------------------------------------------------
 CATICkeParm* KTCAutoAttrAccess::get_CATICkeParm(const char* name) const {
@@ -127,30 +130,12 @@ CATICkeParm* KTCAutoAttrAccess::get_CATICkeParm(const char* name) const {
     return ckeParm;
 }
 //-----------------------------------------------------------------------------
-CATICkeInst_var KTCAutoAttrAccess::get_CATICkeInst(const char* name) const {
-    // get ckeParm  (内部包含输入检查)
-    CATICkeParm* ckeParm = get_CATICkeParm(name);
-    if (NULL == ckeParm) return NULL_var;
-
-    // get ckeInst
-    CATICkeInst_var ckeInst = ckeParm->Value();
-    KTCRelease(ckeParm); // 手动释放
-    return ckeInst;
-}
-//-----------------------------------------------------------------------------
-HRESULT KTCAutoAttrAccess::initial(CATBaseUnknown* baseUnkonwn) {
-    // clear and check input
-    attrAccess_ = NULL;
-    if (!baseUnkonwn) return E_POINTER;
-
-    // QueryInterface
-    return baseUnkonwn->QueryInterface(IID_CATISpecAttrAccess, (void**)&attrAccess_);
-}
-//-----------------------------------------------------------------------------
-CATListValCATBaseUnknown_var*
-    KTCAutoAttrAccess::ListSpecObjects(const CATISpecAttrKey* attrKey) const {
-    if (NULL == attrKey || NULL == attrAccess_) return NULL; // 检查
-    return attrAccess_->ListSpecObjects(attrKey);
+CATISpecAttrKey* KTCAutoAttrAccess::get_CATISpecAttrKey(const char* name) const {
+    // 输入检查
+    if (NULL == attrAccess_) return NULL; // check access
+    if (NULL == name) return NULL;        // check check null
+    if (0 == *name) return NULL;          // check empty
+    return attrAccess_->GetAttrKey(name);
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::GetListValue(const char*                   name,
@@ -272,6 +257,21 @@ HRESULT KTCAutoAttrAccess::GetValue(const char* name, KtString& value) const {
     value = attrAccess_->GetString(attrKey).ConvertToChar(); // 得到值
     KTCRelease(attrKey);                                     // 手动释放
     return S_OK;                                             // 正确
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoAttrAccess::initial(CATBaseUnknown* baseUnkonwn) {
+    // clear and check input
+    attrAccess_ = NULL;
+    if (!baseUnkonwn) return E_POINTER;
+
+    // QueryInterface
+    return baseUnkonwn->QueryInterface(IID_CATISpecAttrAccess, (void**)&attrAccess_);
+}
+//----------------------------------------
+CATListValCATBaseUnknown_var*
+    KTCAutoAttrAccess::ListSpecObjects(const CATISpecAttrKey* attrKey) const {
+    if (NULL == attrKey || NULL == attrAccess_) return NULL; // 检查
+    return attrAccess_->ListSpecObjects(attrKey);
 }
 //-----------------------------------------------------------------------------
 HRESULT KTCAutoAttrAccess::SetListValue(const char* name, const CATListValCATISpecObject_var& value,

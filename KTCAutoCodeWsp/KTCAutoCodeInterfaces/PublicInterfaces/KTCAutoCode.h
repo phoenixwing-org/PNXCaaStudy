@@ -108,7 +108,7 @@ class CATDialogState;
  */
 #define KT_AUTO_CMD_BUILD_FIELD(PREFIX, NAME)                                                 \
     selector   = dialog->_SelectorList##NAME;                                                 \
-    _ctx##NAME = dialog->regitster_field(Field_##PREFIX##_##NAME, selector, #NAME);           \
+    _ctx##NAME = dialog->register_field(Field_##PREFIX##_##NAME, selector, #NAME);           \
     if (NULL == _ctx##NAME || NULL == _ctx##NAME->selector) {                                 \
         msg = " {NG}. for register field " #NAME;                                             \
         cout << msg << endl;                                                                  \

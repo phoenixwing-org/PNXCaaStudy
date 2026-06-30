@@ -35,10 +35,6 @@ KTCAutoPartDoc::~KTCAutoPartDoc() {
     KTCRelease(gsmTool_); //  ÷∂Ø Õ∑≈
 }
 //-----------------------------------------------------------------------------
-HRESULT KTCAutoPartDoc::QueryInterface(const IID& iIID, void** oPPV) {
-    return KTCAutoGSM::QueryInterface(gsmTool_, iIID, oPPV);
-}
-//-----------------------------------------------------------------------------
 KTCAutoPartDoc::KTCAutoPartDoc(const KTCAutoPartDoc& iOriginal) {
 }
 //-----------------------------------------------------------------------------
@@ -118,4 +114,8 @@ HRESULT KTCAutoPartDoc::initial_GSMTool_From_GeomSet() {
     if (gsmTool_) return S_OK;
 
     return KTCAutoGSM::LookingForGeomSet(catFrmEditor_, &gsmTool_);
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoPartDoc::QueryInterface(const IID& iIID, void** oPPV) {
+    return KTCAutoGSM::QueryInterface(gsmTool_, iIID, oPPV);
 }

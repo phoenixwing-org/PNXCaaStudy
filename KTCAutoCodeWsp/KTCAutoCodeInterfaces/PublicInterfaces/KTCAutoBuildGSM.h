@@ -39,11 +39,11 @@ private:
     KTCAutoBuildGSM& operator=(const KTCAutoBuildGSM&);
 
 public:
-    /** @brief remove body from geomFactory */
-    HRESULT remove(CATBody*& body);
-
     /** @brief query geomFactory from object */
     HRESULT query_factory(CATISpecObject_var object);
+
+    /** @brief remove body from geomFactory */
+    HRESULT remove(CATBody*& body);
 
 public:
     CATIUpdateError*          updateError;

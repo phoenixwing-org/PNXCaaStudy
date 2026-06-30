@@ -74,6 +74,7 @@ public:
      */
     int after_element_selected(CATPathElementAgent* agent, CATListValCATISpecObject_var& ioList,
                                KTC::ValueActionMode mode);
+
     /**
      * @brief initial editor and hso
      * @param editor CATFrmEditor*

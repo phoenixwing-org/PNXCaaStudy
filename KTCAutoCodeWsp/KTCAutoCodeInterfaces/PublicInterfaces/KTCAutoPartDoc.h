@@ -55,20 +55,20 @@ public:
                                  CATLISTP(CATPathElement) & oList);
 
     /**
-     * @brief Get GSMTool
-     * @return  CATIGSMTool*, DONOT release outside
-     */
-    inline CATIGSMTool* GetGSMTool() const {
-        return gsmTool_;
-    };
-
-    /**
      * @brief Get FrmEditor
      * @return  CATFrmEditor*, DONOT release outside
      * <br><b>Lifecycle rules deviation</b>: No AddRef is performed
      */
     inline CATFrmEditor* GetFrmEditor() const {
         return catFrmEditor_;
+    };
+
+    /**
+     * @brief Get GSMTool
+     * @return  CATIGSMTool*, DONOT release outside
+     */
+    inline CATIGSMTool* GetGSMTool() const {
+        return gsmTool_;
     };
 
     /**

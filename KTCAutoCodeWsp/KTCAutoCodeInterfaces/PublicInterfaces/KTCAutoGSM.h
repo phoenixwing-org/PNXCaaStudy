@@ -47,6 +47,13 @@ public:
     static HRESULT CreateTool(CATIPrtPart* ipIPrtPart, CATIGSMTool** oppiGsmtool);
 
     /**
+     * @brief Checks if thefeature is inside an Ordered Geometrical Set
+     * @param feature CATISpecObject
+     * @return bool
+     */
+    static bool IsInsideOrderedBody(CATISpecObject_var feature);
+
+    /**
      * @brief Looking For Any Type Of Body
      * @param iCatFrmEditor input CATFrmEditor* pointer
      * @param oppiGsmtool output CATIGSMTool** pointer
@@ -70,13 +77,6 @@ public:
      */
     static HRESULT LookingForGeomSetOrOrderedGeomSet(CATFrmEditor* iCatFrmEditor,
                                                      CATIGSMTool** oppiGsmtool);
-
-    /**
-     * @brief Checks if thefeature is inside an Ordered Geometrical Set
-     * @param feature CATISpecObject
-     * @return bool
-     */
-    static bool IsInsideOrderedBody(CATISpecObject_var feature);
 
     /**
      * @brief checktout interface from GSMTool
