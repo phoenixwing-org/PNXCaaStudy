@@ -1,7 +1,6 @@
 @echo off
 setlocal
 cd /d %~dp0
-call export.bat
 
 @REM  start debug and release
 set "workDir=%~dp0"

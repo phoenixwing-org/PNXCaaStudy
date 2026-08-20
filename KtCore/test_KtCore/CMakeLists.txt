@@ -7,10 +7,7 @@ message("## Cmake Project test_KtCore")
 
 link_directories(${MY_LINK_PATH})
 
-include_directories( 
-    ../../KtCore/public 
-    ${ROOT_DIR_3rdParty}/Catch2_Single
-)
+include_directories(${ROOT_DIR_3rdParty}/Catch2_Single)
 
 # ===test====
 add_executable(test_KtString "test_KtString.cpp")

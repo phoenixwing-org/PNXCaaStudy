@@ -22,9 +22,10 @@ include_directories(
 # source 
 add_subdirectory(KtCore)  
 
-enable_testing()
-
-# test
-add_subdirectory(test_KtCore)
+option(KTCORE_BUILD_TESTS "Build KtCore tests that require Catch2" ON)
+if(KTCORE_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(test_KtCore)
+endif()
  
 message("- <=========END KtCore")

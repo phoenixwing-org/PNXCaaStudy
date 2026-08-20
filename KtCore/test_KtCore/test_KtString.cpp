@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 //---------------------------------------------------------------------------------------
 TEST_CASE("Test KtString", "[KtString]") {
