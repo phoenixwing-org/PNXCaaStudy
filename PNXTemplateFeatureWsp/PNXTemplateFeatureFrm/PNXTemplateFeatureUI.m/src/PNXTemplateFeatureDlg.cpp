@@ -15,7 +15,7 @@
 
 // ApplicationFrame Framework
 #include "CATApplicationFrame.h" // needed to get the window of the frame
-#include "KtString.h"
+#include <KtCore/KtString.h>
 // Dialog Framework
 #include "CATDlgGridConstraints.h"
 #include "CATDlgLabel.h"

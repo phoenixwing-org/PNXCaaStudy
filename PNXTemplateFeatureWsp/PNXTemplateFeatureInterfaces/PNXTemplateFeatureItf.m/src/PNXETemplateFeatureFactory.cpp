@@ -13,7 +13,7 @@
 // KTCAutoCode Framework
 #include "KTCAutoAttrAccess.h"
 #include "KTCAutoDefine.h"
-#include "KtListV.h"
+#include <KtCore/KtListV.h>
 
 // PNXTemplateFeatureInterfaces Framework
 #include "PNXITemplateFeature.h" // needed by the factory to return a pointer on this interface

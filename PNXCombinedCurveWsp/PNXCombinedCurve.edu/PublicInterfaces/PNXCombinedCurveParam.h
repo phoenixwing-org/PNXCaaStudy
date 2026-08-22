@@ -24,7 +24,7 @@
 #include "KTCAutoParam.h"
 
 // Kt
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 /**
  * Action enum
