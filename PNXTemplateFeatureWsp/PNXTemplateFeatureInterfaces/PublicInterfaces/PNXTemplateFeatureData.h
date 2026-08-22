@@ -22,8 +22,8 @@
 #include "CATMathTransformation.h"
 
 // Kt
-#include "KtListP.h"
-#include "KtListV.h"
+#include <KtCore/KtListP.h>
+#include <KtCore/KtListV.h>
 
 // Local Framework
 #include "PNXITemplateFeature.h"

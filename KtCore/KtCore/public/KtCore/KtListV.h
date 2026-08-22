@@ -21,7 +21,7 @@
 #include <vector>
 
 // core
-#include "KtListP.h"
+#include <KtCore/KtListP.h>
 
 // TODO replace vector to KtListP
 

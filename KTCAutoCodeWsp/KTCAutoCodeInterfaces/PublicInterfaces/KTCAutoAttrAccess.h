@@ -26,7 +26,7 @@
 // Auto Code
 #include "KTCAutoAttrAccess.h"
 #include "KTCAutoCodeItf.h"
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoAttrAccess {

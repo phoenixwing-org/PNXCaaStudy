@@ -66,7 +66,7 @@
 #include <iostream.h>
 
 // Kt
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 // KTC Core
 #include "KTCAutoBody.h"

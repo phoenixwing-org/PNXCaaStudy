@@ -20,7 +20,7 @@
 // auto code
 #include "KTCAutoCodeItf.h"
 #include "KTCAutoParam.h"
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 /** @brief KTC AutoCode Param */
 class ExportedByKTCAutoCodeItf KTCAutoParam {

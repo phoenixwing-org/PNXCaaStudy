@@ -30,7 +30,7 @@
 #include "PNXTemplateBaseItf.h"
 
 // Kt
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 /** @brief Field Type */
 enum PNXTemplateBaseField {

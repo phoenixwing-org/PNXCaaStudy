@@ -8,7 +8,7 @@
 #ifndef KTCAutoDefine_H_
 #define KTCAutoDefine_H_
 
-#include "KtCoreDefine.h"
+#include <KtCore/KtCoreDefine.h>
 
 /** @brief CAA min pixel value, 0.000001m = 0.001mm */
 #define KTC_MIN_LENGTH_VALUE_M 1e-6

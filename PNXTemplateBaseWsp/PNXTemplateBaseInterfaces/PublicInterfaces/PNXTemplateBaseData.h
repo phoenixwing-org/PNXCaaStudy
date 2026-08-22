@@ -27,7 +27,7 @@ class CATFrmEditor;
 class CAT3DRep;
 
 // Kt
-#include "KtListV.h"
+#include <KtCore/KtListV.h>
 
 // Local Framework
 #include "PNXTemplateBaseItf.h"
