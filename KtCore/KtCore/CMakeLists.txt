@@ -1,7 +1,5 @@
 project("KtCore" VERSION 1.0.0)
 
-include(../common.cmake) # 包含公共配置
-
 # 源文件
 file(GLOB_RECURSE KTCORE_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
@@ -23,12 +21,11 @@ add_library(Kt::Core ALIAS KtCore)
 target_include_directories(KtCore
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/public>
-        $<INSTALL_INTERFACE:${KTCORE_INCLUDE_INSTALL_DIR}>
+        $<INSTALL_INTERFACE:${SDK_INCLUDE_INSTALL_DIR}>
 )
 # target_link_libraries(KtCore PRIVATE xxxx) # 如果需要
 
 # 作用：设置编译选项
-phoenix_configure_target(KtCore)
 set_target_properties(KtCore PROPERTIES EXPORT_NAME Core)
 
 include(CMakePackageConfigHelpers)
@@ -41,7 +38,7 @@ install(TARGETS KtCore
 )
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/public/"
-    DESTINATION "${KTCORE_INCLUDE_INSTALL_DIR}"
+    DESTINATION "${SDK_INCLUDE_INSTALL_DIR}"
 )
 
 install(EXPORT KtCoreTargets
