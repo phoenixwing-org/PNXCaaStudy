@@ -8,7 +8,9 @@ $ErrorActionPreference = "Stop"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sourceDir = Join-Path $scriptDir "KtCore\public\KtCore"
 
-if ([string]::IsNullOrWhiteSpace($env:ROOT_DIR)) { $env:ROOT_DIR = "E:\KtRoot" }
+if ([string]::IsNullOrWhiteSpace($env:ROOT_DIR)) {
+    throw "ROOT_DIR must be set before running export.ps1"
+}
 if ([string]::IsNullOrWhiteSpace($env:ROOT_DIR_CORE)) { $env:ROOT_DIR_CORE = Join-Path $env:ROOT_DIR "kt\core" }
 if ([string]::IsNullOrWhiteSpace($TargetCoreDirectory)) { $TargetCoreDirectory = Join-Path $env:ROOT_DIR "kt\core" }
 

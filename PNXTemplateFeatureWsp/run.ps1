@@ -1,1 +1,1 @@
-& "../tools/run.ps1" -w $PSScriptRoot
+& "$env:ROOT_DIR\tools\run.ps1" -w $PSScriptRoot

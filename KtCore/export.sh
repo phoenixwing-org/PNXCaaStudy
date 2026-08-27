@@ -8,7 +8,10 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 SOURCE_DIR="$SCRIPT_DIR/KtCore/public/KtCore"
 
-: "${ROOT_DIR:=/Users/kathy/KtRoot}"
+if [ -z "${ROOT_DIR:-}" ]; then
+    printf '%s\n' "Error: ROOT_DIR must be set before running export.sh" >&2
+    exit 1
+fi
 : "${ROOT_DIR_CORE:=$ROOT_DIR/kt/core}"
 : "${ROOT_DIR_INCLUDE:=$ROOT_DIR_CORE/include}"
 export ROOT_DIR ROOT_DIR_CORE ROOT_DIR_INCLUDE

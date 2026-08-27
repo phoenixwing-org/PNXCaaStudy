@@ -1,1 +1,1 @@
-& "../tools/mk.ps1"
+& "$env:ROOT_DIR\tools\mk.ps1"

@@ -1,2 +1,7 @@
+param(
+    [switch]$ShowMajorErrors = $false
+)
+
 $parentPath = Split-Path $PSScriptRoot -Parent
-& "../tools/mk.ps1" -Workspace "$parentPath\KTCAutoCodeWsp"
+& "$env:ROOT_DIR\tools\mk.ps1" -Workspace "$parentPath\KTCAutoCodeWsp" -ShowMajorErrors:$ShowMajorErrors
+exit $LASTEXITCODE
