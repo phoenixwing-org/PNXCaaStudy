@@ -1,30 +1,20 @@
-﻿message("# Cmake Project KtCore")
 cmake_minimum_required(VERSION 3.25)
-project("KtCore" VERSION 1.0.0)
+project(KtCore VERSION 1.0.0 LANGUAGES CXX)
 
-# 加载或者生成my.cmake文件
-include(my.initial.cmake)
-# 统一配置
-include(common.cmake)
+include("$ENV{ROOT_DIR}/cmake/SdkCore.cmake")
 
-if(1)
-  message("- CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
-  message("- ROOT_DIR_3rdParty= `${ROOT_DIR_3rdParty}`")
-  message("- ROOT_DIR         = `${ROOT_DIR}`")
-  message("- ROOT_DIR_CORE    = `${ROOT_DIR_CORE}`")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+sdk_enable_global_cxx_utf8()
+sdk_set_global_config_output_dirs("${SDK_OUTPUT_ROOT}")
+
+option(KTCORE_BUILD_SHARED "Build KtCore as a shared library" ON)
+option(KTCORE_BUILD_TESTS "Build KtCore tests" ON)
+
+add_subdirectory(KtCore)
+
+if(KTCORE_BUILD_TESTS)
+    sdk_enable_ctest()
+    add_subdirectory(test_KtCore)
 endif()
-
-# 包含的目录
-include_directories(
-  ${ROOT_DIR_3rdParty}
-)
- 
-# source 
-add_subdirectory(KtCore)  
-
-enable_testing()
-
-# test
-add_subdirectory(test_KtCore)
- 
-message("- <=========END KtCore")

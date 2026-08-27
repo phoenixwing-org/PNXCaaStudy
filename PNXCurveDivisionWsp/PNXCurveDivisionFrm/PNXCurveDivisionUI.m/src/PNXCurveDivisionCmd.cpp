@@ -94,9 +94,13 @@ PNXCurveDivisionCmd::PNXCurveDivisionCmd()
 
     // START KEVIN CAA WIZARD SECTION PNXCurveDivision CMD AGENT CONSTRUCTOR
 
+    // clang-format off
     , KT_AUTO_CMD_AGENT_CONSTRUCTOR_COMMON()
     , _pBaseCurveAgent(NULL)
     , _pBaseCurveFieldAgent(NULL)
+
+    // clang-format on
+    // END KEVIN CAA WIZARD SECTION PNXCurveDivision CMD AGENT CONSTRUCTOR
 
 // end
 {

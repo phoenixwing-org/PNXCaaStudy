@@ -73,7 +73,7 @@ public:
      * @param name selector name
      * @return KTCAutoSelectorCtx pointer
      */
-    KTCAutoSelectorCtx* regitster_field(int field, CATDlgSelectorList* selector,
+    KTCAutoSelectorCtx* register_field(int field, CATDlgSelectorList* selector,
                                         const KtString& name = "");
 
     /** @brief Register Parameter Dialog */

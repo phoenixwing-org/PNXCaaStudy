@@ -63,6 +63,7 @@ int KTCAutoHSO::AddElement(CATISpecObject_var object) {
     cout << "- [Debug] OK hso AddElement = 1" << endl;
     return 1;
 } //-----------------------------------------------------------------------------
+//----------------------------------------
 int KTCAutoHSO::AddElement(const CATListValCATISpecObject_var& list) {
     if (!hso_) return 0;
     if (list.Size() == 0) return 0;

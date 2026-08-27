@@ -20,7 +20,7 @@
 
 // auto code
 #include "KTCAutoCodeUI.h"
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 #include <map>
 

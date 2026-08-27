@@ -10,7 +10,7 @@
 #ifndef _KtString_H_
 #define _KtString_H_
 
-#include "KtCore.h"
+#include <KtCore/KtCore.h>
 
 // std
 #include <cstring> // for strcmp

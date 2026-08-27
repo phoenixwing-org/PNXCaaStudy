@@ -22,7 +22,7 @@
 #include "iostream.h"
 
 // Kt
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 // Local Framework
 #include "PNXETemplateFeature.h"

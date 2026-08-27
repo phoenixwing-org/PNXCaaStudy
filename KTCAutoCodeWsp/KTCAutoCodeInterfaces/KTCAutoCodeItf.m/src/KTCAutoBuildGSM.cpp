@@ -53,24 +53,6 @@ KTCAutoBuildGSM& KTCAutoBuildGSM::operator=(const KTCAutoBuildGSM& iOriginal) {
     return *this;
 }
 //-----------------------------------------------------------------------------
-HRESULT KTCAutoBuildGSM::remove(CATBody*& body) {
-    if (NULL == body) return S_OK;
-
-    if (geomFactory) {
-        // Removes the intermediate CATBody
-
-        // TODO : error C2664: “void CATICGMContainer::Remove(CATICGMObject *,const
-        // CATICGMContainer::CATRemovingDependancies)”: 不能将参数 1 从“CATBody
-        // *”转换为“CATICGMObject *”
-        cout << " 没有实现" << __FUNCTION__ << endl;
-        return E_INVALIDARG;
-        // geomFactory->Remove(body);
-        body = NULL;
-        return S_OK;
-    }
-    return E_INVALIDARG;
-}
-//-----------------------------------------------------------------------------
 HRESULT KTCAutoBuildGSM::query_factory(CATISpecObject_var object) {
     KTCRelease(geomFactory); // 手动释放 旧的
     if (NULL_var == object) return S_OK;
@@ -102,4 +84,22 @@ HRESULT KTCAutoBuildGSM::query_factory(CATISpecObject_var object) {
         KTCRelease(linkObject); // 手动释放
     }
     return rc;
+}
+//-----------------------------------------------------------------------------
+HRESULT KTCAutoBuildGSM::remove(CATBody*& body) {
+    if (NULL == body) return S_OK;
+
+    if (geomFactory) {
+        // Removes the intermediate CATBody
+
+        // TODO : error C2664: “void CATICGMContainer::Remove(CATICGMObject *,const
+        // CATICGMContainer::CATRemovingDependancies)”: 不能将参数 1 从“CATBody
+        // *”转换为“CATICGMObject *”
+        cout << " 没有实现" << __FUNCTION__ << endl;
+        return E_INVALIDARG;
+        // geomFactory->Remove(body);
+        body = NULL;
+        return S_OK;
+    }
+    return E_INVALIDARG;
 }

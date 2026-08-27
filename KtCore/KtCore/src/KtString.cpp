@@ -17,8 +17,8 @@
 #include <string>
 
 // Kt Include file
-#include "KtCoreDefine.h"
-#include "KtString.h"
+#include <KtCore/KtCoreDefine.h>
+#include <KtCore/KtString.h>
 #include "KtStringStruct.h"
 
 // Instead of always comparing the text pointer if NULL we set to some static data.

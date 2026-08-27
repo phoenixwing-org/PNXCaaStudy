@@ -36,12 +36,11 @@ public:
     KTCAutoCatalogParam& operator=(const KTCAutoCatalogParam&);
 
 public:
-    void SetValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
-
-    void SetTKListValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
-
     static HRESULT add_Attributes(CATISpecObject*                   startUp,
                                   std::vector<KTCAutoCatalogParam>& itemList);
+    void SetTKListValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
+
+    void SetValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
 
 public:
     CATUnicodeString name;

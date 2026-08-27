@@ -30,6 +30,6 @@
 #include "KTCAutoValueChangedNtf.h"
 
 // kt
-#include "KtString.h"
+#include <KtCore/KtString.h>
 
 #endif
