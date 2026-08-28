@@ -7,7 +7,6 @@
 #ifndef _KtStringStruct_H_
 #define _KtStringStruct_H_
 
-
 /**
  * @brief Internal structure for string metadata
  * @details The string data follows immediately after this structure in memory

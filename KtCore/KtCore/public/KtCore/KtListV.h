@@ -60,7 +60,8 @@ public:
      *
      * Creates an empty list.
      */
-    KtListV() {}
+    KtListV() {
+    }
 
     /**
      * @brief Returns the number of elements stored in the list.

@@ -4,8 +4,7 @@
 
 - [ ] 确认已安装 CMake 3.25 或更高版本。
 - [ ] 确认 `ROOT_DIR`、`ROOT_DIR_CORE` 和 `ROOT_DIR_INCLUDE` 环境变量配置正确。
-- [ ] 执行 `KtCore/buildAll.ps1`，确认先导出头文件，再依次完成 Debug 和 Release 编译。
-- [ ] 执行 `KtCore/buildAll.bat`，确认批处理兼容入口正常工作。
+- [ ] 执行 `KtCore/rebuild.ps1`，确认先清理 build 目录、导出头文件，再打开 Debug / Release 构建窗口。
 - [ ] 确认公共头文件输出到 `%ROOT_DIR_INCLUDE%\KtCore`。
 - [ ] 确认 Debug DLL 和 `.lib` 输出到 `%ROOT_DIR_CORE%\debug` 及对应 lib 目录。
 - [ ] 确认 Release DLL 和 `.lib` 输出到 `%ROOT_DIR_CORE%\bin` 及对应 lib 目录。

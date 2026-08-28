@@ -17,9 +17,9 @@
 #include <string>
 
 // Kt Include file
+#include "KtStringStruct.h"
 #include <KtCore/KtCoreDefine.h>
 #include <KtCore/KtString.h>
-#include "KtStringStruct.h"
 
 // Instead of always comparing the text pointer if NULL we set to some static data.
 // This relives us from allocate memory with empty text.
@@ -167,8 +167,7 @@ bool KtString::allocate_buffer(const unsigned int count) {
     try {
         KtStringStruct* p1 = (KtStringStruct*)new char[ uintTotalLength ];
         _pData             = p1;
-    }
-    catch (...) {
+    } catch (...) {
         // out of memory：
         return false;
     }
@@ -190,8 +189,7 @@ KtString& KtString::append(const char* str, unsigned int len) {
     if (len == KtUint_MAX) {
         pos = len = (unsigned int)strlen(str);
         if (0 == len) return *this;
-    }
-    else {
+    } else {
         // check pos small then len?
 
         for (; pos < len; pos++) {
@@ -223,8 +221,7 @@ KtString& KtString::append(const char* str, unsigned int len) {
 
         _pText[ total ] = '\0'; // set string end
         _pData->size    = total;
-    }
-    catch (...) {
+    } catch (...) {
     }
 
     return *this;
@@ -286,8 +283,7 @@ bool KtString::copy(const char* str1, const char* str2, unsigned int count) {
 
     if (count != 0) {
         uintTotalLength = count;
-    }
-    else {
+    } else {
         if (str1 != NULL) uintTextLength1 = (unsigned int)strlen(str1);
 
         if (str2 != NULL) uintTextLength2 = (unsigned int)strlen(str2);
@@ -362,10 +358,9 @@ KtString& KtString::fill_width(unsigned int minWidth, const char fillChar) {
 
         memset(_pText + _pData->size, fillChar, dis); // set fillChar
 
-        _pText[ minWidth ] = 0;        // end char 0
-        _pData->size       = minWidth; // set size
-    }
-    else if ((dis = minWidth + _pData->size) < 0) // left fill fillChar
+        _pText[ minWidth ] = 0;                     // end char 0
+        _pData->size       = minWidth;              // set size
+    } else if ((dis = minWidth + _pData->size) < 0) // left fill fillChar
     {
         this->shift(-dis, fillChar);
     }
@@ -661,8 +656,7 @@ KtString& KtString::shift(int dis, const char fillChar) {
         memmove(_pText,              // position  string
                 _pText + dis,        // position + dis string
                 _pData->size - dis); // calculate tail chars length ，not include \0
-    }
-    else // dis > 0
+    } else                           // dis > 0
     {
         // shift right
         if (this->reserve(newSize) < newSize) // memory allocation failed

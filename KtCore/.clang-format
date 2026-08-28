@@ -1,6 +1,5 @@
-# version 1.0
+# Base on LLVM XY 1.1
 BasedOnStyle: LLVM
-Language: Cpp
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
@@ -11,47 +10,27 @@ AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine : false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortEnumsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: true
-AllowShortLoopsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false 
 AlwaysBreakAfterDefinitionReturnType: None
-BreakConstructorInitializersBeforeComma: true
-BreakBeforeBraces: Custom
-BraceWrapping:   
-  AfterClass:        false
-  AfterControlStatement:        false
-  AfterEnum:        false
-  AfterFunction:        false
-  AfterNamespace:        false
-  AfterObjCDeclaration:        false
-  AfterStruct:        false
-  AfterUnion:        true
-  AfterExternBlock: false
-  BeforeCatch:        true
-  BeforeElse:        true
-  IndentBraces:        false
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-  #use with BraceWrapping: AfterFunction has conflict
-  #BreakBeforeBraces: Stroustrup
-  
-
 ColumnLimit: 100
 CommentPragmas: '^ IWYU pragma:'
-IndentCaseLabels: false
-IndentWidth: 4
-IndentWrappedFunctionNames: true
-KeepEmptyLinesAtTheStartOfBlocks: true
-MaxEmptyLinesToKeep: 1
-ObjCBlockIndentWidth: 4
-ObjCSpaceAfterProperty: true
+Language: Cpp 
 PointerAlignment: Left
-SpaceAfterCStyleCast: false
+IndentWidth: 4
+MaxEmptyLinesToKeep: 1
+ObjCSpaceAfterProperty: true
+ObjCBlockIndentWidth: 4
+AllowShortFunctionsOnASingleLine: false
+SpacesInSquareBrackets: true
+SpacesInParentheses : false
 SpaceBeforeAssignmentOperators: true
 SpacesInContainerLiterals: true
-SpacesInParentheses : false
-SpacesInSquareBrackets: true
+IndentWrappedFunctionNames: true
+KeepEmptyLinesAtTheStartOfBlocks: true
+BreakConstructorInitializersBeforeComma: true
+SpaceAfterCStyleCast: false
+SortIncludes: true
+IndentCaseLabels: false 
 TabWidth: 4
 UseTab: Never

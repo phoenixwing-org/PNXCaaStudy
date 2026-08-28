@@ -23,24 +23,41 @@ CMake 会通过 `KtCore` target 自动传递本地源码的头文件目录、编
 
 ## 构建脚本
 
-构建脚本不需要传入参数，按以下顺序执行：
-
-1. 导出公共头文件
-2. 编译 Debug
-3. 编译 Release
-4. 最后执行一次 Release install，生成 SDK package
-
-macOS/Linux：
-
-```bash
-sh buildAll.sh
-```
-
-Windows：
+需先设置 `ROOT_DIR`（KtRoot 根目录），例如：
 
 ```powershell
-.\buildAll.ps1
+. E:\KtRoot\tools\envSet.ps1
 ```
+
+### `export.ps1`
+
+通过 `ROOT_DIR/tools/commonLoad.ps1` 调用 `Invoke-Export`，将 `KtCore/public/KtCore/*.h` 导出到 `ROOT_DIR_CORE/include/KtCore`。
+
+```powershell
+.\export.ps1
+```
+
+macOS/Linux 使用同目录下的 `export.sh`（按平台选择 `kt/macos/core` 或 `kt/linux/core`）。
+
+### `rebuild.ps1`
+
+按以下顺序执行：
+
+1. 清理 `build/KtCoreDebug`、`build/KtCoreRelease`
+2. 执行 `export.ps1`
+3. 分别打开 Debug、Release 两个 CMake 构建窗口（窗口标题为 `KtCore Debug` / `KtCore Release`）
+
+```powershell
+.\rebuild.ps1
+```
+
+Release 构建完成后，如需生成 CMake package，在 Release 构建目录执行：
+
+```powershell
+cmake --install ..\..\build\KtCoreRelease --config Release
+```
+
+macOS/Linux 仍可使用 `buildAll.sh`（顺序编译 Debug / Release 并 install）。
 
 头文件统一输出到 `ROOT_DIR_CORE/include/KtCore`。平台库由 CMake 按系统输出到
 `ROOT_DIR/kt/core`、`ROOT_DIR/kt/macos/core` 或 `ROOT_DIR/kt/linux/core`，
