@@ -16,7 +16,7 @@ $RootDir = $PSScriptRoot
 $Workspaces += "PNXV5V6AdapterWsp"
 
 # Import common functions
-. "$RootDir/tools/common.ps1"
+. "$env:ROOT_DIR/tools/common.ps1"
 
 # Run CommandFile in new window per workspace
 $scriptArgs = "-Version " + $Version

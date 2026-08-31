@@ -11,7 +11,7 @@ $RootDir = $PSScriptRoot
 . "$RootDir\project.ps1"
 
 # Import common functions
-. "$RootDir/tools/common.ps1"
+. "$env:ROOT_DIR/tools/common.ps1"
 
 # Run CommandFile in new window per workspace
 Start-WorkspaceTasks -RootDir $RootDir -Workspaces $Workspaces -CommandFile $CommandFile

@@ -1,7 +1,7 @@
 # PNXCaaStudy Symbolic Link Script
 
 # Load common functions
-$CommonScript = Join-Path $PSScriptRoot "tools\LinkWinb64Common.ps1"
+$CommonScript = Join-Path $env:ROOT_DIR "tools\LinkWinb64Common.ps1"
 . $CommonScript
 
 # Display header
