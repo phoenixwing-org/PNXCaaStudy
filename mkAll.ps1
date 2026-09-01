@@ -1,17 +1,2 @@
-# mkAll.ps1 - Build all workspaces in parallel
-# license     MIT
-
-# Command file name
-$CommandFile = "mk.ps1"
-
-# Get script root directory
-$RootDir = $PSScriptRoot
- 
-# Import $Workspaces from project.ps1
-. "$RootDir\project.ps1"
-
-# Import common functions
-. "$env:ROOT_DIR/tools/common.ps1"
-
-# Run CommandFile in new window per workspace
-Start-WorkspaceTasks -RootDir $RootDir -Workspaces $Workspaces -CommandFile $CommandFile
+& "$env:ROOT_DIR/tools/mkAll.ps1" $PSScriptRoot -TargetDirectory '..\CAAB20MkWsp' @args
+exit $LASTEXITCODE
