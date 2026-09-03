@@ -290,8 +290,7 @@ CATBoolean PNXCombinedCurveCmd::OkAction(void*) {
 
         rc = feature->SetMainDir(parameter->MainDir);
         if (FAILED(rc)) return FALSE;
-    }
-    else {
+    } else {
         rc = CreateCombinedCurve();
     }
 
@@ -547,8 +546,7 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
             // The result cannot be an ordered geometrical set or an hybrid body
             //
             rc = KTCAutoGSM::LookingForGeomSet(catFrmEditor_, &piGSMTool);
-        }
-        else {
+        } else {
             free(pCombCrvNoHybridBody);
             pCombCrvNoHybridBody = NULL;
 
@@ -557,8 +555,7 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
             //
             rc = KTCAutoGSM::LookingForGeomSetOrOrderedGeomSet(catFrmEditor_, &piGSMTool);
         }
-    }
-    else {
+    } else {
         free(pCombCrvOGS);
         pCombCrvOGS = NULL;
 
@@ -597,11 +594,9 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
 
                     KTCRelease(factory); // ÊÖ¶¯ÊÍ·Å
                 }
-            }
-            else
+            } else
                 rc = E_FAIL;
-        }
-        else
+        } else
             rc = E_FAIL;
     }
 
@@ -632,14 +627,12 @@ HRESULT PNXCombinedCurveCmd::CreateCombinedCurve() {
                     // The current feature is the GSMTool itself
                     // the CC is appended at the end
                     pIDescendantsOnGSMTool->Append(_MyFeature);
-                }
-                else {
+                } else {
                     // the current feature is inside the GSMTool
                     // the CC is appended just below it (which can be at the end)
                     pIDescendantsOnGSMTool->AddChild(_MyFeature, pos + 1);
                 }
-            }
-            else { // GS : the CC is set at the end of the set
+            } else { // GS : the CC is set at the end of the set
                 cout << " GS case " << endl;
                 pIDescendantsOnGSMTool->Append(_MyFeature);
             }

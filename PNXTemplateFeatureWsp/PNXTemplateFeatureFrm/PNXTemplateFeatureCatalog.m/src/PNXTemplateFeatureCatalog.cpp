@@ -160,8 +160,7 @@ int main(int argc, char* argv[]) {
     hr = ::UpgradeCatalog(&catalogStorageName, &featureCatalog, &clientId);
     if (SUCCEEDED(hr)) {
         cout << "-2- The catalog exist. Opened OK." << endl << flush;
-    }
-    else {
+    } else {
         cout << "-2- Catalog not exist ,Creating the catalog." << endl << flush;
         hr = ::CreateCatalog(&catalogStorageName, &featureCatalog);
 

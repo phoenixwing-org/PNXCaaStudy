@@ -68,8 +68,7 @@ HRESULT PNXCombinedCurveCatalogSynchronize::GetKeywordValue(const CATUnicodeStri
         // 2 lines and 2 curves
         //
         oKeyWordValue = 4;
-    }
-    else
+    } else
         rc = E_FAIL;
 
     return rc;

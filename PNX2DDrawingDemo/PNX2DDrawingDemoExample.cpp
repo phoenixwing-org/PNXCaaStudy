@@ -14,8 +14,8 @@
 
 // DrawingInterfaces Framework
 #include "CATI2DAnnotation.h"
-#include "CATI2DLine.h"
 #include "CATI2DArrow.h"
+#include "CATI2DLine.h"
 #include "CATIDrawingView.h"
 
 // ObjectSpecsModeler Framework
@@ -119,7 +119,7 @@ void Example_AutoDetectAndSetProperties(CATISpecObject* ip2DElement) {
 
     // 尝试作为2D直线处理
     CATI2DLine* pi2DLine = NULL;
-    hr = ip2DElement->QueryInterface(IID_CATI2DLine, (void**)&pi2DLine);
+    hr                   = ip2DElement->QueryInterface(IID_CATI2DLine, (void**)&pi2DLine);
     if (SUCCEEDED(hr) && pi2DLine != NULL) {
         cout << "[INFO] 检测到2D直线，设置线宽为4" << endl;
         PNX2DDrawingDemo::SetLineThickness(pi2DLine, 4);
@@ -130,7 +130,7 @@ void Example_AutoDetectAndSetProperties(CATISpecObject* ip2DElement) {
 
     // 尝试作为2D箭头处理
     CATI2DArrow* pi2DArrow = NULL;
-    hr = ip2DElement->QueryInterface(IID_CATI2DArrow, (void**)&pi2DArrow);
+    hr                     = ip2DElement->QueryInterface(IID_CATI2DArrow, (void**)&pi2DArrow);
     if (SUCCEEDED(hr) && pi2DArrow != NULL) {
         cout << "[INFO] 检测到2D箭头，设置线宽为5" << endl;
         PNX2DDrawingDemo::SetArrowThickness(pi2DArrow, 5);
@@ -165,13 +165,13 @@ void Example_BatchSetProperties(CATLISTV(CATISpecObject_var) iList2DElements) {
     cout << "[INFO] 共有 " << count << " 个2D元素需要设置属性" << endl;
 
     for (int i = 1; i <= count; i++) {
-        CATISpecObject_var element = iList2DElements[i];
+        CATISpecObject_var element = iList2DElements[ i ];
         if (NULL_var != element) {
             cout << "[INFO] 处理第 " << i << " 个元素" << endl;
-            
+
             // 根据索引设置不同的线宽
             int thickness = 2 + (i % 3); // 线宽在2-4之间变化
-            
+
             HRESULT hr = PNX2DDrawingDemo::Set2DElementThicknessFromSpec(element, thickness);
             if (SUCCEEDED(hr)) {
                 cout << "[SUCCESS] 元素 " << i << " 设置成功（线宽=" << thickness << "）" << endl;
@@ -220,4 +220,3 @@ void MainExample() {
     Example_BatchSetProperties(listElements);
 }
 */
-

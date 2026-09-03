@@ -355,8 +355,7 @@ int main(int    iArgc, // Number of arguments (0)
         cout << "   The " << iArgv[ 1 ] << " document ";
         cout << " has been saved" << endl;
         cout << endl;
-    }
-    else {
+    } else {
         cout << "ERROR in saving document " << iArgv[ 1 ] << endl;
         return 1;
     }

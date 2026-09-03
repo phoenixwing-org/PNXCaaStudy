@@ -126,8 +126,7 @@ PNXTemplateBaseCmd::PNXTemplateBaseCmd()
         catISO_ = catFrmEditor_->GetISO();
 
         catISO_->Empty();
-    }
-    else {
+    } else {
         code_ = 1;
     }
 

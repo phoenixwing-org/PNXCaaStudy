@@ -38,7 +38,7 @@ public:
 public:
     static HRESULT add_Attributes(CATISpecObject*                   startUp,
                                   std::vector<KTCAutoCatalogParam>& itemList);
-    void SetTKListValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
+    void           SetTKListValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
 
     void SetValue(const CATUnicodeString& name, TCKind kind, CATAttrInOut in);
 

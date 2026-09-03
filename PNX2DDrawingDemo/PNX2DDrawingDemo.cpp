@@ -167,8 +167,7 @@ HRESULT PNX2DDrawingDemo::Set2DElementProperties(CATI2DAnnotation* ip2DAnnotatio
     if (SUCCEEDED(rc)) {
         cout << "[INFO] " << __FUNCTION__ << ": Successfully set thickness="
              << iThick] " << __FUNCTION__ << ":<< ")" << endl;
-    }
-    else {
+    } else {
         cout << "[ERROR] " << __FUNCTION__ << ": Failed to set properties" << endl;] ] " << __FUNCTION__ << ":
     }
 
@@ -215,8 +214,7 @@ HRESULT PNX2DDrawingDemo::Set2DElementThicknessFromSpec(CATISpecObject* ipSpecOb
 
     if (SUCCEEDED(rc)) {
         cout << "[INFO] " << __FUNCTION__ << ": Successfully set thickness=" << iThickness << endl;
-    }
-    else {
+    } else {
         cout << "[ERROR] " << __FUNCTION__ << ": Failed to set thickness" << endl;
     }
 

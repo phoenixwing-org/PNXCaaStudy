@@ -149,20 +149,17 @@ PNXECombinedCurveReplace::Replace(const CATUnicodeString&   iNameOfRole,
                     pIDescendantsOnCC->Release();
                     pIDescendantsOnCC = NULL;
                 }
-            }
-            else {
+            } else {
                 pFather->Release();
                 pFather = NULL;
                 rc      = E_FAIL;
             }
-        }
-        else
+        } else
             rc = E_FAIL;
 
         pIMfBRep->Release();
         pIMfBRep = NULL;
-    }
-    else
+    } else
         rc = S_OK;
 
     // Replace operation
@@ -230,8 +227,7 @@ CATISpecObject_var
         if (NULL_var != spInverse) {
             // We retrieve inversion Parent
             spToReturn = spInverse->GetElem();
-        }
-        else {
+        } else {
             // Inversion Creation
             //------------------
             CATISpecObject_var spSpec(this);

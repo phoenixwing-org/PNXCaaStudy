@@ -344,8 +344,7 @@ HRESULT KTCAutoAttrAccess::SetSpecValue(const char* name, CATISpecObject_var val
     // 分情况设定
     if (NULL_var == value) { // 设置空的值
         attrAccess_->UnsetAttributeValue(attrKey);
-    }
-    else { // 设置非空的值
+    } else { // 设置非空的值
 
         // 处理Brep
         CATIMfBRep_var bRep;
@@ -364,8 +363,7 @@ HRESULT KTCAutoAttrAccess::SetSpecValue(const char* name, CATISpecObject_var val
                     descendants->Append(value);
                     KTCRelease(descendants); // 手动释放
                 }
-            }
-            else {
+            } else {
                 hr = E_FAIL; // 父亲不能存在，报错
             }
         }

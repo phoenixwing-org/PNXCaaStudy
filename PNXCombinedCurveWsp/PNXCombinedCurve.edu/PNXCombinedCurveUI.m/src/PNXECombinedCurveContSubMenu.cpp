@@ -93,8 +93,7 @@ CATCmdAccess* PNXECombinedCurveContSubMenu::GetContextualSubMenu() {
             if (0 == IsFeatureDeactivate) {
                 // from actif -> inactif
                 SetAccessCommand(_pCAAMmrSwapActiveStr, "CATPrtInactiveHdr");
-            }
-            else {
+            } else {
                 // from inactif -> actif
                 SetAccessCommand(_pCAAMmrSwapActiveStr, "CATPrtActiveHdr");
             }
