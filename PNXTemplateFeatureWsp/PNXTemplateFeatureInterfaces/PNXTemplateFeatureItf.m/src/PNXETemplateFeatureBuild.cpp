@@ -296,8 +296,7 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                     if (SUCCEEDED(rc)) {
                         // SetSoftwareConfig
                         TopData.SetSoftwareConfiguration(buildGSM.softConfig);
-                    }
-                    else {
+                    } else {
                         cout << " - [ERROR] failed to get buildGSM.softConfig" << endl;
                     }
                 }
@@ -342,8 +341,7 @@ HRESULT PNXETemplateFeatureBuild::build_feature(PNXITemplateFeature_var feature)
                             CATMmrAlgoConfigServices::StoreConfiguration(featureSpec,
                                                                          buildGSM.softConfig);
                         }
-                    }
-                    else {
+                    } else {
                         // creates an error if the intersection failed
                         CATMfErrUpdate*  pErrorNoIntersection = new CATMfErrUpdate();
                         CATUnicodeString Diagnostic("Reult Body is NULL. code = 100120.");

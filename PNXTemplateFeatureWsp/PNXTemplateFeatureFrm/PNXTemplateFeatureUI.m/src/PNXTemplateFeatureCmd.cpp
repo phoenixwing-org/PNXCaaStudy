@@ -146,8 +146,7 @@ PNXTemplateFeatureCmd::PNXTemplateFeatureCmd(PNXITemplateFeature* ipInstance)
         catISO_ = catFrmEditor_->GetISO();
 
         catISO_->Empty();
-    }
-    else {
+    } else {
         code_ = 1;
     }
 
@@ -210,8 +209,7 @@ void PNXTemplateFeatureCmd::BuildGraph() {
     if (SUCCEEDED(hr)) {
         if (KTC::FeatureModeCreation == mode_) {
             hr = CreateElement(); // create one
-        }
-        else {
+        } else {
             // for update mode
             hr = feature->UpdateVersion(); // update version
             if (FAILED(hr)) {
@@ -570,8 +568,7 @@ void PNXTemplateFeatureCmd::AfterValueChange(bool isUpdateObj) {
         HRESULT hr = feature->SetParams(*parameter); // set param
         if (FAILED(hr)) {
             cout << " SetParams Error: " << feature->GetErrMsg() << endl;
-        }
-        else if (isUpdateObj) {
+        } else if (isUpdateObj) {
             //
             // if your update is very fast, you can update object here.
             // or you can only update object in PreviewAction() or OkAction()

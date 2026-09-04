@@ -160,8 +160,7 @@ void PNXV5V6AdapterDlg::UpdateDialog() {
     if (parameter->BaseCurve != NULL_var) {
         _SelectorListBaseCurve->SetLine(parameter->BaseCurve->GetDisplayName(), 0,
                                         CATDlgDataModify);
-    }
-    else
+    } else
         _SelectorListBaseCurve->SetLine("(No Selection)", 0, CATDlgDataModify);
 
     this->UpdateSensitivity(); // update sensitivity

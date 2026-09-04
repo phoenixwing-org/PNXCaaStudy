@@ -154,8 +154,7 @@ HRESULT PNXETemplateFeature::SetVersion(const int& value) // 0A
             << value << " which is smaller than the feature version" << featureVersion << ". ";
         this->SetErrMsg(msg.str());
         return E_UNEXPECTED;
-    }
-    else if (value > PNXTemplateFeatureParam::GetSoftwareVersion()) {
+    } else if (value > PNXTemplateFeatureParam::GetSoftwareVersion()) {
         KtString msg(100);
         (msg = "Error! Unexpected input version ")
             << value << " which is larger than the software version "

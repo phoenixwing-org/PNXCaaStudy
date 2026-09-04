@@ -74,7 +74,7 @@ public:
      * @return KTCAutoSelectorCtx pointer
      */
     KTCAutoSelectorCtx* register_field(int field, CATDlgSelectorList* selector,
-                                        const KtString& name = "");
+                                       const KtString& name = "");
 
     /** @brief Register Parameter Dialog */
     void register_option_dialog(CATDlgDialog* dlg);

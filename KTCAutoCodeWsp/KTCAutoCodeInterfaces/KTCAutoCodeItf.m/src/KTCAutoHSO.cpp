@@ -133,8 +133,7 @@ int KTCAutoHSO::after_element_selected(CATPathElementAgent* agent, CATISpecObjec
         if (specObject == ioObject) {   // 相同清空
             RemoveElement(pathElement); // 处理hso
             ioObject = NULL_var;
-        }
-        else // or 不同赋值
+        } else // or 不同赋值
             ioObject = specObject;
         break;
     }
@@ -183,8 +182,7 @@ int KTCAutoHSO::after_element_selected(CATPathElementAgent*          agent,
         if (location != 0) {                // 存在清空
             RemoveElement(pathElement);     // 处理hso
             ioList.RemoveValue(specObject); // 处理列表
-        }
-        else { // or 不存在添加
+        } else {                            // or 不存在添加
             ioList.Append(specObject);
         }
         break;

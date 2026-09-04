@@ -88,7 +88,7 @@ void KTCAutoDialog::on_show_option_dialog(CATCommand*, CATNotification*, CATComm
 }
 //-------------------------------------------------------------------------
 KTCAutoSelectorCtx* KTCAutoDialog::register_field(int field, CATDlgSelectorList* selector,
-                                                   const KtString& name) {
+                                                  const KtString& name) {
     if (!selector) return NULL;
     if (!selectorMap_) selectorMap_ = new KTCAutoSelectorCtxMap(); // 第一次注册时，创建map
 
@@ -134,8 +134,7 @@ int KTCAutoDialog::selectorlist_setline(CATDlgSelectorList*     selectorList,
     // set diaplay name or no selection
     if (!!inputObject) {
         selectorList->SetLine(checkout_title(inputObject), 0, CATDlgDataModify);
-    }
-    else
+    } else
         selectorList->SetLine(noneSel, 0, CATDlgDataModify);
 
     return 0; // ok
@@ -220,8 +219,7 @@ void KTCAutoDialog::ShowMessageBox(int code, const CATUnicodeString& msg, CATDia
         // 弹出
         notify = new CATDlgNotify(dialog, "Error", CATDlgNfyError);
         notify->DisplayBlocked(message, "Error"); // 显示对话框（模态）
-    }
-    else { // 没有错误
+    } else {                                      // 没有错误
         notify = new CATDlgNotify(dialog, "Information", CATDlgNfyInformation);
         notify->DisplayBlocked(msg, "Information"); // 显示对话框（模态）
     }

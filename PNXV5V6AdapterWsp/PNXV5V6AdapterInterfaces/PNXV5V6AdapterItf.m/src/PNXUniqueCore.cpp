@@ -34,8 +34,7 @@ PNXIMechanicalFeature_var PNXUniqueCore::checkoutUniqueClass() {
     if (SUCCEEDED(hr) && base != NULL_var) {
         cout << "- [ok] checkout CATIMmiMechanicalFeature:" << *base << endl;
         return base;
-    }
-    else {
+    } else {
         code = 100004;
         cout << "- [error] Failed to checkout CATIMmiMechanicalFeature form feature" << endl;
         return NULL_var;
@@ -50,8 +49,7 @@ PNXIMechanicalFeature_var PNXUniqueCore::checkoutUniqueClass() {
         code = 0;
         cout << "- [" << code << "] Base Object Name = " << base->GetDisplayName() << endl;
         return base;
-    }
-    else {
+    } else {
         code = 100005;
         cout << "- [" << code << "] Failed to checkout CATISpecObject form feature" << endl;
         return NULL_var;
@@ -75,8 +73,7 @@ int PNXUniqueCore::calculate(PNXIMechanicalFeature_var spFeature) {
     if (SUCCEEDED(hr) && base != NULL_var) {
         code = 0;
         cout << "- [" << code << "] Base Object Name = " << base->GetDisplayName() << endl;
-    }
-    else {
+    } else {
         code = 100002;
         cout << "- [" << code << "] Failed to checkout CATIMmiMechanicalFeature form input" << endl;
     }
@@ -89,8 +86,7 @@ int PNXUniqueCore::calculate(PNXIMechanicalFeature_var spFeature) {
     if (SUCCEEDED(hr) && base != NULL_var) {
         code = 0;
         cout << "- [" << code << "] Base Object Name = " << base->GetDisplayName() << endl;
-    }
-    else {
+    } else {
         code = 100003;
         cout << "- [" << code << "] Failed to checkout CATISpecObject form input" << endl;
     }

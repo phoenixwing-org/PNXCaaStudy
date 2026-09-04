@@ -23,7 +23,7 @@ class CATI2DArrow;
 /**
  * @class PNX2DDrawingDemo
  * @brief 2D图纸元素属性设置演示类
- * 
+ *
  * 本类演示如何在CAA 2D图纸中设置以下元素的属性：
  * - 直线（Line）的thickness（线宽）
  * - 箭头（Arrow）的thickness（线宽）
@@ -64,11 +64,8 @@ public:
      * @param[in] iBlue 蓝色分量（0-255）
      * @return HRESULT S_OK表示成功，E_FAIL表示失败
      */
-    static HRESULT Set2DElementProperties(CATI2DAnnotation* ip2DAnnotation, 
-                                          int iThickness,
-                                          int iRed = 0, 
-                                          int iGreen = 0, 
-                                          int iBlue = 0);
+    static HRESULT Set2DElementProperties(CATI2DAnnotation* ip2DAnnotation, int iThickness,
+                                          int iRed = 0, int iGreen = 0, int iBlue = 0);
 
     /**
      * @brief 从CATISpecObject获取2D注释并设置属性
@@ -80,4 +77,3 @@ public:
 };
 
 #endif // PNX2DDrawingDemo_H
-
