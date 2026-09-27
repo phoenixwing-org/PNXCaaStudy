@@ -1,2 +1,2 @@
-& "$env:ROOT_DIR/tools/linkWinb64.ps1" $PSScriptRoot -TargetDirectory '..\CAAB20MkWsp' @args
+& "$env:ROOT_DIR/tools/linkCAA.ps1" $PSScriptRoot -Version 20 -TargetDirectory '..\CAAB20MkWsp' @args
 exit $LASTEXITCODE
